@@ -9,7 +9,7 @@ const defaults=[
 ["CTA · KEYINGI QADAM","Yana foydali kashfiyotlar uchun kuzating.","Fikr bildiring, saqlab qo‘ying yoki keyingi mavzuni tavsiya qiling.","FOLLOW, SHARE"]
 ];
 let scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
-let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,downloadUrl=null;
+let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,downloadUrl=null,activeStudio="recommendation";
 const colors=["#b6ff4a","#65d9ff","#b69cff","#ff8c70","#ffffff"];
 const sceneNames=["HOOK","CONTEXT","INSIGHT","VALUE","CTA"];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -24,7 +24,7 @@ function render(){
  $("sceneNo").textContent="NEX / "+String(scene+1).padStart(2,"0");
  $("sceneLabel").textContent=(scene+1)+" / 5 · "+sceneNames[scene];
  document.querySelectorAll(".scene-strip button").forEach((b,i)=>b.classList.toggle("active",i===scene));
- const frame=$("preview");frame.dataset.motion=$("motion").value;frame.classList.remove("scene-enter");void frame.offsetWidth;frame.classList.add("scene-enter");
+ const frame=$("preview");frame.dataset.motion=$("motion").value;frame.dataset.studio=activeStudio;frame.classList.remove("scene-enter");void frame.offsetWidth;frame.classList.add("scene-enter");
 }
 function loadScene(i){saveCurrent();scene=(i+5)%5;const s=scenes[scene];$("kicker").value=s.kicker;$("headline").value=s.title;$("bodyText").value=s.body;$("tags").value=s.tags;render();}
 function status(t){$("statusText").textContent=t;}
@@ -43,7 +43,7 @@ function pausePlayback(){if(!playing)return;playElapsed+=performance.now()-playS
 function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=playElapsed+(now-playStart);if(elapsed>=total){stop();loadScene(0);return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
 function startPlayback(){if(playing){pausePlayback();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);}
 $("playBtn").onclick=startPlayback;
-function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.2.0";}else{stop();}}
+function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.3.0";}else{stop();}}
 $("recordingModeBtn").addEventListener("click",()=>setRecordingMode(true));
 $("recordExitBtn").addEventListener("click",()=>setRecordingMode(false));
 $("recordStartBtn").addEventListener("click",startPlayback);
@@ -143,6 +143,7 @@ $("buildContentBtn").addEventListener("click",()=>{
  const type=$("contentType").value;
  const built=contentBuilders[type](topic);
  const profile=studioProfiles[type];
+ activeStudio=type;
  if(profile){
   $("style").value=profile.style;$("bg").value=profile.bg;$("motion").value=profile.motion;
   setAccent(profile.accent);design();
