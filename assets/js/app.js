@@ -2,16 +2,16 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const defaults=[
-["HOOK · DIQQATNI TORTING","Kontentingiz boshqalardan ajralib tursin.","O‘z g‘oyangizni kuchli vizual hikoyaga aylantiring.","CREATIVE, IDEAS"],
-["TANISHUV · MEN HAQIMDA","Salom! Men ijodkor va yaratuvchiman.","O‘zingiz va faoliyatingiz haqida qisqacha tanishtiring.","ABOUT ME, CREATOR"],
-["WHY FOLLOW · FOYDA","Bu sahifada siz nimani o‘rganasiz?","Amaliy maslahatlar, foydali g‘oyalar va yangi bilimlar.","LEARN, GROW"],
-["VALUE · FARQLANISH","Oddiy emas. Mazmunli va foydali kontent.","Sizni boshqalardan ajratib turadigan qadriyatlarni ko‘rsating.","QUALITY, VALUE"],
-["CTA · HARAKAT","Kuzatib boring. Birgalikda rivojlanamiz!","Keyingi videolarni o‘tkazib yubormaslik uchun obuna bo‘ling.","FOLLOW, SHARE"]
+["HOOK · DIQQATNI TORTING","Raqamli dunyoni yangicha kashf eting.","Texnologiya, kreativ loyihalar va foydali g‘oyalar bir joyda.","TECHNOLOGY, IDEAS"],
+["CONTEXT · KONTEKST","Har bir g‘oyaning o‘z sababi bor.","Mavzuning kelib chiqishi va nima uchun muhimligini qisqacha oching.","CONTEXT, DISCOVERY"],
+["INSIGHT · ASOSIY FIKR","Muhim jihatni ko‘rish vaqti keldi.","Eng qiziqarli fakt, imkoniyat yoki farqli xususiyatni tushuntiring.","INSIGHT, KNOWLEDGE"],
+["VALUE · FOYDA","Bu ma’lumot sizga nima beradi?","Amaliy xulosa, foyda yoki foydalanish usulini ko‘rsating.","VALUE, PRACTICAL"],
+["CTA · KEYINGI QADAM","Yana foydali kashfiyotlar uchun kuzating.","Fikr bildiring, saqlab qo‘ying yoki keyingi mavzuni tavsiya qiling.","FOLLOW, SHARE"]
 ];
 let scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
 let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,accent="#b6ff4a",seed=2026;
 const colors=["#b6ff4a","#65d9ff","#b69cff","#ff8c70","#ffffff"];
-const sceneNames=["HOOK","INTRO","FOLLOW","VALUE","CTA"];
+const sceneNames=["HOOK","CONTEXT","INSIGHT","VALUE","CTA"];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function saveCurrent(){scenes[scene]={kicker:$("kicker").value,title:$("headline").value,body:$("bodyText").value,tags:$("tags").value};}
 function render(){
@@ -40,7 +40,50 @@ $("randomBtn").onclick=()=>{const rnd=randomFromSeed();setAccent(colors[Math.flo
 function stop(){playing=false;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Ko‘rish";$("playState").textContent="TAYYOR";}
 function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=now-playStart;if(elapsed>=total){stop();return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
 $("playBtn").onclick=()=>{if(playing){stop();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ To‘xtatish";$("playState").textContent="KO‘RILMOQDA";raf=requestAnimationFrame(playbackFrame);};
-$("resetBtn").onclick=()=>{stop();scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));$("handle").value="@youraccount";$("role").value="CREATOR · DIGITAL STORYTELLER";$("author").value="NEX CREATIVE STUDIO";$("style").value="neon";$("bg").value="aurora";$("motion").value="float";$("seed").value="2026";$("intensity").value="5";setAccent("#b6ff4a");design();loadScene(0);status("Loyiha boshlang‘ich holatga qaytarildi.");};
+$("resetBtn").onclick=()=>{stop();scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));$("handle").value="@youraccount";$("role").value="CREATOR · DIGITAL STORYTELLER";$("author").value="NEX CREATIVE STUDIO";$("style").value="neon";$("bg").value="aurora";$("motion").value="float";$("seed").value="2026";$("intensity").value="5";setAccent("#b6ff4a");design();
+const contentBuilders={
+ showcase:(t)=>[
+ ["HOOK · LOYIHA","Bu loyihani kuzatishga arziydimi?","Bugun e’tiborimni tortgan loyiha: "+t+".","PROJECT, CREATIVE"],
+ ["CONTEXT · TANISHUV",t+" nima bilan shug‘ullanadi?","Loyiha qanday muammoni hal qilishi yoki kimlar uchun yaratilganini ko‘rib chiqamiz.","OVERVIEW, DESIGN"],
+ ["INSIGHT · FARQLI JIHAT","Uning asosiy ustunligi nimada?","Interfeys, yondashuv yoki foydalanuvchiga beradigan qiymatiga e’tibor qarating.","DETAILS, VALUE"],
+ ["VALUE · TAHLIL","Nima uchun e’tiborga loyiq?","Kuchli tomonlari va kimlar uchun foydali bo‘lishi mumkinligini baholang.","ANALYSIS, DISCOVERY"],
+ ["CTA · TAVSIYA","Siz ham ko‘rib chiqarmidingiz?","Loyihani o‘rganing va fikringizni izohlarda yozing.","RECOMMEND, COMMENT"]
+ ],
+ fact:(t)=>[
+ ["HOOK · TEXNOLOGIK FAKT",t+" haqida bir muhim fakt.","Ko‘pchilik bilmaydigan, ammo tushunishga arziydigan jihat bor.","TECH FACT, KNOWLEDGE"],
+ ["CONTEXT · IZOH","Bu qanday ishlaydi?","Avval mavzuning asosiy tushunchasini sodda va aniq izohlaymiz.","EXPLAIN, CONTEXT"],
+ ["INSIGHT · FAKT","Eng qiziq jihati — mana shu.","Bu yerda tekshirilgan fakt, raqam yoki aniq misol keltiriladi.","FACT, DATA"],
+ ["VALUE · AHAMIYAT","Bu nimani o‘zgartiradi?","Ushbu ma’lumotning kundalik hayot, internet yoki texnologiyadagi ahamiyatini ko‘rsating.","IMPACT, VALUE"],
+ ["CTA · MULOHAZA","Siz bu haqda bilarmidingiz?","Faktni saqlab qo‘ying yoki keyingi mavzu bo‘yicha taklif qoldiring.","DID YOU KNOW, COMMENT"]
+ ],
+ tool:(t)=>[
+ ["HOOK · FOYDALI VOSITA",t+" ishni osonlashtirishi mumkin.","Bugun foydali raqamli vositani qisqacha ko‘rib chiqamiz.","DIGITAL TOOL, PRODUCTIVITY"],
+ ["CONTEXT · VAZIFA","U nima uchun kerak?","Vosita qaysi vazifani bajarishi va kimlar uchun mo‘ljallanganini tushuntiring.","PURPOSE, GUIDE"],
+ ["INSIGHT · IMKONIYAT","Asosiy imkoniyatlari qanday?","Eng foydali ikki yoki uch funksiyasini aniq misol bilan ko‘rsating.","FEATURES, TOOLS"],
+ ["VALUE · AMALIYOT","Undan qanday foydalanish mumkin?","Boshlash uchun kerakli qadamlar va ehtiyot bo‘lish lozim bo‘lgan jihatlarni ayting.","HOW TO, PRACTICAL"],
+ ["CTA · SINAB KO‘RISH","Sizga ham foydali bo‘lishi mumkin.","Vositaning rasmiy manbasini tekshiring va tajribangizni izohlarda ulashing.","TRY IT, COMMENT"]
+ ],
+ personal:(t)=>[
+ ["HOOK · SHAXSIY TAJRIBA","Men "+t+" ustida ishlayapman.","Yangi loyiha yoki o‘rganish jarayonimdan bir lavha bilan bo‘lishaman.","BUILD IN PUBLIC, JOURNEY"],
+ ["CONTEXT · MAQSAD","Bu g‘oyani nima uchun boshladim?","Muammo, ehtiyoj yoki loyiha oldiga qo‘yilgan maqsadni tushuntiring.","PURPOSE, PROJECT"],
+ ["INSIGHT · JARAYON","Jarayonda nimalarni aniqladim?","Ish davomida uchragan muhim qaror, xato yoki yangi bilimni ko‘rsating.","PROCESS, LEARNING"],
+ ["VALUE · NATIJA","Hozirgacha qanday natija bor?","Amaldagi natija, ishlayotgan qism va hali yechilmagan vazifalarni ochiq ayting.","PROGRESS, RESULTS"],
+ ["CTA · MULOQOT","Keyingi qadamni birga kuzating.","Auditoriyadan fikr, savol yoki taklif so‘rang.","FOLLOW, FEEDBACK"]
+ ]
+};
+$("buildContentBtn").addEventListener("click",()=>{
+ const topic=$("topicInput").value.trim();
+ if(!topic){$("briefHint").textContent="Avval mavzu yoki loyiha nomini kiriting."; $("topicInput").focus();return;}
+ const type=$("contentType").value;
+ const built=contentBuilders[type](topic);
+ saveCurrent();
+ scenes=built.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
+ stop();loadScene(0);
+ $("briefHint").textContent="5 sahnali ssenariy tayyor. Matnlar shablon asosida tuzildi — faktlar va misollarni tekshirib, o‘zingizga moslab tahrirlang.";
+ status("Kontent ssenariysi yaratildi. Har bir sahnani tahrirlashingiz mumkin.");
+});
+
+loadScene(0);status("Loyiha boshlang‘ich holatga qaytarildi.");};
 function wrap(ctx,text,maxWidth){const lines=[];let line="";for(const word of String(text).split(/\s+/)){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=word;}else line=test;}if(line)lines.push(line);return lines;}
 function rounded(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
 function draw(ctx,now,index){
