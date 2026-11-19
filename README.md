@@ -1,6 +1,6 @@
 # NEX — Creative Media Studio
 
-NEX — Instagram sahifasi uchun professional kontent ishlab chiqish va vertikal Reels videolarini tayyorlash studiyasi.
+NEX — Instagram sahifasi uchun professional kontent ishlab chiqish va telefon ekran yozuvi orqali Reels tayyorlash studiyasi.
 
 ## Kontent strategiyasi
 
@@ -28,7 +28,7 @@ Sahifaning pozitsiyasi: **raqamli dunyo, texnologiyalar, kreativ loyihalar va fo
 - Aurora, Stars, Grid, Bubbles, Rain va Fire fonlari.
 - Rang palitrasi, seed asosida tasodifiy dizayn, animatsiya turi va intensivligi.
 - 9:16 formatdagi jonli preview va besh sahnali ketma-ket ko‘rish.
-- Canvas orqali 1080×1920 video eksport qilish.
+- 9:16 Recording Mode orqali telefon ekranini yozib olish.
 
 ## Muhim cheklov
 
@@ -126,3 +126,18 @@ Repository Settings → Pages → Build and deployment → Source: GitHub Action
 - GitHub main branchidagi manba fayllari yangilandi.
 - Hozircha Android qurilmasida real video yozish, faylni yuklab olish va preview animatsiyalarini ko‘z bilan tekshirish bajarilmadi.
 - GitHub Pages deploy natijasi alohida tekshirilmoqda.
+
+
+## NEX v1.6.0 — 2026-11-19
+
+### Yangilanishlar
+- Ishlamagan avtomatik video eksporti, yuklab olish tugmasi va eksport havolasi butunlay olib tashlandi.
+- NEX endi faqat telefon ekran yozuvi asosida ishlashga moslashtirildi.
+- Recording Mode 9:16 toza kadrni ko‘rsatadi; sahnalarni ketma-ket boshlash va pauza qilish mumkin.
+- Besh sahnaning animatsiya xoreografiyasi farq qiladi: Hook — keskin fokus/yaqinlashish; Context — siljib ochilish; Insight — aylanish va urg‘u; Value — pastdan qatlamli ochilish; CTA — yumshoq yakuniy puls.
+- Har bir kontent studiyasi uchun har bir sahnaga alohida harakat parametrlari berildi. Natijada 4 studiya × 5 sahna bo‘yicha 20 xil kirish xoreografiyasi mavjud.
+- Sahna raqami o‘zgarganda animatsiya qayta boshlanadi.
+
+### Tekshiruv holati
+- GitHub manba kodlari yangilandi.
+- HTML/JS/CSS matn darajasida tekshirildi; haqiqiy Android qurilmasida ekran yozuvi va animatsiya ko‘rinishi hali sinovdan o‘tkazilmadi.
