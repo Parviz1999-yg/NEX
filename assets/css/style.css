@@ -57,3 +57,47 @@ body.recording-mode .preview-frame{width:min(100vw,56.25vh);height:min(100vh,177
 body.recording-mode .preview-inner{inset:7%}
 @media(prefers-reduced-motion:reduce){.preview-frame::before,.preview-frame::after,.scene-enter .preview-copy small,.scene-enter .preview-copy h2,.scene-enter .preview-copy p,.scene-enter .tags{animation:none!important}}
 @media(max-width:520px){.recording-controls{width:calc(100% - 20px);justify-content:center}.recording-controls span{font-size:8px}.recording-controls button{padding:8px}}
+
+
+/* NEX v1.3.0 — four distinct studio motion languages */
+.preview-frame[data-studio="recommendation"] .profile{animation:nex-rec-profile .8s cubic-bezier(.2,.8,.2,1) both}
+.preview-frame[data-studio="recommendation"] .preview-copy small{animation:nex-rec-kicker .65s both}
+.preview-frame[data-studio="recommendation"] .preview-copy h2{animation:nex-rec-title .9s cubic-bezier(.16,1,.3,1) both}
+.preview-frame[data-studio="recommendation"] .preview-copy p{animation:nex-rec-body .75s .25s both}
+.preview-frame[data-studio="recommendation"] .tags span{animation:nex-rec-tag .5s both}
+.preview-frame[data-studio="recommendation"] .tags span:nth-child(2){animation-delay:.1s}
+.preview-frame[data-studio="recommendation"] .tags span:nth-child(3){animation-delay:.2s}
+.preview-frame[data-studio="recommendation"] .tags span:nth-child(4){animation-delay:.3s}
+.preview-frame[data-studio="resources"] .preview-copy small{display:inline-block;border-bottom:2px solid var(--accent);padding-bottom:8px;animation:nex-resource-label .7s both}
+.preview-frame[data-studio="resources"] .preview-copy h2{animation:nex-resource-title .75s cubic-bezier(.2,.8,.2,1) both}
+.preview-frame[data-studio="resources"] .preview-copy p{animation:nex-resource-body .8s .22s both}
+.preview-frame[data-studio="resources"] .tags span{border-radius:5px;animation:nex-resource-chip .55s both}
+.preview-frame[data-studio="resources"] .tags span:nth-child(2){animation-delay:.12s}
+.preview-frame[data-studio="resources"] .tags span:nth-child(3){animation-delay:.24s}
+.preview-frame[data-studio="resources"] .tags span:nth-child(4){animation-delay:.36s}
+.preview-frame[data-studio="facts"] .preview-copy small{display:inline-block;transform-origin:left center;animation:nex-fact-stamp .55s cubic-bezier(.2,1.5,.4,1) both}
+.preview-frame[data-studio="facts"] .preview-copy h2{animation:nex-fact-pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.preview-frame[data-studio="facts"] .preview-copy p{animation:nex-fact-explain .8s .3s both}
+.preview-frame[data-studio="facts"] .tags span{animation:nex-fact-tag .55s .2s both}
+.preview-frame[data-studio="phrases"] .preview-copy small{animation:nex-phrase-whisper .9s both}
+.preview-frame[data-studio="phrases"] .preview-copy h2{animation:nex-phrase-title 1.5s cubic-bezier(.2,.7,.2,1) both}
+.preview-frame[data-studio="phrases"] .preview-copy p{animation:nex-phrase-body 1.1s .55s both}
+.preview-frame[data-studio="phrases"] .tags{animation:nex-phrase-tags 1s .7s both}
+@keyframes nex-rec-profile{from{opacity:0;transform:translateX(-34px) rotate(-4deg)}to{opacity:1;transform:none}}
+@keyframes nex-rec-kicker{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+@keyframes nex-rec-title{from{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(20px)}to{opacity:1;clip-path:inset(0 0 0 0);transform:none}}
+@keyframes nex-rec-body{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes nex-rec-tag{from{opacity:0;transform:translateY(12px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes nex-resource-label{from{opacity:0;letter-spacing:.35em;transform:translateX(-18px)}to{opacity:1;letter-spacing:inherit;transform:none}}
+@keyframes nex-resource-title{from{opacity:0;transform:translateX(-55px);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes nex-resource-body{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes nex-resource-chip{from{opacity:0;transform:scaleX(.2);transform-origin:left}to{opacity:1;transform:scaleX(1)}}
+@keyframes nex-fact-stamp{from{opacity:0;transform:rotate(-12deg) scale(1.5)}to{opacity:1;transform:rotate(0) scale(1)}}
+@keyframes nex-fact-pop{0%{opacity:0;transform:scale(.65) rotate(-3deg);filter:blur(8px)}75%{opacity:1;transform:scale(1.06) rotate(1deg);filter:blur(0)}100%{transform:scale(1) rotate(0)}}
+@keyframes nex-fact-explain{from{opacity:0;transform:translateY(35px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes nex-fact-tag{from{opacity:0;transform:rotate(-8deg) translateY(15px)}to{opacity:1;transform:none}}
+@keyframes nex-phrase-whisper{from{opacity:0;letter-spacing:.4em;filter:blur(5px)}to{opacity:1;letter-spacing:inherit;filter:blur(0)}}
+@keyframes nex-phrase-title{0%{opacity:0;filter:blur(14px);transform:translateY(28px);letter-spacing:.12em}100%{opacity:1;filter:blur(0);transform:none;letter-spacing:normal}}
+@keyframes nex-phrase-body{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes nex-phrase-tags{from{opacity:0}to{opacity:.8}}
+@media(prefers-reduced-motion:reduce){.preview-frame[data-studio] .profile,.preview-frame[data-studio] .preview-copy small,.preview-frame[data-studio] .preview-copy h2,.preview-frame[data-studio] .preview-copy p,.preview-frame[data-studio] .tags span,.preview-frame[data-studio] .tags{animation:none!important}}
