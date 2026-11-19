@@ -102,8 +102,14 @@ $("buildContentBtn").addEventListener("click",()=>{
  const type=$("contentType").value;
  const built=contentBuilders[type](topic);
  saveCurrent();
+ stop();
  scenes=built.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
- stop();loadScene(0);
+ scene=0;
+ $("kicker").value=scenes[0].kicker;
+ $("headline").value=scenes[0].title;
+ $("bodyText").value=scenes[0].body;
+ $("tags").value=scenes[0].tags;
+ render();
  $("briefHint").textContent="5 sahnali ssenariy tayyor. Matnlar shablon asosida tuzildi — faktlar va misollarni tekshirib, o‘zingizga moslab tahrirlang.";
  status("Kontent ssenariysi yaratildi. Har bir sahnani tahrirlashingiz mumkin.");
 });
