@@ -89,15 +89,15 @@ c.restore();
 }
 function drawBrand(c,w,h,ac,fg){
 const first=state.elapsed<1250,last=state.elapsed>total-1750;if(!first&&!last)return;
-const p=first?Math.min(1,state.elapsed/520):Math.min(1,(state.elapsed-(total-1750))/620);
-const fade=Math.sin(Math.PI*p);c.save();c.globalAlpha=Math.max(0,fade);
-c.translate(w*.5,h*(first?.22:.5));const scale=.78+.22*p;c.scale(scale,scale);
+const p=first?Math.min(1,state.elapsed/420):Math.min(1,(state.elapsed-(total-1750))/520);
+const fade=first?Math.min(1,state.elapsed/180,(1250-state.elapsed)/220):Math.min(1,(state.elapsed-(total-1750))/240,(total-state.elapsed)/260);c.save();c.globalAlpha=Math.max(0,fade);
+c.translate(w*.5,h*(first?.22:.25));const scale=.78+.22*p;c.scale(scale,scale);
 c.textAlign="center";c.textBaseline="middle";
 c.shadowColor=ac;c.shadowBlur=w*.035;c.fillStyle=fg;c.font="950 "+(w*.19)+"px system-ui";c.fillText("NEX",0,0);c.shadowBlur=0;
 // Abstract orbit/play mark, a short animated sweep around the wordmark.
 c.strokeStyle=ac;c.lineWidth=w*.009;c.beginPath();c.ellipse(0,0,w*.29,h*.055,-.2,Math.PI*.08,Math.PI*(.25+1.55*p));c.stroke();
 c.fillStyle=ac;c.beginPath();c.moveTo(w*.245,-h*.012);c.lineTo(w*.28,0);c.lineTo(w*.245,h*.012);c.closePath();c.fill();
-if(last){c.font="600 "+(w*.031)+"px system-ui";c.fillStyle=fg;c.fillText("Fikr va imkoniyatlar makoni",0,h*.09)}
+if(last){c.font="600 "+(w*.031)+"px system-ui";c.fillStyle=fg;c.fillText("Fikr va imkoniyatlar makoni",0,h*.085)}
 c.restore();
 }
 function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.started);if(state.elapsed>=total){state.playing=false;state.elapsed=total}updateSceneUI()}draw();state.raf=requestAnimationFrame(frame)}
