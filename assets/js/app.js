@@ -51,8 +51,9 @@ $("resetBtn").onclick=()=>{stop();scenes=defaults.map(s=>({kicker:s[0],title:s[1
 loadScene(0);status("Loyiha boshlang‘ich holatga qaytarildi.");};
 function wrap(ctx,text,maxWidth){const lines=[];let line="";for(const word of String(text).split(/\s+/)){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=word;}else line=test;}if(line)lines.push(line);return lines;}
 function rounded(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
-function draw(ctx,now,index){
+function draw(ctx,now,index,progress=1){
  const s=scenes[index],w=1080,h=1920,t=now/1000,rnd=randomFromSeed(),motion=$("motion").value,intensity=Number($("intensity").value),amp=intensity*3;
+ const studio=activeStudio,p=Math.max(0,Math.min(1,progress)),easeOut=1-Math.pow(1-p,3),clamp=v=>Math.max(0,Math.min(1,v));
  const bg=$("bg").value,gradient=ctx.createLinearGradient(0,0,w,h);
  gradient.addColorStop(0,bg==="fire"?"#51251b":bg==="aurora"?"#263d55":bg==="stars"?"#18223b":"#17253a");gradient.addColorStop(1,"#080b12");ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
  const accentNow=accent;ctx.save();ctx.globalAlpha=.18;ctx.fillStyle=accentNow;let ox=790,oy=670;
@@ -61,14 +62,38 @@ function draw(ctx,now,index){
  if(bg==="grid"){ctx.strokeStyle="#ffffff18";ctx.lineWidth=2;for(let x=0;x<w;x+=70){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=0;y<h;y+=70){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
  if(bg==="stars"||bg==="bubbles"){for(let j=0;j<45;j++){const x=(j*193+Math.sin(t+j)*13)%w,y=(j*317)%h;ctx.globalAlpha=.2+(j%4)*.12;ctx.fillStyle=accentNow;ctx.beginPath();ctx.arc(x,y,bg==="stars"?2:5+(j%4)*3,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;}
  if(bg==="rain"){ctx.strokeStyle="#9bd7ff55";for(let j=0;j<38;j++){let x=(j*37+t*70)%w,y=(j*83+t*230)%h;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-12,y+50);ctx.stroke();}}
+ // Har bir kontent studiyasi uchun alohida eksport animatsiyasi.
+ if(studio==="recommendation"){
+  const q=easeOut;ctx.save();ctx.globalAlpha=q;ctx.translate((1-q)*190,0);
+  ctx.shadowColor="#b69cff55";ctx.shadowBlur=35;ctx.fillStyle="#171c2b";rounded(ctx,575,405,420,210,30);ctx.fill();
+  ctx.shadowBlur=0;ctx.strokeStyle="#b69cff";ctx.lineWidth=3;rounded(ctx,575,405,420,210,30);ctx.stroke();
+  ctx.fillStyle="#b69cff";ctx.beginPath();ctx.arc(665,510,48,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#171c2b";ctx.font="bold 36px Arial";ctx.textAlign="center";ctx.fillText("N",665,522);ctx.textAlign="left";
+  ctx.fillStyle="#fff";ctx.font="bold 27px Arial";ctx.fillText("ACCOUNT SPOTLIGHT",735,485);
+  ctx.fillStyle="#aeb8ca";ctx.font="21px Arial";ctx.fillText("PROFILE · REVIEW · VALUE",735,525);
+  ctx.fillStyle="#b69cff";rounded(ctx,735,550,160*q,8,4);ctx.fill();ctx.restore();
+ }else if(studio==="resources"){
+  const labels=["DISCOVER","LEARN","APPLY"];ctx.save();
+  labels.forEach((label,j)=>{const q=clamp((p-j*.16)/.62);const x=615+(1-q)*145;ctx.globalAlpha=q;ctx.fillStyle="#10283a";rounded(ctx,x,420+j*86,370,62,16);ctx.fill();ctx.strokeStyle="#65d9ff";ctx.lineWidth=2;rounded(ctx,x,420+j*86,370,62,16);ctx.stroke();ctx.fillStyle="#65d9ff";ctx.beginPath();ctx.arc(x+32,451+j*86,9,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f0f7ff";ctx.font="bold 23px Arial";ctx.fillText(label,x+58,459+j*86);});ctx.restore();
+ }else if(studio==="facts"){
+  const q=easeOut,angle=t*.55;ctx.save();ctx.globalAlpha=q;ctx.translate(835,525);ctx.rotate(angle);
+  ctx.strokeStyle="#ff8c70";ctx.lineWidth=5;ctx.setLineDash([18,12]);ctx.beginPath();ctx.arc(0,0,135,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(0,0,105,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.save();ctx.globalAlpha=q;ctx.fillStyle="#ff8c70";ctx.font="bold 26px Arial";ctx.textAlign="center";ctx.fillText("FACT",835,515);
+  ctx.fillStyle="#fff";ctx.font="bold 64px Arial";ctx.fillText("0"+(index+1),835,580);ctx.textAlign="left";ctx.restore();
+ }else if(studio==="phrases"){
+  const q=clamp(p/.72),scale=.82+.18*easeOut;ctx.save();ctx.globalAlpha=q*.42;ctx.translate(835,555);ctx.scale(scale,scale);
+  ctx.fillStyle="#e7c98a";ctx.font="bold 310px Georgia";ctx.textAlign="center";ctx.fillText("“",0,95);ctx.textAlign="left";ctx.restore();
+  ctx.save();ctx.globalAlpha=q;ctx.fillStyle="#e7c98a";ctx.fillRect(700,690,220*q,4);ctx.restore();
+ }
  ctx.fillStyle=accentNow;ctx.font="bold 30px Arial";ctx.fillText("NEX / "+String(index+1).padStart(2,"0"),80,115);
  ctx.fillStyle="#fff";ctx.font="bold 34px Arial";ctx.fillText(($("handle").value||"@youraccount").slice(0,28),165,250);
  ctx.fillStyle="#9daabd";ctx.font="22px Arial";ctx.fillText(($("role").value||"CREATOR").slice(0,42),165,287);
  if(photo){ctx.save();ctx.beginPath();ctx.arc(112,250,48,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,64,202,96,96);ctx.restore();}
- ctx.fillStyle=accentNow;ctx.font="bold 28px Arial";ctx.fillText(s.kicker.toUpperCase().slice(0,45),80,690);
+ ctx.save();ctx.globalAlpha=clamp(p/.35);ctx.fillStyle=accentNow;ctx.font="bold 28px Arial";ctx.fillText(s.kicker.toUpperCase().slice(0,45),80,690);ctx.restore();
  const titleLines=wrap(ctx,s.title,900).slice(0,5);ctx.font="bold 88px Arial";let y=840;
- titleLines.forEach((line,j)=>{ctx.fillStyle=j%2===1?accentNow:"#f4f6fa";const jitter=motion==="shake"?(rnd()-.5)*amp*3:0;ctx.fillText(line,80+jitter,y+jitter);y+=112;});
- ctx.fillStyle="#c5cfdb";ctx.font="36px Arial";wrap(ctx,s.body,850).slice(0,4).forEach((line,j)=>ctx.fillText(line,80,y+65+j*58));
+ titleLines.forEach((line,j)=>{const q=clamp((p-.12-j*.075)/.48);ctx.save();ctx.globalAlpha=q;ctx.fillStyle=j%2===1?accentNow:"#f4f6fa";const jitter=motion==="shake"?(rnd()-.5)*amp*3:0;const enter=studio==="resources"?(1-q)*125:studio==="facts"?(1-q)*55:studio==="phrases"?(1-q)*8:(1-q)*75;ctx.translate(enter,studio==="phrases"?(1-q)*18:0);ctx.fillText(line,80+jitter,y+jitter);ctx.restore();y+=112;});
+ ctx.save();ctx.globalAlpha=clamp((p-.34)/.5);ctx.fillStyle="#c5cfdb";ctx.font="36px Arial";wrap(ctx,s.body,850).slice(0,4).forEach((line,j)=>ctx.fillText(line,80,y+65+j*58));ctx.restore();
  let px=80;const py=1580;ctx.font="bold 20px Arial";s.tags.split(",").map(x=>x.trim()).filter(Boolean).slice(0,4).forEach(tag=>{const tw=ctx.measureText(tag.toUpperCase()).width+42;ctx.strokeStyle="#ffffff70";rounded(ctx,px,py,tw,48,24);ctx.stroke();ctx.fillStyle="#e7edf5";ctx.fillText(tag.toUpperCase(),px+21,py+31);px+=tw+14;});
  ctx.fillStyle="#aab5c4";ctx.font="bold 22px Arial";ctx.fillText(($("author").value||"NEX CREATIVE STUDIO").toUpperCase().slice(0,36),80,1790);ctx.fillStyle=accentNow;ctx.textAlign="right";ctx.fillText("SWIPE ↗",1000,1790);ctx.textAlign="left";
 }
