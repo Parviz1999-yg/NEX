@@ -116,7 +116,20 @@ function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.sta
 function start(){if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}cancelAnimationFrame(state.raf);state.elapsed=0;state.started=performance.now();state.playing=true;state.raf=requestAnimationFrame(frame);$("startPreview").textContent="Ⅱ Pauza"}
 $("startPreview").onclick=()=>{if(!state.playing&&total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}if(state.playing){state.playing=false;$("startPreview").textContent="▶ Davom etish"}else{state.started=performance.now()-state.elapsed;state.playing=true;$("startPreview").textContent="Ⅱ Pauza"}};
 $("restart").onclick=()=>start();
-$("shuffleBackground").onclick=()=>{state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;draw();};
+$("shuffleBackground").onclick=()=>{
+ const button=$("shuffleBackground");
+ state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
+ draw();
+ button.classList.remove("shuffle-flash");
+ void button.offsetWidth;
+ button.classList.add("shuffle-flash");
+ button.textContent="✓ Yangi fon tayyor!";
+ if(button._shuffleTimer)clearTimeout(button._shuffleTimer);
+ button._shuffleTimer=setTimeout(()=>{
+  button.classList.remove("shuffle-flash");
+  button.textContent="✧ Yangi fon kombinatsiyasi";
+ },1400);
+};
 $("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;draw()};
 $("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶"};
 $("recordExit").onclick=()=>{state.recording=false;$("recordOverlay").hidden=true;state.playing=false;$("startPreview").textContent="▶ Davom etish";draw()};
