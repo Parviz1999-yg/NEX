@@ -49,3 +49,17 @@ Eksport brauzerning MediaRecorder kodek imkoniyatlarini tekshiradi. MP4 kodeki m
 ## GitHub Pages
 
 Repository Settings → Pages → Build and deployment → Source: GitHub Actions.
+
+## NEX v1.1.0 — 2026-11-19
+
+### Yangilanishlar
+- Hook → Context → Insight → Value → CTA ketma-ketligi asosidagi 5 sahnali Reels ssenariysi saqlandi va kuchaytirildi.
+- Matnlar sahnaga kirganda yumshoq paydo bo‘ladi; Aurora/Neon kayfiyatidagi fon harakati va boshqariladigan Glitch effekti qo‘shildi.
+- 9:16 Recording Mode qo‘shildi: ortiqcha interfeys yashiriladi, sahnalarni boshlash/pauza qilish va rejimdan chiqish mumkin.
+- Video eksporti MP4/WebM kodeklarini tekshiradi, hosil bo‘lgan faylga ko‘rinadigan yuklab olish havolasini beradi.
+- Avtomatik eksport qo‘llanmasa, Recording Mode orqali telefonning ichki ekran yozuvchisidan foydalanish mumkin.
+
+### Tekshiruv holati
+- Manba kodidagi HTML/JavaScript bog‘lanishlari va eksport oqimi yangilandi.
+- GitHub Actions deploy natijasi keyingi tekshiruvda alohida tasdiqlanishi kerak.
+- Android qurilmasida real ekran yozuvi va MP4/WebM yuklab olish sinovi ushbu commit doirasida bajarilmagan.
