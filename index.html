@@ -33,12 +33,31 @@
         <input id="topicTitle" type="text" placeholder="Masalan: Sun’iy intellektni o‘rganish uchun 3 manba">
         <label for="tone">Bayon uslubi</label>
         <select id="tone"><option>Jiddiy</option><option>Ilmiy</option><option>Sodda va tushunarli</option><option>Yumor</option><option>Tahliliy</option><option>Motivatsion</option><option>Sirli va qiziqarli</option><option>Falsafiy</option></select>
-        <div class="actions"><button class="btn ghost" data-back="home">Orqaga</button><button class="btn primary" id="toStyle">Davom etish <span>→</span></button></div>
+        <div class="actions"><button class="btn ghost" data-back="home">Orqaga</button><button class="btn primary" id="toScript">Ssenariy yozish →</button></div>
       </div>
     </section>
 
-    <section class="page" id="page-style">
-      <div class="page-heading"><p class="eyebrow">03 — VIZUAL USLUB</p><h2>Qanday ko‘rinishda bo‘lsin?</h2><p>Tanlangan yo‘nalishga mos vizual tilni belgilang.</p></div>
+
+    <section class="page" id="page-script">
+      <div class="page-heading"><p class="eyebrow">03 — ASOSIY SOZLASH / SSENARIY</p><h2>Hook’dan yakungacha.</h2><p>Reels davomida ko‘rinadigan matnlarni o‘zingiz yozing. Har bir bo‘lim alohida sahnaga aylanadi.</p></div>
+      <div class="panel form-panel script-panel">
+        <div class="script-step"><span>01</span><div><label for="scriptHook">HOOK — e’tiborni tortish</label><textarea id="scriptHook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea><small>3 qatorgacha · qisqa va kuchli</small></div></div>
+        <div class="script-step"><span>02</span><div><label for="scriptIntro" id="introLabel">E’LON — mavzuni ochish</label><textarea id="scriptIntro" rows="3" placeholder="Nima haqida gap ketishini aniq ayting..."></textarea></div></div>
+        <div class="script-step"><span>03</span><div><label for="scriptWhy" id="whyLabel">NIMA UCHUN? — foyda yoki ahamiyat</label><textarea id="scriptWhy" rows="3" maxlength="240" placeholder="Nima uchun bu mavzu muhim? (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
+        <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
+        <div class="script-step"><span>05</span><div><label for="scriptCta" id="ctaLabel">CHORLOV — yakun</label><textarea id="scriptCta" rows="3" placeholder="Tomoshabin nima qilsin yoki nimani eslab qolsin?"></textarea></div></div>
+        <div id="accountFields" class="account-fields" hidden>
+          <p class="eyebrow">AKKAUNT MA’LUMOTLARI</p>
+          <label for="accountName">Akkaunt nomi</label><input id="accountName" placeholder="@username yoki sahifa nomi">
+          <label for="accountBio">Qisqa tavsif</label><textarea id="accountBio" rows="2" placeholder="Akkaunt nima bilan shug‘ullanadi?"></textarea>
+          <label for="accountFollowers">Obunachilar soni</label><input id="accountFollowers" inputmode="numeric" placeholder="Masalan: 12500">
+          <label for="accountImage">Profil rasmi (ixtiyoriy)</label><input id="accountImage" type="file" accept="image/*">
+        </div>
+        <div class="actions"><button class="btn ghost" data-back="content">Orqaga</button><button class="btn primary" id="toStyle">Vizual uslubga o‘tish →</button></div>
+      </div>
+    </section>
+\n    <section class="page" id="page-style">
+      <div class="page-heading"><p class="eyebrow">04 — VIZUAL USLUB</p><h2>Qanday ko‘rinishda bo‘lsin?</h2><p>Tanlangan yo‘nalishga mos vizual tilni belgilang.</p></div>
       <div class="option-grid" id="styleOptions">
         <button class="option selected" data-value="Minimalistik"><b>Minimalistik</b><small>Toza kompozitsiya, aniq urg‘u</small></button>
         <button class="option" data-value="Kinematik"><b>Kinematik</b><small>Chuqurlik, yorug‘lik va dramatik kadr</small></button>
@@ -50,7 +69,7 @@
     </section>
 
     <section class="page" id="page-palette">
-      <div class="page-heading"><p class="eyebrow">04 — RANG PALETRASI</p><h2>Rang xarakterini tanlang.</h2><p>Ranglar mazmunni qo‘llab-quvvatlashi va o‘qilishni saqlashi kerak.</p></div>
+      <div class="page-heading"><p class="eyebrow">05 — RANG PALETRASI</p><h2>Rang xarakterini tanlang.</h2><p>Ranglar mazmunni qo‘llab-quvvatlashi va o‘qilishni saqlashi kerak.</p></div>
       <div class="palette-grid" id="paletteOptions">
         <button class="palette selected" data-value="Midnight" data-colors="#090d18,#d8e4f5,#8d79ff"><span class="swatches"><i></i><i></i><i></i></span><b>Midnight</b><small>To‘q ko‘k · binafsha</small></button>
         <button class="palette" data-value="Monochrome" data-colors="#101010,#f4f1e9,#999999"><span class="swatches"><i></i><i></i><i></i></span><b>Monochrome</b><small>Qora · oq · kulrang</small></button>
@@ -62,7 +81,7 @@
     </section>
 
     <section class="page" id="page-animation">
-      <div class="page-heading"><p class="eyebrow">05 — ANIMATSIYA</p><h2>Harakat uslubini tanlang.</h2><p>Bu umumiy xarakter. Har bir sahna mazmuniga qarab alohida harakat oladi.</p></div>
+      <div class="page-heading"><p class="eyebrow">06 — ANIMATSIYA</p><h2>Harakat uslubini tanlang.</h2><p>Bu umumiy xarakter. Har bir sahna mazmuniga qarab alohida harakat oladi.</p></div>
       <div class="option-grid" id="animationOptions">
         <button class="option selected" data-value="Silliq"><b>Silliq</b><small>Yumshoq kirish va sokin o‘tishlar</small></button>
         <button class="option" data-value="Dinamik"><b>Dinamik</b><small>Tez urg‘u, keskin va aniq harakat</small></button>
@@ -74,7 +93,7 @@
     </section>
 
     <section class="page" id="page-studio">
-      <div class="page-heading studio-heading"><p class="eyebrow">06 — NEX RECORDING STUDIO</p><h2>Reels sahnasi.</h2><p>Telefoningizdagi ekran yozish funksiyasi orqali yozib oling. Video eksport/yuklab olish tugmasi mavjud emas.</p></div>
+      <div class="page-heading studio-heading"><p class="eyebrow">07 — NEX RECORDING STUDIO</p><h2>Reels sahnasi.</h2><p>Telefoningizdagi ekran yozish funksiyasi orqali yozib oling. Video eksport/yuklab olish tugmasi mavjud emas.</p></div>
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
