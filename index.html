@@ -82,9 +82,12 @@
           <button data-scene="0" class="active">01<small>HOOK</small></button><button data-scene="1">02<small>CONTEXT</small></button><button data-scene="2">03<small>INSIGHT</small></button><button data-scene="3">04<small>VALUE</small></button><button data-scene="4">05<small>CTA</small></button>
         </div>
         <button id="playBtn" class="secondary-btn full">▶ Ko‘rish</button>
+        <button id="recordingModeBtn" class="primary-btn full">⛶ EKRAN YOZUV REJIMI</button>
+        <a id="downloadLink" class="download-link" hidden>↓ Videoni yuklab olish / ochish</a>
+        <p class="hint">Video eksporti qurilma va brauzer kodeklariga bog‘liq. Eksport ishlamasa, ekran yozuv rejimini ochib telefoningizdagi Screen Recorder’dan foydalaning.</p>
       </section>
       <aside class="control-panel">
-        <div class="panel-head"><span>04 / PROJECT SETTINGS</span><span class="step">NEX / 1.0</span></div>
+        <div class="panel-head"><span>04 / PROJECT SETTINGS</span><span class="step">NEX / v1.1.0</span></div>
         <label>Instagram nomi<input id="handle" value="@youraccount" maxlength="32"></label>
         <label>Profil tavsifi<input id="role" value="DIGITAL MEDIA · TECHNOLOGY" maxlength="60"></label>
         <label>Muallif / brend<input id="author" value="NEX CREATIVE STUDIO" maxlength="36"></label>
@@ -116,7 +119,12 @@
       </aside>
     </div>
   </main>
-  <footer><span>NEX CREATIVE MEDIA STUDIO</span><span>BUILD 1.0.0</span></footer>
+  <footer><span>NEX CREATIVE MEDIA STUDIO</span><span>NEX v1.1.0</span></footer>
+</div>
+<div id="recordingControls" class="recording-controls" hidden>
+  <span id="recordingStatus">RECORDING MODE · 9:16</span>
+  <button id="recordStartBtn" type="button">▶ Boshlash</button>
+  <button id="recordExitBtn" type="button">✕ Chiqish</button>
 </div>
 <script src="assets/js/export.js"></script><script src="assets/js/app.js"></script>
 </body>
