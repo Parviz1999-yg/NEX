@@ -9,7 +9,7 @@ const defaults=[
 ["CTA · KEYINGI QADAM","Yana foydali kashfiyotlar uchun kuzating.","Fikr bildiring, saqlab qo‘ying yoki keyingi mavzuni tavsiya qiling.","FOLLOW, SHARE"]
 ];
 let scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
-let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,downloadUrl=null,activeStudio="recommendation";
+let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,activeStudio="recommendation";
 const colors=["#b6ff4a","#65d9ff","#b69cff","#ff8c70","#ffffff"];
 const sceneNames=["HOOK","CONTEXT","INSIGHT","VALUE","CTA"];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -24,7 +24,18 @@ function render(){
  $("sceneNo").textContent="NEX / "+String(scene+1).padStart(2,"0");
  $("sceneLabel").textContent=(scene+1)+" / 5 · "+sceneNames[scene];
  document.querySelectorAll(".scene-strip button").forEach((b,i)=>b.classList.toggle("active",i===scene));
- const frame=$("preview");frame.dataset.motion=$("motion").value;frame.dataset.studio=activeStudio;frame.classList.remove("scene-enter");void frame.offsetWidth;frame.classList.add("scene-enter");
+ const frame=$("preview");frame.dataset.motion=$("motion").value;frame.dataset.studio=activeStudio;frame.dataset.scene=String(scene+1);
+ const choreography={
+ recommendation:[[-120,0,-8,.82,8],[0,90,0,.92,10],[120,0,8,.82,6],[0,-100,-4,1.08,10],[0,45,0,.76,14]],
+ resources:[[0,-140,0,.9,12],[-140,0,-5,.95,8],[100,0,7,.85,6],[0,110,0,1.12,12],[80,-60,4,.8,10]],
+ facts:[[0,0,-18,.55,16],[0,130,0,.9,10],[0,0,0,1.5,18],[-120,0,-12,.9,6],[0,-80,10,.7,14]],
+ phrases:[[0,70,0,.9,18],[90,0,0,1.1,14],[0,0,0,.7,20],[0,-90,0,1.15,10],[0,0,0,.82,22]]
+ };
+ const [mx,my,mr,ms,mb]=(choreography[activeStudio]||choreography.recommendation)[scene];
+ frame.style.setProperty("--enter-x",mx+"px");frame.style.setProperty("--enter-y",my+"px");
+ frame.style.setProperty("--enter-rotate",mr+"deg");frame.style.setProperty("--enter-scale",ms);
+ frame.style.setProperty("--enter-blur",mb+"px");
+ frame.classList.remove("scene-enter");void frame.offsetWidth;frame.classList.add("scene-enter");
 }
 function loadScene(i){saveCurrent();scene=(i+5)%5;const s=scenes[scene];$("kicker").value=s.kicker;$("headline").value=s.title;$("bodyText").value=s.body;$("tags").value=s.tags;render();}
 function status(t){$("statusText").textContent=t;}
@@ -43,7 +54,7 @@ function pausePlayback(){if(!playing)return;playElapsed+=performance.now()-playS
 function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=playElapsed+(now-playStart);if(elapsed>=total){stop();loadScene(0);return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
 function startPlayback(){if(playing){pausePlayback();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);}
 $("playBtn").onclick=startPlayback;
-function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.5.0";}else{stop();}}
+function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.6.0";}else{stop();}}
 $("recordingModeBtn").addEventListener("click",()=>setRecordingMode(true));
 $("recordExitBtn").addEventListener("click",()=>setRecordingMode(false));
 $("recordStartBtn").addEventListener("click",startPlayback);
@@ -97,9 +108,6 @@ function draw(ctx,now,index,progress=1){
  let px=80;const py=1580;ctx.font="bold 20px Arial";s.tags.split(",").map(x=>x.trim()).filter(Boolean).slice(0,4).forEach(tag=>{const tw=ctx.measureText(tag.toUpperCase()).width+42;ctx.strokeStyle="#ffffff70";rounded(ctx,px,py,tw,48,24);ctx.stroke();ctx.fillStyle="#e7edf5";ctx.fillText(tag.toUpperCase(),px+21,py+31);px+=tw+14;});
  ctx.fillStyle="#aab5c4";ctx.font="bold 22px Arial";ctx.fillText(($("author").value||"NEX CREATIVE STUDIO").toUpperCase().slice(0,36),80,1790);ctx.fillStyle=accentNow;ctx.textAlign="right";ctx.fillText("SWIPE ↗",1000,1790);ctx.textAlign="left";
 }
-$("exportBtn").onclick=async()=>{stop();saveCurrent();$("exportBtn").disabled=true;$("downloadLink").hidden=true;status("Video tayyorlanmoqda. Sahifani yopmang…");try{const result=await NEXExport.render({duration:Number($("duration").value),draw});if(downloadUrl)URL.revokeObjectURL(downloadUrl);downloadUrl=URL.createObjectURL(result.blob);const link=$("downloadLink");link.href=downloadUrl;link.download=result.filename;link.hidden=false;link.textContent="↓ VIDEONI YUKLAB OLISH ("+result.ext.toUpperCase()+")";status("Video tayyor. Android brauzerida yuklab olish uchun pastdagi VIDEONI YUKLAB OLISH havolasini bosing.");}catch(e){status("Eksport amalga oshmadi: "+(e.message||"noma’lum xatolik")+". Ekran yozuv rejimidan foydalaning.");}finally{$("exportBtn").disabled=false;}};
-window.addEventListener("beforeunload",()=>{if(downloadUrl)URL.revokeObjectURL(downloadUrl);if(photoUrl)URL.revokeObjectURL(photoUrl);});
-
 const angleProfiles={
  editorial:{name:"EDITORIAL",style:"Ink",bg:"grid",color:"#e7c98a",direction:"Aniq ierarxiya, katta sarlavha, sokin kompozitsiya va tahririy ohang."},
  cinematic:{name:"CINEMATIC",style:"Glass",bg:"aurora",color:"#65d9ff",direction:"Kuchli kontrast, chuqur fon, kadrlar orasida dramatik ritm va yumshoq harakat."},
