@@ -3,79 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#05060f">
+<meta name="theme-color" content="#080b13">
 <title>NEX — Reels Studio</title>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <div id="app">
+  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span id="stepLabel">01 — YO‘NALISH</span></header>
 
-  <!-- HOME -->
-  <section id="home" class="scr on">
-    <div class="home-inner">
-      <p class="eyebrow">NEX · REELS STUDIO PRO USLUBI</p>
-      <h1>4 xil post.<br><span>4 xil kuchli animatsiya.</span></h1>
-      <p class="lead">Har bir rejim o‘ziga xos harakat va dizayn tiliga ega.</p>
-      <div class="mode-grid">
-        <button class="mcard" data-mode="tavsiya">
-          <span class="mi">👤</span>
-          <b>Tavsiya akkaunt</b>
-          <small>Profil · orbit · obuna</small>
-        </button>
-        <button class="mcard" data-mode="fakt">
-          <span class="mi">⚡</span>
-          <b>Qiziqarli fakt</b>
-          <small>Muhr · pop · raqam</small>
-        </button>
-        <button class="mcard" data-mode="ibora">
-          <span class="mi">❝</span>
-          <b>Kun iborasi</b>
-          <small>Tipografika · blur · estetik</small>
-        </button>
-        <button class="mcard" data-mode="manba">
-          <span class="mi">🔗</span>
-          <b>Foydali manba</b>
-          <small>Kartochkalar · ketma-ket</small>
-        </button>
+  <main>
+    <section class="page active" id="page-home">
+      <p class="eyebrow">SHAXSIY ANIMATSION REELS STUDIYASI</p>
+      <h1>G‘oyangizga mos<br><em>vizual hikoya.</em></h1>
+      <p class="intro">Kontent yo‘nalishini tanlang. NEX keyingi bosqichlarda mazmun, dizayn va harakatni bir tizimga keltiradi.</p>
+      <div class="direction-grid">
+        <button class="direction" data-mode="tavsiya"><span class="number">01</span><span class="direction-icon">◎</span><strong>Tavsiya akkaunt</strong><small>Profil va tavsiya</small><span class="arrow">↗</span></button>
+        <button class="direction" data-mode="manba"><span class="number">02</span><span class="direction-icon">↗</span><strong>Foydali manba</strong><small>Resurs va qo‘llanma</small><span class="arrow">↗</span></button>
+        <button class="direction" data-mode="fakt"><span class="number">03</span><span class="direction-icon">✳</span><strong>Qiziqarli fakt</strong><small>Fakt va vizual izoh</small><span class="arrow">↗</span></button>
+        <button class="direction" data-mode="ibora"><span class="number">04</span><span class="direction-icon">“ ”</span><strong>Maxsus iboralar</strong><small>Tipografika va mazmun</small><span class="arrow">↗</span></button>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- EDITOR -->
-  <section id="editor" class="scr">
-    <header class="bar">
-      <button id="back" class="icon-btn">←</button>
-      <div class="bar-title"><span id="modeName">Tavsiya</span></div>
-      <span id="modeTag" class="tag">TAVSIYA</span>
-    </header>
-
-    <div class="layout">
-      <div class="form-col" id="formCol"></div>
-
-      <div class="preview-col">
-        <div class="stage-wrap">
-          <canvas id="cv" width="360" height="640"></canvas>
-        </div>
-        <div class="btns">
-          <button id="play" class="btn secondary">▶ Ko‘rish</button>
-          <button id="rec" class="btn primary">⛶ Ekran yozuv</button>
-        </div>
-        <p class="hint">Telefon Screen Recorder bilan 9:16 yozib oling.</p>
+    <section class="page" id="page-content">
+      <div class="page-heading"><p class="eyebrow">02 — MAZMUN</p><h2>Avval mazmunni aniqlaymiz.</h2><p>Qaysi mavzu haqida Reels tayyorlaymiz?</p></div>
+      <div class="panel form-panel">
+        <label for="topicType">Mavzu turi</label>
+        <select id="topicType"><option value="">Tanlang</option><option>Instagram akkaunt</option><option>Ta’lim va ilm-fan</option><option>Texnologiya</option><option>Kitob va adabiyot</option><option>Tarix va madaniyat</option><option>Hayotiy kuzatuv</option><option>Motivatsiya va fikr</option><option>Boshqa</option></select>
+        <label for="topicTitle">Mavzu nomi</label>
+        <input id="topicTitle" type="text" placeholder="Masalan: Sun’iy intellektni o‘rganish uchun 3 manba">
+        <label for="tone">Bayon uslubi</label>
+        <select id="tone"><option>Jiddiy</option><option>Ilmiy</option><option>Sodda va tushunarli</option><option>Yumor</option><option>Tahliliy</option><option>Motivatsion</option><option>Sirli va qiziqarli</option><option>Falsafiy</option></select>
+        <div class="actions"><button class="btn ghost" data-back="home">Orqaga</button><button class="btn primary" id="toStyle">Davom etish <span>→</span></button></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- RECORDING -->
-  <div id="recLayer" class="rec-layer" hidden>
-    <canvas id="rcv" width="1080" height="1920"></canvas>
-    <div class="rec-ui">
-      <span id="recLabel">RECORDING · 9:16</span>
-      <button id="recPlay">▶</button>
-      <button id="recClose">✕</button>
-    </div>
+    <section class="page" id="page-style">
+      <div class="page-heading"><p class="eyebrow">03 — VIZUAL USLUB</p><h2>Qanday ko‘rinishda bo‘lsin?</h2><p>Tanlangan yo‘nalishga mos vizual tilni belgilang.</p></div>
+      <div class="option-grid" id="styleOptions">
+        <button class="option selected" data-value="Minimalistik"><b>Minimalistik</b><small>Toza kompozitsiya, aniq urg‘u</small></button>
+        <button class="option" data-value="Kinematik"><b>Kinematik</b><small>Chuqurlik, yorug‘lik va dramatik kadr</small></button>
+        <button class="option" data-value="Infografik"><b>Infografik</b><small>Ma’lumot va vizual izoh</small></button>
+        <button class="option" data-value="Tipografik"><b>Tipografik</b><small>Matn asosiy vizual qahramon</small></button>
+        <button class="option" data-value="Editorial"><b>Editorial</b><small>Jurnal va nashr estetikasi</small></button>
+      </div>
+      <div class="actions"><button class="btn ghost" data-back="content">Orqaga</button><button class="btn primary" id="toPalette">Davom etish →</button></div>
+    </section>
+
+    <section class="page" id="page-palette">
+      <div class="page-heading"><p class="eyebrow">04 — RANG PALETRASI</p><h2>Rang xarakterini tanlang.</h2><p>Ranglar mazmunni qo‘llab-quvvatlashi va o‘qilishni saqlashi kerak.</p></div>
+      <div class="palette-grid" id="paletteOptions">
+        <button class="palette selected" data-value="Midnight" data-colors="#090d18,#d8e4f5,#8d79ff"><span class="swatches"><i></i><i></i><i></i></span><b>Midnight</b><small>To‘q ko‘k · binafsha</small></button>
+        <button class="palette" data-value="Monochrome" data-colors="#101010,#f4f1e9,#999999"><span class="swatches"><i></i><i></i><i></i></span><b>Monochrome</b><small>Qora · oq · kulrang</small></button>
+        <button class="palette" data-value="Warm editorial" data-colors="#211812,#fff0d8,#d89a60"><span class="swatches"><i></i><i></i><i></i></span><b>Warm editorial</b><small>Jigarrang · krem · oltin</small></button>
+        <button class="palette" data-value="Electric" data-colors="#07151b,#e4fbff,#48d8e8"><span class="swatches"><i></i><i></i><i></i></span><b>Electric</b><small>Grafit · oq · moviy</small></button>
+        <button class="palette" data-value="Burgundy" data-colors="#1d1019,#fff0f2,#d86b8a"><span class="swatches"><i></i><i></i><i></i></span><b>Burgundy</b><small>To‘q qizil · pushti</small></button>
+      </div>
+      <div class="actions"><button class="btn ghost" data-back="style">Orqaga</button><button class="btn primary" id="toAnimation">Davom etish →</button></div>
+    </section>
+
+    <section class="page" id="page-animation">
+      <div class="page-heading"><p class="eyebrow">05 — ANIMATSIYA</p><h2>Harakat uslubini tanlang.</h2><p>Bu umumiy xarakter. Har bir sahna mazmuniga qarab alohida harakat oladi.</p></div>
+      <div class="option-grid" id="animationOptions">
+        <button class="option selected" data-value="Silliq"><b>Silliq</b><small>Yumshoq kirish va sokin o‘tishlar</small></button>
+        <button class="option" data-value="Dinamik"><b>Dinamik</b><small>Tez urg‘u, keskin va aniq harakat</small></button>
+        <button class="option" data-value="Kinematik"><b>Kinematik</b><small>Kamera siljishi va chuqurlik</small></button>
+        <button class="option" data-value="Ijodiy"><b>Ijodiy</b><small>Har bir sahnaga mos noodatiy yechim</small></button>
+        <button class="option" data-value="Aralash"><b>Aralash</b><small>Bir-birini takrorlamaydigan uyg‘un harakatlar</small></button>
+      </div>
+      <div class="actions"><button class="btn ghost" data-back="palette">Orqaga</button><button class="btn primary" id="toStudio">Studiyani ochish →</button></div>
+    </section>
+
+    <section class="page" id="page-studio">
+      <div class="page-heading studio-heading"><p class="eyebrow">06 — NEX RECORDING STUDIO</p><h2>Reels sahnasi.</h2><p>Telefoningizdagi ekran yozish funksiyasi orqali yozib oling. Video eksport/yuklab olish tugmasi mavjud emas.</p></div>
+      <div class="studio-layout">
+        <div class="studio-controls panel">
+          <div class="summary" id="summary"></div>
+          <label for="sceneText">Sahna matni</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea>
+          <div class="scene-list" id="sceneList"></div>
+          <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
+        </div>
+        <div class="preview-column">
+          <div class="reel-frame"><canvas id="reelCanvas" width="360" height="640"></canvas></div>
+          <div class="timeline"><div id="progress"></div></div><div class="scene-caption"><span id="sceneCounter">SAHNA 01 / 05</span><span id="sceneTime">00:00</span></div>
+        </div>
+      </div>
+      <div class="actions bottom-actions"><button class="btn ghost" data-back="animation">Sozlamalarni o‘zgartirish</button><button class="btn primary" id="finish">Yangi loyiha</button></div>
+    </section>
+  </main>
+
+  <div id="recordOverlay" class="record-overlay" hidden>
+    <canvas id="recordCanvas" width="1080" height="1920"></canvas>
+    <div class="record-controls"><span>NEX · SCREEN RECORDING</span><button id="recordPause">Ⅱ</button><button id="recordExit">✕</button></div>
   </div>
-
 </div>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/flow.js"></script>
 </body>
 </html>
