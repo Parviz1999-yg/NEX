@@ -101,3 +101,52 @@ body.recording-mode .preview-inner{inset:7%}
 @keyframes nex-phrase-body{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes nex-phrase-tags{from{opacity:0}to{opacity:.8}}
 @media(prefers-reduced-motion:reduce){.preview-frame[data-studio] .profile,.preview-frame[data-studio] .preview-copy small,.preview-frame[data-studio] .preview-copy h2,.preview-frame[data-studio] .preview-copy p,.preview-frame[data-studio] .tags span,.preview-frame[data-studio] .tags{animation:none!important}}
+
+
+/* NEX v1.5.0 — studio preview identities and replayable scene entrances */
+.preview-frame.scene-enter[data-studio="recommendation"] .profile{animation:nex-rec-profile-v2 .85s cubic-bezier(.16,1,.3,1) both;background:#b69cff18;border:1px solid #b69cff88;border-radius:14px;padding:10px 12px;box-shadow:0 10px 30px #0005}
+.preview-frame.scene-enter[data-studio="recommendation"] .preview-copy small{animation:nex-rec-label-v2 .6s both}
+.preview-frame.scene-enter[data-studio="recommendation"] .preview-copy h2{animation:nex-rec-title-v2 .9s cubic-bezier(.16,1,.3,1) .08s both}
+.preview-frame.scene-enter[data-studio="recommendation"] .preview-copy p{animation:nex-rec-body-v2 .7s .22s both}
+.preview-frame.scene-enter[data-studio="recommendation"] .tags span{border-color:#b69cff;animation:nex-rec-tags-v2 .55s both}
+.preview-frame.scene-enter[data-studio="resources"] .profile{border-bottom:1px solid #65d9ff88;padding-bottom:12px;animation:nex-resource-profile-v2 .7s both}
+.preview-frame.scene-enter[data-studio="resources"] .preview-copy{border-left:4px solid #65d9ff;padding-left:14px}
+.preview-frame.scene-enter[data-studio="resources"] .preview-copy small{display:inline-block;animation:nex-resource-label-v2 .6s both}
+.preview-frame.scene-enter[data-studio="resources"] .preview-copy h2{animation:nex-resource-title-v2 .8s cubic-bezier(.2,.8,.2,1) .08s both}
+.preview-frame.scene-enter[data-studio="resources"] .preview-copy p{animation:nex-resource-body-v2 .8s .24s both}
+.preview-frame.scene-enter[data-studio="resources"] .tags span{border-radius:5px;border-color:#65d9ff;animation:nex-resource-tags-v2 .55s both}
+.preview-frame.scene-enter[data-studio="facts"] .profile{animation:nex-fact-profile-v2 .7s both}
+.preview-frame.scene-enter[data-studio="facts"] .preview-copy small{display:inline-block;border:1px solid #ff8c70;border-radius:4px;padding:6px 9px;animation:nex-fact-label-v2 .6s cubic-bezier(.2,1.5,.4,1) both}
+.preview-frame.scene-enter[data-studio="facts"] .preview-copy h2{animation:nex-fact-title-v2 .75s cubic-bezier(.2,1.4,.4,1) .08s both}
+.preview-frame.scene-enter[data-studio="facts"] .preview-copy p{animation:nex-fact-body-v2 .8s .24s both}
+.preview-frame.scene-enter[data-studio="facts"] .tags span{border-color:#ff8c70;animation:nex-fact-tags-v2 .55s .2s both}
+.preview-frame.scene-enter[data-studio="phrases"] .profile{opacity:.78;animation:nex-phrase-profile-v2 1s both}
+.preview-frame.scene-enter[data-studio="phrases"] .preview-copy{text-align:center}
+.preview-frame.scene-enter[data-studio="phrases"] .preview-copy small{display:block;letter-spacing:.28em;animation:nex-phrase-label-v2 1s both}
+.preview-frame.scene-enter[data-studio="phrases"] .preview-copy h2{font-family:Georgia,serif;font-weight:500;letter-spacing:-.035em;animation:nex-phrase-title-v2 1.35s cubic-bezier(.2,.7,.2,1) .1s both}
+.preview-frame.scene-enter[data-studio="phrases"] .preview-copy p{max-width:90%;margin:14px auto 0;animation:nex-phrase-body-v2 1s .45s both}
+.preview-frame.scene-enter[data-studio="phrases"] .tags{justify-content:center;animation:nex-phrase-tags-v2 1s .65s both}
+.preview-frame[data-studio="recommendation"] .preview-copy em{color:#d4c2ff}
+.preview-frame[data-studio="resources"] .preview-copy em{color:#65d9ff}
+.preview-frame[data-studio="facts"] .preview-copy em{color:#ff8c70}
+.preview-frame[data-studio="phrases"] .preview-copy em{color:#e7c98a}
+@keyframes nex-rec-profile-v2{from{opacity:0;transform:translateX(-38px) rotate(-5deg)}to{opacity:1;transform:none}}
+@keyframes nex-rec-label-v2{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes nex-rec-title-v2{from{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(24px)}to{opacity:1;clip-path:inset(0);transform:none}}
+@keyframes nex-rec-body-v2{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes nex-rec-tags-v2{from{opacity:0;transform:translateY(12px) scale(.82)}to{opacity:1;transform:none}}
+@keyframes nex-resource-profile-v2{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes nex-resource-label-v2{from{opacity:0;letter-spacing:.5em}to{opacity:1;letter-spacing:.16em}}
+@keyframes nex-resource-title-v2{from{opacity:0;transform:translateX(-48px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes nex-resource-body-v2{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes nex-resource-tags-v2{from{opacity:0;transform:scaleX(.2);transform-origin:left}to{opacity:1;transform:scaleX(1)}}
+@keyframes nex-fact-profile-v2{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes nex-fact-label-v2{from{opacity:0;transform:rotate(-12deg) scale(1.4)}to{opacity:1;transform:none}}
+@keyframes nex-fact-title-v2{0%{opacity:0;transform:scale(.7);filter:blur(8px)}75%{opacity:1;transform:scale(1.06);filter:blur(0)}100%{transform:scale(1)}}
+@keyframes nex-fact-body-v2{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes nex-fact-tags-v2{from{opacity:0;transform:rotate(-7deg) translateY(12px)}to{opacity:1;transform:none}}
+@keyframes nex-phrase-profile-v2{from{opacity:0;filter:blur(5px)}to{opacity:.78;filter:blur(0)}}
+@keyframes nex-phrase-label-v2{from{opacity:0;letter-spacing:.65em;filter:blur(5px)}to{opacity:1;letter-spacing:.28em;filter:blur(0)}}
+@keyframes nex-phrase-title-v2{from{opacity:0;filter:blur(14px);transform:translateY(30px) scale(.97)}to{opacity:1;filter:blur(0);transform:none}}
+@keyframes nex-phrase-body-v2{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+@keyframes nex-phrase-tags-v2{from{opacity:0}to{opacity:1}}
