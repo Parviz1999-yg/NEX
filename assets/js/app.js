@@ -1,531 +1,485 @@
-(() => {
-  "use strict";
+(()=>{
+"use strict";
 
-  function $(id) { return document.getElementById(id); }
-  function $$(sel) { return document.querySelectorAll(sel); }
+const $=id=>document.getElementById(id);
+const $$=s=>document.querySelectorAll(s);
 
-  const cv = $("cv");
-  const recCv = $("recCv");
-  if (!cv || !recCv) {
-    console.error("NEX: canvas elementlari topilmadi");
-    return;
+const cv=$("cv"), rcx=$("rcv");
+if(!cv||!rcx){console.error("Canvas topilmadi");return;}
+const cx=cv.getContext("2d"), rx=rcx.getContext("2d");
+
+const S={
+  mode:"tavsiya",
+  playing:true,
+  t0:performance.now(),
+  raf:0,
+  data:{},
+  particles:[],
+  seed:2026
+};
+
+const ACCENT={
+  tavsiya:"#b69cff",
+  fakt:"#ff8c70",
+  ibora:"#e7c98a",
+  manba:"#65d9ff"
+};
+
+const MODES={
+  tavsiya:{
+    name:"Tavsiya akkaunt",
+    tag:"TAVSIYA",
+    fields:[
+      {id:"handle",l:"Akkaunt (@username)",p:"@foydali_akkaunt"},
+      {id:"role",l:"Qisqa tavsif",p:"Texnologiya · Dizayn"},
+      {id:"hook",l:"Hook matni",p:"Bu akkauntni ko‘rishga arziydi",ta:1},
+      {id:"why",l:"Nima uchun tavsiya?",p:"Har kuni foydali va sifatli kontent",ta:1},
+      {id:"cta",l:"Chorlov",p:"Obuna bo‘ling"}
+    ]
+  },
+  fakt:{
+    name:"Qiziqarli fakt",
+    tag:"FAKT",
+    fields:[
+      {id:"num",l:"Yorliq",p:"FAKT 07"},
+      {id:"title",l:"Asosiy fakt",p:"Odam miyasi kuniga taxminan 70 000 ta fikr ishlab chiqaradi",ta:1},
+      {id:"detail",l:"Qisqa izoh",p:"Ko‘pchiligi takroriy va avtomatik bo‘ladi",ta:1}
+    ]
+  },
+  ibora:{
+    name:"Kun iborasi",
+    tag:"IBORA",
+    fields:[
+      {id:"quote",l:"Ibora / sitata",p:"Kichik qadamlar katta o‘zgarishlarni yaratadi.",ta:1},
+      {id:"author",l:"Muallif",p:"Noma’lum"}
+    ]
+  },
+  manba:{
+    name:"Foydali manba",
+    tag:"MANBA",
+    fields:[
+      {id:"name",l:"Manba nomi",p:"YouTube kanal / Telegram / kitob"},
+      {id:"type",l:"Turi",p:"YouTube"},
+      {id:"why",l:"Nima uchun foydali?",p:"Amaliy darslar, qisqa va tushunarli",ta:1},
+      {id:"pts",l:"3 ta nuqta (har qatorda)",p:"Bepul kontent\nAmaliy misollar\nMuntazam yangilanadi",ta:1}
+    ]
   }
-  const cx = cv.getContext("2d");
-  const rcx = recCv.getContext("2d");
+};
 
-  const state = {
-    mode: "tavsiya",
-    playing: true,
-    t0: performance.now(),
-    raf: 0,
-    data: {},
-    particles: []
-  };
+/* ---------- UI ---------- */
+function show(id){$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));}
 
-  const accents = {
-    tavsiya: "#b69cff",
-    fakt: "#ff8c70",
-    ibora: "#e7c98a",
-    manba: "#65d9ff"
-  };
+$$(".mcard").forEach(b=>b.onclick=()=>openMode(b.dataset.mode));
+$("back").onclick=()=>{stop();show("home");};
 
-  const modes = {
-    tavsiya: {
-      title: "Tavsiya akkaunt",
-      badge: "TAVSIYA",
-      fields: [
-        { id: "handle", label: "Akkaunt (@username)", ph: "@foydali_akkaunt" },
-        { id: "role", label: "Qisqa tavsif", ph: "Texnologiya · Dizayn" },
-        { id: "hook", label: "Hook matni", ph: "Bu akkauntni ko‘rishga arziydi", ta: true },
-        { id: "why", label: "Nima uchun?", ph: "Har kuni foydali postlar", ta: true },
-        { id: "cta", label: "Chorlov", ph: "Obuna bo‘ling" }
-      ]
-    },
-    fakt: {
-      title: "Qiziqarli fakt",
-      badge: "FAKT",
-      fields: [
-        { id: "number", label: "Yorliq", ph: "FAKT 07" },
-        { id: "title", label: "Asosiy fakt", ph: "Odam miyasi kuniga ~70 000 fikr ishlab chiqaradi", ta: true },
-        { id: "detail", label: "Izoh", ph: "Ko‘pchiligi avtomatik bo‘ladi", ta: true }
-      ]
-    },
-    ibora: {
-      title: "Kun iborasi",
-      badge: "IBORA",
-      fields: [
-        { id: "quote", label: "Ibora", ph: "Kichik qadamlar katta o‘zgarishlarni yaratadi.", ta: true },
-        { id: "author", label: "Muallif", ph: "Noma’lum" }
-      ]
-    },
-    manba: {
-      title: "Foydali manba",
-      badge: "MANBA",
-      fields: [
-        { id: "name", label: "Manba nomi", ph: "YouTube / Telegram / kitob" },
-        { id: "type", label: "Turi", ph: "YouTube" },
-        { id: "why", label: "Nima uchun foydali?", ph: "Amaliy va tushunarli", ta: true },
-        { id: "points", label: "3 nuqta (har qatorda)", ph: "Bepul\nAmaliy\nMuntazam", ta: true }
-      ]
-    }
-  };
+function openMode(key){
+  S.mode=key;
+  const m=MODES[key];
+  $("modeName").textContent=m.name;
+  $("modeTag").textContent=m.tag;
+  document.documentElement.style.setProperty("--accent",ACCENT[key]);
 
-  function show(id) {
-    $$(".screen").forEach(s => s.classList.toggle("on", s.id === id));
-  }
-
-  $$(".mode-card").forEach(b => {
-    b.addEventListener("click", () => openMode(b.dataset.mode));
+  const col=$("formCol");
+  col.innerHTML="";
+  m.fields.forEach(f=>{
+    const lab=document.createElement("label");
+    lab.textContent=f.l;
+    const inp=document.createElement(f.ta?"textarea":"input");
+    if(!f.ta)inp.type="text"; else inp.rows=3;
+    inp.id="f_"+f.id;
+    inp.placeholder=f.p||"";
+    inp.oninput=collect;
+    lab.appendChild(inp);
+    col.appendChild(lab);
   });
 
-  const backBtn = $("backHome");
-  if (backBtn) backBtn.addEventListener("click", () => { stop(); show("home"); });
+  const btn=document.createElement("button");
+  btn.className="btn primary";
+  btn.textContent="Yangilash";
+  btn.style.marginTop="4px";
+  btn.onclick=collect;
+  col.appendChild(btn);
 
-  function openMode(key) {
-    if (!modes[key]) return;
-    state.mode = key;
-    const m = modes[key];
-    const titleEl = $("modeTitle");
-    const badgeEl = $("modeBadge");
-    if (titleEl) titleEl.textContent = m.title;
-    if (badgeEl) badgeEl.textContent = m.badge;
-    document.documentElement.style.setProperty("--accent", accents[key]);
+  show("editor");
+  collect();
+  initParts();
+  S.t0=performance.now();
+  S.playing=true;
+  updateBtns();
+  startLoop();
+}
 
-    const panel = $("formPanel");
-    if (!panel) return;
-    panel.innerHTML = "";
+function collect(){
+  const m=MODES[S.mode];
+  const d={};
+  m.fields.forEach(f=>{
+    const el=$("f_"+f.id);
+    d[f.id]=el?el.value.trim():"";
+  });
+  S.data=d;
+}
 
-    m.fields.forEach(f => {
-      const lab = document.createElement("label");
-      lab.textContent = f.label;
-      const input = document.createElement(f.ta ? "textarea" : "input");
-      if (!f.ta) input.type = "text";
-      else input.rows = 3;
-      input.id = "f_" + f.id;
-      input.placeholder = f.ph || "";
-      input.addEventListener("input", () => { collect(); });
-      lab.appendChild(input);
-      panel.appendChild(lab);
-    });
+/* ---------- Particles ---------- */
+function initParts(){
+  S.particles=Array.from({length:55},()=>({
+    x:Math.random(), y:Math.random(),
+    r:1+Math.random()*3,
+    v:.1+Math.random()*.5,
+    a:Math.random()*6.28,
+    s:.5+Math.random()
+  }));
+}
 
-    const btn = document.createElement("button");
-    btn.className = "primary";
-    btn.textContent = "Yangilash";
-    btn.style.marginTop = "6px";
-    btn.type = "button";
-    btn.onclick = () => collect();
-    panel.appendChild(btn);
+/* ---------- Helpers ---------- */
+function rr(ctx,x,y,w,h,r){
+  const R=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+R,y);
+  ctx.arcTo(x+w,y,x+w,y+h,R);
+  ctx.arcTo(x+w,y+h,x,y+h,R);
+  ctx.arcTo(x,y+h,x,y,R);
+  ctx.arcTo(x,y,x+w,y,R);
+  ctx.closePath();
+}
+function wrap(ctx,text,max){
+  const words=String(text||"").split(/\s+/);
+  const lines=[]; let line="";
+  for(const w of words){
+    const t=line?line+" "+w:w;
+    if(line&&ctx.measureText(t).width>max){lines.push(line);line=w;}
+    else line=t;
+  }
+  if(line)lines.push(line);
+  return lines;
+}
+function ease(t){t=Math.min(1,Math.max(0,t));return 1-Math.pow(1-t,3);}
 
-    show("editor");
-    collect();
-    initParticles();
-    state.t0 = performance.now();
-    state.playing = true;
-    updatePlayButtons();
-    startLoop();
+/* ---------- Draw engine ---------- */
+function drawFrame(ctx,W,H,t){
+  const d=S.data||{};
+  const mode=S.mode;
+  const ac=ACCENT[mode];
+  const sec=Math.max(0,t/1000);
+  const p=ease((sec%3.6)/1.2);
+
+  // bg
+  ctx.fillStyle="#05060f";
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==="tavsiya"){
+    const g=ctx.createRadialGradient(W*.5,H*.18,0,W*.5,H*.3,W);
+    g.addColorStop(0,"#2a1850"); g.addColorStop(1,"#05060f");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  } else if(mode==="fakt"){
+    const g=ctx.createRadialGradient(W*.7,H*.2,0,W*.5,H*.5,W);
+    g.addColorStop(0,"#3a1810"); g.addColorStop(1,"#05060f");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  } else if(mode==="ibora"){
+    const g=ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,"#12182a"); g.addColorStop(1,"#05060f");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  } else {
+    const g=ctx.createRadialGradient(W*.25,H*.15,0,W*.5,H*.5,W);
+    g.addColorStop(0,"#0c2835"); g.addColorStop(1,"#05060f");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   }
 
-  function collect() {
-    const m = modes[state.mode];
-    if (!m) return;
-    const d = {};
-    m.fields.forEach(f => {
-      const el = $("f_" + f.id);
-      d[f.id] = el ? el.value.trim() : "";
-    });
-    state.data = d;
-  }
-
-  function initParticles() {
-    state.particles = Array.from({ length: 45 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      r: 1 + Math.random() * 2.8,
-      v: 0.12 + Math.random() * 0.45,
-      a: Math.random() * Math.PI * 2
-    }));
-  }
-
-  function roundRect(ctx, x, y, w, h, r) {
-    const rr = Math.min(r, w / 2, h / 2);
+  // particles
+  S.particles.forEach(pt=>{
+    const x=pt.x*W+Math.sin(sec*pt.v+pt.a)*16;
+    const y=((pt.y+sec*pt.v*.03)%1.3)*H-H*.1;
+    ctx.globalAlpha=.18+.4*Math.abs(Math.sin(sec*pt.s+pt.a));
+    ctx.fillStyle=ac;
     ctx.beginPath();
-    ctx.moveTo(x + rr, y);
-    ctx.arcTo(x + w, y, x + w, y + h, rr);
-    ctx.arcTo(x + w, y + h, x, y + h, rr);
-    ctx.arcTo(x, y + h, x, y, rr);
-    ctx.arcTo(x, y, x + w, y, rr);
-    ctx.closePath();
-  }
-
-  function wrap(ctx, text, maxW) {
-    const words = String(text || "").split(/\s+/);
-    const lines = [];
-    let line = "";
-    for (const w of words) {
-      const test = line ? line + " " + w : w;
-      if (line && ctx.measureText(test).width > maxW) {
-        lines.push(line);
-        line = w;
-      } else line = test;
-    }
-    if (line) lines.push(line);
-    return lines;
-  }
-
-  function easeOut(t) {
-    t = Math.min(1, Math.max(0, t));
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function drawFrame(ctx, W, H, t) {
-    const d = state.data || {};
-    const mode = state.mode;
-    const accent = accents[mode] || "#b6ff4a";
-    const sec = Math.max(0, t / 1000);
-
-    ctx.fillStyle = "#080b12";
-    ctx.fillRect(0, 0, W, H);
-
-    if (mode === "tavsiya") {
-      const g = ctx.createRadialGradient(W * 0.5, H * 0.2, 0, W * 0.5, H * 0.2, W * 0.9);
-      g.addColorStop(0, "#2a1a4a");
-      g.addColorStop(1, "#080b12");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    } else if (mode === "fakt") {
-      const g = ctx.createRadialGradient(W * 0.7, H * 0.25, 0, W * 0.5, H * 0.5, W);
-      g.addColorStop(0, "#3a1f12");
-      g.addColorStop(1, "#080b12");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    } else if (mode === "ibora") {
-      const g = ctx.createLinearGradient(0, 0, W, H);
-      g.addColorStop(0, "#10182a");
-      g.addColorStop(1, "#080b12");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    } else {
-      const g = ctx.createRadialGradient(W * 0.3, H * 0.2, 0, W * 0.5, H * 0.5, W);
-      g.addColorStop(0, "#0f2a35");
-      g.addColorStop(1, "#080b12");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    // particles
-    state.particles.forEach(p => {
-      const x = p.x * W + Math.sin(sec * p.v + p.a) * 14;
-      const y = ((p.y + sec * p.v * 0.035) % 1.25) * H - H * 0.1;
-      ctx.globalAlpha = 0.22 + 0.38 * Math.abs(Math.sin(sec + p.a));
-      ctx.fillStyle = accent;
-      ctx.beginPath();
-      ctx.arc(x, y, p.r * (W / 360), 0, Math.PI * 2);
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-
-    const progress = easeOut((sec % 3.4) / 1.15);
-
-    try {
-      if (mode === "tavsiya") drawTavsiya(ctx, W, H, d, accent, progress, sec);
-      else if (mode === "fakt") drawFakt(ctx, W, H, d, accent, progress, sec);
-      else if (mode === "ibora") drawIbora(ctx, W, H, d, accent, progress, sec);
-      else drawManba(ctx, W, H, d, accent, progress, sec);
-    } catch (err) {
-      console.error("Draw error:", err);
-    }
-  }
-
-  function drawTavsiya(ctx, W, H, d, accent, p, sec) {
-    const handle = d.handle || "@akkaunt";
-    const letter = (handle.replace(/^@/, "")[0] || "N").toUpperCase();
-
-    const cardY = H * 0.2;
-    ctx.save();
-    ctx.globalAlpha = p;
-    ctx.translate((1 - p) * 50, 0);
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 2;
-    roundRect(ctx, W * 0.08, cardY, W * 0.84, H * 0.12, 18);
+    ctx.arc(x,y,pt.r*(W/360),0,6.28);
     ctx.fill();
-    ctx.stroke();
+  });
+  ctx.globalAlpha=1;
 
-    const ax = W * 0.17, ay = cardY + H * 0.06, ar = W * 0.055;
-    const grad = ctx.createLinearGradient(ax - ar, ay - ar, ax + ar, ay + ar);
-    grad.addColorStop(0, accent);
-    grad.addColorStop(1, "#ff2bd6");
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(ax, ay, ar, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#0b0c14";
-    ctx.font = "bold " + Math.floor(W * 0.055) + "px system-ui,sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(letter, ax, ay + 1);
+  // soft glow orb
+  ctx.save();
+  ctx.globalAlpha=.12;
+  const ox=W*(.7+Math.sin(sec*.7)*.08), oy=H*(.35+Math.cos(sec*.5)*.06);
+  const orb=ctx.createRadialGradient(ox,oy,0,ox,oy,W*.45);
+  orb.addColorStop(0,ac); orb.addColorStop(1,"transparent");
+  ctx.fillStyle=orb;
+  ctx.fillRect(0,0,W,H);
+  ctx.restore();
 
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold " + Math.floor(W * 0.042) + "px system-ui,sans-serif";
-    ctx.textAlign = "left";
-    ctx.fillText(handle.slice(0, 20), W * 0.27, cardY + H * 0.042);
-    ctx.fillStyle = "#9aa6b8";
-    ctx.font = Math.floor(W * 0.03) + "px system-ui,sans-serif";
-    ctx.fillText((d.role || "Tavsiya etiladi").slice(0, 26), W * 0.27, cardY + H * 0.08);
-    ctx.restore();
+  if(mode==="tavsiya") drawTavsiya(ctx,W,H,d,ac,p,sec);
+  else if(mode==="fakt") drawFakt(ctx,W,H,d,ac,p,sec);
+  else if(mode==="ibora") drawIbora(ctx,W,H,d,ac,p,sec);
+  else drawManba(ctx,W,H,d,ac,p,sec);
+}
 
-    // orbit
-    ctx.save();
-    ctx.translate(W * 0.8, H * 0.36);
-    ctx.rotate(sec * 0.7);
-    ctx.strokeStyle = accent;
-    ctx.globalAlpha = 0.4 * p;
-    ctx.lineWidth = 2;
-    ctx.setLineDash([6, 8]);
-    ctx.beginPath();
-    ctx.arc(0, 0, W * 0.11, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
+function drawTavsiya(ctx,W,H,d,ac,p,sec){
+  const handle=d.handle||"@akkaunt";
+  const letter=(handle.replace(/^@/,"")[0]||"N").toUpperCase();
 
-    ctx.textAlign = "center";
-    ctx.fillStyle = accent;
-    ctx.globalAlpha = p;
-    ctx.font = "bold " + Math.floor(W * 0.03) + "px system-ui,sans-serif";
-    ctx.fillText("TAVSIYA", W / 2, H * 0.4);
+  // card
+  const cy=H*.18;
+  ctx.save();
+  ctx.globalAlpha=p;
+  ctx.translate((1-p)*60,0);
+  ctx.fillStyle="rgba(255,255,255,.07)";
+  ctx.strokeStyle=ac;
+  ctx.lineWidth=2.5;
+  rr(ctx,W*.07,cy,W*.86,H*.13,20);
+  ctx.fill(); ctx.stroke();
 
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold " + Math.floor(W * 0.065) + "px system-ui,sans-serif";
-    const lines = wrap(ctx, d.hook || "Bu akkauntni ko‘rishga arziydi", W * 0.8);
-    lines.slice(0, 3).forEach((ln, i) => {
-      ctx.globalAlpha = easeOut(p - i * 0.1);
-      ctx.fillText(ln, W / 2, H * 0.48 + i * W * 0.08);
-    });
+  // avatar + ring
+  const ax=W*.18, ay=cy+H*.065, ar=W*.06;
+  ctx.save();
+  ctx.translate(ax,ay);
+  ctx.rotate(sec*1.2);
+  ctx.strokeStyle=ac;
+  ctx.globalAlpha=.5*p;
+  ctx.lineWidth=2;
+  ctx.setLineDash([5,7]);
+  ctx.beginPath(); ctx.arc(0,0,ar+8,0,6.28); ctx.stroke();
+  ctx.restore();
 
-    ctx.globalAlpha = p * 0.9;
-    ctx.fillStyle = "#c4cedb";
-    ctx.font = Math.floor(W * 0.034) + "px system-ui,sans-serif";
-    const body = wrap(ctx, d.why || "Foydali kontent va sifatli yondashuv.", W * 0.8);
-    body.slice(0, 3).forEach((ln, i) => {
-      ctx.fillText(ln, W / 2, H * 0.68 + i * W * 0.048);
-    });
+  const gr=ctx.createLinearGradient(ax-ar,ay-ar,ax+ar,ay+ar);
+  gr.addColorStop(0,ac); gr.addColorStop(1,"#ff2bd6");
+  ctx.fillStyle=gr;
+  ctx.beginPath(); ctx.arc(ax,ay,ar,0,6.28); ctx.fill();
+  ctx.fillStyle="#0a0c18";
+  ctx.font=`bold ${Math.floor(W*.055)}px system-ui`;
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(letter,ax,ay+1);
 
-    ctx.globalAlpha = p;
-    const cta = d.cta || "Obuna bo‘ling";
-    ctx.font = "bold " + Math.floor(W * 0.032) + "px system-ui,sans-serif";
-    const tw = ctx.measureText(cta).width + W * 0.1;
-    ctx.fillStyle = accent;
-    roundRect(ctx, (W - tw) / 2, H * 0.85, tw, H * 0.05, 99);
-    ctx.fill();
-    ctx.fillStyle = "#10150a";
-    ctx.textBaseline = "middle";
-    ctx.fillText(cta, W / 2, H * 0.875);
-    ctx.globalAlpha = 1;
+  ctx.fillStyle="#fff";
+  ctx.font=`bold ${Math.floor(W*.042)}px system-ui`;
+  ctx.textAlign="left";
+  ctx.fillText(handle.slice(0,18),W*.28,cy+H*.045);
+  ctx.fillStyle="#9aa6b8";
+  ctx.font=`${Math.floor(W*.028)}px system-ui`;
+  ctx.fillText((d.role||"Tavsiya etiladi").slice(0,24),W*.28,cy+H*.085);
+  ctx.restore();
+
+  // orbit decoration
+  ctx.save();
+  ctx.translate(W*.82,H*.38);
+  ctx.rotate(sec*.8);
+  ctx.strokeStyle=ac;
+  ctx.globalAlpha=.35*p;
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,10]);
+  ctx.beginPath(); ctx.arc(0,0,W*.1,0,6.28); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0,0,W*.06,0,6.28); ctx.stroke();
+  ctx.restore();
+
+  // texts
+  ctx.textAlign="center";
+  ctx.fillStyle=ac;
+  ctx.globalAlpha=p;
+  ctx.font=`bold ${Math.floor(W*.028)}px system-ui`;
+  ctx.fillText("TAVSIYA",W/2,H*.4);
+
+  ctx.fillStyle="#fff";
+  ctx.font=`bold ${Math.floor(W*.062)}px system-ui`;
+  const lines=wrap(ctx,d.hook||"Bu akkauntni ko‘rishga arziydi",W*.82);
+  lines.slice(0,3).forEach((ln,i)=>{
+    ctx.globalAlpha=ease(p-i*.1);
+    ctx.fillText(ln,W/2,H*.48+i*W*.078);
+  });
+
+  ctx.globalAlpha=p*.9;
+  ctx.fillStyle="#c4cedb";
+  ctx.font=`${Math.floor(W*.032)}px system-ui`;
+  const body=wrap(ctx,d.why||"Foydali kontent va sifatli yondashuv.",W*.8);
+  body.slice(0,3).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.68+i*W*.045));
+
+  // CTA
+  ctx.globalAlpha=p;
+  const cta=d.cta||"Obuna bo‘ling";
+  ctx.font=`bold ${Math.floor(W*.032)}px system-ui`;
+  const tw=ctx.measureText(cta).width+W*.12;
+  const gr2=ctx.createLinearGradient((W-tw)/2,0,(W+tw)/2,0);
+  gr2.addColorStop(0,ac); gr2.addColorStop(1,"#ff2bd6");
+  ctx.fillStyle=gr2;
+  rr(ctx,(W-tw)/2,H*.84,tw,H*.052,99);
+  ctx.fill();
+  ctx.fillStyle="#05060f";
+  ctx.textBaseline="middle";
+  ctx.fillText(cta,W/2,H*.866);
+  ctx.globalAlpha=1;
+}
+
+function drawFakt(ctx,W,H,d,ac,p,sec){
+  // stamp
+  ctx.save();
+  ctx.translate(W/2,H*.24);
+  ctx.rotate((1-p)*-.4 + Math.sin(sec*2)*.03);
+  const sc=.5+.5*p;
+  ctx.scale(sc,sc);
+  ctx.strokeStyle=ac;
+  ctx.lineWidth=5;
+  ctx.setLineDash([14,10]);
+  ctx.beginPath(); ctx.arc(0,0,W*.13,0,6.28); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.lineWidth=3;
+  ctx.beginPath(); ctx.arc(0,0,W*.1,0,6.28); ctx.stroke();
+  ctx.fillStyle=ac;
+  ctx.font=`bold ${Math.floor(W*.036)}px system-ui`;
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText((d.num||"FAKT").slice(0,10),0,0);
+  ctx.restore();
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#fff";
+  ctx.font=`bold ${Math.floor(W*.058)}px system-ui`;
+  const lines=wrap(ctx,d.title||"Qiziqarli fakt shu yerda",W*.84);
+  lines.slice(0,4).forEach((ln,i)=>{
+    ctx.globalAlpha=ease(p-.05-i*.08);
+    ctx.fillText(ln,W/2,H*.44+i*W*.072);
+  });
+
+  ctx.globalAlpha=p*.85;
+  ctx.fillStyle="#c4cedb";
+  ctx.font=`${Math.floor(W*.032)}px system-ui`;
+  const det=wrap(ctx,d.detail||"",W*.8);
+  det.slice(0,3).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.72+i*W*.045));
+  ctx.globalAlpha=1;
+}
+
+function drawIbora(ctx,W,H,d,ac,p,sec){
+  // giant quote
+  ctx.globalAlpha=.16*p;
+  ctx.fillStyle=ac;
+  ctx.font=`bold ${Math.floor(W*.28)}px Georgia,serif`;
+  ctx.textAlign="center";
+  ctx.fillText("\u201C",W/2,H*.28);
+  ctx.globalAlpha=1;
+
+  ctx.fillStyle="#fff";
+  ctx.font=`bold ${Math.floor(W*.052)}px Georgia,serif`;
+  const lines=wrap(ctx,d.quote||"Kichik qadamlar katta o‘zgarishlarni yaratadi.",W*.82);
+  lines.slice(0,5).forEach((ln,i)=>{
+    ctx.globalAlpha=ease(p-i*.09);
+    // slight float
+    const fy=Math.sin(sec*1.5+i)*.6*(W/360);
+    ctx.fillText(ln,W/2,H*.38+i*W*.068+fy);
+  });
+
+  ctx.globalAlpha=p;
+  ctx.fillStyle=ac;
+  ctx.font=`${Math.floor(W*.03)}px system-ui`;
+  ctx.fillText("— "+(d.author||"Noma’lum"),W/2,H*.78);
+
+  ctx.strokeStyle=ac;
+  ctx.globalAlpha=.4*p;
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(W*.3,H*.83); ctx.lineTo(W*.7,H*.83);
+  ctx.stroke();
+  ctx.globalAlpha=1;
+}
+
+function drawManba(ctx,W,H,d,ac,p,sec){
+  ctx.textAlign="center";
+  ctx.fillStyle=ac;
+  ctx.globalAlpha=p;
+  ctx.font=`bold ${Math.floor(W*.026)}px system-ui`;
+  ctx.fillText((d.type||"MANBA").toUpperCase(),W/2,H*.16);
+
+  ctx.fillStyle="#fff";
+  ctx.font=`bold ${Math.floor(W*.056)}px system-ui`;
+  const titles=wrap(ctx,d.name||"Foydali manba",W*.84);
+  titles.slice(0,2).forEach((ln,i)=>{
+    ctx.globalAlpha=ease(p-i*.1);
+    ctx.fillText(ln,W/2,H*.24+i*W*.068);
+  });
+
+  ctx.globalAlpha=p*.85;
+  ctx.fillStyle="#c4cedb";
+  ctx.font=`${Math.floor(W*.03)}px system-ui`;
+  const why=wrap(ctx,d.why||"",W*.8);
+  why.slice(0,2).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.38+i*W*.042));
+
+  const pts=(d.pts||"").split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,3);
+  const list=pts.length?pts:["Amaliy qiymat","Qulay format","Tavsiya etiladi"];
+
+  list.forEach((item,i)=>{
+    const q=ease(p-.1-i*.12);
+    const y=H*.5+i*H*.1;
+    ctx.globalAlpha=q;
+    ctx.fillStyle="rgba(101,217,255,.1)";
+    ctx.strokeStyle=ac;
+    ctx.lineWidth=1.5;
+    rr(ctx,W*.08,y,W*.84,H*.08,14);
+    ctx.fill(); ctx.stroke();
+
+    // number circle
+    ctx.fillStyle=ac;
+    ctx.beginPath(); ctx.arc(W*.17,y+H*.04,W*.03,0,6.28); ctx.fill();
+    ctx.fillStyle="#05060f";
+    ctx.font=`bold ${Math.floor(W*.028)}px system-ui`;
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText(String(i+1),W*.17,y+H*.04);
+
+    ctx.fillStyle="#f0f7ff";
+    ctx.font=`bold ${Math.floor(W*.032)}px system-ui`;
+    ctx.textAlign="left";
+    ctx.fillText(item.slice(0,26),W*.25,y+H*.04);
+  });
+  ctx.globalAlpha=1;
+}
+
+/* ---------- Loop ---------- */
+function ensure(c,ctx,w,h){
+  const dpr=Math.min(devicePixelRatio||1,2);
+  const nw=Math.floor(w*dpr), nh=Math.floor(h*dpr);
+  if(c.width!==nw||c.height!==nh){
+    c.width=nw; c.height=nh;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
+}
 
-  function drawFakt(ctx, W, H, d, accent, p, sec) {
-    ctx.save();
-    ctx.translate(W / 2, H * 0.26);
-    ctx.rotate((1 - p) * -0.35);
-    const sc = 0.55 + 0.45 * p;
-    ctx.scale(sc, sc);
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 5;
-    ctx.setLineDash([12, 9]);
-    ctx.beginPath();
-    ctx.arc(0, 0, W * 0.12, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = accent;
-    ctx.font = "bold " + Math.floor(W * 0.038) + "px system-ui,sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText((d.number || "FAKT").slice(0, 10), 0, 0);
-    ctx.restore();
+function draw(now){
+  const t=now-S.t0;
+  ensure(cv,cx,360,640);
+  drawFrame(cx,360,640,t);
 
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold " + Math.floor(W * 0.06) + "px system-ui,sans-serif";
-    const lines = wrap(ctx, d.title || "Qiziqarli fakt shu yerda", W * 0.82);
-    lines.slice(0, 4).forEach((ln, i) => {
-      ctx.globalAlpha = easeOut(p - 0.08 - i * 0.08);
-      ctx.fillText(ln, W / 2, H * 0.46 + i * W * 0.075);
-    });
-
-    ctx.globalAlpha = p * 0.85;
-    ctx.fillStyle = "#c4cedb";
-    ctx.font = Math.floor(W * 0.034) + "px system-ui,sans-serif";
-    const detail = wrap(ctx, d.detail || "", W * 0.8);
-    detail.slice(0, 3).forEach((ln, i) => {
-      ctx.fillText(ln, W / 2, H * 0.72 + i * W * 0.048);
-    });
-    ctx.globalAlpha = 1;
+  const layer=$("recLayer");
+  if(layer&&!layer.hidden){
+    ensure(rcx,rx,1080,1920);
+    drawFrame(rx,1080,1920,t);
   }
+}
 
-  function drawIbora(ctx, W, H, d, accent, p, sec) {
-    ctx.globalAlpha = 0.18 * p;
-    ctx.fillStyle = accent;
-    ctx.font = "bold " + Math.floor(W * 0.26) + "px Georgia,serif";
-    ctx.textAlign = "center";
-    ctx.fillText("\u201C", W / 2, H * 0.3);
-    ctx.globalAlpha = 1;
+function loop(now){
+  S.raf=requestAnimationFrame(loop);
+  draw(now);
+}
+function startLoop(){
+  cancelAnimationFrame(S.raf);
+  S.raf=requestAnimationFrame(loop);
+}
 
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold " + Math.floor(W * 0.055) + "px Georgia,serif";
-    const lines = wrap(ctx, d.quote || "Kichik qadamlar katta o‘zgarishlarni yaratadi.", W * 0.8);
-    lines.slice(0, 5).forEach((ln, i) => {
-      ctx.globalAlpha = easeOut(p - i * 0.09);
-      ctx.fillText(ln, W / 2, H * 0.4 + i * W * 0.07);
-    });
+function updateBtns(){
+  const label=S.playing?"⏸ Pauza":"▶ Ko‘rish";
+  if($("play"))$("play").textContent=label;
+  if($("recPlay"))$("recPlay").textContent=S.playing?"⏸":"▶";
+}
+function stop(){S.playing=false;updateBtns();}
+function toggle(){
+  S.playing=!S.playing;
+  S.t0=performance.now();
+  updateBtns();
+}
 
-    ctx.globalAlpha = p;
-    ctx.fillStyle = accent;
-    ctx.font = Math.floor(W * 0.032) + "px system-ui,sans-serif";
-    ctx.fillText("— " + (d.author || "Noma’lum"), W / 2, H * 0.78);
+$("play").onclick=toggle;
+$("rec").onclick=()=>{
+  S.t0=performance.now();
+  S.playing=true;
+  updateBtns();
+  $("recLayer").hidden=false;
+  $("recLabel").textContent="RECORDING · 9:16 · "+(MODES[S.mode]?.tag||"NEX");
+};
+$("recClose").onclick=()=>{$("recLayer").hidden=true;stop();};
+$("recPlay").onclick=toggle;
 
-    ctx.strokeStyle = accent;
-    ctx.globalAlpha = 0.45 * p;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(W * 0.28, H * 0.83);
-    ctx.lineTo(W * 0.72, H * 0.83);
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-  }
-
-  function drawManba(ctx, W, H, d, accent, p, sec) {
-    ctx.textAlign = "center";
-    ctx.fillStyle = accent;
-    ctx.globalAlpha = p;
-    ctx.font = "bold " + Math.floor(W * 0.028) + "px system-ui,sans-serif";
-    ctx.fillText((d.type || "MANBA").toUpperCase(), W / 2, H * 0.18);
-
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold " + Math.floor(W * 0.06) + "px system-ui,sans-serif";
-    const titleLines = wrap(ctx, d.name || "Foydali manba", W * 0.82);
-    titleLines.slice(0, 2).forEach((ln, i) => {
-      ctx.globalAlpha = easeOut(p - i * 0.1);
-      ctx.fillText(ln, W / 2, H * 0.26 + i * W * 0.07);
-    });
-
-    ctx.globalAlpha = p * 0.85;
-    ctx.fillStyle = "#c4cedb";
-    ctx.font = Math.floor(W * 0.032) + "px system-ui,sans-serif";
-    const why = wrap(ctx, d.why || "", W * 0.8);
-    why.slice(0, 2).forEach((ln, i) => ctx.fillText(ln, W / 2, H * 0.4 + i * W * 0.045));
-
-    const points = (d.points || "").split(/\n+/).map(x => x.trim()).filter(Boolean).slice(0, 3);
-    const list = points.length ? points : ["Amaliy qiymat", "Qulay format", "Tavsiya etiladi"];
-
-    list.forEach((item, i) => {
-      const q = easeOut(p - 0.12 - i * 0.11);
-      const y = H * 0.52 + i * H * 0.095;
-      ctx.globalAlpha = q;
-      ctx.fillStyle = "rgba(101,217,255,0.12)";
-      ctx.strokeStyle = accent;
-      ctx.lineWidth = 1.5;
-      roundRect(ctx, W * 0.1, y, W * 0.8, H * 0.075, 14);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = accent;
-      ctx.beginPath();
-      ctx.arc(W * 0.19, y + H * 0.037, W * 0.028, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "#061018";
-      ctx.font = "bold " + Math.floor(W * 0.03) + "px system-ui,sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(String(i + 1), W * 0.19, y + H * 0.037);
-
-      ctx.fillStyle = "#f0f7ff";
-      ctx.font = "bold " + Math.floor(W * 0.034) + "px system-ui,sans-serif";
-      ctx.textAlign = "left";
-      ctx.fillText(item.slice(0, 26), W * 0.27, y + H * 0.037);
-    });
-    ctx.globalAlpha = 1;
-  }
-
-  function ensureSize(canvas, ctx, logicalW, logicalH) {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const needW = Math.floor(logicalW * dpr);
-    const needH = Math.floor(logicalH * dpr);
-    if (canvas.width !== needW || canvas.height !== needH) {
-      canvas.width = needW;
-      canvas.height = needH;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-  }
-
-  function draw(now) {
-    const t = now - state.t0;
-    ensureSize(cv, cx, 360, 640);
-    drawFrame(cx, 360, 640, t);
-
-    const overlay = $("recOverlay");
-    if (overlay && !overlay.hidden) {
-      ensureSize(recCv, rcx, 1080, 1920);
-      drawFrame(rcx, 1080, 1920, t);
-    }
-  }
-
-  function loop(now) {
-    state.raf = requestAnimationFrame(loop);
-    draw(now);
-  }
-
-  function startLoop() {
-    cancelAnimationFrame(state.raf);
-    state.raf = requestAnimationFrame(loop);
-  }
-
-  function updatePlayButtons() {
-    const playBtn = $("playBtn");
-    const recPlay = $("recPlay");
-    const label = state.playing ? "⏸ Pauza" : "▶ Ko‘rish";
-    if (playBtn) playBtn.textContent = label;
-    if (recPlay) recPlay.textContent = state.playing ? "⏸ Pauza" : "▶ Boshlash";
-  }
-
-  function stop() {
-    state.playing = false;
-    updatePlayButtons();
-  }
-
-  function togglePlay() {
-    state.playing = !state.playing;
-    state.t0 = performance.now();
-    updatePlayButtons();
-  }
-
-  const playBtn = $("playBtn");
-  if (playBtn) playBtn.addEventListener("click", togglePlay);
-
-  const recBtn = $("recBtn");
-  if (recBtn) {
-    recBtn.addEventListener("click", () => {
-      state.t0 = performance.now();
-      state.playing = true;
-      updatePlayButtons();
-      const overlay = $("recOverlay");
-      if (overlay) overlay.hidden = false;
-      const status = $("recStatus");
-      if (status) status.textContent = "RECORDING · 9:16 · " + (modes[state.mode]?.badge || "NEX");
-    });
-  }
-
-  const recExit = $("recExit");
-  if (recExit) {
-    recExit.addEventListener("click", () => {
-      const overlay = $("recOverlay");
-      if (overlay) overlay.hidden = true;
-      stop();
-    });
-  }
-
-  const recPlay = $("recPlay");
-  if (recPlay) recPlay.addEventListener("click", togglePlay);
-
-  // boshlash
-  initParticles();
-  console.log("NEX Canvas ready");
+initParts();
+console.log("NEX Reels Studio Pro style ready");
 })();
