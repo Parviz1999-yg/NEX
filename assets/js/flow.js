@@ -31,7 +31,47 @@ function updateSceneUI(){state.scene=sceneIndexAt(state.elapsed);document.queryS
 const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rctx=rc.getContext("2d");let accountPhoto=null;
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
-function drawProceduralBackground(c,w,h,idx,pal,now){const rand=seededRandom((state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0),bg=pal[0],a=pal[2],b=pal[3]||pal[2];const angle=rand()*Math.PI*2,g=c.createLinearGradient(w*(.5+Math.cos(angle)*.7),h*(.5+Math.sin(angle)*.7),w*(.5-Math.cos(angle)*.7),h*(.5-Math.sin(angle)*.7));g.addColorStop(0,bg);g.addColorStop(.52,a+"22");g.addColorStop(1,bg);c.fillStyle=g;c.fillRect(0,0,w,h);for(let n=0;n<3;n++){const x=rand()*w,y=rand()*h,r=Math.max(w,h)*(.22+rand()*.42),color=n%2?a:b,glow=c.createRadialGradient(x,y,0,x,y,r);glow.addColorStop(0,color+"55");glow.addColorStop(.42,color+"19");glow.addColorStop(1,color+"00");c.fillStyle=glow;c.fillRect(0,0,w,h)}c.save();c.globalAlpha=.12+rand()*.08;c.strokeStyle=rand()>.5?a:b;c.lineWidth=Math.max(1,w*.002);const motif=Math.floor(rand()*4);if(motif===0){const cx=w*(.18+rand()*.64),cy=h*(.18+rand()*.64);for(let k=0;k<7;k++){c.beginPath();c.ellipse(cx,cy,w*(.12+k*.035),h*(.035+k*.014),rand()*.7,0,Math.PI*2);c.stroke()}}else if(motif===1){for(let k=0;k<10;k++){const x=rand()*w,y=rand()*h,size=w*(.035+rand()*.12);c.strokeRect(x,y,size,size)}}else if(motif===2){for(let k=0;k<12;k++){const x=rand()*w,y=rand()*h;c.beginPath();c.moveTo(x,y);c.lineTo(x+(rand()-.5)*w*.45,y+(rand()-.5)*h*.28);c.stroke()}}else{for(let k=0;k<9;k++){const x=rand()*w,y=rand()*h,r=w*(.025+rand()*.09);c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke()}}c.restore();c.save();c.globalAlpha=.12;c.fillStyle=pal[1];for(let i=0;i<55;i++){const x=rand()*w,y=rand()*h,r=.5+rand()*w*.002;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.restore()}
+function drawProceduralBackground(c,w,h,idx,pal,now){
+ const rand=seededRandom((state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0);
+ const bg=pal[0],a=pal[2],b=pal[3]||pal[2];
+ const angle=rand()*Math.PI*2;
+ const g=c.createLinearGradient(w*(.5+Math.cos(angle)*.75),h*(.5+Math.sin(angle)*.75),w*(.5-Math.cos(angle)*.75),h*(.5-Math.sin(angle)*.75));
+ g.addColorStop(0,bg);g.addColorStop(.38,a+"66");g.addColorStop(.68,b+"55");g.addColorStop(1,bg);
+ c.fillStyle=g;c.fillRect(0,0,w,h);
+ // Kuchliroq rangli yorug'lik qatlamlari: fon almashtirilgani darhol bilinadi.
+ for(let n=0;n<5;n++){
+  const x=rand()*w,y=rand()*h,r=Math.max(w,h)*(.28+rand()*.48),color=n%2?a:b;
+  const glow=c.createRadialGradient(x,y,0,x,y,r);
+  glow.addColorStop(0,color+"99");glow.addColorStop(.38,color+"55");glow.addColorStop(1,color+"00");
+  c.fillStyle=glow;c.fillRect(0,0,w,h);
+ }
+ c.save();
+ c.globalAlpha=.25+rand()*.12;c.strokeStyle=rand()>.5?a:b;c.lineWidth=Math.max(2,w*.0035);
+ const motif=Math.floor(rand()*5);
+ if(motif===0){
+  const cx=w*(.18+rand()*.64),cy=h*(.18+rand()*.64);
+  for(let k=0;k<9;k++){c.beginPath();c.ellipse(cx,cy,w*(.12+k*.045),h*(.04+k*.02),rand()*.7,0,Math.PI*2);c.stroke()}
+ }else if(motif===1){
+  for(let k=0;k<14;k++){const x=rand()*w,y=rand()*h,size=w*(.05+rand()*.17);c.save();c.translate(x,y);c.rotate((rand()-.5)*.8);c.strokeRect(-size/2,-size/2,size,size);c.restore()}
+ }else if(motif===2){
+  for(let k=0;k<18;k++){const x=rand()*w,y=rand()*h;c.beginPath();c.moveTo(x,y);c.lineTo(x+(rand()-.5)*w*.7,y+(rand()-.5)*h*.5);c.stroke()}
+ }else if(motif===3){
+  for(let k=0;k<13;k++){const x=rand()*w,y=rand()*h,r=w*(.035+rand()*.12);c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke()}
+ }else{
+  const x=w*(.15+rand()*.7),y=h*(.2+rand()*.6);
+  c.beginPath();c.moveTo(x-w*.5,y-h*.2);c.lineTo(x+w*.5,y+h*.2);c.lineTo(x+w*.2,y+h*.48);c.closePath();c.stroke();
+  c.beginPath();c.moveTo(x-w*.4,y+h*.28);c.lineTo(x+w*.38,y-h*.35);c.stroke();
+ }
+ c.restore();
+ // Yirik shaffof rangli shakl: har bir seed yangi kompozitsiya beradi.
+ c.save();c.globalAlpha=.18+rand()*.1;c.fillStyle=rand()>.5?a:b;
+ const bx=rand()*w,by=rand()*h,br=w*(.18+rand()*.2);
+ c.beginPath();c.arc(bx,by,br,0,Math.PI*2);c.fill();c.restore();
+ c.save();c.globalAlpha=.2;c.fillStyle=pal[1];
+ for(let i=0;i<85;i++){const x=rand()*w,y=rand()*h,r=.7+rand()*w*.0025;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
+ c.restore();
+}
+
 function drawScene(c,w,h,now){
 const pal=paletteMap[state.palette]||paletteMap.Midnight,bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
 const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
