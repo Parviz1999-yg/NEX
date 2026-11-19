@@ -43,7 +43,7 @@ function pausePlayback(){if(!playing)return;playElapsed+=performance.now()-playS
 function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=playElapsed+(now-playStart);if(elapsed>=total){stop();loadScene(0);return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
 function startPlayback(){if(playing){pausePlayback();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);}
 $("playBtn").onclick=startPlayback;
-function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.1.0";}else{stop();}}
+function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.2.0";}else{stop();}}
 $("recordingModeBtn").addEventListener("click",()=>setRecordingMode(true));
 $("recordExitBtn").addEventListener("click",()=>setRecordingMode(false));
 $("recordStartBtn").addEventListener("click",startPlayback);
@@ -101,34 +101,40 @@ $("analyzeStyleBtn").addEventListener("click",()=>{
  status("Ijodiy brif tayyor. Tanlangan vizual yo‘nalish previewga qo‘llandi.");
 });
 
+const studioProfiles={
+ recommendation:{style:"glass",bg:"aurora",motion:"orbit",accent:"#b69cff",name:"TAVSIYA AKKAUNT"},
+ resources:{style:"neon",bg:"grid",motion:"float",accent:"#65d9ff",name:"FOYDALI MANBALAR"},
+ facts:{style:"comix",bg:"stars",motion:"pulse",accent:"#ff8c70",name:"QIZIQARLI FAKTLAR"},
+ phrases:{style:"ink",bg:"rain",motion:"float",accent:"#e7c98a",name:"MAXSUS IBORALAR"}
+};
 const contentBuilders={
- showcase:(t)=>[
- ["HOOK · LOYIHA","Bu loyihani kuzatishga arziydimi?","Bugun e’tiborimni tortgan loyiha: "+t+".","PROJECT, CREATIVE"],
- ["CONTEXT · TANISHUV",t+" nima bilan shug‘ullanadi?","Loyiha qanday muammoni hal qilishi yoki kimlar uchun yaratilganini ko‘rib chiqamiz.","OVERVIEW, DESIGN"],
- ["INSIGHT · FARQLI JIHAT","Uning asosiy ustunligi nimada?","Interfeys, yondashuv yoki foydalanuvchiga beradigan qiymatiga e’tibor qarating.","DETAILS, VALUE"],
- ["VALUE · TAHLIL","Nima uchun e’tiborga loyiq?","Kuchli tomonlari va kimlar uchun foydali bo‘lishi mumkinligini baholang.","ANALYSIS, DISCOVERY"],
- ["CTA · TAVSIYA","Siz ham ko‘rib chiqarmidingiz?","Loyihani o‘rganing va fikringizni izohlarda yozing.","RECOMMEND, COMMENT"]
+ recommendation:t=>[
+ ["HOOK · TAVSIYA","Bu akkauntni ko‘rishga arziydimi?","Bugun e’tiborimizni tortgan sahifa: "+t+".","AKKAUNT, TAVSIYA"],
+ ["TANISHUV · PROFIL",t+" qanday sahifa?","Profil nimaga ixtisoslashgani va unda qanday kontent berilishini ko‘rsating.","PROFIL, YO‘NALISH"],
+ ["TAHLIL · O‘ZIGA XOSLIK","Uni boshqalardan nima ajratadi?","Aniq post, loyiha yoki yondashuv misolida farqli jihatini ochib bering.","USLUB, FARQ"],
+ ["KIM UCHUN · QIYMAT","Kimlar uchun foydali bo‘lishi mumkin?","Auditoriyasini va kuzatishdan olinadigan aniq foydani tushuntiring.","AUDITORIYA, FOYDA"],
+ ["YAKUN · TAVSIYA","Kuzatish-kuzatmaslik — sizning tanlovingiz.","Profilni o‘zingiz baholang. Keyingi tavsiya uchun fikringizni yozing.","KASHFIYOT, FIKR"]
  ],
- fact:(t)=>[
- ["HOOK · TEXNOLOGIK FAKT",t+" haqida bir muhim fakt.","Ko‘pchilik bilmaydigan, ammo tushunishga arziydigan jihat bor.","TECH FACT, KNOWLEDGE"],
- ["CONTEXT · IZOH","Bu qanday ishlaydi?","Avval mavzuning asosiy tushunchasini sodda va aniq izohlaymiz.","EXPLAIN, CONTEXT"],
- ["INSIGHT · FAKT","Eng qiziq jihati — mana shu.","Bu yerda tekshirilgan fakt, raqam yoki aniq misol keltiriladi.","FACT, DATA"],
- ["VALUE · AHAMIYAT","Bu nimani o‘zgartiradi?","Ushbu ma’lumotning kundalik hayot, internet yoki texnologiyadagi ahamiyatini ko‘rsating.","IMPACT, VALUE"],
- ["CTA · MULOHAZA","Siz bu haqda bilarmidingiz?","Faktni saqlab qo‘ying yoki keyingi mavzu bo‘yicha taklif qoldiring.","DID YOU KNOW, COMMENT"]
+ resources:t=>[
+ ["HOOK · FOYDALI MANBA",t+" — nimasi bilan foydali?","Bir resursni shunchaki ko‘rsatmaymiz: uning amaliy qiymatini tekshiramiz.","MANBA, FOYDA"],
+ ["TANISHUV · VAZIFA","Bu manba nima beradi?","Sayt, kanal, kitob yoki ilovaning asosiy vazifasini sodda tushuntiring.","NIMA, UCHUN"],
+ ["IMKONIYAT · NAMOYISH","Undan qanday foydalaniladi?","Eng muhim imkoniyatini yoki foydalanish jarayonini real misolda ko‘rsating.","QO‘LLANMA, MISOL"],
+ ["BAHO · CHEKLOV","Kimga mos va nimaga e’tibor berish kerak?","Maqsadli foydalanuvchi, bepul/pullik jihati va muhim cheklovlarni tekshirib ayting.","KIM UCHUN, TAHLIL"],
+ ["YAKUN · MANBA","Sinab ko‘rishdan oldin manbani tekshiring.","Rasmiy havolani saqlang va tajribangizni ulashing.","RESURS, SAQLASH"]
  ],
- tool:(t)=>[
- ["HOOK · FOYDALI VOSITA",t+" ishni osonlashtirishi mumkin.","Bugun foydali raqamli vositani qisqacha ko‘rib chiqamiz.","DIGITAL TOOL, PRODUCTIVITY"],
- ["CONTEXT · VAZIFA","U nima uchun kerak?","Vosita qaysi vazifani bajarishi va kimlar uchun mo‘ljallanganini tushuntiring.","PURPOSE, GUIDE"],
- ["INSIGHT · IMKONIYAT","Asosiy imkoniyatlari qanday?","Eng foydali ikki yoki uch funksiyasini aniq misol bilan ko‘rsating.","FEATURES, TOOLS"],
- ["VALUE · AMALIYOT","Undan qanday foydalanish mumkin?","Boshlash uchun kerakli qadamlar va ehtiyot bo‘lish lozim bo‘lgan jihatlarni ayting.","HOW TO, PRACTICAL"],
- ["CTA · SINAB KO‘RISH","Sizga ham foydali bo‘lishi mumkin.","Vositaning rasmiy manbasini tekshiring va tajribangizni izohlarda ulashing.","TRY IT, COMMENT"]
+ facts:t=>[
+ ["HOOK · SAVOL","Siz "+t+" haqida buni bilarmidingiz?","Javob odatiy tasavvuringizdan farq qilishi mumkin.","SAVOL, FAKT"],
+ ["KONTEKST · TUSHUNCHA","Avval hodisani tushunib olaylik.","Atamalar va zarur kontekstni ortiqcha tafsilotlarsiz tushuntiring.","KONTEKST, IZOH"],
+ ["FAKT · DALIL","Asosiy fakt mana shu.","Tekshirilgan raqam, kuzatuv yoki ilmiy xulosani aniq manbaga tayangan holda ko‘rsating.","DALIL, MANBA"],
+ ["IZOH · VIZUAL","Bu qanday sodir bo‘ladi va nega muhim?","Jarayonni bosqichma-bosqich vizual tushuntiring; sabab va natijani ajrating.","SABAB, NATIJA"],
+ ["YAKUN · XULOSA","Endi bu hodisaga boshqacha qaraysizmi?","Qisqa xulosa bering. Manbani captionda ko‘rsating va savol qoldiring.","BILIM, MULOHAZA"]
  ],
- personal:(t)=>[
- ["HOOK · SHAXSIY TAJRIBA","Men "+t+" ustida ishlayapman.","Yangi loyiha yoki o‘rganish jarayonimdan bir lavha bilan bo‘lishaman.","BUILD IN PUBLIC, JOURNEY"],
- ["CONTEXT · MAQSAD","Bu g‘oyani nima uchun boshladim?","Muammo, ehtiyoj yoki loyiha oldiga qo‘yilgan maqsadni tushuntiring.","PURPOSE, PROJECT"],
- ["INSIGHT · JARAYON","Jarayonda nimalarni aniqladim?","Ish davomida uchragan muhim qaror, xato yoki yangi bilimni ko‘rsating.","PROCESS, LEARNING"],
- ["VALUE · NATIJA","Hozirgacha qanday natija bor?","Amaldagi natija, ishlayotgan qism va hali yechilmagan vazifalarni ochiq ayting.","PROGRESS, RESULTS"],
- ["CTA · MULOQOT","Keyingi qadamni birga kuzating.","Auditoriyadan fikr, savol yoki taklif so‘rang.","FOLLOW, FEEDBACK"]
+ phrases:t=>[
+ ["HOOK · IBORA","Bir jumla. Bir to‘xtash. Bir fikr.","Bugungi ibora: "+t+".","IBORA, FIKR"],
+ ["MA’NO · TALQIN","Bu so‘zlar nimani anglatadi?","Iborani sodda tilda, o‘z talqiningiz bilan ochib bering.","MA’NO, TALQIN"],
+ ["URG‘U · ASOSIY G‘OYA","Eng muhim so‘zga e’tibor bering.","Matndagi kalit so‘zni ajratib, uning mazmunga ta’sirini ko‘rsating.","ASOSIY G‘OYA, URG‘U"],
+ ["HAYOT · QO‘LLANISH","Bu fikr hayotimizda qayerda namoyon bo‘ladi?","Iborani hayotiy vaziyat yoki qisqa misol bilan bog‘lang.","HAYOT, MISOL"],
+ ["SUKUT · YAKUN","Ba’zi fikrlar javob emas, savol qoldiradi.","Tomoshabinga o‘ylash uchun joy qoldiring. O‘z talqinini izohlarda so‘rang.","MULOHAZA, SAVOL"]
  ]
 };
 $("buildContentBtn").addEventListener("click",()=>{
@@ -136,6 +142,11 @@ $("buildContentBtn").addEventListener("click",()=>{
  if(!topic){$("briefHint").textContent="Avval mavzu yoki loyiha nomini kiriting."; $("topicInput").focus();return;}
  const type=$("contentType").value;
  const built=contentBuilders[type](topic);
+ const profile=studioProfiles[type];
+ if(profile){
+  $("style").value=profile.style;$("bg").value=profile.bg;$("motion").value=profile.motion;
+  setAccent(profile.accent);design();
+ }
  saveCurrent();
  stop();
  scenes=built.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
@@ -145,7 +156,7 @@ $("buildContentBtn").addEventListener("click",()=>{
  $("bodyText").value=scenes[0].body;
  $("tags").value=scenes[0].tags;
  render();
- $("briefHint").textContent="5 sahnali ssenariy tayyor. Matnlar shablon asosida tuzildi — faktlar va misollarni tekshirib, o‘zingizga moslab tahrirlang.";
+ $("briefHint").textContent="5 sahnali ssenariy tayyor. Bu boshlang‘ich matnlar: fakt, manba va tavsiyalarni nashrdan oldin tekshiring.";
  status("Kontent ssenariysi yaratildi. Har bir sahnani tahrirlashingiz mumkin.");
 });
 loadScene(0);
