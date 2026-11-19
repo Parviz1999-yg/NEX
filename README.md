@@ -78,3 +78,19 @@ Repository Settings → Pages → Build and deployment → Source: GitHub Action
 - Kod o‘zgarishlari GitHub main branchiga yozildi.
 - Brauzerda, Android qurilmasida va video eksportida amaliy sinov hali bajarilmadi.
 - GitHub Pages deploy holati commitdan keyin alohida tekshiriladi.
+
+
+## NEX v1.3.0 — 2026-11-19
+
+### Yangilanishlar
+- To‘rtta kontent studiyasi uchun preview sahna animatsiyalari alohida harakat tiliga ajratildi.
+- Tavsiya akkaunt: profil kartasi va sarlavhaning qatlamli ochilishi.
+- Foydali manbalar: chapdan ochiladigan sarlavha, chiziqli urg‘u va ketma-ket resurs teglari.
+- Qiziqarli faktlar: muhr kabi kiruvchi yorliq, urg‘uli sarlavha va izohning alohida paydo bo‘lishi.
+- Maxsus iboralar: sekin, yumshoq, xiralikdan ochiladigan tipografik animatsiya.
+- Tanlangan studiya preview elementlariga uzatiladi; animatsiyalar sahna yangilanganda qayta boshlanadi.
+
+### Tekshiruv holati
+- Kod o‘zgarishlari GitHub main branchiga yozildi.
+- CSS/JS matn darajasida yangilandi; real Android qurilmasida animatsiya va eksport sinovi hali bajarilmagan.
+- Ushbu yangilanish preview animatsiyalarini farqlaydi; canvas video eksportidagi studiyaga xos sahna animatsiyasi keyingi texnik bosqichda alohida moslashtirilishi kerak.
