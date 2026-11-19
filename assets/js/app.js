@@ -4,266 +4,506 @@
   const $ = id => document.getElementById(id);
   const $$ = sel => document.querySelectorAll(sel);
 
+  const cv = $("cv");
+  const cx = cv.getContext("2d");
+  const recCv = $("recCv");
+  const rcx = recCv.getContext("2d");
+
   const state = {
-    mode: null,
+    mode: "tavsiya",
     playing: false,
-    timer: 0,
-    data: {}
+    t0: 0,
+    raf: 0,
+    data: {},
+    particles: []
+  };
+
+  const accents = {
+    tavsiya: "#b69cff",
+    fakt: "#ff8c70",
+    ibora: "#e7c98a",
+    manba: "#65d9ff"
   };
 
   const modes = {
     tavsiya: {
       title: "Tavsiya akkaunt",
       badge: "TAVSIYA",
-      accent: "#b69cff",
       fields: [
-        { id: "handle", label: "Akkaunt (@username)", type: "text", placeholder: "@foydali_akkaunt" },
-        { id: "role", label: "Qisqa tavsif", type: "text", placeholder: "Texnologiya · Dizayn" },
-        { id: "hook", label: "Hook matni", type: "textarea", placeholder: "Bu akkauntni ko‘rishga arziydi" },
-        { id: "why", label: "Nima uchun tavsiya?", type: "textarea", placeholder: "Har kuni foydali postlar..." },
-        { id: "cta", label: "Chorlov", type: "text", placeholder: "Obuna bo‘ling" }
+        { id: "handle", label: "Akkaunt (@username)", ph: "@foydali_akkaunt" },
+        { id: "role", label: "Qisqa tavsif", ph: "Texnologiya · Dizayn" },
+        { id: "hook", label: "Hook matni", ph: "Bu akkauntni ko‘rishga arziydi", ta: true },
+        { id: "why", label: "Nima uchun?", ph: "Har kuni foydali postlar", ta: true },
+        { id: "cta", label: "Chorlov", ph: "Obuna bo‘ling" }
       ]
     },
     fakt: {
       title: "Qiziqarli fakt",
       badge: "FAKT",
-      accent: "#ff8c70",
       fields: [
-        { id: "number", label: "Fakt raqami / yorliq", type: "text", placeholder: "FAKT 07" },
-        { id: "title", label: "Asosiy fakt", type: "textarea", placeholder: "Odam miyasi kuniga taxminan 70 000 ta fikr ishlab chiqaradi" },
-        { id: "detail", label: "Qisqa izoh", type: "textarea", placeholder: "Ko‘pchiligi takroriy va avtomatik bo‘ladi" },
-        { id: "source", label: "Manba (ixtiyoriy)", type: "text", placeholder: "ilmiy tadqiqot / kitob" }
+        { id: "number", label: "Yorliq", ph: "FAKT 07" },
+        { id: "title", label: "Asosiy fakt", ph: "Odam miyasi kuniga ~70 000 fikr ishlab chiqaradi", ta: true },
+        { id: "detail", label: "Izoh", ph: "Ko‘pchiligi avtomatik bo‘ladi", ta: true }
       ]
     },
     ibora: {
       title: "Kun iborasi",
       badge: "IBORA",
-      accent: "#e7c98a",
       fields: [
-        { id: "quote", label: "Ibora / sitata", type: "textarea", placeholder: "Kichik qadamlar katta o‘zgarishlarni yaratadi." },
-        { id: "author", label: "Muallif (ixtiyoriy)", type: "text", placeholder: "Noma’lum" },
-        { id: "mood", label: "Kayfiyat", type: "text", placeholder: "Motivatsiya · Sokin" }
+        { id: "quote", label: "Ibora", ph: "Kichik qadamlar katta o‘zgarishlarni yaratadi.", ta: true },
+        { id: "author", label: "Muallif", ph: "Noma’lum" }
       ]
     },
     manba: {
       title: "Foydali manba",
       badge: "MANBA",
-      accent: "#65d9ff",
       fields: [
-        { id: "name", label: "Manba nomi", type: "text", placeholder: "YouTube kanal / Telegram / kitob" },
-        { id: "type", label: "Turi", type: "text", placeholder: "YouTube · Telegram · Kitob" },
-        { id: "why", label: "Nima uchun foydali?", type: "textarea", placeholder: "Amaliy darslar, qisqa va tushunarli" },
-        { id: "points", label: "3 ta nuqta (har qatorda)", type: "textarea", placeholder: "Bepul kontent\nAmaliy misollar\nMuntazam yangilanadi" }
+        { id: "name", label: "Manba nomi", ph: "YouTube / Telegram / kitob" },
+        { id: "type", label: "Turi", ph: "YouTube" },
+        { id: "why", label: "Nima uchun foydali?", ph: "Amaliy va tushunarli", ta: true },
+        { id: "points", label: "3 nuqta (har qatorda)", ph: "Bepul\nAmaliy\nMuntazam", ta: true }
       ]
     }
   };
 
-  // ---------- Navigation ----------
+  // ---------- UI ----------
   function show(id) {
     $$(".screen").forEach(s => s.classList.toggle("on", s.id === id));
   }
 
-  $$(".mode-card").forEach(btn => {
-    btn.addEventListener("click", () => openMode(btn.dataset.mode));
-  });
-
-  $("backHome").addEventListener("click", () => {
-    stopPlay();
-    show("home");
-  });
+  $$(".mode-card").forEach(b => b.addEventListener("click", () => openMode(b.dataset.mode)));
+  $("backHome").addEventListener("click", () => { stop(); show("home"); });
 
   function openMode(key) {
     state.mode = key;
     const m = modes[key];
     $("modeTitle").textContent = m.title;
     $("modeBadge").textContent = m.badge;
-    document.documentElement.style.setProperty("--accent", m.accent);
+    document.documentElement.style.setProperty("--accent", accents[key]);
 
     const panel = $("formPanel");
     panel.innerHTML = "";
     m.fields.forEach(f => {
       const lab = document.createElement("label");
       lab.textContent = f.label;
-      let input;
-      if (f.type === "textarea") {
-        input = document.createElement("textarea");
-        input.rows = 3;
-      } else {
-        input = document.createElement("input");
-        input.type = "text";
-      }
+      const input = document.createElement(f.ta ? "textarea" : "input");
+      if (!f.ta) input.type = "text";
+      else input.rows = 3;
       input.id = "f_" + f.id;
-      input.placeholder = f.placeholder || "";
-      input.addEventListener("input", renderPreview);
+      input.placeholder = f.ph || "";
+      input.addEventListener("input", () => { collect(); draw(); });
       lab.appendChild(input);
       panel.appendChild(lab);
     });
 
-    const applyBtn = document.createElement("button");
-    applyBtn.className = "primary";
-    applyBtn.textContent = "Preview’ni yangilash";
-    applyBtn.style.marginTop = "8px";
-    applyBtn.onclick = renderPreview;
-    panel.appendChild(applyBtn);
+    const btn = document.createElement("button");
+    btn.className = "primary";
+    btn.textContent = "Yangilash";
+    btn.style.marginTop = "6px";
+    btn.onclick = () => { collect(); draw(); };
+    panel.appendChild(btn);
 
     show("editor");
-    renderPreview();
+    collect();
+    initParticles();
+    draw();
+    startLoop();
   }
 
-  function getData() {
+  function collect() {
     const m = modes[state.mode];
-    const data = {};
+    const d = {};
     m.fields.forEach(f => {
       const el = $("f_" + f.id);
-      data[f.id] = el ? el.value.trim() : "";
+      d[f.id] = el ? el.value.trim() : "";
     });
-    return data;
+    state.data = d;
   }
 
-  // ---------- Render ----------
-  function renderPreview() {
-    const data = getData();
-    state.data = data;
-    const frame = $("frame");
-    frame.className = "frame mode-" + state.mode;
-    frame.innerHTML = buildHTML(state.mode, data);
-    // re-trigger animations
-    void frame.offsetWidth;
+  // ---------- Particles ----------
+  function initParticles() {
+    state.particles = Array.from({ length: 40 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: 1 + Math.random() * 2.5,
+      v: 0.15 + Math.random() * 0.4,
+      a: Math.random() * Math.PI * 2
+    }));
   }
 
-  function esc(s) {
-    return String(s || "").replace(/[&<>"']/g, c =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-    );
+  // ---------- Helpers ----------
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
   }
 
-  function buildHTML(mode, d) {
+  function wrap(ctx, text, maxW) {
+    const words = String(text).split(/\s+/);
+    const lines = [];
+    let line = "";
+    for (const w of words) {
+      const test = line ? line + " " + w : w;
+      if (line && ctx.measureText(test).width > maxW) {
+        lines.push(line);
+        line = w;
+      } else line = test;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function easeOut(t) {
+    return 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
+  }
+
+  // ---------- Draw modes ----------
+  function drawFrame(ctx, W, H, t) {
+    const d = state.data;
+    const mode = state.mode;
+    const accent = accents[mode];
+    const sec = t / 1000;
+
+    // background
+    ctx.fillStyle = "#080b12";
+    ctx.fillRect(0, 0, W, H);
+
     if (mode === "tavsiya") {
-      const handle = d.handle || "@akkaunt";
-      const letter = (handle.replace(/^@/, "")[0] || "N").toUpperCase();
-      return `
-        <div class="profile-card anim-slide">
-          <div class="av">${esc(letter)}</div>
-          <div class="meta">
-            <b>${esc(handle)}</b>
-            <small>${esc(d.role || "Tavsiya etiladi")}</small>
-          </div>
-        </div>
-        <div class="kicker anim-fade" style="animation-delay:.15s">TAVSIYA</div>
-        <div class="title anim-fade" style="animation-delay:.25s">${esc(d.hook || "Bu akkauntni ko‘rishga arziydi")}</div>
-        <div class="body anim-fade" style="animation-delay:.4s">${esc(d.why || "Foydali kontent va sifatli yondashuv.")}</div>
-        <div class="tag-row anim-fade" style="animation-delay:.55s">
-          <span class="tag">${esc(d.cta || "Obuna bo‘ling")}</span>
-        </div>`;
+      const g = ctx.createRadialGradient(W * 0.5, H * 0.2, 0, W * 0.5, H * 0.2, W * 0.9);
+      g.addColorStop(0, "#2a1a4a");
+      g.addColorStop(1, "#080b12");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    } else if (mode === "fakt") {
+      const g = ctx.createRadialGradient(W * 0.7, H * 0.25, 0, W * 0.5, H * 0.5, W);
+      g.addColorStop(0, "#3a1f12");
+      g.addColorStop(1, "#080b12");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    } else if (mode === "ibora") {
+      const g = ctx.createLinearGradient(0, 0, W, H);
+      g.addColorStop(0, "#10182a");
+      g.addColorStop(1, "#080b12");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    } else {
+      const g = ctx.createRadialGradient(W * 0.3, H * 0.2, 0, W * 0.5, H * 0.5, W);
+      g.addColorStop(0, "#0f2a35");
+      g.addColorStop(1, "#080b12");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
     }
 
-    if (mode === "fakt") {
-      return `
-        <div class="fact-stamp anim-stamp">${esc(d.number || "FAKT")}</div>
-        <div class="title anim-pop">${esc(d.title || "Qiziqarli fakt shu yerda")}</div>
-        <div class="body anim-fade" style="animation-delay:.3s">${esc(d.detail || "")}</div>
-        ${d.source ? `<div class="kicker anim-fade" style="animation-delay:.45s;margin-top:16px">${esc(d.source)}</div>` : ""}`;
-    }
+    // floating particles
+    state.particles.forEach(p => {
+      const x = p.x * W + Math.sin(sec * p.v + p.a) * 12;
+      const y = ((p.y + sec * p.v * 0.04) % 1.2) * H - H * 0.1;
+      ctx.globalAlpha = 0.25 + 0.35 * Math.abs(Math.sin(sec + p.a));
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(x, y, p.r * (W / 360), 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
 
-    if (mode === "ibora") {
-      return `
-        <div class="quote-mark anim-soft">“</div>
-        <div class="title anim-soft" style="animation-delay:.2s">${esc(d.quote || "Kichik qadamlar katta o‘zgarishlarni yaratadi.")}</div>
-        <div class="body anim-fade" style="animation-delay:.55s">— ${esc(d.author || "Noma’lum")}</div>
-        ${d.mood ? `<div class="kicker anim-fade" style="animation-delay:.7s;margin-top:18px">${esc(d.mood)}</div>` : ""}`;
-    }
+    const progress = easeOut((sec % 3.2) / 1.1);
 
-    if (mode === "manba") {
-      const points = (d.points || "").split(/\n+/).map(x => x.trim()).filter(Boolean).slice(0, 3);
-      const items = points.length
-        ? points.map((p, i) => `<div class="res-item anim-slide" style="animation-delay:${0.25 + i * 0.12}s"><i>${i + 1}</i>${esc(p)}</div>`).join("")
-        : `<div class="res-item anim-slide" style="animation-delay:.25s"><i>1</i>${esc(d.why || "Foydali manba")}</div>`;
-      return `
-        <div class="kicker anim-fade">${esc(d.type || "MANBA")}</div>
-        <div class="title anim-fade" style="animation-delay:.15s">${esc(d.name || "Foydali manba")}</div>
-        <div class="body anim-fade" style="animation-delay:.3s">${esc(d.why || "")}</div>
-        <div class="res-list">${items}</div>`;
-    }
-    return "";
+    if (mode === "tavsiya") drawTavsiya(ctx, W, H, d, accent, progress, sec);
+    else if (mode === "fakt") drawFakt(ctx, W, H, d, accent, progress, sec);
+    else if (mode === "ibora") drawIbora(ctx, W, H, d, accent, progress, sec);
+    else drawManba(ctx, W, H, d, accent, progress, sec);
   }
 
-  // ---------- Playback (simple loop of re-trigger) ----------
-  function stopPlay() {
+  function drawTavsiya(ctx, W, H, d, accent, p, sec) {
+    const handle = d.handle || "@akkaunt";
+    const letter = (handle.replace(/^@/, "")[0] || "N").toUpperCase();
+
+    // profile card
+    const cardY = H * 0.22;
+    ctx.save();
+    ctx.globalAlpha = p;
+    ctx.translate((1 - p) * 40, 0);
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 2;
+    roundRect(ctx, W * 0.1, cardY, W * 0.8, H * 0.11, 18);
+    ctx.fill();
+    ctx.stroke();
+
+    // avatar
+    const ax = W * 0.18, ay = cardY + H * 0.055, ar = W * 0.055;
+    const grad = ctx.createLinearGradient(ax - ar, ay - ar, ax + ar, ay + ar);
+    grad.addColorStop(0, accent);
+    grad.addColorStop(1, "#ff2bd6");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(ax, ay, ar, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#0b0c14";
+    ctx.font = `bold ${Math.floor(W * 0.06)}px system-ui`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(letter, ax, ay + 1);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = `bold ${Math.floor(W * 0.045)}px system-ui`;
+    ctx.textAlign = "left";
+    ctx.fillText(handle.slice(0, 22), W * 0.28, cardY + H * 0.04);
+    ctx.fillStyle = "#9aa6b8";
+    ctx.font = `${Math.floor(W * 0.032)}px system-ui`;
+    ctx.fillText((d.role || "Tavsiya etiladi").slice(0, 28), W * 0.28, cardY + H * 0.075);
+    ctx.restore();
+
+    // orbit rings
+    ctx.save();
+    ctx.translate(W * 0.78, H * 0.38);
+    ctx.rotate(sec * 0.6);
+    ctx.strokeStyle = accent;
+    ctx.globalAlpha = 0.35 * p;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 10]);
+    ctx.beginPath();
+    ctx.arc(0, 0, W * 0.12, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // texts
+    ctx.textAlign = "center";
+    ctx.fillStyle = accent;
+    ctx.globalAlpha = p;
+    ctx.font = `bold ${Math.floor(W * 0.032)}px system-ui`;
+    ctx.fillText("TAVSIYA", W / 2, H * 0.42);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = `bold ${Math.floor(W * 0.07)}px system-ui`;
+    const lines = wrap(ctx, d.hook || "Bu akkauntni ko‘rishga arziydi", W * 0.78);
+    lines.slice(0, 3).forEach((ln, i) => {
+      ctx.globalAlpha = easeOut(p - i * 0.12);
+      ctx.fillText(ln, W / 2, H * 0.5 + i * W * 0.085);
+    });
+
+    ctx.globalAlpha = p * 0.9;
+    ctx.fillStyle = "#c4cedb";
+    ctx.font = `${Math.floor(W * 0.036)}px system-ui`;
+    const body = wrap(ctx, d.why || "Foydali kontent va sifatli yondashuv.", W * 0.78);
+    body.slice(0, 3).forEach((ln, i) => {
+      ctx.fillText(ln, W / 2, H * 0.68 + i * W * 0.05);
+    });
+
+    // CTA pill
+    ctx.globalAlpha = p;
+    const cta = d.cta || "Obuna bo‘ling";
+    ctx.font = `bold ${Math.floor(W * 0.034)}px system-ui`;
+    const tw = ctx.measureText(cta).width + W * 0.08;
+    ctx.fillStyle = accent;
+    roundRect(ctx, (W - tw) / 2, H * 0.84, tw, H * 0.045, 99);
+    ctx.fill();
+    ctx.fillStyle = "#10150a";
+    ctx.textBaseline = "middle";
+    ctx.fillText(cta, W / 2, H * 0.862);
+    ctx.globalAlpha = 1;
+  }
+
+  function drawFakt(ctx, W, H, d, accent, p, sec) {
+    // stamp
+    ctx.save();
+    ctx.translate(W / 2, H * 0.28);
+    ctx.rotate((1 - p) * -0.4);
+    ctx.scale(0.6 + 0.4 * p, 0.6 + 0.4 * p);
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 4;
+    ctx.setLineDash([10, 8]);
+    ctx.beginPath();
+    ctx.arc(0, 0, W * 0.11, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = accent;
+    ctx.font = `bold ${Math.floor(W * 0.04)}px system-ui`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText((d.number || "FAKT").slice(0, 10), 0, 0);
+    ctx.restore();
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#fff";
+    ctx.font = `bold ${Math.floor(W * 0.065)}px system-ui`;
+    const lines = wrap(ctx, d.title || "Qiziqarli fakt shu yerda", W * 0.8);
+    lines.slice(0, 4).forEach((ln, i) => {
+      ctx.globalAlpha = easeOut(p - 0.1 - i * 0.08);
+      ctx.fillText(ln, W / 2, H * 0.48 + i * W * 0.08);
+    });
+
+    ctx.globalAlpha = p * 0.85;
+    ctx.fillStyle = "#c4cedb";
+    ctx.font = `${Math.floor(W * 0.036)}px system-ui`;
+    const detail = wrap(ctx, d.detail || "", W * 0.78);
+    detail.slice(0, 3).forEach((ln, i) => {
+      ctx.fillText(ln, W / 2, H * 0.72 + i * W * 0.05);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function drawIbora(ctx, W, H, d, accent, p, sec) {
+    // big quote
+    ctx.globalAlpha = 0.2 * p;
+    ctx.fillStyle = accent;
+    ctx.font = `bold ${Math.floor(W * 0.28)}px Georgia`;
+    ctx.textAlign = "center";
+    ctx.fillText("“", W / 2, H * 0.32);
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = "#fff";
+    ctx.font = `bold ${Math.floor(W * 0.06)}px Georgia`;
+    const lines = wrap(ctx, d.quote || "Kichik qadamlar katta o‘zgarishlarni yaratadi.", W * 0.78);
+    lines.slice(0, 5).forEach((ln, i) => {
+      const a = easeOut(p - i * 0.1);
+      ctx.globalAlpha = a;
+      ctx.fillText(ln, W / 2, H * 0.42 + i * W * 0.075);
+    });
+
+    ctx.globalAlpha = p;
+    ctx.fillStyle = accent;
+    ctx.font = `${Math.floor(W * 0.035)}px system-ui`;
+    ctx.fillText("— " + (d.author || "Noma’lum"), W / 2, H * 0.78);
+
+    // soft line
+    ctx.strokeStyle = accent;
+    ctx.globalAlpha = 0.5 * p;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W * 0.3, H * 0.82);
+    ctx.lineTo(W * 0.7, H * 0.82);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawManba(ctx, W, H, d, accent, p, sec) {
+    ctx.textAlign = "center";
+    ctx.fillStyle = accent;
+    ctx.globalAlpha = p;
+    ctx.font = `bold ${Math.floor(W * 0.03)}px system-ui`;
+    ctx.fillText((d.type || "MANBA").toUpperCase(), W / 2, H * 0.2);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = `bold ${Math.floor(W * 0.065)}px system-ui`;
+    const titleLines = wrap(ctx, d.name || "Foydali manba", W * 0.8);
+    titleLines.slice(0, 2).forEach((ln, i) => {
+      ctx.globalAlpha = easeOut(p - i * 0.1);
+      ctx.fillText(ln, W / 2, H * 0.28 + i * W * 0.075);
+    });
+
+    ctx.globalAlpha = p * 0.85;
+    ctx.fillStyle = "#c4cedb";
+    ctx.font = `${Math.floor(W * 0.034)}px system-ui`;
+    const why = wrap(ctx, d.why || "", W * 0.78);
+    why.slice(0, 2).forEach((ln, i) => ctx.fillText(ln, W / 2, H * 0.42 + i * W * 0.045));
+
+    const points = (d.points || "").split(/\n+/).map(x => x.trim()).filter(Boolean).slice(0, 3);
+    const list = points.length ? points : ["Amaliy qiymat", "Qulay format", "Tavsiya etiladi"];
+
+    list.forEach((item, i) => {
+      const q = easeOut(p - 0.15 - i * 0.12);
+      const y = H * 0.55 + i * H * 0.09;
+      ctx.globalAlpha = q;
+      ctx.fillStyle = "rgba(101,217,255,0.12)";
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, W * 0.12, y, W * 0.76, H * 0.07, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(W * 0.2, y + H * 0.035, W * 0.028, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#061018";
+      ctx.font = `bold ${Math.floor(W * 0.032)}px system-ui`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(i + 1), W * 0.2, y + H * 0.035);
+
+      ctx.fillStyle = "#f0f7ff";
+      ctx.font = `bold ${Math.floor(W * 0.036)}px system-ui`;
+      ctx.textAlign = "left";
+      ctx.fillText(item.slice(0, 28), W * 0.28, y + H * 0.035);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  // ---------- Main draw / loop ----------
+  function draw(t = performance.now()) {
+    // preview canvas
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const rect = cv.getBoundingClientRect();
+    const W = 360, H = 640;
+    if (cv.width !== W * dpr) {
+      cv.width = W * dpr;
+      cv.height = H * dpr;
+      cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    drawFrame(cx, W, H, t - state.t0);
+
+    // recording canvas (higher res)
+    if (!$("recOverlay").hidden) {
+      const RW = 1080, RH = 1920;
+      if (recCv.width !== RW) {
+        recCv.width = RW;
+        recCv.height = RH;
+      }
+      drawFrame(rcx, RW, RH, t - state.t0);
+    }
+  }
+
+  function loop(t) {
+    state.raf = requestAnimationFrame(loop);
+    if (!state.playing && state.t0 === 0) state.t0 = t;
+    draw(t);
+  }
+
+  function startLoop() {
+    cancelAnimationFrame(state.raf);
+    state.t0 = performance.now();
+    state.raf = requestAnimationFrame(loop);
+  }
+
+  function stop() {
     state.playing = false;
-    clearInterval(state.timer);
     $("playBtn").textContent = "▶ Ko‘rish";
     $("recPlay").textContent = "▶ Boshlash";
   }
 
-  function startPlay() {
-    if (state.playing) {
-      stopPlay();
-      return;
-    }
-    state.playing = true;
-    $("playBtn").textContent = "⏸ Pauza";
-    $("recPlay").textContent = "⏸ Pauza";
-    renderPreview();
-    state.timer = setInterval(() => {
-      if (!state.playing) return;
-      renderPreview();
-    }, 3200);
-  }
-
-  $("playBtn").addEventListener("click", startPlay);
-
-  // ---------- Recording Mode ----------
-  function enterRec(on) {
-    const overlay = $("recOverlay");
-    if (on) {
-      stopPlay();
-      const clone = $("frame").cloneNode(true);
-      clone.id = "recInner";
-      $("recFrame").innerHTML = "";
-      $("recFrame").appendChild(clone);
-      overlay.hidden = false;
-      document.body.classList.add("recording");
-      $("recStatus").textContent = "RECORDING MODE · 9:16 · " + (modes[state.mode]?.badge || "NEX");
-    } else {
-      overlay.hidden = true;
-      document.body.classList.remove("recording");
-      stopPlay();
-    }
-  }
-
-  $("recBtn").addEventListener("click", () => enterRec(true));
-  $("recExit").addEventListener("click", () => enterRec(false));
-  $("recPlay").addEventListener("click", () => {
-    if (!state.playing) {
-      // re-render into rec frame too
-      const data = state.data;
-      const inner = $("recInner") || $("recFrame").querySelector(".frame");
-      if (inner) {
-        inner.className = "frame mode-" + state.mode;
-        inner.innerHTML = buildHTML(state.mode, data);
-        void inner.offsetWidth;
-      }
-    }
-    startPlay();
+  $("playBtn").addEventListener("click", () => {
+    state.playing = !state.playing;
+    state.t0 = performance.now();
+    $("playBtn").textContent = state.playing ? "⏸ Pauza" : "▶ Ko‘rish";
+    $("recPlay").textContent = state.playing ? "⏸ Pauza" : "▶ Boshlash";
   });
 
-  // keep rec frame in sync when playing
-  const _render = renderPreview;
-  renderPreview = function () {
-    _render();
-    if (!$("recOverlay").hidden) {
-      const data = state.data;
-      let inner = $("recInner");
-      if (!inner) {
-        inner = document.createElement("div");
-        inner.id = "recInner";
-        inner.className = "frame mode-" + state.mode;
-        $("recFrame").innerHTML = "";
-        $("recFrame").appendChild(inner);
-      }
-      inner.className = "frame mode-" + state.mode;
-      inner.innerHTML = buildHTML(state.mode, data);
-      void inner.offsetWidth;
-    }
-  };
+  // Recording mode
+  $("recBtn").addEventListener("click", () => {
+    stop();
+    state.t0 = performance.now();
+    $("recOverlay").hidden = false;
+    $("recStatus").textContent = "RECORDING · 9:16 · " + (modes[state.mode]?.badge || "NEX");
+    draw();
+  });
+
+  $("recExit").addEventListener("click", () => {
+    $("recOverlay").hidden = true;
+    stop();
+  });
+
+  $("recPlay").addEventListener("click", () => {
+    state.playing = !state.playing;
+    state.t0 = performance.now();
+    $("recPlay").textContent = state.playing ? "⏸ Pauza" : "▶ Boshlash";
+    $("playBtn").textContent = state.playing ? "⏸ Pauza" : "▶ Ko‘rish";
+  });
+
+  // initial
+  initParticles();
 })();

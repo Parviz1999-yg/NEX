@@ -4,47 +4,45 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080b12">
-  <title>NEX — Shaxsiy Reels Studio</title>
+  <title>NEX — Canvas Reels Studio</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <div id="app">
-    <!-- HOME -->
     <section id="home" class="screen on">
       <header class="top">
         <div class="brand"><span class="mark">N</span> NEX</div>
-        <span class="ver">v2.0 · Shaxsiy</span>
+        <span class="ver">v2.1 · Canvas</span>
       </header>
       <div class="hero">
-        <p class="eyebrow">SHAXSIY INSTAGRAM REELS STUDIO</p>
-        <h1>4 xil post.<br><span>4 xil animatsiya.</span></h1>
-        <p class="lead">Har bir turi o‘ziga xos harakat tiliga ega. Bir xil slaydshou yo‘q.</p>
+        <p class="eyebrow">HTML5 CANVAS · SHAXSIY REELS</p>
+        <h1>4 xil post.<br><span>Canvas grafikasi.</span></h1>
+        <p class="lead">Har bir rejim o‘ziga xos canvas animatsiyasiga ega.</p>
       </div>
       <div class="modes">
         <button class="mode-card" data-mode="tavsiya">
           <span class="mode-icon">👤</span>
           <strong>Tavsiya akkaunt</strong>
-          <small>Profil kartasi · orbit · obuna effekti</small>
+          <small>Profil · orbit · zarralar</small>
         </button>
         <button class="mode-card" data-mode="fakt">
           <span class="mode-icon">⚡</span>
           <strong>Qiziqarli fakt</strong>
-          <small>Muhr · pop · raqam urg‘usi</small>
+          <small>Muhr · pop · urg‘u</small>
         </button>
         <button class="mode-card" data-mode="ibora">
           <span class="mode-icon">❝</span>
           <strong>Kun iborasi</strong>
-          <small>Sekin tipografika · blur · estetik</small>
+          <small>Tipografika · yumshoq fon</small>
         </button>
         <button class="mode-card" data-mode="manba">
           <span class="mode-icon">🔗</span>
           <strong>Foydali manba</strong>
-          <small>Kartochkalar · ketma-ket ochilish</small>
+          <small>Kartochkalar · ketma-ket</small>
         </button>
       </div>
     </section>
 
-    <!-- EDITOR -->
     <section id="editor" class="screen">
       <header class="top">
         <button id="backHome" class="ghost">←</button>
@@ -57,32 +55,26 @@
 
         <div class="preview-side">
           <div class="preview-wrap">
-            <div id="stage" class="stage">
-              <div id="frame" class="frame">
-                <!-- dynamic content injected here -->
-              </div>
-            </div>
+            <canvas id="cv" width="360" height="640"></canvas>
           </div>
           <div class="actions">
             <button id="playBtn" class="secondary">▶ Ko‘rish</button>
             <button id="recBtn" class="primary">⛶ EKRAN YOZUV REJIMI</button>
           </div>
-          <p class="hint">Telefoningizdagi Screen Recorder bilan 9:16 formatda yozib oling.</p>
+          <p class="hint">Canvas orqali chiziladi. Telefon Screen Recorder bilan 9:16 yozib oling.</p>
         </div>
       </div>
     </section>
 
-    <!-- RECORDING OVERLAY -->
     <div id="recOverlay" class="rec-overlay" hidden>
-      <div id="recFrame" class="rec-frame"></div>
+      <canvas id="recCv" width="1080" height="1920"></canvas>
       <div class="rec-bar">
-        <span id="recStatus">RECORDING MODE · 9:16</span>
+        <span id="recStatus">RECORDING · 9:16 · CANVAS</span>
         <button id="recPlay">▶ Boshlash</button>
         <button id="recExit">✕ Chiqish</button>
       </div>
     </div>
   </div>
-
   <script src="assets/js/app.js"></script>
 </body>
 </html>
