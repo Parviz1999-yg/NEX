@@ -54,7 +54,7 @@ else if(idx===3){c.translate((1-ease)*w*.3,(1-ease)*-h*.12);c.rotate((1-ease)*.1
 else{c.translate(0,(1-ease)*-h*.28);c.rotate((1-ease)*-.1);c.scale(.76+.24*ease,.76+.24*ease)}
 c.globalAlpha=ease;
 const maxW=w*.78,baseSize=idx===3?w*.095:w*.082;
-const words=txt.split(/\\s+/),lines=[];let line="";
+const words=txt.split(/\s+/),lines=[];let line="";
 c.font="900 "+baseSize+"px system-ui";
 for(const word of words){const test=line?line+" "+word:word;if(c.measureText(test).width>maxW&&line){lines.push(line);line=word}else line=test}
 if(line)lines.push(line);
