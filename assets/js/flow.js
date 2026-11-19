@@ -1,0 +1,39 @@
+(()=>{"use strict";
+const $=id=>document.getElementById(id), pages=["home","content","style","palette","animation","studio"];
+const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — VIZUAL USLUB","04 — RANG PALETRASI","05 — ANIMATSIYA","06 — STUDIYA"];
+const state={mode:"",topicType:"",title:"",tone:"Jiddiy",style:"Minimalistik",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false};
+const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
+const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
+const paletteMap={Midnight:["#090d18","#d8e4f5","#8d79ff"],Monochrome:["#101010","#f4f1e9","#999999"],"Warm editorial":["#211812","#fff0d8","#d89a60"],Electric:["#07151b","#e4fbff","#48d8e8"],Burgundy:["#1d1019","#fff0f2","#d86b8a"]};
+const total=25000;
+function page(name){pages.forEach((p,i)=>$("page-"+p).classList.toggle("active",p===name));$("stepLabel").textContent=labels[pages.indexOf(name)];window.scrollTo(0,0)}
+function selectGroup(id,key){$(id).querySelectorAll("button").forEach(b=>{b.classList.toggle("selected",b.dataset.value===key)});}
+function bindOptions(id,prop){$(id).querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state[prop]=b.dataset.value;selectGroup(id,state[prop]);}));}
+document.querySelectorAll(".direction").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;page("content")}));
+document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",()=>page(b.dataset.back)));
+bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
+$("toStyle").onclick=()=>{state.topicType=$("topicType").value;state.title=$("topicTitle").value.trim();state.tone=$("tone").value;if(!state.topicType||!state.title){alert("Mavzu turi va mavzu nomini kiriting.");return}page("style")};
+$("toPalette").onclick=()=>page("palette");$("toAnimation").onclick=()=>page("animation");$("toStudio").onclick=()=>{buildStudio();page("studio");start()};
+function buildStudio(){$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation;$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=s;b.onclick=()=>{state.scene=i;state.elapsed=i*5000;state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);draw(performance.now())}
+function sceneCopy(i){const t=state.title;const copy=state.mode==="tavsiya"?["Sizga bir akkaunt tavsiya qilamiz",t,"Uning asosiy foydasi nimada?","E’tibor berishga arziydigan jihatlar","Saqlab qo‘ying va kuzatib boring"]:state.mode==="manba"?["Foydali manba",t,"Bu manba nimani o‘rgatadi?","Undan qanday foydalanish mumkin?","Keyinroq foydalanish uchun saqlang"]:state.mode==="fakt"?["Bir qiziq fakt",t,"Bu qanday ishlaydi?","Asosiy sabab va izoh","Yangi bilimni ulashing"]:["Bir fikr ustida to‘xtaling",t,"Mazmunini anglashga harakat qiling","Bu fikr sizga nimani eslatadi?","Fikr bildiring"];return copy[i]}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("sceneText").addEventListener("input",()=>draw(performance.now()));
+function updateSceneUI(){state.scene=Math.min(4,Math.floor(state.elapsed/5000));document.querySelectorAll(".scene-chip").forEach((b,i)=>b.classList.toggle("active",i===state.scene));$("sceneCounter").textContent="SAHNA "+String(state.scene+1).padStart(2,"0")+" / 05";$("sceneTime").textContent="00:"+String(Math.floor(state.elapsed/1000)).padStart(2,"0");$("progress").style.width=(state.elapsed/total*100)+"%";$("sceneText").value=sceneCopy(state.scene);draw(performance.now())}
+const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rctx=rc.getContext("2d");
+function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function drawScene(c,w,h,now){const pal=paletteMap[state.palette],bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene,local=(state.elapsed%5000)/5000,txt=$("sceneText").value||sceneCopy(idx);c.fillStyle=bg;c.fillRect(0,0,w,h);const grad=c.createRadialGradient(w*(idx%2?.8:.2),h*.25,0,w*.5,h*.5,w*.8);grad.addColorStop(0,ac+"55");grad.addColorStop(1,bg);c.fillStyle=grad;c.fillRect(0,0,w,h);c.fillStyle=ac;c.globalAlpha=.8;c.fillRect(w*.09,h*.1,w*.12,Math.max(2,h*.004));c.globalAlpha=1;c.fillStyle=fg;c.textAlign="left";c.textBaseline="top";c.font="700 "+(w*.035)+"px system-ui";c.fillText("NEX  /  "+modes[state.mode].toUpperCase(),w*.09,h*.13);c.fillStyle=ac;c.font="700 "+(w*.028)+"px system-ui";c.fillText("0"+(idx+1)+"  —  "+scenes[idx].toUpperCase(),w*.09,h*.25);
+const enter=Math.min(1,local*3);c.save();if(idx===0){c.translate((1-enter)*w*.18,0);c.globalAlpha=enter}else if(idx===1){c.translate(0,(1-enter)*h*.15);c.globalAlpha=enter}else if(idx===2){c.globalAlpha=enter;c.scale(.92+.08*enter,.92+.08*enter)}else if(idx===3){c.translate((1-enter)*w*.3,(1-enter)*h*.05);c.globalAlpha=enter}else{c.globalAlpha=enter;c.rotate((1-enter)*-.025)}
+c.fillStyle=fg;const size=idx===3?w*.092:w*.075;c.font="750 "+size+"px system-ui";const words=txt.split(/\s+/),lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(c.measureText(test).width>w*.82&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.slice(0,6).forEach((ln,i)=>c.fillText(ln,w*.09,h*(idx===0?.39:.42)+i*size*1.25));c.restore();
+if(idx===0){c.strokeStyle=ac;c.lineWidth=w*.004;c.beginPath();c.arc(w*.78,h*.72,w*(.09+local*.04),0,Math.PI*2);c.stroke()}else if(idx===1){c.fillStyle=ac;c.globalAlpha=.2;c.fillRect(w*.09,h*.75,w*.82,h*.004);c.globalAlpha=1}else if(idx===2){c.strokeStyle=ac;c.lineWidth=w*.003;for(let i=0;i<3;i++){c.beginPath();c.arc(w*.78,h*.75,w*(.035+i*.035),0,Math.PI*2);c.stroke()}}else if(idx===3){c.fillStyle=ac;c.fillRect(w*.09,h*.78,w*.82,h*.012)}else{c.fillStyle=ac;c.font="700 "+w*.03+"px system-ui";c.fillText("SAQLANG  ·  ULASHING",w*.09,h*.8)}
+c.fillStyle=fg;c.globalAlpha=.55;c.font="500 "+w*.022+"px system-ui";c.fillText("INSTAGRAM REELS  /  9:16",w*.09,h*.92);c.globalAlpha=1}
+function draw(){drawScene(ctx,360,640,performance.now());if(state.recording)drawScene(rctx,1080,1920,performance.now())}
+function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.started);if(state.elapsed>=total){state.playing=false;state.elapsed=total}updateSceneUI()}draw();state.raf=requestAnimationFrame(frame)}
+function start(){cancelAnimationFrame(state.raf);state.elapsed=0;state.started=performance.now();state.playing=true;state.raf=requestAnimationFrame(frame);$("startPreview").textContent="Ⅱ Pauza"}
+$("startPreview").onclick=()=>{if(state.playing){state.playing=false;$("startPreview").textContent="▶ Davom etish"}else{state.started=performance.now()-state.elapsed;state.playing=true;$("startPreview").textContent="Ⅱ Pauza"}};
+$("restart").onclick=()=>start();
+$("recordMode").onclick=()=>{state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;draw()};
+$("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶"};
+$("recordExit").onclick=()=>{state.recording=false;$("recordOverlay").hidden=true;state.playing=false;$("startPreview").textContent="▶ Davom etish";draw()};
+$("finish").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;page("home")};
+window.addEventListener("resize",draw);
+})();
