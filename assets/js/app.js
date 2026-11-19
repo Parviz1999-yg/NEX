@@ -9,7 +9,7 @@ const defaults=[
 ["CTA · KEYINGI QADAM","Yana foydali kashfiyotlar uchun kuzating.","Fikr bildiring, saqlab qo‘ying yoki keyingi mavzuni tavsiya qiling.","FOLLOW, SHARE"]
 ];
 let scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
-let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,activeStudio="recommendation";
+let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,controlsHideTimer=0,activeStudio="recommendation";
 const colors=["#b6ff4a","#65d9ff","#b69cff","#ff8c70","#ffffff"];
 const sceneNames=["HOOK","CONTEXT","INSIGHT","VALUE","CTA"];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -49,12 +49,14 @@ $("bg").addEventListener("change",design);$("style").addEventListener("change",d
 $("photoInput").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith("image/")){status("Profil rasmi uchun rasm faylini tanlang.");return;}if(photoUrl)URL.revokeObjectURL(photoUrl);photoUrl=URL.createObjectURL(f);photo=new Image();photo.onload=()=>{ $("previewPhoto").src=photoUrl;$("previewPhoto").hidden=false;$("fallback").hidden=true;status("Profil rasmi yuklandi.");};photo.onerror=()=>status("Rasmni o‘qib bo‘lmadi.");photo.src=photoUrl;});
 function randomFromSeed(){let x=(Number($("seed").value)||2026)>>>0;return()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
 $("randomBtn").onclick=()=>{const rnd=randomFromSeed();setAccent(colors[Math.floor(rnd()*colors.length)]);$("style").selectedIndex=Math.floor(rnd()*6);$("bg").selectedIndex=Math.floor(rnd()*6);$("motion").selectedIndex=Math.floor(rnd()*4);$("intensity").value=String(2+Math.floor(rnd()*8));design();status("Seed "+$("seed").value+" asosida dizayn yaratildi. Matnlar saqlandi.");};
-function stop(){playing=false;playElapsed=0;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Ko‘rish";$("playState").textContent="TAYYOR";if($("recordStartBtn"))$("recordStartBtn").textContent="▶ Boshlash";}
+function stop(){playing=false;playElapsed=0;clearTimeout(controlsHideTimer);$("recordingControls").classList.remove("controls-hidden");cancelAnimationFrame(raf);$("playBtn").textContent="▶ Ko‘rish";$("playState").textContent="TAYYOR";if($("recordStartBtn"))$("recordStartBtn").textContent="▶ Boshlash";}
 function pausePlayback(){if(!playing)return;playElapsed+=performance.now()-playStart;playing=false;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Davom ettirish";$("playState").textContent="PAUZA";if($("recordStartBtn"))$("recordStartBtn").textContent="▶ Davom ettirish";}
 function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=playElapsed+(now-playStart);if(elapsed>=total){stop();loadScene(0);return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
-function startPlayback(){if(playing){pausePlayback();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);}
+function revealRecordingControls(){const panel=$("recordingControls");panel.classList.remove("controls-hidden");clearTimeout(controlsHideTimer);if(recordingMode&&playing)controlsHideTimer=setTimeout(()=>panel.classList.add("controls-hidden"),1800);}
+$("preview").addEventListener("click",()=>{if(recordingMode&&playing)revealRecordingControls();});
+function startPlayback(){if(playing){pausePlayback();revealRecordingControls();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);if(recordingMode)revealRecordingControls();}
 $("playBtn").onclick=startPlayback;
-function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.6.0";}else{stop();}}
+function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();$("recordingControls").classList.remove("controls-hidden");window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.6.0";}else{stop();}}
 $("recordingModeBtn").addEventListener("click",()=>setRecordingMode(true));
 $("recordExitBtn").addEventListener("click",()=>setRecordingMode(false));
 $("recordStartBtn").addEventListener("click",startPlayback);
