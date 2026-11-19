@@ -159,6 +159,7 @@ $("restart").onclick=()=>start();
 $("shuffleBackground").onclick=()=>{
  const button=$("shuffleBackground");
  state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
+ state.backgroundStyle=((state.backgroundStyle||0)+1+Math.floor(Math.random()*5))%6;
  draw();
  button.classList.remove("shuffle-flash");
  void button.offsetWidth;
