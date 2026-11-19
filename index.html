@@ -20,8 +20,35 @@
       <h1>G‘oyani <span>mazmunga</span> aylantiring.</h1>
       <p class="lead">Instagram uchun kreativ loyihalar, texnologik faktlar va foydali raqamli topilmalar.</p>
     </section>
+    <section class="inspiration-lab">
+      <div class="brief-heading">
+        <div><p class="section-label">01 / INSPIRATION LAB</p><h2>Ilhom manbasini o‘z uslubingizga aylantiring</h2></div>
+        <span class="step">REFERENCE → ORIGINALITY</span>
+      </div>
+      <div class="inspiration-grid">
+        <label>Instagram akkaunti yoki havolasi
+          <input id="referenceUrl" type="url" maxlength="300" placeholder="https://www.instagram.com/username/">
+        </label>
+        <label>Uslubda sizga yoqqan jihatlar
+          <textarea id="referenceStyle" rows="3" maxlength="500" placeholder="Masalan: qoramtir fon, yirik tipografika, tez montaj, minimal ranglar, kinematik kayfiyat..."></textarea>
+        </label>
+        <label>NEX talqini
+          <select id="creativeAngle">
+            <option value="editorial">Editorial — jiddiy va tahririy</option>
+            <option value="cinematic">Cinematic — kinematik va dramatik</option>
+            <option value="tech">Tech minimal — texnologik va sodda</option>
+            <option value="experimental">Experimental — noodatiy va tajribaviy</option>
+          </select>
+        </label>
+        <button id="analyzeStyleBtn" class="primary-btn">IJODIY BRIF YARATISH <span>↗</span></button>
+      </div>
+      <div id="styleBrief" class="style-brief" aria-live="polite">
+        <strong>Ijodiy brif shu yerda shakllanadi.</strong>
+        <span>Akkaunt havolasi eslatma sifatida saqlanadi. Instagram sahifasi avtomatik tahlil qilinmaydi — uslub xususiyatlarini o‘zingiz kiriting.</span>
+      </div>
+    </section>
     <section class="content-brief">
-      <div class="brief-heading"><div><p class="section-label">01 / CONTENT BRIEF</p><h2>Kontent yo‘nalishini tanlang</h2></div><span class="step">IDEA → STORY → REEL</span></div>
+      <div class="brief-heading"><div><p class="section-label">02 / CONTENT BRIEF</p><h2>Kontent yo‘nalishini tanlang</h2></div><span class="step">IDEA → STORY → REEL</span></div>
       <div class="brief-grid">
         <label>Kontent turi
           <select id="contentType">
@@ -40,7 +67,7 @@
     </section>
     <div class="studio-grid">
       <section class="preview-panel">
-        <div class="panel-head"><span>02 / LIVE PREVIEW</span><span class="ratio">1080 × 1920 · 9:16</span></div>
+        <div class="panel-head"><span>03 / LIVE PREVIEW</span><span class="ratio">1080 × 1920 · 9:16</span></div>
         <div class="preview-frame bg-aurora theme-neon" id="preview">
           <div class="preview-inner">
             <div class="preview-top"><span id="sceneNo">NEX / 01</span><span>●</span></div>
@@ -57,7 +84,7 @@
         <button id="playBtn" class="secondary-btn full">▶ Ko‘rish</button>
       </section>
       <aside class="control-panel">
-        <div class="panel-head"><span>03 / PROJECT SETTINGS</span><span class="step">NEX / 0.3</span></div>
+        <div class="panel-head"><span>04 / PROJECT SETTINGS</span><span class="step">NEX / 1.0</span></div>
         <label>Instagram nomi<input id="handle" value="@youraccount" maxlength="32"></label>
         <label>Profil tavsifi<input id="role" value="DIGITAL MEDIA · TECHNOLOGY" maxlength="60"></label>
         <label>Muallif / brend<input id="author" value="NEX CREATIVE STUDIO" maxlength="36"></label>
@@ -89,7 +116,7 @@
       </aside>
     </div>
   </main>
-  <footer><span>NEX CREATIVE MEDIA STUDIO</span><span>BUILD 0.3.0</span></footer>
+  <footer><span>NEX CREATIVE MEDIA STUDIO</span><span>BUILD 1.0.0</span></footer>
 </div>
 <script src="assets/js/export.js"></script><script src="assets/js/app.js"></script>
 </body>
