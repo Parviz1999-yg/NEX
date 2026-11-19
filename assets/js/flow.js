@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=id=>document.getElementById(id), pages=["home","content","script","style","palette","animation","studio"];
 const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — SSENARIY","04 — VIZUAL USLUB","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — STUDIYA"];
-const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",bio:"",followers:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Minimalistik",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295),backgroundStyle:Math.floor(Math.random()*6)};
+const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",bio:"",followers:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Minimalistik",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295)};
 const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
 const paletteMap={"Midnight":["#090D18","#F2F5FC","#8B7CFF","#35D6C5"],"Graphite Gold":["#111315","#F3F0E8","#C7A76C","#78909C"],"Arctic":["#0B1B2B","#F1F7FC","#66C7E8","#9B8CFF"],"Deep Forest":["#0C1B18","#EAF2E8","#78A88A","#D0B77A"],"Cobalt":["#101A3A","#F4F6FF","#5B83F5","#F0B86E"],"Burgundy":["#24121D","#FFF0F3","#D87591","#D8B17A"],"Sandstone":["#211C18","#F6EFE4","#C58E62","#8FA39A"],"Terracotta":["#281814","#FFF1E8","#D97858","#E4B66A"],"Orchid":["#1C1630","#F5F0FF","#B08BEE","#6ED4C6"],"Monochrome":["#111315","#F4F4F1","#A7ADB4","#6E7884"]};
@@ -32,43 +32,56 @@ const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rc
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
 function drawProceduralBackground(c,w,h,idx,pal,now){
+ // Seeded procedural art direction: several geometry families are mixed per scene.
  const rand=seededRandom((state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0);
- const bg=pal[0],a=pal[2],b=pal[3]||pal[2];
+ const bg=pal[0],a=pal[2],b=pal[3]||pal[2],fg=pal[1];
  const angle=rand()*Math.PI*2;
  const g=c.createLinearGradient(w*(.5+Math.cos(angle)*.75),h*(.5+Math.sin(angle)*.75),w*(.5-Math.cos(angle)*.75),h*(.5-Math.sin(angle)*.75));
- g.addColorStop(0,bg);g.addColorStop(.38,a+"66");g.addColorStop(.68,b+"55");g.addColorStop(1,bg);
+ g.addColorStop(0,bg);g.addColorStop(.38,a+"55");g.addColorStop(.72,b+"55");g.addColorStop(1,bg);
  c.fillStyle=g;c.fillRect(0,0,w,h);
- // Kuchliroq rangli yorug'lik qatlamlari: fon almashtirilgani darhol bilinadi.
- for(let n=0;n<5;n++){
-  const x=rand()*w,y=rand()*h,r=Math.max(w,h)*(.28+rand()*.48),color=n%2?a:b;
-  const glow=c.createRadialGradient(x,y,0,x,y,r);
-  glow.addColorStop(0,color+"99");glow.addColorStop(.38,color+"55");glow.addColorStop(1,color+"00");
-  c.fillStyle=glow;c.fillRect(0,0,w,h);
+ for(let n=0;n<3;n++){
+  const x=rand()*w,y=rand()*h,r=Math.max(w,h)*(.28+rand()*.45),col=n%2?a:b;
+  const glow=c.createRadialGradient(x,y,0,x,y,r);glow.addColorStop(0,col+"77");glow.addColorStop(1,col+"00");c.fillStyle=glow;c.fillRect(0,0,w,h);
  }
- c.save();
- c.globalAlpha=.25+rand()*.12;c.strokeStyle=rand()>.5?a:b;c.lineWidth=Math.max(2,w*.0035);
- const motif=Math.floor(rand()*5);
- if(motif===0){
-  const cx=w*(.18+rand()*.64),cy=h*(.18+rand()*.64);
-  for(let k=0;k<9;k++){c.beginPath();c.ellipse(cx,cy,w*(.12+k*.045),h*(.04+k*.02),rand()*.7,0,Math.PI*2);c.stroke()}
- }else if(motif===1){
-  for(let k=0;k<14;k++){const x=rand()*w,y=rand()*h,size=w*(.05+rand()*.17);c.save();c.translate(x,y);c.rotate((rand()-.5)*.8);c.strokeRect(-size/2,-size/2,size,size);c.restore()}
- }else if(motif===2){
-  for(let k=0;k<18;k++){const x=rand()*w,y=rand()*h;c.beginPath();c.moveTo(x,y);c.lineTo(x+(rand()-.5)*w*.7,y+(rand()-.5)*h*.5);c.stroke()}
- }else if(motif===3){
-  for(let k=0;k<13;k++){const x=rand()*w,y=rand()*h,r=w*(.035+rand()*.12);c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke()}
- }else{
-  const x=w*(.15+rand()*.7),y=h*(.2+rand()*.6);
-  c.beginPath();c.moveTo(x-w*.5,y-h*.2);c.lineTo(x+w*.5,y+h*.2);c.lineTo(x+w*.2,y+h*.48);c.closePath();c.stroke();
-  c.beginPath();c.moveTo(x-w*.4,y+h*.28);c.lineTo(x+w*.38,y-h*.35);c.stroke();
+ const families=8,layers=3+Math.floor(rand()*3);
+ for(let layer=0;layer<layers;layer++){
+  const family=Math.floor(rand()*families),x=w*(.08+rand()*.84),y=h*(.08+rand()*.84);
+  const scale=.12+rand()*.34,rot=(rand()-.5)*Math.PI*.9,accent=rand()>.5?a:b;
+  c.save();c.translate(x,y);c.rotate(rot);c.globalAlpha=.16+rand()*.34;c.strokeStyle=layer%2?accent:fg;c.fillStyle=accent;c.lineWidth=Math.max(1,w*(.002+rand()*.005));
+  if(family===0){
+   // Orbital ellipses and satellites.
+   for(let k=0;k<3+Math.floor(rand()*5);k++){const z=.55+k*.23;c.beginPath();c.ellipse(0,0,w*scale*z,h*scale*.32*z,rand()*.25,0,Math.PI*2);c.stroke()}
+   c.beginPath();c.arc(w*scale*.72,0,w*scale*.035,0,Math.PI*2);c.fill();
+  }else if(family===1){
+   // Brutalist panels and nested rectangles.
+   for(let k=0;k<2+Math.floor(rand()*4);k++){const z=1+k*.22;c.strokeRect(-w*scale*z,-h*scale*.22*z,w*scale*2*z,h*scale*.44*z)}
+   c.globalAlpha*=.65;c.fillRect(-w*scale*.8,-h*scale*.035,w*scale*.55,h*scale*.07);
+  }else if(family===2){
+   // Angular shards.
+   for(let k=0;k<2+Math.floor(rand()*4);k++){const z=.55+k*.24;c.beginPath();c.moveTo(-w*scale*z,-h*scale*.45);c.lineTo(w*scale*z,-h*scale*.12);c.lineTo(w*scale*.38*z,h*scale*.55);c.lineTo(-w*scale*.72*z,h*scale*.3);c.closePath();c.stroke()}
+  }else if(family===3){
+   // Organic overlapping blobs.
+   for(let k=0;k<3+Math.floor(rand()*4);k++){const z=.55+k*.2;c.beginPath();c.ellipse((rand()-.5)*w*scale,(rand()-.5)*h*scale,w*scale*z,h*scale*.3*z,rand(),0,Math.PI*2);c.stroke()}
+  }else if(family===4){
+   // Perspective tunnel.
+   for(let k=0;k<5+Math.floor(rand()*5);k++){const z=.35+k*.2;c.beginPath();c.moveTo(-w*scale*z,-h*scale*.3*z);c.lineTo(w*scale*z,-h*scale*.3*z);c.lineTo(w*scale*1.2*z,h*scale*.3*z);c.lineTo(-w*scale*1.2*z,h*scale*.3*z);c.closePath();c.stroke()}
+  }else if(family===5){
+   // Modular grid with alternating cells.
+   const step=w*scale*.34;for(let gx=-2;gx<=2;gx++){for(let gy=-2;gy<=2;gy++){if(rand()>.35)c.strokeRect(gx*step,gy*step,step*.58,step*.58)}}
+  }else if(family===6){
+   // Repeating arcs and wave bands.
+   for(let k=0;k<5+Math.floor(rand()*5);k++){const yy=(k-4)*h*scale*.13;c.beginPath();c.moveTo(-w*scale,yy);c.bezierCurveTo(-w*scale*.35,yy-h*scale*.45,w*scale*.35,yy+h*scale*.45,w*scale,yy);c.stroke()}
+  }else{
+   // Radial spokes and polygon core.
+   const count=7+Math.floor(rand()*9),radius=w*scale;
+   for(let k=0;k<count;k++){const q=k/count*Math.PI*2;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(q)*radius,Math.sin(q)*radius);c.stroke()}
+   c.beginPath();for(let k=0;k<count;k++){const q=k/count*Math.PI*2,r=radius*(.35+(k%2)*.16);if(k===0)c.moveTo(Math.cos(q)*r,Math.sin(q)*r);else c.lineTo(Math.cos(q)*r,Math.sin(q)*r)}c.closePath();c.stroke();
+  }
+  c.restore();
  }
- c.restore();
- // Yirik shaffof rangli shakl: har bir seed yangi kompozitsiya beradi.
- c.save();c.globalAlpha=.18+rand()*.1;c.fillStyle=rand()>.5?a:b;
- const bx=rand()*w,by=rand()*h,br=w*(.18+rand()*.2);
- c.beginPath();c.arc(bx,by,br,0,Math.PI*2);c.fill();c.restore();
- c.save();c.globalAlpha=.2;c.fillStyle=pal[1];
- for(let i=0;i<85;i++){const x=rand()*w,y=rand()*h,r=.7+rand()*w*.0025;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
+ // Fine grain of points keeps the composition tactile without heavy image assets.
+ c.save();c.globalAlpha=.16;c.fillStyle=fg;
+ for(let i=0;i<42;i++){const x=rand()*w,y=rand()*h,r=.6+rand()*w*.0018;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
  c.restore();
 }
 
@@ -150,7 +163,6 @@ $("restart").onclick=()=>start();
 $("shuffleBackground").onclick=()=>{
  const button=$("shuffleBackground");
  state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
- state.backgroundStyle=((state.backgroundStyle||0)+1+Math.floor(Math.random()*5))%6;
  draw();
  button.classList.remove("shuffle-flash");
  void button.offsetWidth;
