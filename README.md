@@ -15,6 +15,11 @@ Sahifaning pozitsiyasi: **raqamli dunyo, texnologiyalar, kreativ loyihalar va fo
 
 ## Hozirgi imkoniyatlar
 
+- **Inspiration Lab:** yoqqan Instagram akkaunti havolasini va undagi vizual xususiyatlarni qayd etish.
+- Tanlangan ijodiy yo‘nalish (Editorial, Cinematic, Tech minimal, Experimental) bo‘yicha brif shakllantirish.
+- Uslubdan ilhomlanish va original kontent yaratish uchun aniq ko‘rsatmalar.
+- Tanlangan yo‘nalishga mos preview dizayni va rangini qo‘llash.
+
 - To‘rtta kontent yo‘nalishidan birini tanlash.
 - Mavzu kiritib, besh qismli Reels ssenariysi shablonini yaratish: Hook, Context, Insight, Value, CTA.
 - Har bir sahna matni va teglarini mustaqil tahrirlash.
@@ -26,6 +31,10 @@ Sahifaning pozitsiyasi: **raqamli dunyo, texnologiyalar, kreativ loyihalar va fo
 - Canvas orqali 1080×1920 video eksport qilish.
 
 ## Muhim cheklov
+
+Inspiration Lab Instagram sahifalarini avtomatik ochmaydi yoki skan qilmaydi. Havola faqat ilhom manbasini qayd etish uchun; uslub xususiyatlari foydalanuvchi tomonidan yoziladi. Bu bosqichda AI tahlili va tashqi akkaunt ma’lumotlarini yig‘ish mavjud emas.
+
+
 
 Kontent ssenariysi hozircha oldindan yozilgan shablonlar asosida tuziladi; u AI tomonidan faktlarni tekshirib yoki mustaqil tadqiqot qilib bermaydi. Faktlar, raqamlar, havolalar va da’volar nashrdan oldin muallif tomonidan tekshirilishi kerak.
 
