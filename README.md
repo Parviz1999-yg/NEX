@@ -94,3 +94,20 @@ Repository Settings → Pages → Build and deployment → Source: GitHub Action
 - Kod o‘zgarishlari GitHub main branchiga yozildi.
 - CSS/JS matn darajasida yangilandi; real Android qurilmasida animatsiya va eksport sinovi hali bajarilmagan.
 - Ushbu yangilanish preview animatsiyalarini farqlaydi; canvas video eksportidagi studiyaga xos sahna animatsiyasi keyingi texnik bosqichda alohida moslashtirilishi kerak.
+
+
+## NEX v1.4.0 — 2026-11-19
+
+### Yangilanishlar
+- Video eksport rendereriga har bir sahnaning animatsiya progressi uzatildi.
+- Tavsiya akkaunt eksporti: profil kartasi chapdan siljib ochiladi.
+- Foydali manbalar eksporti: uchta resurs kartasi navbat bilan paydo bo‘ladi.
+- Qiziqarli faktlar eksporti: aylanuvchi fakt halqasi va sahna raqami ochiladi.
+- Maxsus iboralar eksporti: katta qo‘shtirnoq belgisi va tipografik chiziq yumshoq ochiladi.
+- Sarlavha va izohlar sahna davomida bosqichma-bosqich paydo bo‘ladi.
+- MP4/WebM formatini aniqlash va haqiqiy kengaytmani saqlash mexanizmi o‘zgarishsiz qoldirildi.
+
+### Tekshiruv holati
+- JavaScript manba kodiga o‘zgarishlar GitHub main branchiga yozildi.
+- Kodning amaliy brauzer sinovi, eksport qilingan faylni ijro etish va Android qurilmasida yuklab olish sinovi hali bajarilmadi.
+- GitHub Pages deploy natijasi commitdan keyin alohida tekshiriladi.
