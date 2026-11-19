@@ -1,129 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080b12">
-  <meta name="description" content="NEX — Instagram uchun kreativ va texnologik kontent ishlab chiqish studiyasi.">
-  <title>NEX — Creative Media Studio</title>
+  <title>NEX — Shaxsiy Reels Studio</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="app-shell">
-  <header class="topbar">
-    <a class="brand" href="./"><span class="brand-mark">N</span><span>NEX <small>CREATIVE MEDIA STUDIO</small></span></a>
-    <span class="status"><i></i> CONTENT WORKSPACE</span>
-  </header>
-  <main class="workspace">
-    <section class="intro">
-      <p class="eyebrow">YOUR DIGITAL MEDIA WORKSPACE</p>
-      <h1>G‘oyani <span>mazmunga</span> aylantiring.</h1>
-      <p class="lead">Instagram uchun kreativ loyihalar, texnologik faktlar va foydali raqamli topilmalar.</p>
-    </section>
-    <section class="inspiration-lab">
-      <div class="brief-heading">
-        <div><p class="section-label">01 / INSPIRATION LAB</p><h2>Ilhom manbasini o‘z uslubingizga aylantiring</h2></div>
-        <span class="step">REFERENCE → ORIGINALITY</span>
+  <div id="app">
+    <!-- HOME -->
+    <section id="home" class="screen on">
+      <header class="top">
+        <div class="brand"><span class="mark">N</span> NEX</div>
+        <span class="ver">v2.0 · Shaxsiy</span>
+      </header>
+      <div class="hero">
+        <p class="eyebrow">SHAXSIY INSTAGRAM REELS STUDIO</p>
+        <h1>4 xil post.<br><span>4 xil animatsiya.</span></h1>
+        <p class="lead">Har bir turi o‘ziga xos harakat tiliga ega. Bir xil slaydshou yo‘q.</p>
       </div>
-      <div class="inspiration-grid">
-        <label>Instagram akkaunti yoki havolasi
-          <input id="referenceUrl" type="url" maxlength="300" placeholder="https://www.instagram.com/username/">
-        </label>
-        <label>Uslubda sizga yoqqan jihatlar
-          <textarea id="referenceStyle" rows="3" maxlength="500" placeholder="Masalan: qoramtir fon, yirik tipografika, tez montaj, minimal ranglar, kinematik kayfiyat..."></textarea>
-        </label>
-        <label>NEX talqini
-          <select id="creativeAngle">
-            <option value="editorial">Editorial — jiddiy va tahririy</option>
-            <option value="cinematic">Cinematic — kinematik va dramatik</option>
-            <option value="tech">Tech minimal — texnologik va sodda</option>
-            <option value="experimental">Experimental — noodatiy va tajribaviy</option>
-          </select>
-        </label>
-        <button id="analyzeStyleBtn" class="primary-btn">IJODIY BRIF YARATISH <span>↗</span></button>
-      </div>
-      <div id="styleBrief" class="style-brief" aria-live="polite">
-        <strong>Ijodiy brif shu yerda shakllanadi.</strong>
-        <span>Akkaunt havolasi eslatma sifatida saqlanadi. Instagram sahifasi avtomatik tahlil qilinmaydi — uslub xususiyatlarini o‘zingiz kiriting.</span>
+      <div class="modes">
+        <button class="mode-card" data-mode="tavsiya">
+          <span class="mode-icon">👤</span>
+          <strong>Tavsiya akkaunt</strong>
+          <small>Profil kartasi · orbit · obuna effekti</small>
+        </button>
+        <button class="mode-card" data-mode="fakt">
+          <span class="mode-icon">⚡</span>
+          <strong>Qiziqarli fakt</strong>
+          <small>Muhr · pop · raqam urg‘usi</small>
+        </button>
+        <button class="mode-card" data-mode="ibora">
+          <span class="mode-icon">❝</span>
+          <strong>Kun iborasi</strong>
+          <small>Sekin tipografika · blur · estetik</small>
+        </button>
+        <button class="mode-card" data-mode="manba">
+          <span class="mode-icon">🔗</span>
+          <strong>Foydali manba</strong>
+          <small>Kartochkalar · ketma-ket ochilish</small>
+        </button>
       </div>
     </section>
-    <section class="content-brief">
-      <div class="brief-heading"><div><p class="section-label">02 / CONTENT BRIEF</p><h2>Kontent yo‘nalishini tanlang</h2></div><span class="step">IDEA → STORY → REEL</span></div>
-      <div class="brief-grid">
-        <label>Kontent turi
-          <select id="contentType">
-            <option value="recommendation">Tavsiya akkaunt</option>
-            <option value="resources">Foydali manbalar</option>
-            <option value="facts">Qiziqarli faktlar</option>
-            <option value="phrases">Maxsus iboralar</option>
-          </select>
-        </label>
-        <label>Mavzu yoki obyekt
-          <input id="topicInput" maxlength="100" placeholder="Masalan: Notion, sun’iy intellekt, mening yangi loyiham">
-        </label>
-        <button id="buildContentBtn" class="primary-btn">KONTENT TUZISH <span>↗</span></button>
-      </div>
-      <p class="hint" id="briefHint">Har bir studiya mavzuni o‘ziga xos besh sahnali Reels ssenariysiga aylantiradi. Tayyor matnlarni tekshirib, o‘zingizga moslang.</p>
-    </section>
-    <div class="studio-grid">
-      <section class="preview-panel">
-        <div class="panel-head"><span>03 / LIVE PREVIEW</span><span class="ratio">1080 × 1920 · 9:16</span></div>
-        <div class="preview-frame bg-aurora theme-neon" id="preview">
-          <div class="preview-inner">
-            <div class="preview-top"><span id="sceneNo">NEX / 01</span><span>●</span></div>
-            <div class="profile"><img id="previewPhoto" hidden><div id="fallback">N</div><div><b id="previewHandle">@youraccount</b><small id="previewRole">DIGITAL MEDIA</small></div></div>
-            <div class="preview-copy"><small id="previewKicker">HOOK · DIQQATNI TORTING</small><h2 id="previewTitle">Raqamli dunyoni<br><em>yangicha</em><br>kashf eting.</h2><p id="previewBody">Texnologiya va kreativ g‘oyalar bir joyda.</p></div>
-            <div id="previewTags" class="tags"><span>TECHNOLOGY</span><span>IDEAS</span></div>
-            <div class="preview-foot"><span id="previewAuthor">NEX CREATIVE STUDIO</span><span>SWIPE ↗</span></div>
+
+    <!-- EDITOR -->
+    <section id="editor" class="screen">
+      <header class="top">
+        <button id="backHome" class="ghost">←</button>
+        <div class="brand"><span class="mark">N</span> <span id="modeTitle">Tavsiya</span></div>
+        <span class="ver" id="modeBadge">TAVSIYA</span>
+      </header>
+
+      <div class="editor-body">
+        <div class="form-panel" id="formPanel"></div>
+
+        <div class="preview-side">
+          <div class="preview-wrap">
+            <div id="stage" class="stage">
+              <div id="frame" class="frame">
+                <!-- dynamic content injected here -->
+              </div>
+            </div>
           </div>
+          <div class="actions">
+            <button id="playBtn" class="secondary">▶ Ko‘rish</button>
+            <button id="recBtn" class="primary">⛶ EKRAN YOZUV REJIMI</button>
+          </div>
+          <p class="hint">Telefoningizdagi Screen Recorder bilan 9:16 formatda yozib oling.</p>
         </div>
-        <div class="preview-meta"><span id="sceneLabel">1 / 5 · HOOK</span><span id="playState">TAYYOR</span></div>
-        <div class="scene-strip">
-          <button data-scene="0" class="active">01<small>HOOK</small></button><button data-scene="1">02<small>CONTEXT</small></button><button data-scene="2">03<small>INSIGHT</small></button><button data-scene="3">04<small>VALUE</small></button><button data-scene="4">05<small>CTA</small></button>
-        </div>
-        <button id="playBtn" class="secondary-btn full">▶ Ko‘rish</button>
-        <button id="recordingModeBtn" class="primary-btn full">⛶ EKRAN YOZUV REJIMI</button>
-        <p class="hint">NEX videoni yuklab olmaydi. 9:16 ekran yozuv rejimini oching va telefoningizdagi Screen Recorder orqali Reels’ni yozib oling.</p>
-      </section>
-      <aside class="control-panel">
-        <div class="panel-head"><span>04 / PROJECT SETTINGS</span><span class="step">NEX / v1.6.0</span></div>
-        <label>Instagram nomi<input id="handle" value="@youraccount" maxlength="32"></label>
-        <label>Profil tavsifi<input id="role" value="DIGITAL MEDIA · TECHNOLOGY" maxlength="60"></label>
-        <label>Muallif / brend<input id="author" value="NEX CREATIVE STUDIO" maxlength="36"></label>
-        <label>Profil rasmi<input id="photoInput" type="file" accept="image/*"></label>
-        <div class="divider"></div>
-        <p class="section-label">SAHNA MATNI</p>
-        <label>Sarlavha<textarea id="headline" rows="3">Raqamli dunyoni yangicha kashf eting.</textarea></label>
-        <label>Asosiy matn<textarea id="bodyText" rows="2">Texnologiya va kreativ g‘oyalar bir joyda.</textarea></label>
-        <label>Yuqori yozuv<input id="kicker" value="HOOK · DIQQATNI TORTING"></label>
-        <label>Teglar<input id="tags" value="TECHNOLOGY, IDEAS"></label>
-        <div class="divider"></div>
-        <div class="field-grid">
-          <label>Dizayn<select id="style"><option value="neon">Neon</option><option value="glass">Glass</option><option value="retro">Retro</option><option value="ink">Ink</option><option value="comix">Comix</option><option value="glitch">Glitch</option></select></label>
-          <label>Fon<select id="bg"><option value="aurora">Aurora</option><option value="stars">Stars</option><option value="grid">Grid</option><option value="bubbles">Bubbles</option><option value="rain">Rain</option><option value="fire">Fire</option></select></label>
-        </div>
-        <label>Urg‘u rangi</label><div class="color-row"><button class="swatch active" data-color="#b6ff4a"></button><button class="swatch" data-color="#65d9ff"></button><button class="swatch" data-color="#b69cff"></button><button class="swatch" data-color="#ff8c70"></button></div>
-        <div class="field-grid">
-          <label>Animatsiya<select id="motion"><option value="float">Suzuvchi</option><option value="pulse">Pulse</option><option value="orbit">Orbit</option><option value="shake">Glitch</option></select></label>
-          <label>Seed<input id="seed" type="number" value="2026" min="1" max="999999"></label>
-        </div>
-        <label>Harakat intensivligi<input id="intensity" type="range" min="1" max="10" value="5"></label>
-        <div class="field-grid">
-          <label>Sahna davomiyligi<select id="duration"><option>3</option><option selected>4</option><option>5</option><option>6</option></select></label>
-          <label>Ritm / BPM<select id="bpm"><option>80</option><option selected>100</option><option>120</option><option>140</option></select></label>
-        </div>
-        <div class="button-row"><button id="randomBtn" class="secondary-btn">⤨ Tasodifiy dizayn</button><button id="resetBtn" class="secondary-btn">↺ Tiklash</button></div>
-        <p class="hint" id="statusText">Avval kontent yo‘nalishi va mavzuni tanlang.</p>
-      </aside>
+      </div>
+    </section>
+
+    <!-- RECORDING OVERLAY -->
+    <div id="recOverlay" class="rec-overlay" hidden>
+      <div id="recFrame" class="rec-frame"></div>
+      <div class="rec-bar">
+        <span id="recStatus">RECORDING MODE · 9:16</span>
+        <button id="recPlay">▶ Boshlash</button>
+        <button id="recExit">✕ Chiqish</button>
+      </div>
     </div>
-  </main>
-  <footer><span>NEX CREATIVE MEDIA STUDIO</span><span>NEX v1.6.0</span></footer>
-</div>
-<div id="recordingControls" class="recording-controls" hidden>
-  <span id="recordingStatus">RECORDING MODE · 9:16</span>
-  <button id="recordStartBtn" type="button">▶ Boshlash</button>
-  <button id="recordExitBtn" type="button">✕ Chiqish</button>
-</div>
-<script src="assets/js/app.js"></script>
+  </div>
+
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
