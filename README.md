@@ -63,3 +63,18 @@ Repository Settings → Pages → Build and deployment → Source: GitHub Action
 - Manba kodidagi HTML/JavaScript bog‘lanishlari va eksport oqimi yangilandi.
 - GitHub Actions deploy natijasi keyingi tekshiruvda alohida tasdiqlanishi kerak.
 - Android qurilmasida real ekran yozuvi va MP4/WebM yuklab olish sinovi ushbu commit doirasida bajarilmagan.
+
+
+## NEX v1.2.0 — 2026-11-19
+
+### Yangilanishlar
+- Kontent konstruktori to‘rtta aniq studiyaga ajratildi: Tavsiya akkaunt, Foydali manbalar, Qiziqarli faktlar va Maxsus iboralar.
+- Har bir studiya uchun alohida besh sahnali ssenariy oqimi, matn ohangi va teglar belgilandi.
+- Studiya tanlanganda unga mos boshlang‘ich dizayn, fon, animatsiya va urg‘u rangi qo‘llanadi; foydalanuvchi ularni keyin o‘zgartirishi mumkin.
+- Eski to‘rtta umumiy kontent turi yangi to‘rt studiya bilan almashtirildi.
+- Faktlar, resurslar va tavsiyalar avtomatik tekshirilmaydi: nashrdan oldin manbalarni muallif tekshirishi kerak.
+
+### Tekshiruv holati
+- Kod o‘zgarishlari GitHub main branchiga yozildi.
+- Brauzerda, Android qurilmasida va video eksportida amaliy sinov hali bajarilmadi.
+- GitHub Pages deploy holati commitdan keyin alohida tekshiriladi.
