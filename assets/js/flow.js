@@ -25,12 +25,81 @@ $("accountImage").addEventListener("change",e=>{const file=e.target.files&&e.tar
 function updateSceneUI(){state.scene=sceneIndexAt(state.elapsed);document.querySelectorAll(".scene-chip").forEach((b,i)=>b.classList.toggle("active",i===state.scene));$("sceneCounter").textContent="SAHNA "+String(state.scene+1).padStart(2,"0")+" / 05";$("sceneTime").textContent="00:"+String(Math.floor(state.elapsed/1000)).padStart(2,"0");$("progress").style.width=(state.elapsed/total*100)+"%";if(state.lastScene!==state.scene){$("sceneText").value=sceneCopy(state.scene);$("sceneVoice").value=state.voice[state.scene]||"";state.lastScene=state.scene}draw(performance.now())}
 const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rctx=rc.getContext("2d");let accountPhoto=null;
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
-function drawScene(c,w,h,now){const pal=paletteMap[state.palette],bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene,local=Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]),txt=$("sceneText").value||sceneCopy(idx);c.fillStyle=bg;c.fillRect(0,0,w,h);const grad=c.createRadialGradient(w*(idx%2?.8:.2),h*.25,0,w*.5,h*.5,w*.8);grad.addColorStop(0,ac+"55");grad.addColorStop(1,bg);c.fillStyle=grad;c.fillRect(0,0,w,h);c.fillStyle=ac;c.globalAlpha=.8;c.fillRect(w*.09,h*.1,w*.12,Math.max(2,h*.004));c.globalAlpha=1;c.fillStyle=fg;c.textAlign="left";c.textBaseline="top";c.font="700 "+(w*.035)+"px system-ui";c.fillText("NEX  /  "+modes[state.mode].toUpperCase(),w*.09,h*.13);c.fillStyle=ac;c.font="700 "+(w*.028)+"px system-ui";c.fillText("0"+(idx+1)+"  —  "+sceneTitle(idx).toUpperCase(),w*.09,h*.25);
-const enter=Math.min(1,local*3);c.save();if(idx===0){c.translate((1-enter)*w*.18,0);c.globalAlpha=enter}else if(idx===1){c.translate(0,(1-enter)*h*.15);c.globalAlpha=enter}else if(idx===2){c.globalAlpha=enter;c.scale(.92+.08*enter,.92+.08*enter)}else if(idx===3){c.translate((1-enter)*w*.3,(1-enter)*h*.05);c.globalAlpha=enter}else{c.globalAlpha=enter;c.rotate((1-enter)*-.025)}
-c.fillStyle=fg;const size=idx===3?w*.092:w*.075;c.font="750 "+size+"px system-ui";const words=txt.split(/\s+/),lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(c.measureText(test).width>w*.82&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.slice(0,6).forEach((ln,i)=>c.fillText(ln,w*.09,h*(idx===0?.39:.42)+i*size*1.25));c.restore();
-if(idx===1&&state.mode==="tavsiya"){if(accountPhoto&&accountPhoto.complete){c.save();c.beginPath();c.arc(w*.78,h*.68,w*.105,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,w*.675,h*.575,w*.21,h*.21);c.restore()}c.fillStyle=fg;c.font="700 "+(w*.035)+"px system-ui";c.fillText(state.account.name||"TAVSIYA ETILGAN AKKAUNT",w*.09,h*.72);c.font="500 "+(w*.025)+"px system-ui";c.fillText(state.account.bio||"Foydali sahifa bilan tanishing",w*.09,h*.77);if(state.account.followers)c.fillText(state.account.followers+" obunachi",w*.09,h*.82)}if(idx===0){c.strokeStyle=ac;c.lineWidth=w*.004;c.beginPath();c.arc(w*.78,h*.72,w*(.09+local*.04),0,Math.PI*2);c.stroke()}else if(idx===1){c.fillStyle=ac;c.globalAlpha=.2;c.fillRect(w*.09,h*.75,w*.82,h*.004);c.globalAlpha=1}else if(idx===2){c.strokeStyle=ac;c.lineWidth=w*.003;for(let i=0;i<3;i++){c.beginPath();c.arc(w*.78,h*.75,w*(.035+i*.035),0,Math.PI*2);c.stroke()}}else if(idx===3){c.fillStyle=ac;c.fillRect(w*.09,h*.78,w*.82,h*.012)}else{c.fillStyle=ac;c.font="700 "+w*.03+"px system-ui";c.fillText("SAQLANG  ·  ULASHING",w*.09,h*.8)}
-c.fillStyle=fg;c.globalAlpha=.55;c.font="500 "+w*.022+"px system-ui";c.fillText("INSTAGRAM REELS  /  9:16",w*.09,h*.92);c.globalAlpha=1;drawBrand(c,w,h,ac,fg)}
-function drawBrand(c,w,h,ac,fg){const t=state.elapsed,first=t<1300,last=t>total-1700;if(!first&&!last)return;const p=first?Math.min(1,t/700):Math.min(1,(t-(total-1700))/700);c.save();c.globalAlpha=Math.sin(Math.PI*p)*.92;c.translate(w*.5,h*(first?.22:.18));const scale=.72+p*.28;c.scale(scale,scale);c.textAlign="center";c.textBaseline="middle";c.fillStyle=fg;c.font="900 "+(w*.105)+"px system-ui";c.fillText("NEX",0,0);c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.ellipse(0,0,w*.22,h*.045,-.18,Math.PI*.08,Math.PI*1.85);c.stroke();c.fillStyle=ac;c.beginPath();c.moveTo(w*.09,-h*.01);c.lineTo(w*.12,0);c.lineTo(w*.09,h*.01);c.closePath();c.fill();if(last){c.font="500 "+(w*.024)+"px system-ui";c.fillStyle=fg;c.fillText("Fikr va imkoniyatlar makoni",0,h*.065)}c.restore()}function draw(){drawScene(ctx,360,640,performance.now());if(state.recording)drawScene(rctx,1080,1920,performance.now())}
+function drawScene(c,w,h,now){
+const pal=paletteMap[state.palette],bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
+const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
+const txt=$( "sceneText" ).value||sceneCopy(idx);
+const t=now/1000;
+c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);
+const glow=c.createRadialGradient(w*(idx%2?.78:.2),h*(.24+.08*Math.sin(t)),0,w*.5,h*.48,w*.82);
+glow.addColorStop(0,ac+"66");glow.addColorStop(.48,ac+"18");glow.addColorStop(1,bg);
+c.fillStyle=glow;c.fillRect(0,0,w,h);
+// Deep perspective stage: subtle vanishing-point grid.
+c.save();c.globalAlpha=.18;c.strokeStyle=ac;c.lineWidth=Math.max(1,w*.0018);
+const horizon=h*.48,vanish=w*.5;
+for(let i=-7;i<=7;i++){c.beginPath();c.moveTo(vanish+i*w*.018,horizon);c.lineTo(vanish+i*w*.22,h*1.04);c.stroke()}
+for(let j=0;j<9;j++){const y=horizon+Math.pow(j/8,1.8)*h*.56;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}
+c.restore();
+// Large dimensional abstract forms change by scene.
+c.save();c.translate(w*.5,h*.28);c.rotate((idx%2?1:-1)*(.08+local*.12));c.globalAlpha=.24;
+for(let k=0;k<3;k++){const z=1+k*.24;c.strokeStyle=k===1?fg:ac;c.lineWidth=w*.008;c.beginPath();c.roundRect(-w*.29*z,-h*.13*z,w*.58*z,h*.26*z,w*.035*z);c.stroke()}
+c.restore();
+// Distinct replay-like camera move per scene.
+const ease=1-Math.pow(1-local,3);
+c.save();
+if(idx===0){c.translate((1-ease)*w*.42,0);c.rotate((1-ease)*-.16);c.scale(.72+.28*ease,.72+.28*ease)}
+else if(idx===1){c.translate(0,(1-ease)*h*.34);c.rotate((1-ease)*.09);c.scale(.82+.18*ease,.82+.18*ease)}
+else if(idx===2){c.translate((1-ease)*-w*.34,(1-ease)*h*.08);c.scale(.68+.32*ease,.68+.32*ease)}
+else if(idx===3){c.translate((1-ease)*w*.3,(1-ease)*-h*.12);c.rotate((1-ease)*.13);c.scale(.78+.22*ease,.78+.22*ease)}
+else{c.translate(0,(1-ease)*-h*.28);c.rotate((1-ease)*-.1);c.scale(.76+.24*ease,.76+.24*ease)}
+c.globalAlpha=ease;
+const maxW=w*.78,baseSize=idx===3?w*.095:w*.082;
+const words=txt.split(/\\s+/),lines=[];let line="";
+c.font="900 "+baseSize+"px system-ui";
+for(const word of words){const test=line?line+" "+word:word;if(c.measureText(test).width>maxW&&line){lines.push(line);line=word}else line=test}
+if(line)lines.push(line);
+const shown=lines.slice(0,6),lineH=baseSize*1.22;
+const blockH=shown.length*lineH,top=h*.47-blockH*.5;
+shown.forEach((ln,i)=>{
+ const y=top+i*lineH;
+ // Extruded 3D lettering: layered depth, bevel-like highlight, front face.
+ c.textAlign="left";c.textBaseline="middle";c.font="900 "+baseSize+"px system-ui";
+ for(let d=9;d>=1;d--){c.fillStyle=d%2?ac+"88":"#02040acc";c.fillText(ln,w*.105+d*w*.0018,y+d*w*.0022)}
+ c.shadowColor=ac;c.shadowBlur=w*.025;c.fillStyle=fg;c.fillText(ln,w*.09,y);c.shadowBlur=0;
+ c.globalAlpha=ease*.72;c.fillStyle=ac;c.fillRect(w*.09,y+baseSize*.56,Math.min(c.measureText(ln).width,w*.7),Math.max(2,w*.004));c.globalAlpha=ease;
+});
+c.restore();
+// Account profile reveal as a floating 3D card, only on recommendation scene.
+if(idx===1&&state.mode==="tavsiya"){
+ const p=Math.min(1,Math.max(0,(local-.12)*2.4));c.save();
+ c.translate(w*.5,h*.78);c.rotate((1-p)*-.13);c.scale(.82+.18*p,.82+.18*p);c.globalAlpha=p;
+ c.shadowColor="#00000099";c.shadowBlur=w*.05;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.004;
+ c.beginPath();c.roundRect(-w*.39,-h*.105,w*.78,h*.21,w*.025);c.fill();c.stroke();c.shadowBlur=0;
+ if(accountPhoto&&accountPhoto.complete){c.save();c.beginPath();c.arc(-w*.27,0,w*.065,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,-w*.335,-w*.065,w*.13,w*.13);c.restore()}
+ c.textAlign="left";c.textBaseline="middle";c.fillStyle=fg;c.font="800 "+w*.036+"px system-ui";c.fillText(state.account.name||"Tavsiya etilgan akkaunt",-w*.16,-h*.025);
+ c.font="500 "+w*.025+"px system-ui";c.fillStyle=fg+"cc";c.fillText(state.account.bio||"Foydali sahifa bilan tanishing",-w*.16,h*.025);
+ if(state.account.followers)c.fillText(state.account.followers+" obunachi",-w*.16,h*.065);
+ c.restore();
+}
+// Replay transition: diagonal broadcast-style wipe at the start of each scene.
+if(local<.22){const q=1-local/.22;c.save();c.globalAlpha=q*.9;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-q*1.8),0);c.lineTo(w*(1.15-q*1.8),0);c.lineTo(w*(.15-q*1.8),h);c.lineTo(w*(-.0-q*1.8),h);c.closePath();c.fill();c.globalAlpha=q*.45;c.fillStyle=fg;c.fillRect(w*(.92-q*1.8),0,w*.012,h);c.restore()}
+// Brand signature is deliberately restricted to the opening and final end card.
+drawBrand(c,w,h,ac,fg);
+c.restore();
+}
+function drawBrand(c,w,h,ac,fg){
+const first=state.elapsed<1250,last=state.elapsed>total-1750;if(!first&&!last)return;
+const p=first?Math.min(1,state.elapsed/520):Math.min(1,(state.elapsed-(total-1750))/620);
+const fade=Math.sin(Math.PI*p);c.save();c.globalAlpha=Math.max(0,fade);
+c.translate(w*.5,h*(first?.22:.5));const scale=.78+.22*p;c.scale(scale,scale);
+c.textAlign="center";c.textBaseline="middle";
+c.shadowColor=ac;c.shadowBlur=w*.035;c.fillStyle=fg;c.font="950 "+(w*.19)+"px system-ui";c.fillText("NEX",0,0);c.shadowBlur=0;
+// Abstract orbit/play mark, a short animated sweep around the wordmark.
+c.strokeStyle=ac;c.lineWidth=w*.009;c.beginPath();c.ellipse(0,0,w*.29,h*.055,-.2,Math.PI*.08,Math.PI*(.25+1.55*p));c.stroke();
+c.fillStyle=ac;c.beginPath();c.moveTo(w*.245,-h*.012);c.lineTo(w*.28,0);c.lineTo(w*.245,h*.012);c.closePath();c.fill();
+if(last){c.font="600 "+(w*.031)+"px system-ui";c.fillStyle=fg;c.fillText("Fikr va imkoniyatlar makoni",0,h*.09)}
+c.restore();
+}
 function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.started);if(state.elapsed>=total){state.playing=false;state.elapsed=total}updateSceneUI()}draw();state.raf=requestAnimationFrame(frame)}
 function start(){cancelAnimationFrame(state.raf);state.elapsed=0;state.started=performance.now();state.playing=true;state.raf=requestAnimationFrame(frame);$("startPreview").textContent="Ⅱ Pauza"}
 $("startPreview").onclick=()=>{if(state.playing){state.playing=false;$("startPreview").textContent="▶ Davom etish"}else{state.started=performance.now()-state.elapsed;state.playing=true;$("startPreview").textContent="Ⅱ Pauza"}};
