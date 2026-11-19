@@ -66,6 +66,33 @@ function draw(ctx,now,index){
  ctx.fillStyle="#aab5c4";ctx.font="bold 22px Arial";ctx.fillText(($("author").value||"NEX CREATIVE STUDIO").toUpperCase().slice(0,36),80,1790);ctx.fillStyle=accentNow;ctx.textAlign="right";ctx.fillText("SWIPE ↗",1000,1790);ctx.textAlign="left";
 }
 $("exportBtn").onclick=async()=>{stop();saveCurrent();$("exportBtn").disabled=true;status("Besh sahna video formatiga yig‘ilmoqda…");try{const result=await NEXExport.render({duration:Number($("duration").value),draw});status("Video yuklandi: "+result.filename+" · "+result.mime);}catch(e){status("Eksport xatosi: "+(e.message||"noma’lum xatolik"));}finally{$("exportBtn").disabled=false;}};
+
+const angleProfiles={
+ editorial:{name:"EDITORIAL",style:"Ink",bg:"grid",color:"#e7c98a",direction:"Aniq ierarxiya, katta sarlavha, sokin kompozitsiya va tahririy ohang."},
+ cinematic:{name:"CINEMATIC",style:"Glass",bg:"aurora",color:"#65d9ff",direction:"Kuchli kontrast, chuqur fon, kadrlar orasida dramatik ritm va yumshoq harakat."},
+ tech:{name:"TECH MINIMAL",style:"Neon",bg:"grid",color:"#65d9ff",direction:"Toza geometriya, ixcham matn, texnologik detallar va funksional animatsiya."},
+ experimental:{name:"EXPERIMENTAL",style:"Glitch",bg:"stars",color:"#b69cff",direction:"Kutilmagan tipografik urg‘u, dinamik qatlamlar va nazorat qilingan vizual tajriba."}
+};
+$("analyzeStyleBtn").addEventListener("click",()=>{
+ const url=$("referenceUrl").value.trim();
+ const notes=$("referenceStyle").value.trim();
+ const angle=angleProfiles[$("creativeAngle").value]||angleProfiles.editorial;
+ if(!notes){$("styleBrief").innerHTML="<strong>Uslub tavsifi kerak</strong><span>Akkauntdan sizga yoqqan 2–3 ta vizual xususiyatni yozing. NEX shundan kelib chiqib original ijodiy yo‘nalish taklif qiladi.</span>";$("referenceStyle").focus();return;}
+ $("style").value=Object.keys(angleProfiles).find(k=>angleProfiles[k]===angle)==="editorial"?"ink":angle.style.toLowerCase();
+ $("bg").value=angle.bg;
+ setAccent(angle.color);
+ design();
+ const source=url?url:"Havola kiritilmagan";
+ $("styleBrief").innerHTML="";
+ const title=document.createElement("strong");title.textContent="NEX CREATIVE BRIEF · "+angle.name;
+ const sourceLine=document.createElement("span");sourceLine.textContent="Ilhom manbasi: "+source;
+ const notesLine=document.createElement("span");notesLine.textContent="Siz tanlagan xususiyatlar: "+notes;
+ const directionLine=document.createElement("span");directionLine.textContent="Vizual yo‘nalish: "+angle.direction;
+ const ruleLine=document.createElement("span");ruleLine.textContent="Originallik qoidasi: manbadagi logotip, matn, kadr yoki kompozitsiyani ko‘chirmang. Faqat umumiy kayfiyat va dizayn tamoyillaridan ilhomlanib, NEX uchun yangi ssenariy va vizual yechim yarating.";
+ [$("styleBrief").append(title,sourceLine,notesLine,directionLine,ruleLine)];
+ status("Ijodiy brif tayyor. Tanlangan vizual yo‘nalish previewga qo‘llandi.");
+});
+
 const contentBuilders={
  showcase:(t)=>[
  ["HOOK · LOYIHA","Bu loyihani kuzatishga arziydimi?","Bugun e’tiborimni tortgan loyiha: "+t+".","PROJECT, CREATIVE"],
