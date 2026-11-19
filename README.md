@@ -1,22 +1,21 @@
 # NEX Creative Studio
 
-NEX is a browser-based vertical video / Reels design studio.
+NEX — brauzerda ishlaydigan vertikal video / Reels muharriri.
 
-## Project structure
+## Joriy imkoniyatlar
+- 9:16 preview va beshta sahna: Hook, Intro, Follow, Value, CTA.
+- Sarlavha, tavsif, yuqori yozuv va teglarni tahrirlash.
+- Profil nomi, profil tavsifi, muallif va profil rasmi.
+- Neon, Glass, Retro, Ink, Comix va Glitch dizayn variantlari.
+- Aurora, Stars, Grid, Bubbles, Rain va Fire fonlari.
+- Rang palitrasi, tasodifiy dizayn, sahna davomiyligi va ko‘rish rejimi.
+- Canvas orqali 1080×1920 video yozib yuklab olish.
 
-- `index.html` — application entry point
-- `assets/css/style.css` — responsive NEX interface
-- `assets/js/app.js` — application logic
-- `assets/js/export.js` — video export capability detection and export pipeline
+## Video eksporti
+Eksport brauzerning MediaRecorder kodek imkoniyatlarini tekshiradi. MP4 kodeki mavjud bo‘lsa MP4, aks holda WebM yaratiladi. WebM fayli MP4 deb qayta nomlanmaydi. Natijaviy format brauzer va qurilmaga bog‘liq.
 
-## Run locally
+## Ishga tushirish
+index.html faylini zamonaviy brauzerda oching yoki statik serverdan foydalaning.
 
-Open `index.html` in a modern browser, or serve the repository with a local static web server.
-
-## Deploy with GitHub Pages
-
-The included GitHub Actions workflow publishes the repository root to GitHub Pages when changes are pushed to `main`. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**.
-
-## Export note
-
-The export module must verify the actual browser codec support before offering MP4. It must never rename WebM output to `.mp4`. MP4 export will be implemented and tested against the target browsers.
+## GitHub Pages
+Repository Settings → Pages → Build and deployment → Source: GitHub Actions.
