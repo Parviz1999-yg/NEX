@@ -9,7 +9,7 @@ const defaults=[
 ["CTA · KEYINGI QADAM","Yana foydali kashfiyotlar uchun kuzating.","Fikr bildiring, saqlab qo‘ying yoki keyingi mavzuni tavsiya qiling.","FOLLOW, SHARE"]
 ];
 let scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));
-let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,accent="#b6ff4a",seed=2026;
+let scene=0,photo=null,photoUrl=null,playing=false,raf=0,playStart=0,playElapsed=0,accent="#b6ff4a",seed=2026,recordingMode=false,downloadUrl=null;
 const colors=["#b6ff4a","#65d9ff","#b69cff","#ff8c70","#ffffff"];
 const sceneNames=["HOOK","CONTEXT","INSIGHT","VALUE","CTA"];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -24,6 +24,7 @@ function render(){
  $("sceneNo").textContent="NEX / "+String(scene+1).padStart(2,"0");
  $("sceneLabel").textContent=(scene+1)+" / 5 · "+sceneNames[scene];
  document.querySelectorAll(".scene-strip button").forEach((b,i)=>b.classList.toggle("active",i===scene));
+ const frame=$("preview");frame.dataset.motion=$("motion").value;frame.classList.remove("scene-enter");void frame.offsetWidth;frame.classList.add("scene-enter");
 }
 function loadScene(i){saveCurrent();scene=(i+5)%5;const s=scenes[scene];$("kicker").value=s.kicker;$("headline").value=s.title;$("bodyText").value=s.body;$("tags").value=s.tags;render();}
 function status(t){$("statusText").textContent=t;}
@@ -33,13 +34,19 @@ document.querySelectorAll(".scene-strip button").forEach(b=>b.addEventListener("
 function setAccent(c){accent=c;document.documentElement.style.setProperty("--accent",c);document.querySelectorAll(".swatch").forEach(b=>b.classList.toggle("active",b.dataset.color===c));}
 document.querySelectorAll(".swatch").forEach(b=>b.addEventListener("click",()=>setAccent(b.dataset.color||"#b6ff4a")));
 function design(){ $("preview").className="preview-frame bg-"+$("bg").value+" theme-"+$("style").value;}
-$("bg").addEventListener("change",design);$("style").addEventListener("change",design);
+$("bg").addEventListener("change",design);$("style").addEventListener("change",design);$("motion").addEventListener("change",render);
 $("photoInput").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith("image/")){status("Profil rasmi uchun rasm faylini tanlang.");return;}if(photoUrl)URL.revokeObjectURL(photoUrl);photoUrl=URL.createObjectURL(f);photo=new Image();photo.onload=()=>{ $("previewPhoto").src=photoUrl;$("previewPhoto").hidden=false;$("fallback").hidden=true;status("Profil rasmi yuklandi.");};photo.onerror=()=>status("Rasmni o‘qib bo‘lmadi.");photo.src=photoUrl;});
 function randomFromSeed(){let x=(Number($("seed").value)||2026)>>>0;return()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
 $("randomBtn").onclick=()=>{const rnd=randomFromSeed();setAccent(colors[Math.floor(rnd()*colors.length)]);$("style").selectedIndex=Math.floor(rnd()*6);$("bg").selectedIndex=Math.floor(rnd()*6);$("motion").selectedIndex=Math.floor(rnd()*4);$("intensity").value=String(2+Math.floor(rnd()*8));design();status("Seed "+$("seed").value+" asosida dizayn yaratildi. Matnlar saqlandi.");};
-function stop(){playing=false;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Ko‘rish";$("playState").textContent="TAYYOR";}
-function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=now-playStart;if(elapsed>=total){stop();return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
-$("playBtn").onclick=()=>{if(playing){stop();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ To‘xtatish";$("playState").textContent="KO‘RILMOQDA";raf=requestAnimationFrame(playbackFrame);};
+function stop(){playing=false;playElapsed=0;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Ko‘rish";$("playState").textContent="TAYYOR";if($("recordStartBtn"))$("recordStartBtn").textContent="▶ Boshlash";}
+function pausePlayback(){if(!playing)return;playElapsed+=performance.now()-playStart;playing=false;cancelAnimationFrame(raf);$("playBtn").textContent="▶ Davom ettirish";$("playState").textContent="PAUZA";if($("recordStartBtn"))$("recordStartBtn").textContent="▶ Davom ettirish";}
+function playbackFrame(now){if(!playing)return;const dur=Number($("duration").value)*1000,total=dur*5,elapsed=playElapsed+(now-playStart);if(elapsed>=total){stop();loadScene(0);return;}const idx=Math.floor(elapsed/dur);if(idx!==scene)loadScene(idx);raf=requestAnimationFrame(playbackFrame);}
+function startPlayback(){if(playing){pausePlayback();return;}saveCurrent();playing=true;playStart=performance.now();$("playBtn").textContent="Ⅱ Pauza";$("playState").textContent="KO‘RILMOQDA";if($("recordStartBtn"))$("recordStartBtn").textContent="Ⅱ Pauza";raf=requestAnimationFrame(playbackFrame);}
+$("playBtn").onclick=startPlayback;
+function setRecordingMode(enabled){recordingMode=enabled;document.body.classList.toggle("recording-mode",enabled);$("recordingControls").hidden=!enabled;if(enabled){stop();window.scrollTo({top:0,behavior:"instant"});$("recordingStatus").textContent="RECORDING MODE · 9:16 · NEX v1.1.0";}else{stop();}}
+$("recordingModeBtn").addEventListener("click",()=>setRecordingMode(true));
+$("recordExitBtn").addEventListener("click",()=>setRecordingMode(false));
+$("recordStartBtn").addEventListener("click",startPlayback);
 $("resetBtn").onclick=()=>{stop();scenes=defaults.map(s=>({kicker:s[0],title:s[1],body:s[2],tags:s[3]}));$("handle").value="@youraccount";$("role").value="CREATOR · DIGITAL STORYTELLER";$("author").value="NEX CREATIVE STUDIO";$("style").value="neon";$("bg").value="aurora";$("motion").value="float";$("seed").value="2026";$("intensity").value="5";setAccent("#b6ff4a");design();
 loadScene(0);status("Loyiha boshlang‘ich holatga qaytarildi.");};
 function wrap(ctx,text,maxWidth){const lines=[];let line="";for(const word of String(text).split(/\s+/)){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=word;}else line=test;}if(line)lines.push(line);return lines;}
@@ -65,7 +72,8 @@ function draw(ctx,now,index){
  let px=80;const py=1580;ctx.font="bold 20px Arial";s.tags.split(",").map(x=>x.trim()).filter(Boolean).slice(0,4).forEach(tag=>{const tw=ctx.measureText(tag.toUpperCase()).width+42;ctx.strokeStyle="#ffffff70";rounded(ctx,px,py,tw,48,24);ctx.stroke();ctx.fillStyle="#e7edf5";ctx.fillText(tag.toUpperCase(),px+21,py+31);px+=tw+14;});
  ctx.fillStyle="#aab5c4";ctx.font="bold 22px Arial";ctx.fillText(($("author").value||"NEX CREATIVE STUDIO").toUpperCase().slice(0,36),80,1790);ctx.fillStyle=accentNow;ctx.textAlign="right";ctx.fillText("SWIPE ↗",1000,1790);ctx.textAlign="left";
 }
-$("exportBtn").onclick=async()=>{stop();saveCurrent();$("exportBtn").disabled=true;status("Besh sahna video formatiga yig‘ilmoqda…");try{const result=await NEXExport.render({duration:Number($("duration").value),draw});status("Video yuklandi: "+result.filename+" · "+result.mime);}catch(e){status("Eksport xatosi: "+(e.message||"noma’lum xatolik"));}finally{$("exportBtn").disabled=false;}};
+$("exportBtn").onclick=async()=>{stop();saveCurrent();$("exportBtn").disabled=true;$("downloadLink").hidden=true;status("Video tayyorlanmoqda. Sahifani yopmang…");try{const result=await NEXExport.render({duration:Number($("duration").value),draw});if(downloadUrl)URL.revokeObjectURL(downloadUrl);downloadUrl=URL.createObjectURL(result.blob);const link=$("downloadLink");link.href=downloadUrl;link.download=result.filename;link.hidden=false;link.textContent="↓ Videoni yuklab olish ("+result.ext.toUpperCase()+")";link.click();status("Video tayyor. Avtomatik yuklash ishlamasa, pastdagi havolani bosing.");}catch(e){status("Eksport amalga oshmadi: "+(e.message||"noma’lum xatolik")+". Ekran yozuv rejimidan foydalaning.");}finally{$("exportBtn").disabled=false;}};
+window.addEventListener("beforeunload",()=>{if(downloadUrl)URL.revokeObjectURL(downloadUrl);if(photoUrl)URL.revokeObjectURL(photoUrl);});
 
 const angleProfiles={
  editorial:{name:"EDITORIAL",style:"Ink",bg:"grid",color:"#e7c98a",direction:"Aniq ierarxiya, katta sarlavha, sokin kompozitsiya va tahririy ohang."},
