@@ -111,3 +111,18 @@ Repository Settings → Pages → Build and deployment → Source: GitHub Action
 - JavaScript manba kodiga o‘zgarishlar GitHub main branchiga yozildi.
 - Kodning amaliy brauzer sinovi, eksport qilingan faylni ijro etish va Android qurilmasida yuklab olish sinovi hali bajarilmadi.
 - GitHub Pages deploy natijasi commitdan keyin alohida tekshiriladi.
+
+
+## NEX v1.5.0 — 2026-11-19
+
+### Tuzatishlar
+- Preview sahnalarida to‘rtta studiyaning vizual tili kuchaytirildi: profil kartasi, resurs chizig‘i, fakt muhri va markaziy tipografik ibora.
+- Har bir sahna almashganda tegishli preview animatsiyasi qayta ishga tushadi.
+- Android brauzerlarida mos kodek tanlash tartibi WebM VP9/VP8 dan boshlanadi; MP4 faqat brauzer uni qo‘llasa tanlanadi.
+- Eksport tugagach, sahifa avtomatik yuklashga tayanmaydi: aniq format ko‘rsatilgan yuklab olish havolasi chiqariladi va foydalanuvchi uni bosadi.
+- Recording Mode versiya belgisi va boshqaruv panelidagi versiya yangilandi.
+
+### Tekshiruv holati
+- GitHub main branchidagi manba fayllari yangilandi.
+- Hozircha Android qurilmasida real video yozish, faylni yuklab olish va preview animatsiyalarini ko‘z bilan tekshirish bajarilmadi.
+- GitHub Pages deploy natijasi alohida tekshirilmoqda.
