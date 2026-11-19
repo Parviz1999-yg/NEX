@@ -6,10 +6,10 @@ NEX — Instagram sahifasi uchun professional kontent ishlab chiqish va vertikal
 
 NEX quyidagi to‘rtta yo‘nalishga xizmat qiladi:
 
-1. **Kreativ loyiha taqdimotlari** — qiziqarli Instagram akkauntlari, ijodkorlar va raqamli loyihalarni vizual tahlil qilish.
-2. **Texnologik faktlar** — sun’iy intellekt, internet, dasturlash va raqamli dunyo haqida tekshirilgan ma’lumotlar.
-3. **Foydali raqamli vositalar** — saytlar, ilovalar, AI xizmatlari va ulardan foydalanish bo‘yicha qisqa ko‘rsatmalar.
-4. **Mualliflik loyihalari** — shaxsiy tajriba, dasturlash jarayoni, yaratilayotgan mahsulotlar va natijalar.
+1. **Tavsiya akkaunt** — foydali yoki qiziqarli Instagram sahifalarini tanishtirish, o‘ziga xos jihatlari va kimlar uchun foydali ekanini tahlil qilish.
+2. **Foydali manbalar** — YouTube va Telegram kanallari, kitoblar, saytlar, ilovalar va boshqa resurslarni amaliy qiymati bilan ko‘rsatish.
+3. **Qiziqarli faktlar** — fan, texnologiya, tarix, tabiat va kundalik hayotga oid tekshiriladigan faktlarni vizual izohlash.
+4. **Maxsus iboralar** — mazmunli fikrlar va iboralarni tipografika, pauza va mualliflik talqini orqali yetkazish.
 
 Sahifaning pozitsiyasi: **raqamli dunyo, texnologiyalar, kreativ loyihalar va foydali kashfiyotlar**.
 
