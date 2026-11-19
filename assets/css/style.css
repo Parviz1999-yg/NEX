@@ -6,3 +6,6 @@
 #shuffleBackground:active{transform:scale(.97)}
 #shuffleBackground.shuffle-flash{color:#07131b;background:linear-gradient(110deg,#38d6d0,#a477ff,#38d6d0);background-size:220% 100%;border-color:#7cebe5;box-shadow:0 0 0 3px rgba(56,214,208,.18),0 0 24px rgba(56,214,208,.42);animation:nexShufflePulse .7s ease 2}
 @keyframes nexShufflePulse{0%,100%{background-position:0% 50%;transform:scale(1)}50%{background-position:100% 50%;transform:scale(1.025)}}
+
+.topbar-meta{display:flex;align-items:center;gap:10px}
+.app-version{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.06em}
