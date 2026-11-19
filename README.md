@@ -1,143 +1,30 @@
-# NEX — Creative Media Studio
+# NEX — Shaxsiy Instagram Reels Studio
 
-NEX — Instagram sahifasi uchun professional kontent ishlab chiqish va telefon ekran yozuvi orqali Reels tayyorlash studiyasi.
+**v2.0.0** · Faqat shaxsiy foydalanish uchun
 
-## Kontent strategiyasi
+4 xil post turi, har biri o‘ziga xos animatsiya tiliga ega.
 
-NEX quyidagi to‘rtta yo‘nalishga xizmat qiladi:
+## Rejimlar
 
-1. **Tavsiya akkaunt** — foydali yoki qiziqarli Instagram sahifalarini tanishtirish, o‘ziga xos jihatlari va kimlar uchun foydali ekanini tahlil qilish.
-2. **Foydali manbalar** — YouTube va Telegram kanallari, kitoblar, saytlar, ilovalar va boshqa resurslarni amaliy qiymati bilan ko‘rsatish.
-3. **Qiziqarli faktlar** — fan, texnologiya, tarix, tabiat va kundalik hayotga oid tekshiriladigan faktlarni vizual izohlash.
-4. **Maxsus iboralar** — mazmunli fikrlar va iboralarni tipografika, pauza va mualliflik talqini orqali yetkazish.
+| Rejim | Animatsiya uslubi |
+|-------|-------------------|
+| **Tavsiya akkaunt** | Profil kartasi, slide-in, obuna kayfiyati |
+| **Qiziqarli fakt** | Muhr (stamp), pop, raqam urg‘usi |
+| **Kun iborasi** | Sekin blur’dan ochilish, estetik tipografika |
+| **Foydali manba** | Kartochkalar ketma-ket ochilishi |
 
-Sahifaning pozitsiyasi: **raqamli dunyo, texnologiyalar, kreativ loyihalar va foydali kashfiyotlar**.
+## Asosiy imkoniyatlar
 
-## Hozirgi imkoniyatlar
-
-- **Inspiration Lab:** yoqqan Instagram akkaunti havolasini va undagi vizual xususiyatlarni qayd etish.
-- Tanlangan ijodiy yo‘nalish (Editorial, Cinematic, Tech minimal, Experimental) bo‘yicha brif shakllantirish.
-- Uslubdan ilhomlanish va original kontent yaratish uchun aniq ko‘rsatmalar.
-- Tanlangan yo‘nalishga mos preview dizayni va rangini qo‘llash.
-
-- To‘rtta kontent yo‘nalishidan birini tanlash.
-- Mavzu kiritib, besh qismli Reels ssenariysi shablonini yaratish: Hook, Context, Insight, Value, CTA.
-- Har bir sahna matni va teglarini mustaqil tahrirlash.
-- Instagram nomi, profil tavsifi, muallif va profil rasmini sozlash.
-- Neon, Glass, Retro, Ink, Comix va Glitch dizayn variantlari.
-- Aurora, Stars, Grid, Bubbles, Rain va Fire fonlari.
-- Rang palitrasi, seed asosida tasodifiy dizayn, animatsiya turi va intensivligi.
-- 9:16 formatdagi jonli preview va besh sahnali ketma-ket ko‘rish.
-- 9:16 Recording Mode orqali telefon ekranini yozib olish.
-
-## Muhim cheklov
-
-Inspiration Lab Instagram sahifalarini avtomatik ochmaydi yoki skan qilmaydi. Havola faqat ilhom manbasini qayd etish uchun; uslub xususiyatlari foydalanuvchi tomonidan yoziladi. Bu bosqichda AI tahlili va tashqi akkaunt ma’lumotlarini yig‘ish mavjud emas.
-
-
-
-Kontent ssenariysi hozircha oldindan yozilgan shablonlar asosida tuziladi; u AI tomonidan faktlarni tekshirib yoki mustaqil tadqiqot qilib bermaydi. Faktlar, raqamlar, havolalar va da’volar nashrdan oldin muallif tomonidan tekshirilishi kerak.
-
-## Video eksporti
-
-Eksport brauzerning MediaRecorder kodek imkoniyatlarini tekshiradi. MP4 kodeki mavjud bo‘lsa MP4, aks holda WebM yaratiladi. WebM fayli MP4 deb qayta nomlanmaydi. Natijaviy format brauzer va qurilmaga bog‘liq.
+- Har bir rejim uchun alohida matn maydonlari
+- Jonli preview
+- **Recording Mode** — 9:16 toza ekran (ortiqcha UI yashiriladi)
+- Telefon Screen Recorder orqali yozib olish
+- Hech qanday baza yoki tashqi xizmat yo‘q — hammasi qo‘lda kiritiladi
 
 ## Ishga tushirish
 
-`index.html` faylini zamonaviy brauzerda oching yoki statik serverdan foydalaning.
+GitHub Pages orqali ochiladi yoki `index.html` ni brauzerda oching.
 
-## GitHub Pages
+## Eslatma
 
-Repository Settings → Pages → Build and deployment → Source: GitHub Actions.
-
-## NEX v1.1.0 — 2026-11-19
-
-### Yangilanishlar
-- Hook → Context → Insight → Value → CTA ketma-ketligi asosidagi 5 sahnali Reels ssenariysi saqlandi va kuchaytirildi.
-- Matnlar sahnaga kirganda yumshoq paydo bo‘ladi; Aurora/Neon kayfiyatidagi fon harakati va boshqariladigan Glitch effekti qo‘shildi.
-- 9:16 Recording Mode qo‘shildi: ortiqcha interfeys yashiriladi, sahnalarni boshlash/pauza qilish va rejimdan chiqish mumkin.
-- Video eksporti MP4/WebM kodeklarini tekshiradi, hosil bo‘lgan faylga ko‘rinadigan yuklab olish havolasini beradi.
-- Avtomatik eksport qo‘llanmasa, Recording Mode orqali telefonning ichki ekran yozuvchisidan foydalanish mumkin.
-
-### Tekshiruv holati
-- Manba kodidagi HTML/JavaScript bog‘lanishlari va eksport oqimi yangilandi.
-- GitHub Actions deploy natijasi keyingi tekshiruvda alohida tasdiqlanishi kerak.
-- Android qurilmasida real ekran yozuvi va MP4/WebM yuklab olish sinovi ushbu commit doirasida bajarilmagan.
-
-
-## NEX v1.2.0 — 2026-11-19
-
-### Yangilanishlar
-- Kontent konstruktori to‘rtta aniq studiyaga ajratildi: Tavsiya akkaunt, Foydali manbalar, Qiziqarli faktlar va Maxsus iboralar.
-- Har bir studiya uchun alohida besh sahnali ssenariy oqimi, matn ohangi va teglar belgilandi.
-- Studiya tanlanganda unga mos boshlang‘ich dizayn, fon, animatsiya va urg‘u rangi qo‘llanadi; foydalanuvchi ularni keyin o‘zgartirishi mumkin.
-- Eski to‘rtta umumiy kontent turi yangi to‘rt studiya bilan almashtirildi.
-- Faktlar, resurslar va tavsiyalar avtomatik tekshirilmaydi: nashrdan oldin manbalarni muallif tekshirishi kerak.
-
-### Tekshiruv holati
-- Kod o‘zgarishlari GitHub main branchiga yozildi.
-- Brauzerda, Android qurilmasida va video eksportida amaliy sinov hali bajarilmadi.
-- GitHub Pages deploy holati commitdan keyin alohida tekshiriladi.
-
-
-## NEX v1.3.0 — 2026-11-19
-
-### Yangilanishlar
-- To‘rtta kontent studiyasi uchun preview sahna animatsiyalari alohida harakat tiliga ajratildi.
-- Tavsiya akkaunt: profil kartasi va sarlavhaning qatlamli ochilishi.
-- Foydali manbalar: chapdan ochiladigan sarlavha, chiziqli urg‘u va ketma-ket resurs teglari.
-- Qiziqarli faktlar: muhr kabi kiruvchi yorliq, urg‘uli sarlavha va izohning alohida paydo bo‘lishi.
-- Maxsus iboralar: sekin, yumshoq, xiralikdan ochiladigan tipografik animatsiya.
-- Tanlangan studiya preview elementlariga uzatiladi; animatsiyalar sahna yangilanganda qayta boshlanadi.
-
-### Tekshiruv holati
-- Kod o‘zgarishlari GitHub main branchiga yozildi.
-- CSS/JS matn darajasida yangilandi; real Android qurilmasida animatsiya va eksport sinovi hali bajarilmagan.
-- Ushbu yangilanish preview animatsiyalarini farqlaydi; canvas video eksportidagi studiyaga xos sahna animatsiyasi keyingi texnik bosqichda alohida moslashtirilishi kerak.
-
-
-## NEX v1.4.0 — 2026-11-19
-
-### Yangilanishlar
-- Video eksport rendereriga har bir sahnaning animatsiya progressi uzatildi.
-- Tavsiya akkaunt eksporti: profil kartasi chapdan siljib ochiladi.
-- Foydali manbalar eksporti: uchta resurs kartasi navbat bilan paydo bo‘ladi.
-- Qiziqarli faktlar eksporti: aylanuvchi fakt halqasi va sahna raqami ochiladi.
-- Maxsus iboralar eksporti: katta qo‘shtirnoq belgisi va tipografik chiziq yumshoq ochiladi.
-- Sarlavha va izohlar sahna davomida bosqichma-bosqich paydo bo‘ladi.
-- MP4/WebM formatini aniqlash va haqiqiy kengaytmani saqlash mexanizmi o‘zgarishsiz qoldirildi.
-
-### Tekshiruv holati
-- JavaScript manba kodiga o‘zgarishlar GitHub main branchiga yozildi.
-- Kodning amaliy brauzer sinovi, eksport qilingan faylni ijro etish va Android qurilmasida yuklab olish sinovi hali bajarilmadi.
-- GitHub Pages deploy natijasi commitdan keyin alohida tekshiriladi.
-
-
-## NEX v1.5.0 — 2026-11-19
-
-### Tuzatishlar
-- Preview sahnalarida to‘rtta studiyaning vizual tili kuchaytirildi: profil kartasi, resurs chizig‘i, fakt muhri va markaziy tipografik ibora.
-- Har bir sahna almashganda tegishli preview animatsiyasi qayta ishga tushadi.
-- Android brauzerlarida mos kodek tanlash tartibi WebM VP9/VP8 dan boshlanadi; MP4 faqat brauzer uni qo‘llasa tanlanadi.
-- Eksport tugagach, sahifa avtomatik yuklashga tayanmaydi: aniq format ko‘rsatilgan yuklab olish havolasi chiqariladi va foydalanuvchi uni bosadi.
-- Recording Mode versiya belgisi va boshqaruv panelidagi versiya yangilandi.
-
-### Tekshiruv holati
-- GitHub main branchidagi manba fayllari yangilandi.
-- Hozircha Android qurilmasida real video yozish, faylni yuklab olish va preview animatsiyalarini ko‘z bilan tekshirish bajarilmadi.
-- GitHub Pages deploy natijasi alohida tekshirilmoqda.
-
-
-## NEX v1.6.0 — 2026-11-19
-
-### Yangilanishlar
-- Ishlamagan avtomatik video eksporti, yuklab olish tugmasi va eksport havolasi butunlay olib tashlandi.
-- NEX endi faqat telefon ekran yozuvi asosida ishlashga moslashtirildi.
-- Recording Mode 9:16 toza kadrni ko‘rsatadi; sahnalarni ketma-ket boshlash va pauza qilish mumkin.
-- Besh sahnaning animatsiya xoreografiyasi farq qiladi: Hook — keskin fokus/yaqinlashish; Context — siljib ochilish; Insight — aylanish va urg‘u; Value — pastdan qatlamli ochilish; CTA — yumshoq yakuniy puls.
-- Har bir kontent studiyasi uchun har bir sahnaga alohida harakat parametrlari berildi. Natijada 4 studiya × 5 sahna bo‘yicha 20 xil kirish xoreografiyasi mavjud.
-- Sahna raqami o‘zgarganda animatsiya qayta boshlanadi.
-
-### Tekshiruv holati
-- GitHub manba kodlari yangilandi.
-- HTML/JS/CSS matn darajasida tekshirildi; haqiqiy Android qurilmasida ekran yozuvi va animatsiya ko‘rinishi hali sinovdan o‘tkazilmadi.
+Bu loyiha shaxsiy Reels tayyorlash uchun. Boshqalar foydalanishi yoki akkauntlar bazasi saqlash uchun mo‘ljallanmagan.
