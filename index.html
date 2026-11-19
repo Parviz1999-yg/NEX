@@ -72,13 +72,17 @@
     <section class="page" id="page-palette">
       <div class="page-heading"><p class="eyebrow">05 — RANG PALETRASI</p><h2>Rang xarakterini tanlang.</h2><p>Ranglar mazmunni qo‘llab-quvvatlashi va o‘qilishni saqlashi kerak.</p></div>
       <div class="palette-grid" id="paletteOptions">
-        <button class="palette selected" data-value="Midnight" data-colors="#090d18,#d8e4f5,#8d79ff"><span class="swatches"><i></i><i></i><i></i></span><b>Midnight</b><small>To‘q ko‘k · binafsha</small></button>
-        <button class="palette" data-value="Monochrome" data-colors="#101010,#f4f1e9,#999999"><span class="swatches"><i></i><i></i><i></i></span><b>Monochrome</b><small>Qora · oq · kulrang</small></button>
-        <button class="palette" data-value="Warm editorial" data-colors="#211812,#fff0d8,#d89a60"><span class="swatches"><i></i><i></i><i></i></span><b>Warm editorial</b><small>Jigarrang · krem · oltin</small></button>
-        <button class="palette" data-value="Electric" data-colors="#07151b,#e4fbff,#48d8e8"><span class="swatches"><i></i><i></i><i></i></span><b>Electric</b><small>Grafit · oq · moviy</small></button>
-        <button class="palette" data-value="Burgundy" data-colors="#1d1019,#fff0f2,#d86b8a"><span class="swatches"><i></i><i></i><i></i></span><b>Burgundy</b><small>To‘q qizil · pushti</small></button>
-      </div>
-      <div class="actions"><button class="btn ghost" data-back="style">Orqaga</button><button class="btn primary" id="toAnimation">Davom etish →</button></div>
+        <button class="palette selected" data-value="Midnight" data-colors="#090D18,#F2F5FC,#8B7CFF,#35D6C5"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Midnight</b><small>To‘q ko‘k · binafsha · teal</small></button>
+        <button class="palette" data-value="Graphite Gold" data-colors="#111315,#F3F0E8,#C7A76C,#78909C"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Graphite Gold</b><small>Grafit · oltin · slate</small></button>
+        <button class="palette" data-value="Arctic" data-colors="#0B1B2B,#F1F7FC,#66C7E8,#9B8CFF"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Arctic</b><small>Sovuq ko‘k · muz · lavanda</small></button>
+        <button class="palette" data-value="Deep Forest" data-colors="#0C1B18,#EAF2E8,#78A88A,#D0B77A"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Deep Forest</b><small>O‘rmon · sage · qum</small></button>
+        <button class="palette" data-value="Cobalt" data-colors="#101A3A,#F4F6FF,#5B83F5,#F0B86E"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Cobalt</b><small>Kobalt · oq · amber</small></button>
+        <button class="palette" data-value="Burgundy" data-colors="#24121D,#FFF0F3,#D87591,#D8B17A"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Burgundy</b><small>Bordo · blush · oltin</small></button>
+        <button class="palette" data-value="Sandstone" data-colors="#211C18,#F6EFE4,#C58E62,#8FA39A"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Sandstone</b><small>Tosh · krem · sage</small></button>
+        <button class="palette" data-value="Terracotta" data-colors="#281814,#FFF1E8,#D97858,#E4B66A"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Terracotta</b><small>Terracotta · ivory · amber</small></button>
+        <button class="palette" data-value="Orchid" data-colors="#1C1630,#F5F0FF,#B08BEE,#6ED4C6"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Orchid</b><small>Orchid · lavanda · mint</small></button>
+        <button class="palette" data-value="Monochrome" data-colors="#111315,#F4F4F1,#A7ADB4,#6E7884"><span class="swatches"><i></i><i></i><i></i><i></i></span><b>Monochrome</b><small>Qora · oq · sovuq kulrang</small></button>
+      </div>      <div class="actions"><button class="btn ghost" data-back="style">Orqaga</button><button class="btn primary" id="toAnimation">Davom etish →</button></div>
     </section>
 
     <section class="page" id="page-animation">
@@ -98,7 +102,7 @@
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
-          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p>
+          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi fon kombinatsiyasi</button>
           <div class="scene-list" id="sceneList"></div>
           <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
         </div>
@@ -116,6 +120,6 @@
     <div class="record-controls"><span>NEX · SCREEN RECORDING</span><button id="recordPause">Ⅱ</button><button id="recordExit">✕</button></div>
   </div>
 </div>
-<script src="assets/js/flow.js?v=364b23e"></script>
+<script src="assets/js/flow.js?v=BGGEN"></script>
 </body>
 </html>
