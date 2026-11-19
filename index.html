@@ -41,11 +41,11 @@
     <section class="page" id="page-script">
       <div class="page-heading"><p class="eyebrow">03 — ASOSIY SOZLASH / SSENARIY</p><h2>Hook’dan yakungacha.</h2><p>Reels davomida ko‘rinadigan matnlarni o‘zingiz yozing. Har bir bo‘lim alohida sahnaga aylanadi.</p></div>
       <div class="panel form-panel script-panel">
-        <div class="script-step"><span>01</span><div><label for="scriptHook">HOOK — e’tiborni tortish</label><textarea id="scriptHook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea><small>3 qatorgacha · qisqa va kuchli</small></div></div>
-        <div class="script-step"><span>02</span><div><label for="scriptIntro" id="introLabel">E’LON — mavzuni ochish</label><textarea id="scriptIntro" rows="3" placeholder="Nima haqida gap ketishini aniq ayting..."></textarea></div></div>
-        <div class="script-step"><span>03</span><div><label for="scriptWhy" id="whyLabel">NIMA UCHUN? — foyda yoki ahamiyat</label><textarea id="scriptWhy" rows="3" maxlength="240" placeholder="Nima uchun bu mavzu muhim? (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
-        <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
-        <div class="script-step"><span>05</span><div><label for="scriptCta" id="ctaLabel">CHORLOV — yakun</label><textarea id="scriptCta" rows="3" placeholder="Tomoshabin nima qilsin yoki nimani eslab qolsin?"></textarea></div></div>
+        <div class="script-step"><span>01</span><div><label for="scriptHook">HOOK — e’tiborni tortish</label><textarea id="scriptHook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea><label for="voiceHook">OVOZ UCHUN MATN</label><textarea id="voiceHook" rows="2" placeholder="Bu sahnada ovozda aytiladigan gap..."></textarea><small>3 qatorgacha · qisqa va kuchli</small></div></div>
+        <div class="script-step"><span>02</span><div><label for="scriptIntro" id="introLabel">E’LON — mavzuni ochish</label><textarea id="scriptIntro" rows="3" placeholder="Nima haqida gap ketishini aniq ayting..."></textarea><label for="voiceIntro">OVOZ UCHUN MATN</label><textarea id="voiceIntro" rows="2" placeholder="Akkauntni tanishtiradigan ovozli matn..."></textarea></div></div>
+        <div class="script-step"><span>03</span><div><label for="scriptWhy" id="whyLabel">NIMA UCHUN? — foyda yoki ahamiyat</label><textarea id="scriptWhy" rows="3" maxlength="240" placeholder="Nima uchun bu mavzu muhim? (ixtiyoriy)"></textarea><label for="voiceWhy">OVOZ UCHUN MATN</label><textarea id="voiceWhy" rows="2" placeholder="Sababni ovozda tushuntiring..."></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
+        <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot (ixtiyoriy)"></textarea><label for="voiceDiff">OVOZ UCHUN MATN</label><textarea id="voiceDiff" rows="2" placeholder="Farqini ovozda tushuntiring..."></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
+        <div class="script-step"><span>05</span><div><label for="scriptCta" id="ctaLabel">CHORLOV — yakun</label><textarea id="scriptCta" rows="3" placeholder="Tomoshabin nima qilsin yoki nimani eslab qolsin?"></textarea><label for="voiceCta">OVOZ UCHUN MATN</label><textarea id="voiceCta" rows="2" placeholder="Yakuniy chorlovni ovozda ayting..."></textarea></div></div>
         <div id="accountFields" class="account-fields" hidden>
           <p class="eyebrow">AKKAUNT MA’LUMOTLARI</p>
           <label for="accountName">Akkaunt nomi</label><input id="accountName" placeholder="@username yoki sahifa nomi">
@@ -56,7 +56,8 @@
         <div class="actions"><button class="btn ghost" data-back="content">Orqaga</button><button class="btn primary" id="toStyle">Vizual uslubga o‘tish →</button></div>
       </div>
     </section>
-\n    <section class="page" id="page-style">
+
+    <section class="page" id="page-style">
       <div class="page-heading"><p class="eyebrow">04 — VIZUAL USLUB</p><h2>Qanday ko‘rinishda bo‘lsin?</h2><p>Tanlangan yo‘nalishga mos vizual tilni belgilang.</p></div>
       <div class="option-grid" id="styleOptions">
         <button class="option selected" data-value="Minimalistik"><b>Minimalistik</b><small>Toza kompozitsiya, aniq urg‘u</small></button>
@@ -97,7 +98,7 @@
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
-          <label for="sceneText">Sahna matni</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea>
+          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p>
           <div class="scene-list" id="sceneList"></div>
           <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
         </div>
