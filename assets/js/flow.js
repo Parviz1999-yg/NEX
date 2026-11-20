@@ -537,11 +537,49 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  c.restore();return true;
 }
 
+function getToneVisual(){
+ const tones={
+  "Jiddiy":{weight:35,size:1.0,tracking:"DISCIPLINED"},
+  "Ilmiy":{weight:-45,size:.94,tracking:"RESEARCH"},
+  "Sodda va tushunarli":{weight:-10,size:1.04,tracking:"CLEAR"},
+  "Yumor":{weight:75,size:1.08,tracking:"PLAYFUL"},
+  "Tahliliy":{weight:5,size:.96,tracking:"ANALYSIS"},
+  "Motivatsion":{weight:85,size:1.10,tracking:"ENERGY"},
+  "Sirli va qiziqarli":{weight:45,size:1.02,tracking:"MYSTERY"},
+  "Falsafiy":{weight:-65,size:.98,tracking:"REFLECTION"}
+ };
+ return tones[state.tone]||tones["Jiddiy"];
+}
+function drawTopicMotif(c,w,h,accent,topic,time,index){
+ c.save();c.strokeStyle=accent;c.fillStyle=accent;c.lineWidth=Math.max(1,w*.0025);c.globalAlpha=.58;
+ const x=w*.86,y=h*.155,r=w*.035;
+ if(topic==="Texnologiya"){
+  c.strokeRect(x-r,y-r,r*2,r*2);c.beginPath();c.moveTo(x-r*1.4,y);c.lineTo(x+r*1.4,y);c.moveTo(x,y-r*1.4);c.lineTo(x,y+r*1.4);c.stroke();
+  c.globalAlpha=.8;c.fillRect(x-r,y-r+((time*18)% (r*2)),r*2,w*.003);
+ }else if(topic==="Ta’lim va ilm-fan"){
+  for(let n=-2;n<=2;n++){c.beginPath();c.moveTo(x-r,y+n*r*.42);c.lineTo(x+r,y+n*r*.42);c.stroke()}
+  c.beginPath();c.arc(x,y,r*.22,0,Math.PI*2);c.fill();
+ }else if(topic==="Kitob va adabiyot"){
+  c.beginPath();c.moveTo(x,y-r);c.quadraticCurveTo(x-r*1.5,y-r*.65,x-r*1.35,y+r);c.quadraticCurveTo(x,y+r*.55,x,y+r);c.quadraticCurveTo(x+r*1.35,y+r*.55,x+r*1.35,y+r);c.quadraticCurveTo(x+r*1.5,y-r*.65,x,y-r);c.stroke();
+  c.beginPath();c.moveTo(x,y-r*.8);c.lineTo(x,y+r*.8);c.stroke();
+ }else if(topic==="Tarix va madaniyat"){
+  c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.arc(x,y,r*.72,0,Math.PI*2);c.stroke();
+  c.font="800 "+(w*.018)+"px Georgia";c.textAlign="center";c.fillText("A",x,y+w*.006);
+ }else if(topic==="Motivatsiya va fikr"){
+  c.beginPath();c.moveTo(x-r,y+r*.6);c.lineTo(x+r*.65,y-r*.65);c.lineTo(x+r*.65,y-r*.05);c.moveTo(x+r*.65,y-r*.65);c.lineTo(x+r*.05,y-r*.65);c.stroke();
+ }else if(topic==="Hayotiy kuzatuv"){
+  c.beginPath();c.ellipse(x,y,r*1.35,r*.58,time*.08,0,Math.PI*2);c.stroke();c.beginPath();c.arc(x+Math.cos(time*.8)*r,y+Math.sin(time*.8)*r*.42,r*.18,0,Math.PI*2);c.fill();
+ }else{
+  c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(x-r*.65,y);c.lineTo(x+r*.65,y);c.moveTo(x,y-r*.65);c.lineTo(x,y+r*.65);c.stroke();
+ }
+ c.restore();
+}
 function drawRecommendationScene(c,w,h,now,pal){
  // WebGL 3D is the only volumetric renderer; fallback stays deliberately flat.
  const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac,idx=state.scene,t=now/1000;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const copy=$("sceneText").value||sceneCopy(idx);
+ const toneVisual=getToneVisual();
  c.save();
  if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);}
  // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
@@ -549,7 +587,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
  const motion=getMotionProfile();
  const phase=t*.42*motion.camera+idx*1.13,amp=cameraEase*motion.camera;
- c.translate(w*.5,h*.5);c.rotate((cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6));
+ c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate((cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6));
  c.scale(1+(cameraStyle===0?.065:cameraStyle===1?-.04:cameraStyle===2?.035:.025)*amp*Math.sin(phase*.65),1+(cameraStyle===0?.045:cameraStyle===3?.03:.018)*amp*Math.cos(phase*.55));c.translate(-w*.5,-h*.5);
  const cameraX=cameraStyle===0?Math.sin(phase)*w*.025*amp:cameraStyle===2?Math.cos(phase*.7)*w*.035*amp:cameraStyle===4?Math.sin(phase*1.2)*w*.022*amp:0;
  const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
@@ -557,10 +595,10 @@ function drawRecommendationScene(c,w,h,now,pal){
  const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
 
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
-  const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];c.font=weight+" "+fontSize+"px system-ui";let line="";
+  const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[],scaledSize=fontSize*toneVisual.size,scaledWeight=Math.max(400,Math.min(950,Number(weight)+toneVisual.weight));c.font=scaledWeight+" "+scaledSize+"px system-ui";let line="";
   for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
   if(line)lines.push(line);const shown=lines.slice(0,maxLines);if(lines.length>maxLines&&shown.length)shown[shown.length-1]+="…";
-  c.save();c.textAlign=align;c.textBaseline="middle";c.fillStyle=color;shown.forEach((ln,i)=>c.fillText(ln,x,y+i*fontSize*1.28));c.restore();return shown.length*fontSize*1.28;
+  c.save();c.textAlign=align;c.textBaseline="middle";c.fillStyle=color;shown.forEach((ln,i)=>c.fillText(ln,x,y+i*scaledSize*1.28));c.restore();return shown.length*scaledSize*1.28;
  };
  const pill=(label,x,y)=>{
   c.save();c.font="800 "+(w*.025)+"px system-ui";const ww=Math.min(w*.78,c.measureText(label).width+w*.07);
@@ -589,6 +627,8 @@ function drawRecommendationScene(c,w,h,now,pal){
  // Topic identity is visible in every art direction, not merely stored in the project summary.
  const topicSignature=getTopicSignature();
  c.save();c.globalAlpha=.72;c.fillStyle=state.style==="Editorial / Magazine"?"#283747":ac;c.font="800 "+(w*.018)+"px monospace";c.textAlign="right";c.textBaseline="middle";c.fillText(topicSignature,w*.90,h*.105);c.restore();
+ drawTopicMotif(c,w,h,ac,state.topicType,t,idx);
+ c.save();c.globalAlpha=.58;c.fillStyle=state.style==="Editorial / Magazine"?"#283747":ac;c.font="700 "+(w*.014)+"px monospace";c.textAlign="right";c.fillText(toneVisual.tracking,w*.90,h*.19);c.restore();
  // Four independent art directions each retain their own composition, typography and graphic grammar.
  if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
