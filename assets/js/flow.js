@@ -307,8 +307,10 @@ function renderThree(now,target=threeRenderer){
  else if(state.elapsed>outroStart){logoVisible=true;logoProgress=Math.min(1,(total-state.elapsed)/2050)}
  if(state.mode==="tavsiya"){
   const outroStart=Math.max(0,total-5200);
-  if(state.elapsed>=outroStart){logoVisible=true;logoProgress=Math.min(1,(state.elapsed-outroStart)/2400)}
+  if(state.elapsed<2600){logoVisible=true;logoProgress=Math.min(1,state.elapsed/2050)}
+  else if(state.elapsed>=outroStart){logoVisible=true;logoProgress=Math.min(1,(state.elapsed-outroStart)/2400)}
   else logoVisible=false;
+  if(threeLogo)threeLogo.position.y=0;
  }
  updateNexLogo(logoProgress,logoVisible);
  target.render(threeScene,threeCamera);
@@ -633,7 +635,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  }else if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.12;c.fillStyle=fg;c.fillRect(w*.08,h*.18,w*.84,h*.64);c.restore();
  }
- if(copy){
+ if(copy&&state.elapsed<Math.max(0,total-5200)){
   const size=state.style==="Kinetic Typography"?.092:state.style==="Editorial / Magazine"?.071:state.style==="Futuristic Motion"?.066:.075;
   const color=state.style==="Editorial / Magazine"?"#17202a":fg;
   const x=state.style==="Kinetic Typography"?w*.10:w*.5;
