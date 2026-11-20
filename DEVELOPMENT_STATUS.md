@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.4**  
+Amaldagi versiya: **v0.8.5**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -326,3 +326,17 @@ Kod darajasida parametrlar va bog‘lanishlar tekshirildi. Haqiqiy Android vizua
 
 ### v0.8.4 tekshiruv chegarasi
 Koddagi e’lon qilish va foydalanish tartibi tekshirildi; runtime sinovi hali bajarilmadi.
+
+
+## v0.8.5 — Vizual tozalash va sahna joylashuvini tuzatish
+- [x] 2D matn/kompozitsiya qatlamidan keraksiz kamera zoom, rotate va drift olib tashlandi; yozuvlar endi 9:16 xavfsiz hududida barqaror turadi.
+- [x] Takroriy mavzu nomi va bayon yorliqlari olib tashlandi; vizualda faqat bitta ixcham mavzu motivi qoldi.
+- [x] Mavzu motivi to‘rtta art-direction uchun alohida joylashtirildi; Editorial sarlavha satri bilan to‘qnashmaydi, Futuristic grid ichida ikkilamchi HUD elementi sifatida turadi.
+- [x] Mobil studiyada preview birinchi ko‘rinadigan blokka ko‘chirildi; boshqaruv paneli undan keyin joylashadi.
+- [x] Preview maksimal eni 340 px, 9:16 nisbat va sahna boshqaruvlari bosishga qulay balandlikda sozlandi.
+- [x] HTML/JS cache-buster v0.8.5 ga yangilandi.
+- [ ] Besh sahnaning barcha to‘rtta vizual tilida Android ekranda ko‘z bilan tekshirish.
+- [ ] Matnning real uzunligiga qarab ayrim kadrlar uchun yakuniy mikrotuzatish.
+
+### v0.8.5 tekshiruv chegarasi
+Koddagi joylashuv, qatlam va responsive CSS o‘zgarishlari tekshiriladi. Android qurilmada ko‘rish sinovi foydalanuvchi tomonidan bajarilishi kerak.
