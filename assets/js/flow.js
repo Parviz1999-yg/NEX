@@ -73,7 +73,7 @@ $("accountImage").addEventListener("change",e=>{const file=e.target.files&&e.tar
 $("generateAccountScript").addEventListener("click",generateRecommendationScript);
 function updateSceneUI(){state.scene=sceneIndexAt(state.elapsed);document.querySelectorAll(".scene-chip").forEach((b,i)=>b.classList.toggle("active",i===state.scene));$("sceneCounter").textContent="SAHNA "+String(state.scene+1).padStart(2,"0")+" / 05";$("sceneTime").textContent="00:"+String(Math.floor(state.elapsed/1000)).padStart(2,"0");$("progress").style.width=(state.elapsed/total*100)+"%";if(state.lastScene!==state.scene){$("sceneText").value=sceneCopy(state.scene);$("sceneVoice").value=state.voice[state.scene]||"";state.lastScene=state.scene}draw(performance.now())}
 const canvas=$("reelCanvas"),ctx=canvas.getContext("2d",{alpha:true}),rc=$("recordCanvas"),rctx=rc.getContext("2d",{alpha:true}),threeCanvas=$("reel3D"),recordThreeCanvas=$("record3D");
-let accountPhoto=null,THREE=null,threeReady=false,threeFailed=false,threeScene=null,threeCamera=null,threeRenderer=null,recordRenderer=null,threeGroup=null,threeSeed=-1,threeSceneIndex=-1;
+let accountPhoto=null,THREE=null,threeReady=false,threeFailed=false,threeScene=null,threeCamera=null,threeRenderer=null,recordRenderer=null,threeGroup=null,threeLogo=null,logoStrokes=[],threeSeed=-1,threeSceneIndex=-1;
 async function initThreeEngine(){
  try{
   const modules=await Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"),import("https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/environments/RoomEnvironment.js")]);
@@ -88,6 +88,7 @@ async function initThreeEngine(){
   const rim=new THREE.PointLight(0x168cff,72,22);rim.position.set(4,1,3);threeScene.add(rim);
   const fill=new THREE.PointLight(0x8bdcff,58,22);fill.position.set(-4,-3,2);threeScene.add(fill);
   const topLight=new THREE.PointLight(0xffffff,48,20);topLight.position.set(0,5,1);threeScene.add(topLight);
+  buildNexLogo();
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
  }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
@@ -138,6 +139,45 @@ function updateFlowSurfaces(flows,time,intensity=1){
  }
 }
 
+function buildNexLogo(){
+ if(!threeScene)return;
+ if(threeLogo)threeScene.remove(threeLogo);
+ threeLogo=new THREE.Group();logoStrokes=[];
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xf4f8ff,metalness:1,roughness:.055,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.5});
+ const accent=new THREE.MeshPhysicalMaterial({color:0x8bdcff,metalness:.92,roughness:.07,emissive:0x1265b8,emissiveIntensity:.42,clearcoat:1});
+ const paths=[
+  [[-1.52,-.72,0],[-1.52,.72,0],[-.52,-.72,0],[-.52,.72,0]],
+  [[-.22,.72,0],[.62,.72,0]],[[-.22,.72,0],[-.22,0,0]],[[-.22,0,0],[.48,0,0]],[[-.22,0,0],[-.22,-.72,0]],[[-.22,-.72,0],[.62,-.72,0]],
+  [[.78,.72,0],[1.62,-.72,0]],[[.78,-.72,0],[1.62,.72,0]]
+ ];
+ paths.forEach((points,i)=>{
+  const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)),false,"centripetal");
+  const geometry=new THREE.TubeGeometry(curve,Math.max(18,points.length*12),i===0||i>=6?.052:.047,10,false);
+  const indexCount=geometry.index?geometry.index.count:geometry.attributes.position.count;
+  geometry.setDrawRange(0,0);
+  const mesh=new THREE.Mesh(geometry,i===0||i>=6?chrome:accent);
+  mesh.userData.indexCount=indexCount;
+  threeLogo.add(mesh);logoStrokes.push(mesh);
+ });
+ threeLogo.position.set(0,.04,1.35);
+ threeLogo.scale.set(1.08,1.08,1.08);
+ threeLogo.visible=false;
+ threeScene.add(threeLogo);
+}
+function updateNexLogo(progress,visible){
+ if(!threeLogo)return;
+ threeLogo.visible=visible;
+ if(!visible)return;
+ threeLogo.rotation.y=Math.sin(progress*Math.PI)*.12;
+ threeLogo.rotation.x=Math.cos(progress*Math.PI*2)*.035;
+ const reveal=Math.max(0,Math.min(1,progress));
+ logoStrokes.forEach((mesh,i)=>{
+  const local=Math.max(0,Math.min(1,(reveal-i*.085)/.52));
+  mesh.geometry.setDrawRange(0,Math.floor(mesh.userData.indexCount*local));
+ });
+ const pulse=1+.045*Math.sin(progress*Math.PI);
+ threeLogo.scale.setScalar(1.08*pulse);
+}
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap["Electric Blue"];
  if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
@@ -152,6 +192,11 @@ function renderThree(now,target=threeRenderer){
  threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
  threeCamera.position.z+=(z-threeCamera.position.z)*.045;
  threeCamera.lookAt(0,0,0);
+ const intro=state.elapsed<1850?state.elapsed/1850:null;
+ const outro=state.elapsed>total-2050?(total-state.elapsed)/2050:null;
+ const sceneReveal=local<.78?local/.78:null;
+ const reveal=intro!==null?intro:outro!==null?outro:sceneReveal;
+ updateNexLogo(reveal===null?0:reveal,reveal!==null);
  target.render(threeScene,threeCamera);
 }
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
@@ -549,6 +594,7 @@ function drawScene(c,w,h,now){
  c.restore();
 }
 function drawBrand(c,w,h,ac,fg){
+if(threeReady)return;
 const first=state.elapsed<1250,last=state.elapsed>total-1750;if(!first&&!last)return;
 const p=first?Math.min(1,state.elapsed/420):Math.min(1,(state.elapsed-(total-1750))/520);
 const fade=first?Math.min(1,state.elapsed/180,(1250-state.elapsed)/220):Math.min(1,(state.elapsed-(total-1750))/240,(total-state.elapsed)/260);c.save();c.globalAlpha=Math.max(0,fade);
