@@ -117,7 +117,7 @@ function drawScene(c,w,h,now){
  else if(idx===3){c.translate((1-ease)*w*.3,(1-ease)*-h*.12);c.rotate((1-ease)*.13);c.scale(.78+.22*ease,.78+.22*ease)}
  else{c.translate(0,(1-ease)*-h*.28);c.rotate((1-ease)*-.1);c.scale(.76+.24*ease,.76+.24*ease)}
  const layoutRand=seededRandom((state.backgroundSeed^Math.imul(idx+19,0x85EBCA6B))|0);
- const entrance=Math.floor(layoutRand()*6),alignPick=Math.floor(layoutRand()*3);
+ const entrance=(Math.floor(layoutRand()*6)+idx)%6,alignPick=Math.floor(layoutRand()*3);
  const align=alignPick===0?"left":alignPick===1?"center":"right";
  const anchorX=align==="left"?w*(.12+layoutRand()*.12):align==="right"?w*(.76+layoutRand()*.12):w*(.42+layoutRand()*.16);
  const maxW=w*(align==="center"?.76:.72),baseSize=idx===3?w*.088:w*(.069+layoutRand()*.018);
