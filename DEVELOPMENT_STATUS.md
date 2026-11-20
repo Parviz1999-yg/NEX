@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.5.5**  
+Amaldagi versiya: **v0.6.2**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -214,3 +214,14 @@ Bu yangilanish manba kodiga kiritildi. Hozircha haqiqiy Android brauzerida ko‘
 - [x] Hemisphere, key, rim va fill yoritish kuchaytirildi; qora fon bilan qo‘shilib ketish xavfi kamaytirildi.
 - [x] Versiya/cache-buster v0.6.1.
 - [ ] Android kichik preview va katta screen-recording oynasida bir xil ko‘rinish foydalanuvchi tomonidan tekshirilishi kerak.
+
+
+## v0.6.2 — Suyuq metall yorqinligi va NEX logotipini kadrga sig‘dirish
+- [x] Xrom-suyuqlik materiali biroz yorqinlashtirildi: environment aks ettirishi va emissive to‘ldirish me’yorida oshirildi.
+- [x] Kumush metallning asosiy yorug‘ligi kuchaytirildi; umumiy yoritish keskin oshirib yuborilmadi.
+- [x] NEX 3D logotipi kichraytirildi, kamera tomoniga yaqinlashtirildi va vertikal markazga tushirildi; 9:16 preview hamda yozuv kadriga sig‘ishi uchun geometrik kengligi qayta moslandi.
+- [x] JavaScript cache-buster v0.6.2 ga yangilandi.
+- [ ] Android qurilmada logotipning barcha harflari to‘liq ko‘rinishi va suyuqlik yorqinligi foydalanuvchi tomonidan tasdiqlanishi kerak.
+
+### Tekshiruv chegarasi
+Manba kodidagi o‘lchamlar, material parametrlari va versiya/cache-buster tekshirildi. Real Android ekranida ko‘rish sinovi bajarilgani yo‘q.
