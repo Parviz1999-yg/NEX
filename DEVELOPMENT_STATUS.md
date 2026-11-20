@@ -23,7 +23,8 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - [ ] Mobil GPU unumdorligi, qizish va batareya sarfini tekshirish.
 - [ ] Profil rasmi va uzun matnlar bilan real qurilma sinovi.
 - [ ] Bir akkaunt uchun ketma-ket besh Reel yaratib, kompozitsiya takrorlanishini baholash.
-- [ ] WebGL mavjud bo‘lmagan brauzerlar uchun fallback yo‘lini sinash.
+- [x] WebGL ishlamasa, 3D o‘rniga yolg‘on hajm ko‘rsatmaydigan tekis fonli ogohlantirish holati qo‘shildi.
+- [ ] WebGL mavjud bo‘lmagan brauzerda ogohlantirish va tekis fallback holatini qurilmada sinash.
 
 ## Texnik qarorlar
 - Three.js CDN orqali yuklanadi; birinchi ochishda internet aloqasi zarur.
