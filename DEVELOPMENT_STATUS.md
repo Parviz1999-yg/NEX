@@ -104,3 +104,17 @@ Kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi. Real Android vizual sinov
 - Har bir oqim sirtining geometriyasi har kadrda yangilanadi va normalari qayta hisoblanadi.
 - Mobil GPU unumdorligi hali o‘lchanmagan; 3D sirtlar soni va segmentlari keyingi qurilma sinoviga qarab optimallashtiriladi.
 - Hozirgi ish faqat Tavsiya akkaunt studiyasining 3D vizual tizimini yangilaydi; boshqa studiyalarni yakunlangan deb hisoblamaydi.
+
+
+## v0.5.1 — Sahna ko‘rinishi va yorqin Electric Blue / Chrome
+- [x] Takrorlangan eski `renderThree()` funksiyasi olib tashlandi. U yangi Liquid Flow rendererini bosib ketayotgan va eski geometriya maydonlariga murojaat qilayotgan edi.
+- [x] Tavsiya akkaunt rejimida 2D Canvas overlay endi WebGL fonini yopmaydi; 3D sahna orqa qatlamda ko‘rinadi.
+- [x] Noto‘g‘ri `Midnight` palette fallback olib tashlandi; standart palitra `Electric Blue` bilan moslashtirildi.
+- [x] Yorqin elektr ko‘k, xrom-kumush va muzdek oq metall materiallar; kuchaytirilgan yoritish va exposure.
+- [x] Suyuq lentalarning ko‘rinadigan kengligi va qatlamlararo ajralishi oshirildi.
+- [x] 8 ta yorqin palitra va yangi ko‘k-kumush interfeys.
+- [x] Versiya v0.5.1 va cache-buster yangilandi.
+- [ ] Android telefonda sahnaning real ko‘rinishi, ranglar va animatsiya ravonligini foydalanuvchi tasdiqlashi kerak.
+
+### v0.5.1 tekshiruv chegarasi
+Statik JavaScript sintaksisi, takroriy renderer yo‘qligi, palitra kalitlari va HTML/CSS versiya mosligi tekshiriladi. Real Android vizual sinovi hali bajarilmagan.
