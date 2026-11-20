@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.0.6</span></span></header>
+  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.1.0</span></span></header>
 
   <main>
     <section class="page active" id="page-home">
@@ -47,11 +47,17 @@
         <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot (ixtiyoriy)"></textarea><label for="voiceDiff">OVOZ UCHUN MATN</label><textarea id="voiceDiff" rows="2" placeholder="Farqini ovozda tushuntiring..."></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
         <div class="script-step"><span>05</span><div><label for="scriptCta" id="ctaLabel">CHORLOV — yakun</label><textarea id="scriptCta" rows="3" placeholder="Tomoshabin nima qilsin yoki nimani eslab qolsin?"></textarea><label for="voiceCta">OVOZ UCHUN MATN</label><textarea id="voiceCta" rows="2" placeholder="Yakuniy chorlovni ovozda ayting..."></textarea></div></div>
         <div id="accountFields" class="account-fields" hidden>
-          <p class="eyebrow">AKKAUNT MA’LUMOTLARI</p>
-          <label for="accountName">Akkaunt nomi</label><input id="accountName" placeholder="@username yoki sahifa nomi">
-          <label for="accountBio">Qisqa tavsif</label><textarea id="accountBio" rows="2" placeholder="Akkaunt nima bilan shug‘ullanadi?"></textarea>
-          <label for="accountFollowers">Obunachilar soni</label><input id="accountFollowers" inputmode="numeric" placeholder="Masalan: 12500">
-          <label for="accountImage">Profil rasmi (ixtiyoriy)</label><input id="accountImage" type="file" accept="image/*">
+          <p class="eyebrow">TAVSIYA QILINAYOTGAN AKKAUNT</p>
+          <label for="accountName">Akkaunt nomi yoki @username *</label><input id="accountName" maxlength="48" placeholder="@username">
+          <label for="accountNiche">Yo‘nalishi *</label><input id="accountNiche" maxlength="60" placeholder="Masalan: dasturlash, ta’lim, dizayn">
+          <label for="accountBio">Akkaunt haqida qisqa tavsif *</label><textarea id="accountBio" rows="2" maxlength="150" placeholder="Bu sahifada qanday kontent beriladi?"></textarea>
+          <label for="accountBenefit">Tomoshabinga asosiy foydasi *</label><textarea id="accountBenefit" rows="2" maxlength="180" placeholder="Kuzatuvchi bu sahifadan nima oladi?"></textarea>
+          <label for="accountAudience">Kimlar uchun?</label><input id="accountAudience" maxlength="100" placeholder="Masalan: yangi boshlovchilar, talabalar">
+          <label for="accountProof">Tavsiya sababi yoki ishonchli dalil</label><textarea id="accountProof" rows="2" maxlength="180" placeholder="Nimasi bilan ajralib turadi? Aniq misol yoki dalil yozing."></textarea>
+          <label for="accountFollowers">Obunachilar soni (ixtiyoriy)</label><input id="accountFollowers" inputmode="numeric" maxlength="24" placeholder="Masalan: 12,5 ming">
+          <label for="accountLink">Akkaunt havolasi (ixtiyoriy)</label><input id="accountLink" type="url" placeholder="https://instagram.com/username">
+          <label for="accountImage">Profil rasmi</label><input id="accountImage" type="file" accept="image/*">
+          <small>* Majburiy maydonlar. Faqat tekshirilgan ma’lumotlarni kiriting.</small>
         </div>
         <div class="actions"><button class="btn ghost" data-back="content">Orqaga</button><button class="btn primary" id="toStyle">Vizual uslubga o‘tish →</button></div>
       </div>
@@ -120,6 +126,6 @@
     <div class="record-controls"><span>NEX · SCREEN RECORDING</span><button id="recordPause">Ⅱ</button><button id="recordExit">✕</button></div>
   </div>
 </div>
-<script src="assets/js/flow.js?v=0.0.6"></script>
+<script src="assets/js/flow.js?v=0.1.0"></script>
 </body>
 </html>
