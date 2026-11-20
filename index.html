@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / LIQUID STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.8.9</span></span></header>
+  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / LIQUID STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.9.0</span></span></header>
 
   <main>
     <section class="page active" id="page-home">
@@ -108,7 +108,7 @@
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
-          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Diktor matni (tashqi ilovada ishlatiladi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Diktor matni tashqi ilovada ovozga aylantiriladi; NEX audio yozmaydi va yuklamaydi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
+          <label for="sceneText">Ekrandagi qisqa matn</label><textarea id="sceneText" rows="3" maxlength="110" placeholder="Faqat o‘zingiz ekranga chiqarishni istagan qisqa so‘z yoki jumla..."></textarea><div class="scene-duration-control"><label for="sceneDuration">Ushbu sahna davomiyligi</label><div class="duration-value"><input id="sceneDuration" type="range" min="2.5" max="12" step="0.5" value="5"><output id="sceneDurationValue" for="sceneDuration">5,0 soniya</output></div><p id="durationSummary" class="duration-summary">Jami rolik: 25 soniya · Har bir sahna vaqtini alohida sozlang.</p></div><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
           <div class="scene-list" id="sceneList"></div>
           <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
         </div>
@@ -129,6 +129,6 @@
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
 </script>
-<script src="assets/js/flow.js?v=0.8.9"></script>
+<script src="assets/js/flow.js?v=0.9.0"></script>
 </body>
 </html>
