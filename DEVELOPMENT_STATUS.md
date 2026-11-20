@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.5**  
+Amaldagi versiya: **v0.8.6**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -340,3 +340,11 @@ Koddagi e’lon qilish va foydalanish tartibi tekshirildi; runtime sinovi hali b
 
 ### v0.8.5 tekshiruv chegarasi
 Koddagi joylashuv, qatlam va responsive CSS o‘zgarishlari tekshiriladi. Android qurilmada ko‘rish sinovi foydalanuvchi tomonidan bajarilishi kerak.
+
+
+## v0.8.6 — Art-direction qatlamlari ustidagi mavzu belgisi
+- [x] Mavzu motivi har bir vizual tilning fon/maket qatlamidan keyin chiziladi; Editorial qog‘oz paneli yoki Futuristic HUD uni yopib qo‘ymaydi.
+- [x] Ishlatilmay qolgan mavzu metadata helperi va bayon tracking yorliqlari olib tashlandi.
+- [x] Vizual qatlamlar tartibi soddalashtirildi; mavzu belgisi bitta ixcham detal sifatida saqlandi.
+- [x] HTML versiyasi va JavaScript cache-buster v0.8.6 ga yangilandi.
+- [ ] Android’da barcha sahna va uslublarning yakuniy ko‘rish sinovi.
