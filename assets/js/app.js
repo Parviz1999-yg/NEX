@@ -67,7 +67,7 @@ const MODES={
   }
 };
 
-/* ---------- UI ---------- */
+/* ---------- UI (o‘zgarmagan) ---------- */
 function show(id){$$(".scr").forEach(s=>s.classList.toggle("on",s.id===id));}
 
 $$(".mcard").forEach(b=>b.onclick=()=>openMode(b.dataset.mode));
@@ -129,6 +129,7 @@ function initParts(){
     a:Math.random()*6.28,
     s:.4+Math.random()*1.2
   }));
+  // suyuq shakllar (blob) parametrlari
   S.blobs=[
     {cx:.72, cy:.28, rx:.22, ry:.18, rot:0, speed:.35, hueShift:0},
     {cx:.28, cy:.62, rx:.18, ry:.14, rot:1.2, speed:-.25, hueShift:40},
@@ -160,6 +161,7 @@ function wrap(ctx,text,max){
 }
 function ease(t){t=Math.min(1,Math.max(0,t));return 1-Math.pow(1-t,3);}
 
+// metallik / shisha gradient
 function metalGrad(ctx,x,y,r,base){
   const g=ctx.createRadialGradient(x-r*.35,y-r*.4,r*.05,x,y,r);
   g.addColorStop(0,"#ffffffcc");
@@ -170,6 +172,7 @@ function metalGrad(ctx,x,y,r,base){
   return g;
 }
 
+// suyuq blob chizish
 function drawLiquidBlob(ctx,W,H,blob,sec,ac){
   const cx=blob.cx*W + Math.sin(sec*blob.speed)*W*.04;
   const cy=blob.cy*H + Math.cos(sec*blob.speed*.8)*H*.03;
@@ -181,6 +184,7 @@ function drawLiquidBlob(ctx,W,H,blob,sec,ac){
   ctx.translate(cx,cy);
   ctx.rotate(rot);
 
+  // soft outer glow
   ctx.globalAlpha=.18;
   const glow=ctx.createRadialGradient(0,0,0,0,0,Math.max(rx,ry)*1.6);
   glow.addColorStop(0,ac);
@@ -190,6 +194,7 @@ function drawLiquidBlob(ctx,W,H,blob,sec,ac){
   ctx.ellipse(0,0,rx*1.5,ry*1.5,0,0,6.28);
   ctx.fill();
 
+  // main liquid body
   ctx.globalAlpha=.85;
   const body=ctx.createLinearGradient(-rx,-ry,rx,ry);
   body.addColorStop(0,"#ffffffaa");
@@ -202,6 +207,7 @@ function drawLiquidBlob(ctx,W,H,blob,sec,ac){
   ctx.ellipse(0,0,rx,ry,0,0,6.28);
   ctx.fill();
 
+  // inner highlight (chrome reflection)
   ctx.globalAlpha=.55;
   const hi=ctx.createRadialGradient(-rx*.4,-ry*.45,0,-rx*.2,-ry*.3,rx*.7);
   hi.addColorStop(0,"#ffffffee");
@@ -209,9 +215,10 @@ function drawLiquidBlob(ctx,W,H,blob,sec,ac){
   hi.addColorStop(1,"transparent");
   ctx.fillStyle=hi;
   ctx.beginPath();
-  ctx.ellipse(-rx*.15,-ry*.2,rx*.55,ry*.4,-0.4,0,6.28);
+  ctx.ellipse(-rx*.15,-ry*.2,rx*.55,ry*.4, -0.4,0,6.28);
   ctx.fill();
 
+  // thin chromatic edge
   ctx.globalAlpha=.4;
   ctx.strokeStyle=ac;
   ctx.lineWidth=1.5*(W/360);
@@ -229,12 +236,13 @@ function drawFrame(ctx,W,H,t){
   const mode=S.mode;
   const ac=ACCENT[mode];
   const sec=Math.max(0,t/1000);
-  // Kirish bir marta, keyin barqaror turadi (loop yo'q)
-  const p = sec < 1.35 ? ease(sec / 1.35) : 1;
+  const p=ease((sec%3.6)/1.2);
 
+  // deep dark base
   ctx.fillStyle="#03040a";
   ctx.fillRect(0,0,W,H);
 
+  // subtle vignette + color wash
   const wash=ctx.createRadialGradient(W*.5,H*.35,0,W*.5,H*.5,W*.9);
   if(mode==="tavsiya"){
     wash.addColorStop(0,"#1e1040aa"); wash.addColorStop(1,"#03040a");
@@ -248,17 +256,21 @@ function drawFrame(ctx,W,H,t){
   ctx.fillStyle=wash;
   ctx.fillRect(0,0,W,H);
 
+  // liquid metal blobs (rasmdagi kabi)
   S.blobs.forEach(b=>drawLiquidBlob(ctx,W,H,b,sec,ac));
 
+  // floating micro particles (sparkle)
   S.particles.forEach(pt=>{
     const x=pt.x*W+Math.sin(sec*pt.v+pt.a)*18;
     const y=((pt.y+sec*pt.v*.025)%1.35)*H-H*.12;
     const alpha=.15+.45*Math.abs(Math.sin(sec*pt.s+pt.a));
     ctx.globalAlpha=alpha;
+    // bright core
     ctx.fillStyle="#ffffff";
     ctx.beginPath();
     ctx.arc(x,y,pt.r*.4*(W/360),0,6.28);
     ctx.fill();
+    // colored halo
     ctx.globalAlpha=alpha*.6;
     ctx.fillStyle=ac;
     ctx.beginPath();
@@ -267,6 +279,7 @@ function drawFrame(ctx,W,H,t){
   });
   ctx.globalAlpha=1;
 
+  // large soft light sweep
   ctx.save();
   ctx.globalAlpha=.08+Math.sin(sec*.6)*.03;
   const sweep=ctx.createLinearGradient(0,0,W,H);
@@ -293,12 +306,14 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.globalAlpha=p;
   ctx.translate((1-p)*50,0);
 
+  // glass card
   ctx.fillStyle="rgba(255,255,255,.06)";
   ctx.strokeStyle="rgba(255,255,255,.25)";
   ctx.lineWidth=1.5;
   rr(ctx,W*.07,cy,W*.86,H*.125,18);
   ctx.fill(); ctx.stroke();
 
+  // accent line on card
   ctx.strokeStyle=ac;
   ctx.globalAlpha=.5*p;
   ctx.lineWidth=2;
@@ -308,6 +323,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.stroke();
   ctx.globalAlpha=p;
 
+  // avatar with metallic ring
   const ax=W*.18, ay=cy+H*.062, ar=W*.055;
   ctx.save();
   ctx.translate(ax,ay);
@@ -320,6 +336,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.setLineDash([]);
   ctx.restore();
 
+  // metallic avatar
   const gr=metalGrad(ctx,ax,ay,ar,ac);
   ctx.fillStyle=gr;
   ctx.beginPath(); ctx.arc(ax,ay,ar,0,6.28); ctx.fill();
@@ -337,6 +354,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.fillText((d.role||"Tavsiya etiladi").slice(0,24),W*.28,cy+H*.08);
   ctx.restore();
 
+  // floating orbit rings
   ctx.save();
   ctx.translate(W*.8,H*.36);
   ctx.rotate(sec*.7);
@@ -348,6 +366,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.beginPath(); ctx.arc(0,0,W*.07,0,6.28); ctx.stroke();
   ctx.restore();
 
+  // texts
   ctx.textAlign="center";
   ctx.fillStyle=ac;
   ctx.globalAlpha=p;
@@ -368,6 +387,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   const body=wrap(ctx,d.why||"Foydali kontent va sifatli yondashuv.",W*.8);
   body.slice(0,3).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.67+i*W*.042));
 
+  // glossy CTA
   ctx.globalAlpha=p;
   const cta=d.cta||"Obuna bo‘ling";
   ctx.font=`bold ${Math.floor(W*.03)}px system-ui`;
@@ -379,6 +399,7 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
   ctx.fillStyle=gr2;
   rr(ctx,(W-tw)/2,H*.84,tw,H*.05,99);
   ctx.fill();
+  // shine on button
   ctx.globalAlpha=.35*p;
   const shine=ctx.createLinearGradient((W-tw)/2,H*.84,(W-tw)/2,H*.89);
   shine.addColorStop(0,"#ffffffaa");
@@ -394,12 +415,14 @@ function drawTavsiya(ctx,W,H,d,ac,p,sec){
 }
 
 function drawFakt(ctx,W,H,d,ac,p,sec){
+  // metallic stamp
   ctx.save();
   ctx.translate(W/2,H*.23);
   ctx.rotate((1-p)*-.35 + Math.sin(sec*1.8)*.04);
   const sc=.55+.45*p;
   ctx.scale(sc,sc);
 
+  // outer glow ring
   ctx.globalAlpha=.25*p;
   const gRing=ctx.createRadialGradient(0,0,W*.08,0,0,W*.18);
   gRing.addColorStop(0,ac);
@@ -416,6 +439,7 @@ function drawFakt(ctx,W,H,d,ac,p,sec){
   ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.arc(0,0,W*.095,0,6.28); ctx.stroke();
 
+  // metallic fill
   ctx.fillStyle=metalGrad(ctx,0,0,W*.09,ac);
   ctx.beginPath(); ctx.arc(0,0,W*.085,0,6.28); ctx.fill();
 
@@ -443,6 +467,7 @@ function drawFakt(ctx,W,H,d,ac,p,sec){
 }
 
 function drawIbora(ctx,W,H,d,ac,p,sec){
+  // large translucent quote mark with metal feel
   ctx.globalAlpha=.14*p;
   ctx.fillStyle=ac;
   ctx.font=`bold ${Math.floor(W*.26)}px Georgia,serif`;
@@ -464,6 +489,7 @@ function drawIbora(ctx,W,H,d,ac,p,sec){
   ctx.font=`${Math.floor(W*.028)}px system-ui`;
   ctx.fillText("— "+(d.author||"Noma’lum"),W/2,H*.77);
 
+  // thin luminous line
   ctx.strokeStyle=ac;
   ctx.globalAlpha=.45*p;
   ctx.lineWidth=1.8;
@@ -473,150 +499,62 @@ function drawIbora(ctx,W,H,d,ac,p,sec){
   ctx.globalAlpha=1;
 }
 
-/* ===== MANBA — Tavsiya akkaunt uslubida ===== */
 function drawManba(ctx,W,H,d,ac,p,sec){
-  const name=d.name||"Foydali manba";
-  const type=(d.type||"MANBA").toUpperCase();
-  const letter=(name[0]||"M").toUpperCase();
-
-  // --- yuqori glass card (Tavsiya dagi profil kartasi kabi) ---
-  const cy=H*.15;
-  ctx.save();
-  ctx.globalAlpha=p;
-  ctx.translate((1-p)*50,0);
-
-  ctx.fillStyle="rgba(255,255,255,.06)";
-  ctx.strokeStyle="rgba(255,255,255,.25)";
-  ctx.lineWidth=1.5;
-  rr(ctx,W*.07,cy,W*.86,H*.125,18);
-  ctx.fill(); ctx.stroke();
-
-  // accent progress line
-  ctx.strokeStyle=ac;
-  ctx.globalAlpha=.5*p;
-  ctx.lineWidth=2;
-  ctx.beginPath();
-  ctx.moveTo(W*.07,cy+H*.125);
-  ctx.lineTo(W*.07+W*.86*p,cy+H*.125);
-  ctx.stroke();
-  ctx.globalAlpha=p;
-
-  // metallik avatar + aylanuvchi ring
-  const ax=W*.18, ay=cy+H*.062, ar=W*.055;
-  ctx.save();
-  ctx.translate(ax,ay);
-  ctx.rotate(sec*1.1);
-  ctx.strokeStyle=ac;
-  ctx.globalAlpha=.55*p;
-  ctx.lineWidth=2.5;
-  ctx.setLineDash([6,8]);
-  ctx.beginPath(); ctx.arc(0,0,ar+10,0,6.28); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.restore();
-
-  const gr=metalGrad(ctx,ax,ay,ar,ac);
-  ctx.fillStyle=gr;
-  ctx.beginPath(); ctx.arc(ax,ay,ar,0,6.28); ctx.fill();
-  ctx.fillStyle="#0a0c18";
-  ctx.font=`bold ${Math.floor(W*.05)}px system-ui`;
-  ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText(letter,ax,ay+1);
-
-  // nom va turi
-  ctx.fillStyle="#fff";
-  ctx.font=`bold ${Math.floor(W*.038)}px system-ui`;
-  ctx.textAlign="left";
-  ctx.fillText(name.slice(0,20),W*.28,cy+H*.042);
-  ctx.fillStyle="#a0aabc";
-  ctx.font=`${Math.floor(W*.026)}px system-ui`;
-  ctx.fillText(type.slice(0,24),W*.28,cy+H*.08);
-  ctx.restore();
-
-  // orbit bezak (Tavsiya bilan bir xil)
-  ctx.save();
-  ctx.translate(W*.8,H*.34);
-  ctx.rotate(sec*.7);
-  ctx.strokeStyle=ac;
-  ctx.globalAlpha=.3*p;
-  ctx.lineWidth=1.8;
-  ctx.setLineDash([7,9]);
-  ctx.beginPath(); ctx.arc(0,0,W*.11,0,6.28); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0,0,W*.07,0,6.28); ctx.stroke();
-  ctx.restore();
-
-  // kicker
   ctx.textAlign="center";
   ctx.fillStyle=ac;
   ctx.globalAlpha=p;
-  ctx.font=`bold ${Math.floor(W*.026)}px system-ui`;
-  ctx.fillText("FOYDALI MANBA",W/2,H*.37);
+  ctx.font=`bold ${Math.floor(W*.024)}px system-ui`;
+  ctx.fillText((d.type||"MANBA").toUpperCase(),W/2,H*.15);
 
-  // why matni
   ctx.fillStyle="#fff";
-  ctx.font=`bold ${Math.floor(W*.048)}px system-ui`;
-  const whyLines=wrap(ctx,d.why||"Amaliy darslar, qisqa va tushunarli",W*.82);
-  whyLines.slice(0,2).forEach((ln,i)=>{
+  ctx.font=`bold ${Math.floor(W*.052)}px system-ui`;
+  const titles=wrap(ctx,d.name||"Foydali manba",W*.84);
+  titles.slice(0,2).forEach((ln,i)=>{
     ctx.globalAlpha=ease(p-i*.1);
-    ctx.fillText(ln,W/2,H*.44+i*W*.065);
+    ctx.fillText(ln,W/2,H*.23+i*W*.065);
   });
 
-  // 3 ta nuqta — glass kartochkalar (Tavsiya uslubida)
+  ctx.globalAlpha=p*.85;
+  ctx.fillStyle="#c8d0dc";
+  ctx.font=`${Math.floor(W*.028)}px system-ui`;
+  const why=wrap(ctx,d.why||"",W*.8);
+  why.slice(0,2).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.37+i*W*.04));
+
   const pts=(d.pts||"").split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,3);
   const list=pts.length?pts:["Amaliy qiymat","Qulay format","Tavsiya etiladi"];
 
   list.forEach((item,i)=>{
-    const q=ease(p-.15-i*.12);
-    const y=H*.56+i*H*.085;
+    const q=ease(p-.1-i*.12);
+    const y=H*.48+i*H*.1;
     ctx.globalAlpha=q;
 
     // glass card
-    ctx.fillStyle="rgba(255,255,255,.06)";
-    ctx.strokeStyle="rgba(255,255,255,.22)";
-    ctx.lineWidth=1.3;
-    rr(ctx,W*.08,y,W*.84,H*.07,14);
+    ctx.fillStyle="rgba(255,255,255,.05)";
+    ctx.strokeStyle="rgba(255,255,255,.18)";
+    ctx.lineWidth=1.2;
+    rr(ctx,W*.08,y,W*.84,H*.08,14);
     ctx.fill(); ctx.stroke();
 
-    // metallik raqam
-    const nx=W*.17, ny=y+H*.035;
-    ctx.fillStyle=metalGrad(ctx,nx,ny,W*.026,ac);
-    ctx.beginPath(); ctx.arc(nx,ny,W*.026,0,6.28); ctx.fill();
+    // accent left bar
+    ctx.fillStyle=ac;
+    ctx.globalAlpha=q*.8;
+    rr(ctx,W*.08,y,4,H*.08,2);
+    ctx.fill();
+    ctx.globalAlpha=q;
+
+    // number with metal look
+    ctx.fillStyle=metalGrad(ctx,W*.17,y+H*.04,W*.028,ac);
+    ctx.beginPath(); ctx.arc(W*.17,y+H*.04,W*.028,0,6.28); ctx.fill();
     ctx.fillStyle="#05060f";
-    ctx.font=`bold ${Math.floor(W*.024)}px system-ui`;
+    ctx.font=`bold ${Math.floor(W*.026)}px system-ui`;
     ctx.textAlign="center"; ctx.textBaseline="middle";
-    ctx.fillText(String(i+1),nx,ny);
+    ctx.fillText(String(i+1),W*.17,y+H*.04);
 
     ctx.fillStyle="#f0f7ff";
     ctx.font=`bold ${Math.floor(W*.03)}px system-ui`;
     ctx.textAlign="left";
-    ctx.fillText(item.slice(0,26),W*.25,ny);
+    ctx.fillText(item.slice(0,26),W*.25,y+H*.04);
   });
-
-  // pastki glossy CTA (Tavsiya dagi kabi)
-  ctx.globalAlpha=p;
-  const cta="Ko‘rib chiqing";
-  ctx.font=`bold ${Math.floor(W*.028)}px system-ui`;
-  const tw=ctx.measureText(cta).width+W*.12;
-  const gr2=ctx.createLinearGradient((W-tw)/2,0,(W+tw)/2,0);
-  gr2.addColorStop(0,ac);
-  gr2.addColorStop(.5,"#ffffffcc");
-  gr2.addColorStop(1,"#38bdf8");
-  ctx.fillStyle=gr2;
-  rr(ctx,(W-tw)/2,H*.88,tw,H*.045,99);
-  ctx.fill();
-
-  ctx.globalAlpha=.35*p;
-  const shine=ctx.createLinearGradient((W-tw)/2,H*.88,(W-tw)/2,H*.925);
-  shine.addColorStop(0,"#ffffffaa");
-  shine.addColorStop(1,"transparent");
-  ctx.fillStyle=shine;
-  rr(ctx,(W-tw)/2,H*.88,tw,H*.022,99);
-  ctx.fill();
-
-  ctx.globalAlpha=p;
-  ctx.fillStyle="#05060f";
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-  ctx.fillText(cta,W/2,H*.902);
   ctx.globalAlpha=1;
 }
 
@@ -659,7 +597,7 @@ function updateBtns(){
 function stop(){S.playing=false;updateBtns();}
 function toggle(){
   S.playing=!S.playing;
-  if(S.playing) S.t0=performance.now(); // qayta playda kirish animatsiyasi qayta ishlaydi
+  S.t0=performance.now();
   updateBtns();
 }
 
@@ -675,5 +613,5 @@ $("recClose").onclick=()=>{$("recLayer").hidden=true;stop();};
 $("recPlay").onclick=toggle;
 
 initParts();
-console.log("NEX manba = tavsiya style ready");
+console.log("NEX liquid metal visual ready");
 })();
