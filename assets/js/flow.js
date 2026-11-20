@@ -447,11 +447,11 @@ function drawRecommendationScene(c,w,h,now,pal){
  if(idx===0){
   c.save();c.globalAlpha=.75;c.fillStyle=ac;c.fillRect(w*.09,h*.25,w*.018,h*.45);c.restore();pill("NEX TAVSIYA QILADI",w*.14,h*.22);
   c.save();c.translate((1-e)*w*.16,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.13,h*.39,w*.76,w*.105,fg,"900","left",5);
-  c.globalAlpha=.72;text(state.account.niche||"Yangi bilim va foydali kontent",w*.14,h*.78,w*.7,w*.034,ac,"700","left",2);c.restore();
+  c.globalAlpha=.72;text(state.account.niche||"Yangi bilim va foydali kontent",w*.14,h*.78,w*.7,w*.034,fg,"700","left",2);c.restore();
  }else if(idx===1){
   const y=h*.18+((1-e)*h*.2);card(w*.08,y,w*.84,h*.70);avatar(w*.5,y+h*.15,w*.105);
   text(state.account.name||"Akkaunt nomi",w*.5,y+h*.30,w*.72,w*.047,fg,"850","center",2);
-  text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,ac,"750","center",2);
+  text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,fg,"750","center",2);
   text(state.account.bio||copy,w*.5,y+h*.445,w*.68,w*.031,fg,"500","center",3);
   if(state.account.followers){c.save();c.fillStyle=ac+"22";c.beginPath();c.roundRect(w*.2,y+h*.62,w*.6,h*.07,w*.025);c.fill();c.restore();text(state.account.followers+" obunachi",w*.5,y+h*.655,w*.54,w*.03,fg,"800","center",1)}
   pill("AKKAUNT BILAN TANISHING",w*.14,h*.13);
@@ -469,7 +469,7 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.save();c.globalAlpha=.16;c.strokeStyle=ac;c.lineWidth=w*.018;
   for(let r=0;r<5;r++){c.beginPath();c.arc(w*.5,h*.48,w*(.16+r*.075),t*.15+r*.3,t*.15+r*.3+Math.PI*1.5);c.stroke()}c.restore();
   pill("KEYINGI QADAM",w*.1,h*.24);text(copy||"Foydali deb bilsangiz, kuzatib boring.",w*.12,h*.43,w*.76,w*.09,fg,"900","left",4);
-  text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,ac,"850","left",2);
+  text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,fg,"850","left",2);
   if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
  }
 
