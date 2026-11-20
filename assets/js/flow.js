@@ -32,118 +32,146 @@ const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rc
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
 function drawProceduralBackground(c,w,h,idx,pal,now){
- // Lightweight animated procedural background; geometry composition is seeded, motion is continuous.
- const rand=seededRandom((state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0);
  const t=now/1000,bg=pal[0],a=pal[2],b=pal[3]||pal[2],fg=pal[1];
- const driftX=Math.sin(t*.22+idx)*w*.13,driftY=Math.cos(t*.18+idx*.7)*h*.1;
- const angle=rand()*Math.PI*2+t*.035;
- const g=c.createLinearGradient(w*(.5+Math.cos(angle)*.75)+driftX,h*(.5+Math.sin(angle)*.75)+driftY,w*(.5-Math.cos(angle)*.75)-driftX,h*(.5-Math.sin(angle)*.75)-driftY);
- g.addColorStop(0,bg);g.addColorStop(.38,a+"66");g.addColorStop(.72,b+"66");g.addColorStop(1,bg);
- c.fillStyle=g;c.fillRect(0,0,w,h);
- // Moving light fields.
- for(let n=0;n<4;n++){
-  const phase=t*(.18+n*.035)+n*2.1+idx*.55;
-  const x=w*(.5+Math.sin(phase)*.42),y=h*(.5+Math.cos(phase*.83)*.38);
-  const r=Math.max(w,h)*(.25+.12*Math.sin(phase*1.4));
+ const seed=(state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0;
+ const rand=seededRandom(seed);
+ // Har bir sahnaga mustaqil vizual yo‘nalish. Ketma-ket sahnalarda ayni effekt takrorlanmaydi.
+ let family=Math.floor(rand()*10);
+ if(idx>0){
+  const prev=seededRandom((state.backgroundSeed^Math.imul(idx,0x9E3779B1))|0);
+  const previous=Math.floor(prev()*10);
+  if(family===previous)family=(family+1+Math.floor(rand()*9))%10;
+ }
+ const angle=rand()*Math.PI*2+t*.025;
+ const gx=w*(.5+Math.cos(angle)*.7),gy=h*(.5+Math.sin(angle)*.7);
+ const gradient=c.createLinearGradient(gx,gy,w-gx,h-gy);
+ gradient.addColorStop(0,bg);gradient.addColorStop(.42,a+"55");gradient.addColorStop(.78,b+"44");gradient.addColorStop(1,bg);
+ c.fillStyle=gradient;c.fillRect(0,0,w,h);
+ // Keng yorug‘lik maydonlari.
+ for(let n=0;n<3;n++){
+  const phase=t*(.16+n*.045)+n*2.4+idx;
+  const x=w*(.5+Math.sin(phase)*.4),y=h*(.5+Math.cos(phase*.8)*.38),r=Math.max(w,h)*(.28+.08*Math.sin(phase));
   const glow=c.createRadialGradient(x,y,0,x,y,r),col=n%2?a:b;
-  glow.addColorStop(0,col+"77");glow.addColorStop(.42,col+"25");glow.addColorStop(1,col+"00");
+  glow.addColorStop(0,col+"66");glow.addColorStop(.5,col+"1d");glow.addColorStop(1,col+"00");
   c.fillStyle=glow;c.fillRect(0,0,w,h);
  }
- const families=8,layers=3+Math.floor(rand()*3);
- for(let layer=0;layer<layers;layer++){
-  const family=Math.floor(rand()*families),x=w*(.08+rand()*.84),y=h*(.08+rand()*.84);
-  const scale=.12+rand()*.34,rot=(rand()-.5)*Math.PI*.9,accent=rand()>.5?a:b;
-  const phase=rand()*Math.PI*2,speed=.16+rand()*.3;
-  c.save();
-  c.translate(x+Math.sin(t*speed+phase)*w*.025,y+Math.cos(t*speed*.83+phase)*h*.022);
-  c.rotate(rot+Math.sin(t*speed*.7+phase)*.09);
-  const pulse=1+Math.sin(t*speed+phase)*.045;
-  c.scale(pulse,pulse);c.globalAlpha=.16+rand()*.34;c.strokeStyle=layer%2?accent:fg;c.fillStyle=accent;c.lineWidth=Math.max(1,w*(.002+rand()*.005));
-  if(family===0){
-   for(let k=0;k<3+Math.floor(rand()*5);k++){const z=.55+k*.23;c.beginPath();c.ellipse(0,0,w*scale*z,h*scale*.32*z,rand()*.25+t*.025,0,Math.PI*2);c.stroke()}
-   const orbit=t*(.45+layer*.07)+phase;c.beginPath();c.arc(Math.cos(orbit)*w*scale*.72,Math.sin(orbit)*h*scale*.23,w*scale*.035,0,Math.PI*2);c.fill();
-  }else if(family===1){
-   for(let k=0;k<2+Math.floor(rand()*4);k++){const z=1+k*.22;c.strokeRect(-w*scale*z,-h*scale*.22*z,w*scale*2*z,h*scale*.44*z)}
-   c.globalAlpha*=.65;c.fillRect(-w*scale*.8,-h*scale*.035,w*scale*.55,h*scale*.07);
-  }else if(family===2){
-   for(let k=0;k<2+Math.floor(rand()*4);k++){const z=.55+k*.24;c.beginPath();c.moveTo(-w*scale*z,-h*scale*.45);c.lineTo(w*scale*z,-h*scale*.12);c.lineTo(w*scale*.38*z,h*scale*.55);c.lineTo(-w*scale*.72*z,h*scale*.3);c.closePath();c.stroke()}
-  }else if(family===3){
-   for(let k=0;k<3+Math.floor(rand()*4);k++){const z=.55+k*.2;c.beginPath();c.ellipse((rand()-.5)*w*scale+Math.sin(t*.25+k)*w*.025,(rand()-.5)*h*scale,w*scale*z,h*scale*.3*z,rand()+t*.025,0,Math.PI*2);c.stroke()}
-  }else if(family===4){
-   for(let k=0;k<5+Math.floor(rand()*5);k++){const z=.35+k*.2+t*.018%1*.12;c.beginPath();c.moveTo(-w*scale*z,-h*scale*.3*z);c.lineTo(w*scale*z,-h*scale*.3*z);c.lineTo(w*scale*1.2*z,h*scale*.3*z);c.lineTo(-w*scale*1.2*z,h*scale*.3*z);c.closePath();c.stroke()}
-  }else if(family===5){
-   const step=w*scale*.34,offset=(t*9+phase*20)%step;
-   for(let gx=-2;gx<=2;gx++){for(let gy=-2;gy<=2;gy++){if(rand()>.35)c.strokeRect(gx*step+offset*.12,gy*step-offset*.12,step*.58,step*.58)}}
-  }else if(family===6){
-   for(let k=0;k<5+Math.floor(rand()*5);k++){const yy=(k-4)*h*scale*.13;c.beginPath();c.moveTo(-w*scale,yy);c.bezierCurveTo(-w*scale*.35,yy-h*scale*(.45+Math.sin(t*.7+k)*.1),w*scale*.35,yy+h*scale*(.45+Math.sin(t*.7+k)*.1),w*scale,yy);c.stroke()}
-  }else{
-   const count=7+Math.floor(rand()*9),radius=w*scale,spin=t*.12+phase;
-   for(let k=0;k<count;k++){const q=k/count*Math.PI*2+spin;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(q)*radius,Math.sin(q)*radius);c.stroke()}
-   c.beginPath();for(let k=0;k<count;k++){const q=k/count*Math.PI*2+spin,r=radius*(.35+(k%2)*.16);if(k===0)c.moveTo(Math.cos(q)*r,Math.sin(q)*r);else c.lineTo(Math.cos(q)*r,Math.sin(q)*r)}c.closePath();c.stroke();
+ c.save();c.lineCap="round";c.lineJoin="round";
+ if(family===0){
+  // Oqimli suyuq to‘lqinlar.
+  for(let k=0;k<13;k++){const y=h*(.2+k*.055),phase=k*.48;
+   c.beginPath();for(let x=-20;x<=w+20;x+=8){const yy=y+Math.sin(x/w*5+t*.8+phase)*h*.035+Math.sin(x/w*2.4-t*.45+phase)*h*.022;if(x===-20)c.moveTo(x,yy);else c.lineTo(x,yy)}
+   c.strokeStyle=k%2?a:b;c.globalAlpha=.13+(k%4)*.035;c.lineWidth=Math.max(1,w*.003);c.stroke();
   }
+ }else if(family===1){
+  // Zarralar girdobi — markazga tortiluvchi yulduzsimon oqim.
+  const cx=w*(.5+Math.sin(t*.22)*.12),cy=h*(.5+Math.cos(t*.19)*.1);
+  for(let i=0;i<115;i++){const q=i/115,phase=q*31+t*(.35+q*.8),radius=(.04+q*.52)*Math.min(w,h),x=cx+Math.cos(phase)*radius,y=cy+Math.sin(phase*1.13)*radius;
+   c.globalAlpha=.12+.55*q;c.fillStyle=i%3?a:b;c.beginPath();c.arc(x,y,1+w*q*.006,0,Math.PI*2);c.fill();
+  }
+ }else if(family===2){
+  // Neon lazer yo‘llari va tez siljiydigan yorug‘lik chiziqlari.
+  for(let i=0;i<9;i++){const y=h*(.12+i*.1),shift=((t*(55+i*9)+i*97)%(w*1.5))-w*.25;
+   c.globalAlpha=.16;c.strokeStyle=i%2?a:b;c.lineWidth=w*(i%3===0?.009:.002);
+   c.beginPath();c.moveTo(shift-w*.2,y);c.lineTo(shift+w*.34,y-h*.08);c.lineTo(shift+w*.62,y+h*.035);c.stroke();
+  }
+ }else if(family===3){
+  // Organik suyuqlik shakllari — sekin kengayib, qisqaradi.
+  for(let i=0;i<7;i++){const phase=i*1.7+t*(.22+i*.012),x=w*(.5+Math.sin(phase)*.38),y=h*(.5+Math.cos(phase*.73)*.4),rx=w*(.09+.035*Math.sin(phase*1.4)),ry=h*(.055+.025*Math.cos(phase));
+   c.save();c.translate(x,y);c.rotate(phase*.23);c.globalAlpha=.13;c.fillStyle=i%2?a:b;c.beginPath();c.ellipse(0,0,rx,ry,0,0,Math.PI*2);c.fill();c.restore();
+  }
+ }else if(family===4){
+  // Yorug‘lik pardasi — vertikal ipakdek nurlar.
+  for(let i=0;i<17;i++){const x=w*(i/16),wave=Math.sin(t*.55+i*.43)*w*.055;
+   const grad=c.createLinearGradient(x+wave,0,x-wave,h);grad.addColorStop(0,a+"00");grad.addColorStop(.48,i%2?b+"55":a+"66");grad.addColorStop(1,a+"00");
+   c.globalAlpha=.55;c.strokeStyle=grad;c.lineWidth=w*(.008+(.5+.5*Math.sin(t+i))*.009);
+   c.beginPath();c.moveTo(x+wave,0);c.bezierCurveTo(x-wave*1.8,h*.32,x+wave*1.5,h*.68,x-wave,h);c.stroke();
+  }
+ }else if(family===5){
+  // Perspektiv tunnel — kamera ichkariga uchayotgandek.
+  const cx=w*(.5+Math.sin(t*.18)*.08),cy=h*.48,offset=(t*.32)%1;
+  for(let i=0;i<13;i++){const q=((i/13+offset)%1),scale=.08+q*1.15,ww=w*scale,hh=h*scale*.52;
+   c.globalAlpha=.08+q*.2;c.strokeStyle=i%2?a:b;c.lineWidth=Math.max(1,w*.002);
+   c.save();c.translate(cx,cy);c.rotate(Math.sin(t*.2)*.12+q*.04);c.strokeRect(-ww/2,-hh/2,ww,hh);c.restore();
+  }
+ }else if(family===6){
+  // Geometrik shardlar — turli yo‘nalishda suzuvchi ko‘p qirrali bo‘laklar.
+  for(let i=0;i<15;i++){const phase=rand()*6.28,x=w*(.08+rand()*.84)+Math.sin(t*.25+phase)*w*.035,y=h*(.08+rand()*.84)+Math.cos(t*.2+phase)*h*.03,r=w*(.018+rand()*.055);
+   c.save();c.translate(x,y);c.rotate(t*(i%2?.12:-.1)+phase);c.globalAlpha=.12+rand()*.18;c.strokeStyle=i%2?a:b;c.fillStyle=a;
+   c.beginPath();for(let k=0;k<5;k++){const q=k/5*Math.PI*2,rr=r*(.65+((k+i)%3)*.2);if(k===0)c.moveTo(Math.cos(q)*rr,Math.sin(q)*rr);else c.lineTo(Math.cos(q)*rr,Math.sin(q)*rr)}c.closePath();c.stroke();c.restore();
+  }
+ }else if(family===7){
+  // Raqamli yomg‘ir — vertikal oqimlar.
+  for(let col=0;col<18;col++){const x=w*(col+.5)/18,head=((t*(.12+col%5*.035)+col*.137)%1.3)-.15;
+   for(let j=0;j<8;j++){const y=h*(head+j*.025);if(y<0||y>h)continue;c.globalAlpha=(1-j/8)*.22;c.fillStyle=col%2?a:b;c.fillRect(x,y,w*.003,h*.012)}
+  }
+ }else if(family===8){
+  // Aylanuvchi energiya halqalari, lekin kub va panellarsiz.
+  c.save();c.translate(w*.5,h*.5);
+  for(let i=0;i<8;i++){c.rotate(.08+Math.sin(t*.25+i)*.012);c.globalAlpha=.1+i*.012;c.strokeStyle=i%2?a:b;c.lineWidth=w*.0025;c.beginPath();c.ellipse(0,0,w*(.12+i*.045),h*(.045+i*.014),t*.08+i*.1,0,Math.PI*2);c.stroke()}
   c.restore();
+ }else{
+  // Yulduz portlashi — markazdan tashqariga tarqaladigan yorug‘lik nurlari.
+  const cx=w*(.5+Math.sin(t*.3)*.08),cy=h*(.48+Math.cos(t*.24)*.06);
+  for(let i=0;i<64;i++){const q=i/64*Math.PI*2+t*.08,len=Math.min(w,h)*(.12+.38*(.5+.5*Math.sin(t*.8+i)));
+   c.globalAlpha=.08+.12*(.5+.5*Math.sin(t+i));c.strokeStyle=i%2?a:b;c.lineWidth=i%5===0?w*.004:1;
+   c.beginPath();c.moveTo(cx+Math.cos(q)*len*.18,cy+Math.sin(q)*len*.18);c.lineTo(cx+Math.cos(q)*len,cy+Math.sin(q)*len);c.stroke();
+  }
  }
- // A soft moving light sweep adds visible motion without heavy filters or libraries.
- const sweep=((t*.105+idx*.19)%1.35)-.18;
- c.save();c.globalAlpha=.12;c.translate(w*sweep,h*.5);c.rotate(-.24);
- const beam=c.createLinearGradient(-w*.16,0,w*.16,0);beam.addColorStop(0,a+"00");beam.addColorStop(.5,a+"99");beam.addColorStop(1,a+"00");
- c.fillStyle=beam;c.fillRect(-w*.16,-h,w*.32,h*2);c.restore();
- // Fine particles drift continuously through the composition.
- const dots=seededRandom((state.backgroundSeed^Math.imul(idx+71,0x27D4EB2D))|0);
- c.save();c.fillStyle=fg;
- for(let i=0;i<52;i++){
-  const bx=dots()*w,by=dots()*h,speed=8+dots()*28,phase=dots()*Math.PI*2;
-  const x=(bx+Math.sin(t*.35+phase)*w*.012+w+10)%w;
-  const y=(by+t*speed)%h,r=.6+dots()*w*.0018;
-  c.globalAlpha=.1+.18*(.5+.5*Math.sin(t*1.7+phase));c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();
- }
+ c.restore();
+ // Mayda zarralar barcha fonlarda juda yengil qatlam sifatida harakatlanadi.
+ const dots=seededRandom(seed^0x27D4EB2D);c.save();c.fillStyle=fg;
+ for(let i=0;i<34;i++){const x=(dots()*w+Math.sin(t*.3+i)*w*.012+w)%w,y=(dots()*h+t*(7+dots()*16))%h;
+  c.globalAlpha=.08+.14*(.5+.5*Math.sin(t+i));c.beginPath();c.arc(x,y,.7+dots()*w*.0015,0,Math.PI*2);c.fill()}
  c.restore();
 }
 
 function draw3DStage(c,w,h,idx,pal,now){
  const t=now/1000,accent=pal[2],secondary=pal[3]||pal[2],fg=pal[1];
- // Perspective floor: converging rails create a visible vanishing point.
- const vanishX=w*(.5+Math.sin(t*.16+idx)*.07),vanishY=h*.43;
- c.save();c.globalAlpha=.22;c.lineWidth=Math.max(1,w*.002);c.strokeStyle=secondary;
- for(let i=-6;i<=6;i++){
-  c.beginPath();c.moveTo(vanishX+i*w*.012,vanishY);c.lineTo(w*(.5+i*.19),h*1.04);c.stroke();
+ const seed=(state.backgroundSeed^Math.imul(idx+37,0x85EBCA6B))|0,rand=seededRandom(seed);
+ // 3D bezak turi ham har safar tanlanadi; kub doimiy obyekt emas.
+ let kind=Math.floor(rand()*7);
+ if(idx>0){const prev=seededRandom((state.backgroundSeed^Math.imul(idx+36,0x85EBCA6B))|0),old=Math.floor(prev()*7);if(kind===old)kind=(kind+1+Math.floor(rand()*6))%7}
+ const cx=w*(.5+Math.sin(t*.17+idx)*.06),cy=h*(.48+Math.cos(t*.15+idx)*.035);
+ c.save();c.lineWidth=Math.max(1,w*.002);c.strokeStyle=accent;
+ if(kind===0){
+  // 3D fazoviy poligon — ko‘p qirrali prizma.
+  const sides=6,rot=t*.22+idx,points=[];
+  for(let z=0;z<2;z++)for(let i=0;i<sides;i++){const q=i/sides*Math.PI*2+rot,r=w*(z?.17:.12);points.push([cx+Math.cos(q)*r,cy+Math.sin(q)*r*.58+(z?h*.08:-h*.08)])}
+  c.globalAlpha=.2;for(let i=0;i<sides;i++){const j=(i+1)%sides;c.beginPath();c.moveTo(...points[i]);c.lineTo(...points[j]);c.lineTo(...points[j+sides]);c.lineTo(...points[i+sides]);c.closePath();c.stroke()}
+ }else if(kind===1){
+  // Hajmli shisha shar.
+  const r=w*(.17+.012*Math.sin(t*.6));const g=c.createRadialGradient(cx-r*.35,cy-r*.4,r*.04,cx,cy,r);
+  g.addColorStop(0,fg+"55");g.addColorStop(.35,accent+"44");g.addColorStop(1,secondary+"05");
+  c.globalAlpha=.75;c.fillStyle=g;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fill();
+  c.globalAlpha=.3;c.strokeStyle=fg;for(let i=0;i<5;i++){c.beginPath();c.ellipse(cx,cy,r*(.35+i*.13),r*(.18+i*.055),t*.25+i*.3,0,Math.PI*2);c.stroke()}
+ }else if(kind===2){
+  // Suzib yuruvchi 3D shisha panellar.
+  for(let i=0;i<4;i++){const phase=t*.3+i*1.57,x=cx+Math.sin(phase)*w*.24,y=cy+Math.cos(phase*.8)*h*.13,ww=w*.13,hh=h*.025,depth=w*.035;
+   c.globalAlpha=.15;c.fillStyle=i%2?secondary:accent;c.beginPath();c.moveTo(x-ww,y-hh);c.lineTo(x+ww,y-hh);c.lineTo(x+ww+depth,y-hh+depth*.45);c.lineTo(x-ww+depth,y-hh+depth*.45);c.closePath();c.fill();
+   c.globalAlpha=.28;c.strokeStyle=fg;c.stroke();
+  }
+ }else if(kind===3){
+  // 3D aylanuvchi torusga o‘xshash halqa.
+  c.translate(cx,cy);c.rotate(Math.sin(t*.22)*.25);
+  for(let i=0;i<9;i++){c.globalAlpha=.08+i*.018;c.strokeStyle=i%2?accent:secondary;c.beginPath();c.ellipse(0,0,w*(.12+i*.012),h*(.035+i*.004),t*.2+i*.04,0,Math.PI*2);c.stroke()}
+ }else if(kind===4){
+  // Perspektiv yo‘lak — kamera chuqurlikka harakatlanadi.
+  const vanishY=h*.39,offset=(t*.22)%1;c.globalAlpha=.17;
+  for(let i=-5;i<=5;i++){c.beginPath();c.moveTo(cx+i*w*.012,vanishY);c.lineTo(w*(.5+i*.2),h);c.stroke()}
+  for(let i=0;i<9;i++){const q=((i/9+offset)%1),y=vanishY+(h-vanishY)*q*q;c.globalAlpha=.06+q*.16;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}
+ }else if(kind===5){
+  // 3D to‘lqin lentasi — qatlamlar kameraga yaqinlashadi.
+  for(let layer=0;layer<8;layer++){c.globalAlpha=.13;c.strokeStyle=layer%2?accent:secondary;c.beginPath();
+   for(let x=-10;x<=w+10;x+=8){const q=x/w,yy=cy+(layer-4)*h*.035+Math.sin(q*7+t*.7+layer*.5)*h*.055;if(x===-10)c.moveTo(x,yy);else c.lineTo(x,yy)}c.stroke()
+  }
+ }else{
+  // Aylanayotgan uchburchak kristallar — kub o‘rniga boshqa siluet.
+  for(let i=0;i<5;i++){const phase=t*.24+i*1.25,x=cx+Math.cos(phase)*w*.28,y=cy+Math.sin(phase)*h*.19,r=w*(.035+i*.009);
+   c.save();c.translate(x,y);c.rotate(-phase);c.globalAlpha=.22;c.beginPath();c.moveTo(0,-r);c.lineTo(r*.85,r*.7);c.lineTo(-r*.85,r*.7);c.closePath();c.stroke();c.restore()
+  }
  }
- for(let j=1;j<=8;j++){
-  const q=j/8,yy=vanishY+(h-vanishY)*q*q;
-  c.globalAlpha=.08+q*.13;c.beginPath();c.moveTo(0,yy);c.lineTo(w,yy);c.stroke();
- }
- c.restore();
- // Three-dimensional rotating wire objects, projected from a lightweight 3D model.
- const project=(x,y,z,cx,cy,scale,rot)=>{
-  const X=x*Math.cos(rot)-z*Math.sin(rot),Z=x*Math.sin(rot)+z*Math.cos(rot);
-  const depth=3.8/(3.8+Z);
-  return [cx+X*scale*depth,cy+y*scale*depth,depth];
- };
- const cube=(cx,cy,size,rot,color,phase)=>{
-  const v=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
-  const pts=v.map(p=>project(p[0],p[1],p[2],cx,cy,size,rot+phase));
-  const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
-  c.save();c.strokeStyle=color;c.lineWidth=Math.max(1.2,w*.003);c.shadowColor=color;c.shadowBlur=w*.018;
-  edges.forEach((e,i)=>{c.globalAlpha=.32+pts[e[0]][2]*.24;c.beginPath();c.moveTo(pts[e[0]][0],pts[e[0]][1]);c.lineTo(pts[e[1]][0],pts[e[1]][1]);c.stroke()});
-  c.restore();
- };
- cube(w*.16+Math.sin(t*.42+idx)*w*.025,h*(.26+Math.sin(t*.55)*.025),w*.105,t*.42,accent,.35);
- cube(w*.84+Math.cos(t*.34+idx)*w*.02,h*(.66+Math.cos(t*.48)*.025),w*.075,-t*.31,secondary,.6);
- // Layered glass-like 3D slabs with visible side faces.
- for(let i=0;i<3;i++){
-  const phase=t*.38+i*2.1+idx*.7,x=w*(.5+Math.sin(phase)*.34),y=h*(.22+i*.25+Math.cos(phase*.8)*.035);
-  const ww=w*(.13-i*.018),hh=h*(.018-i*.002),dx=w*.025,dy=h*.018;
-  c.save();c.globalAlpha=.17;c.fillStyle=i%2?secondary:accent;c.strokeStyle=fg;c.lineWidth=Math.max(1,w*.0018);
-  c.beginPath();c.moveTo(x-ww,y-hh);c.lineTo(x+ww,y-hh);c.lineTo(x+ww+dx,y-hh+dy);c.lineTo(x-ww+dx,y-hh+dy);c.closePath();c.fill();c.stroke();
-  c.globalAlpha=.12;c.beginPath();c.moveTo(x-ww,y-hh);c.lineTo(x-ww+dx,y-hh+dy);c.lineTo(x-ww+dx,y+hh+dy);c.lineTo(x-ww,y+hh);c.closePath();c.fill();
-  c.restore();
- }
- // Rotating elliptical depth rings.
- c.save();c.translate(w*.5,h*.52);c.rotate(Math.sin(t*.25+idx)*.16);c.globalAlpha=.13;c.strokeStyle=accent;c.lineWidth=w*.003;
- for(let i=0;i<3;i++){c.beginPath();c.ellipse(0,0,w*(.27+i*.055),h*(.075+i*.016),t*.08+i*.22,0,Math.PI*2);c.stroke()}
  c.restore();
 }
-
 function drawScene(c,w,h,now){
  const pal=paletteMap[state.palette]||paletteMap.Midnight,bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
