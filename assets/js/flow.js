@@ -875,9 +875,9 @@ function createNewCreativeVariant(){
  button._shuffleTimer=setTimeout(()=>{button.classList.remove("shuffle-flash");button.textContent="✧ Yangi kreativ variant";},2200);
 }
 if(shuffleButton){shuffleButton.onclick=createNewCreativeVariant;}
-$("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;draw()};
+$("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;$("recordPause").textContent="Ⅱ";draw()};
 $("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶"};
-$("recordExit").onclick=()=>{state.recording=false;$("recordOverlay").hidden=true;state.playing=false;$("startPreview").textContent="▶ Davom etish";draw()};
+$("recordExit").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;$("recordPause").textContent="Ⅱ";$("startPreview").textContent="▶ Davom etish";state.started=performance.now()-state.elapsed;updateSceneUI();draw()};
 $("finish").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;page("home")};
 window.addEventListener("resize",draw);
 initThreeEngine();
