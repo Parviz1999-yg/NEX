@@ -107,7 +107,7 @@ function buildThreeObjects(){
  const variantRotation=[-.62,-.34,-.08,.22,.48,.72][variant];
  const variantScale=[1.82,2.02,2.28,1.94,2.16,1.88][variant];
  flow.rotation.set(.08+variant*.025,-.12,variantRotation+(style==="Kinetic Typography"?.12:style==="Editorial / Magazine"?.04:style==="Futuristic Motion"?-.1:0));
- flow.scale.set(1.0,1.0,1.0);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
+ flow.scale.set(variantScale*.72,variantScale*.72,1);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
  main.add(flow);flows.push(flow);
  threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
@@ -189,8 +189,8 @@ function buildNexLogo(){
   mesh.userData.indexCount=indexCount;
   threeLogo.add(mesh);logoStrokes.push(mesh);
  });
- threeLogo.position.set(0,1.22,.35);
- threeLogo.scale.setScalar(.74);
+ threeLogo.position.set(0,1.78,.35);
+ threeLogo.scale.setScalar(.78);
  threeLogo.visible=false;
  threeScene.add(threeLogo);
 }
@@ -206,7 +206,7 @@ function updateNexLogo(progress,visible){
   mesh.geometry.setDrawRange(0,Math.floor(mesh.userData.indexCount*local));
  });
  const pulse=1+.025*Math.sin(reveal*Math.PI*2);
- threeLogo.scale.setScalar(.74*pulse);
+ threeLogo.scale.setScalar(.78*pulse);
 }
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;
@@ -512,6 +512,60 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.beginPath();c.roundRect(x,y,ww,hh,w*.025);c.fill();c.stroke();
   c.fillStyle="#65caff";c.fillRect(x+w*.02,y+h*.012,w*.13,Math.max(2,w*.007));c.restore();
  };
+ // Three alternative editorial systems now affect the actual Tavsiya studio, not only other content modes.
+ if(state.style==="Kinetic Typography"){
+  c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
+  pill(["STOP & LOOK","ACCOUNT / 01","YOUR BENEFIT","WHY THIS ONE","FOLLOW / SAVE"][idx],w*.10,h*.18);
+  if(idx===1){
+   avatar(w*.5,h*.39,w*.105);
+   text(state.account.name||copy,w*.5,h*.57,w*.82,w*.064,fg,"950","center",2);
+   text(state.account.niche||state.account.bio,w*.5,h*.70,w*.78,w*.029,ac,"700","center",3);
+  }else{
+   text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.10,h*(idx===0?.40:.42),w*.80,w*(idx===0?.105:.086),fg,"950","left",5);
+   c.fillStyle=ac;c.fillRect(w*.10,h*.73,w*(.22+.34*e),h*.012);
+   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Profilni ko‘rib chiqing"):state.account.niche,w*.10,h*.81,w*.76,w*.029,sub,"750","left",3);
+  }
+  c.save();c.strokeStyle=ac;c.lineWidth=w*.004;c.beginPath();c.moveTo(w*.08,h*.91);c.lineTo(w*.92,h*.91);c.stroke();c.restore();
+ }else if(state.style==="Editorial / Magazine"){
+  c.save();c.fillStyle="#f1eee5";c.fillRect(w*.055,h*.075,w*.89,h*.85);c.strokeStyle="#17202a66";c.lineWidth=1;c.strokeRect(w*.075,h*.095,w*.85,h*.81);
+  c.fillStyle="#17202a";c.font="900 "+(w*.024)+"px system-ui";c.textAlign="left";c.textBaseline="middle";c.fillText("NEX  /  CULTURE & IDEAS",w*.10,h*.13);
+  c.textAlign="right";c.font="700 "+(w*.021)+"px system-ui";c.fillText("FIELD NOTE  0"+(idx+1),w*.90,h*.13);
+  c.strokeStyle="#17202a55";c.beginPath();c.moveTo(w*.10,h*.17);c.lineTo(w*.90,h*.17);c.stroke();c.fillStyle="#1768a5";c.fillRect(w*.10,h*.22,w*.12,h*.009);c.restore();
+  if(idx===1){
+   avatar(w*.5,h*.36,w*.095);
+   text(state.account.name||copy,w*.5,h*.52,w*.72,w*.057,"#17202a","900","center",2);
+   text(state.account.niche+" · "+state.account.bio,w*.5,h*.65,w*.70,w*.027,"#283747","500","center",4);
+   if(state.account.followers)text(state.account.followers+" FOLLOWERS",w*.5,h*.79,w*.7,w*.023,"#1768a5","800","center",1);
+  }else{
+   text(copy||state.account.benefit||"Tavsiya etilgan sahifa",w*.11,h*.39,w*.76,w*(idx===0?.078:.067),"#17202a","900","left",6);
+   c.save();c.strokeStyle="#17202a66";c.beginPath();c.moveTo(w*.11,h*.72);c.lineTo(w*.89,h*.72);c.stroke();c.restore();
+   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Keyingi qadam"):state.account.niche,w*.11,h*.79,w*.73,w*.026,"#283747","500","left",3);
+  }
+  c.save();c.fillStyle="#17202a";c.font="800 "+(w*.021)+"px system-ui";c.textAlign="center";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.885);c.restore();
+ }else if(state.style==="Futuristic Motion"){
+  c.save();const top=h*.23,bottom=h*.80;c.strokeStyle=ac+"99";c.lineWidth=1;
+  for(let i=0;i<9;i++){const x=w*(.08+i*.105);c.beginPath();c.moveTo(x,top);c.lineTo(x,bottom);c.stroke()}
+  for(let i=0;i<7;i++){const y=h*(.25+i*.085);c.beginPath();c.moveTo(w*.08,y);c.lineTo(w*.92,y);c.stroke()}
+  c.strokeStyle=ac;c.lineWidth=w*.004;c.strokeRect(w*.08,top,w*.84,bottom-top);c.fillStyle=ac+"16";c.fillRect(w*.08,top,w*.84,bottom-top);c.restore();
+  pill("NEX // "+["SIGNAL","IDENTITY","BENEFIT","ANALYSIS","ACTION"][idx],w*.12,h*.16);
+  c.save();c.fillStyle=ac;c.font="800 "+(w*.021)+"px monospace";c.textAlign="right";c.fillText("0"+(idx+1)+" / 05",w*.88,h*.20);c.restore();
+  if(idx===1){
+   avatar(w*.5,h*.38,w*.09);
+   text(state.account.name||copy,w*.5,h*.54,w*.72,w*.052,fg,"850","center",2);
+   text(state.account.niche+" · "+state.account.bio,w*.5,h*.67,w*.72,w*.027,sub,"650","center",4);
+  }else{
+   text(copy||"Tavsiya etilgan foydali sahifa",w*.14,h*.41,w*.72,w*.068,fg,"850","left",5);
+   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Profilga o‘ting"):state.account.niche,w*.14,h*.68,w*.70,w*.027,sub,"650","left",3);
+  }
+  c.save();c.fillStyle=ac;c.fillRect(w*.14,h*.84,w*.22,h*.006);c.fillRect(w*.14,h*.86,w*.12,h*.006);c.restore();
+ }
+ if(state.style!=="Cinematic 3D"){
+  const q=1-e;c.save();c.globalAlpha=q*.72;c.fillStyle=state.style==="Editorial / Magazine"?"#f1eee5":ac;
+  if(state.style==="Kinetic Typography")c.fillRect(0,0,w*q,h);
+  else if(state.style==="Futuristic Motion")c.fillRect(0,0,w,h*q);
+  else c.fillRect(0,0,w*q,h);
+  c.restore();drawBrand(c,w,h,ac,fg);c.restore();return;
+ }
  if(idx===0){
   textPanel(w*.055,h*.27,w*.64,h*.53);
   pill("NEX TAVSIYA QILADI",w*.09,h*.20);
