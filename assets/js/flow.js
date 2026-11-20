@@ -115,7 +115,7 @@ function buildThreeObjects(){
 function createFlowSurface(segments,widthSegments,material,seed){
  const positions=[],indices=[],base=[];
  for(let iy=0;iy<=widthSegments;iy++){const v=iy/widthSegments*2-1;for(let ix=0;ix<=segments;ix++){const u=ix/segments,x=(u-.5)*8.4;positions.push(x,v*.55,0);base.push(x,v,u)}}
- for(let iy=0;iy<widthSegments;iy++)for(let ix=0;ix<segments;ix++){const a=iy*(segments+1)+ix,b=a+1,c=a+segments+1,d=c+1;indices.push(a,c,b,b,c,d)}
+ for(let iy=0;iy<widthSegments;iy++)for(let ix=0;ix<segments;ix++){const a=iy*(segments+1)+ix,b=a+1,c=a+segments+1,d=c+1;indices.push(a,b,c,b,d,c)}
  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();
  const mesh=new THREE.Mesh(geometry,material);mesh.userData.flowBase=new Float32Array(base);mesh.userData.flowSeed=seed;return mesh;
 }
