@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.3.0</span></span></header>
+  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.4.0</span></span></header>
 
   <main>
     <section class="page active" id="page-home">
@@ -109,12 +109,12 @@
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
-          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
+          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Diktor matni (tashqi ilovada ishlatiladi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Diktor matni tashqi ilovada ovozga aylantiriladi; NEX audio yozmaydi va yuklamaydi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
           <div class="scene-list" id="sceneList"></div>
           <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
         </div>
         <div class="preview-column">
-          <div class="reel-frame"><canvas id="reelCanvas" width="360" height="640"></canvas></div>
+          <div class="reel-frame"><canvas id="reel3D" width="360" height="640" aria-label="Haqiqiy 3D sahna"></canvas><canvas id="reelCanvas" width="360" height="640" aria-label="Reels matn qatlami"></canvas></div>
           <div class="timeline"><div id="progress"></div></div><div class="scene-caption"><span id="sceneCounter">SAHNA 01 / 05</span><span id="sceneTime">00:00</span></div>
         </div>
       </div>
@@ -123,10 +123,10 @@
   </main>
 
   <div id="recordOverlay" class="record-overlay" hidden>
-    <canvas id="recordCanvas" width="1080" height="1920"></canvas>
+    <div class="record-frame"><canvas id="record3D" width="1080" height="1920" aria-label="3D yozuv sahnasi"></canvas><canvas id="recordCanvas" width="1080" height="1920" aria-label="Reels matn qatlami"></canvas></div>
     <div class="record-controls"><span>NEX · SCREEN RECORDING</span><button id="recordPause">Ⅱ</button><button id="recordExit">✕</button></div>
   </div>
 </div>
-<script src="assets/js/flow.js?v=0.3.0"></script>
+<script src="assets/js/flow.js?v=0.4.0"></script>
 </body>
 </html>
