@@ -587,12 +587,11 @@ function drawRecommendationScene(c,w,h,now,pal){
  const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
  const motion=getMotionProfile();
  const phase=t*.42*motion.camera+idx*1.13,amp=cameraEase*motion.camera;
- c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate((cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6));
- c.scale(1+(cameraStyle===0?.065:cameraStyle===1?-.04:cameraStyle===2?.035:.025)*amp*Math.sin(phase*.65),1+(cameraStyle===0?.045:cameraStyle===3?.03:.018)*amp*Math.cos(phase*.55));c.translate(-w*.5,-h*.5);
  const cameraX=cameraStyle===0?Math.sin(phase)*w*.025*amp:cameraStyle===2?Math.cos(phase*.7)*w*.035*amp:cameraStyle===4?Math.sin(phase*1.2)*w*.022*amp:0;
  const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
  const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
  const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
+ c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);
 
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
   const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[],scaledSize=fontSize*toneVisual.size,scaledWeight=Math.max(400,Math.min(950,Number(weight)+toneVisual.weight));c.font=scaledWeight+" "+scaledSize+"px system-ui";let line="";
