@@ -9,7 +9,16 @@ let total=25000;
 function page(name){pages.forEach((p,i)=>$("page-"+p).classList.toggle("active",p===name));$("stepLabel").textContent=labels[pages.indexOf(name)];window.scrollTo(0,0)}
 function selectGroup(id,key){$(id).querySelectorAll("button").forEach(b=>{b.classList.toggle("selected",b.dataset.value===key)});}
 function bindOptions(id,prop){$(id).querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state[prop]=b.dataset.value;selectGroup(id,state[prop]);}));}
-document.querySelectorAll(".direction").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;page("content")}));
+function configureTopicType(){
+ const select=$("topicType"),label=$("topicTypeLabel"),prompt=$("contentPrompt");
+ const recommendation=state.mode==="tavsiya";
+ const options=recommendation?["Kreativ","Ilmiy","Technology","Yumor"]:["Instagram akkaunt","Ta’lim va ilm-fan","Texnologiya","Kitob va adabiyot","Tarix va madaniyat","Hayotiy kuzatuv","Motivatsiya va fikr","Boshqa"];
+ label.textContent=recommendation?"Akkaunt yo‘nalishi":"Mavzu turi";
+ prompt.textContent=recommendation?"Qanday yo‘nalishdagi akkauntni tavsiya qilamiz?":"Qaysi mavzu haqida Reels tayyorlaymiz?";
+ select.innerHTML='<option value="">Tanlang</option>'+options.map(value=>'<option>'+value+'</option>').join("");
+ state.topicType="";
+}
+document.querySelectorAll(".direction").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;configureTopicType();page("content")}));
 document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",()=>page(b.dataset.back)));
 bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
 document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(b.dataset.colors||"").split(",");b.querySelectorAll(".swatches i").forEach((dot,i)=>dot.style.backgroundColor=colors[i]||"#777")});
