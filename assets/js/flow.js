@@ -122,18 +122,48 @@ function createFlowSurface(segments,widthSegments,material,seed){
 function updateFlowSurfaces(flows,time,intensity=1){
  for(const mesh of flows){
   const attr=mesh.geometry.attributes.position,base=mesh.userData.flowBase,seed=mesh.userData.flowSeed;
-  const style=state.style,layer=mesh.userData.flowLayer||0;
-  const baseSpeed=style==="Kinetic Typography"?.82:style==="Editorial / Magazine"?.34:style==="Futuristic Motion"?.68:.48;
-  const speed=baseSpeed*[.58,1.0,1.47][layer]||baseSpeed;
-  const amplitude=(style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.58:style==="Futuristic Motion"?1.42:1)*[.88,1.12,.72][layer];
-  const direction=Math.sin(time*speed+seed*.3),phase=time*(style==="Editorial / Magazine"?.92:1.7)*direction+seed+layer*.9;
+  const style=state.style,scene=state.scene;
+  const speed=style==="Kinetic Typography"?1.55:style==="Editorial / Magazine"?.58:style==="Futuristic Motion"?1.28:.92;
+  const phase=time*speed+seed,transition=Math.max(0,1-Math.min(1,(state.elapsed-sceneStart(scene))/Math.max(700,state.sceneDurations[scene])/.28));
   for(let i=0;i<attr.count;i++){
-   const k=i*3,x=base[k],v=base[k+1],u=base[k+2],envelope=.24+.76*Math.pow(Math.sin(Math.PI*u),.55);
-   const crest=Math.sin(x*1.55-phase+v*1.4)+.42*Math.sin(x*2.8-phase*.72-v*2.1),cross=Math.cos(x*1.05-phase*.63+v*3.2);
-   const width=.24+envelope*(.48+.26*Math.sin(x*1.05-phase*.72)+.12*Math.sin(x*2.1+phase*.4));
-   const y=v*width+Math.sin(x*.72-phase*.58)*.42+crest*.2*intensity*amplitude*envelope,z=crest*.42*intensity*amplitude+cross*.24+Math.sin(v*4.5+phase*.82)*.15;
-   const drift=Math.sin(time*.34+seed*.3)*.28+Math.sin(x*.86-phase*.6)*.18;
-   attr.setXYZ(i,x+drift+Math.sin(v*2.2+phase)*.13,y,z);
+   const k=i*3,x=base[k],v=base[k+1],u=base[k+2],edge=Math.pow(Math.sin(Math.PI*u),.55);
+   let px=x,py=0,pz=0;
+   if(scene===0){
+    // Logo intro: a liquid S-curve sweeps around and under the NEX lettering.
+    const wave=Math.sin(u*Math.PI*2.15-phase*.72),curl=Math.cos(u*Math.PI*3.1-phase);
+    px=x+Math.sin(u*6.283+phase*.35)*.28+v*.12;
+    py=wave*(.62+.18*Math.sin(phase))+v*(.22+edge*.32);
+    pz=curl*.72+Math.sin(u*12+phase)*.16+v*.22;
+   }else if(scene===1){
+    // Profile scene: the stream wraps around the profile like a moving orbit.
+    const a=u*Math.PI*2+phase*.34;
+    px=Math.cos(a)*2.35+v*.24;
+    py=Math.sin(a)*1.52+v*.2;
+    pz=Math.sin(a*2+phase*.28)*.52+v*.38;
+   }else if(scene===2){
+    // Benefit scene: liquid opens into a fast fan, then gathers toward the text.
+    const fan=(u-.5)*8.1,spread=(.16+u*.92)*(1+.22*Math.sin(phase));
+    px=fan+Math.sin(u*17-phase)*.16;
+    py=v*spread+Math.sin(u*10-phase*1.3)*.32;
+    pz=Math.sin(u*14-phase)*(.38+Math.abs(v)*.38)+v*.26;
+   }else if(scene===3){
+    // Difference scene: two-sided flow collides at the center and throws a crest upward.
+    const dx=(u-.5)*8.1,impact=Math.exp(-Math.pow(dx*.92,2));
+    px=dx+Math.sin(phase+v*3)*.12;
+    py=v*(.28+impact*1.08)+Math.sin(dx*1.8-phase)*.22+impact*Math.sin(phase*1.8)*.65;
+    pz=impact*(.8+Math.cos(phase*1.7+v*4)*.52)+Math.sin(dx*1.25+phase)*.3+v*.22;
+   }else{
+    // CTA scene: a vertical liquid spiral pulls the viewer into the closing frame.
+    const a=u*Math.PI*3.1+phase*.48;
+    px=Math.cos(a)*(1.15+v*.35)+Math.sin(phase*.4)*.3;
+    py=(u-.5)*5.1+v*.28;
+    pz=Math.sin(a)*(1.05+v*.24)+Math.cos(u*8-phase)*.2;
+   }
+   const entranceKick=transition*Math.sin(u*Math.PI*5+phase*1.8)*.48;
+   py+=entranceKick*(scene===4?-.8:1);
+   pz+=transition*Math.cos(u*Math.PI*4-phase)*.32;
+   const styleBoost=style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.78:style==="Futuristic Motion"?1.42:1;
+   attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
   }
   attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
  }
@@ -143,24 +173,24 @@ function buildNexLogo(){
  if(!threeScene)return;
  if(threeLogo)threeScene.remove(threeLogo);
  threeLogo=new THREE.Group();logoStrokes=[];
- const chrome=new THREE.MeshPhysicalMaterial({color:0xf4f8ff,metalness:1,roughness:.055,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.5});
- const accent=new THREE.MeshPhysicalMaterial({color:0x8bdcff,metalness:.92,roughness:.07,emissive:0x1265b8,emissiveIntensity:.42,clearcoat:1});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:.035,clearcoat:1,clearcoatRoughness:.01,envMapIntensity:7,emissive:0x263b50,emissiveIntensity:.18});
+ const accent=new THREE.MeshPhysicalMaterial({color:0x7deaff,metalness:.96,roughness:.04,clearcoat:1,emissive:0x087cff,emissiveIntensity:.65,envMapIntensity:6});
  const paths=[
-  [[-1.52,-.72,0],[-1.52,.72,0],[-.52,-.72,0],[-.52,.72,0]],
-  [[-.22,.72,0],[.62,.72,0]],[[-.22,.72,0],[-.22,0,0]],[[-.22,0,0],[.48,0,0]],[[-.22,0,0],[-.22,-.72,0]],[[-.22,-.72,0],[.62,-.72,0]],
-  [[.78,.72,0],[1.62,-.72,0]],[[.78,-.72,0],[1.62,.72,0]]
+  [[-1.72,-.62,0],[-1.72,.68,0]], [[-1.72,.68,0],[-.72,-.62,0]], [[-.72,-.62,0],[-.72,.68,0]],
+  [[-.42,-.62,0],[-.42,.68,0]], [[-.42,.68,0],[.38,.68,0]], [[-.42,.03,0],[.28,.03,0]], [[-.42,-.62,0],[.38,-.62,0]],
+  [[.62,.68,0],[1.62,-.62,0]], [[.62,-.62,0],[1.62,.68,0]]
  ];
  paths.forEach((points,i)=>{
   const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)),false,"centripetal");
-  const geometry=new THREE.TubeGeometry(curve,Math.max(18,points.length*12),i===0||i>=6?.052:.047,10,false);
+  const geometry=new THREE.TubeGeometry(curve,32,i===0||i===2||i===3||i>=7?.082:.068,12,false);
   const indexCount=geometry.index?geometry.index.count:geometry.attributes.position.count;
   geometry.setDrawRange(0,0);
-  const mesh=new THREE.Mesh(geometry,i===0||i>=6?chrome:accent);
+  const mesh=new THREE.Mesh(geometry,i%2===0?chrome:accent);
   mesh.userData.indexCount=indexCount;
   threeLogo.add(mesh);logoStrokes.push(mesh);
  });
- threeLogo.position.set(0,.04,1.35);
- threeLogo.scale.set(1.08,1.08,1.08);
+ threeLogo.position.set(0,1.48,1.9);
+ threeLogo.scale.setScalar(1.02);
  threeLogo.visible=false;
  threeScene.add(threeLogo);
 }
@@ -168,37 +198,49 @@ function updateNexLogo(progress,visible){
  if(!threeLogo)return;
  threeLogo.visible=visible;
  if(!visible)return;
- threeLogo.rotation.y=Math.sin(progress*Math.PI)*.12;
- threeLogo.rotation.x=Math.cos(progress*Math.PI*2)*.035;
  const reveal=Math.max(0,Math.min(1,progress));
+ threeLogo.rotation.y=Math.sin(reveal*Math.PI)*.16;
+ threeLogo.rotation.x=-.04+Math.sin(reveal*Math.PI*2)*.025;
  logoStrokes.forEach((mesh,i)=>{
-  const local=Math.max(0,Math.min(1,(reveal-i*.085)/.52));
+  const local=Math.max(0,Math.min(1,(reveal-i*.045)/.48));
   mesh.geometry.setDrawRange(0,Math.floor(mesh.userData.indexCount*local));
  });
- const pulse=1+.045*Math.sin(progress*Math.PI);
- threeLogo.scale.setScalar(1.08*pulse);
+ const pulse=1+.025*Math.sin(reveal*Math.PI*2);
+ threeLogo.scale.setScalar(1.02*pulse);
 }
 function renderThree(now,target=threeRenderer){
- if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap["Electric Blue"];
+ if(!threeReady||!target)return;
  if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
- threeScene.background=new THREE.Color("#08090c");
- const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3);
- const phase=t*(state.animation==="Dinamik"?1.35:state.animation==="Silliq"?.78:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
- main.rotation.y=Math.sin(phase*.22)*.14;main.rotation.x=Math.sin(phase*.31)*.1;main.position.y=Math.sin(phase*.48)*.18;main.position.x=Math.sin(phase*.38)*.22;
- main.scale.setScalar([1.02,.96,1.04,.98,1.02][state.scene]);
- updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
- const cx=[0,.12,-.1,.1,0][state.scene],cy=[0,-.08,.12,-.06,.04][state.scene],z=8.35+(1-ease)*.45;
- threeCamera.position.x+=(cx+Math.sin(phase*.27)*.12-threeCamera.position.x)*.035;
- threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
- threeCamera.position.z+=(z-threeCamera.position.z)*.045;
+ threeScene.background=new THREE.Color("#05080f");
+ const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene]));
+ const phase=t*(state.animation==="Dinamik"?1.42:state.animation==="Silliq"?.82:1)+threeGroup.userData.phase;
+ const main=threeGroup.userData.main;
+ main.rotation.y=state.scene===1?Math.sin(phase*.22)*.22:Math.sin(phase*.31)*.12;
+ main.rotation.x=state.scene===3?Math.sin(phase*.8)*.16:Math.sin(phase*.24)*.08;
+ main.position.y=state.scene===4?Math.sin(phase*.42)*.24:Math.sin(phase*.5)*.12;
+ main.position.x=state.scene===2?Math.sin(phase*.62)*.3:Math.sin(phase*.35)*.16;
+ main.scale.setScalar(state.scene===1?1.12:state.scene===3?1.08:1);
+ updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.2:state.animation==="Silliq"?.86:1);
+ const cameraMoves=[
+  [0,0,8.35],
+  [Math.sin(phase*.22)*.2,.08,8.05],
+  [-.22+Math.sin(phase*.35)*.16,0,8.6],
+  [Math.sin(phase*.55)*.12,.18,7.85],
+  [0,Math.sin(phase*.3)*.16,8.15]
+ ];
+ const move=cameraMoves[state.scene];
+ threeCamera.position.x+=(move[0]-threeCamera.position.x)*.045;
+ threeCamera.position.y+=(move[1]-threeCamera.position.y)*.045;
+ threeCamera.position.z+=(move[2]-threeCamera.position.z)*.045;
  threeCamera.lookAt(0,0,0);
- const intro=state.elapsed<1850?state.elapsed/1850:null;
- const outro=state.elapsed>total-2050?(total-state.elapsed)/2050:null;
- const sceneReveal=local<.78?local/.78:null;
- const reveal=intro!==null?intro:outro!==null?outro:sceneReveal;
- updateNexLogo(reveal===null?0:reveal,reveal!==null);
+ const introEnd=2600,outroStart=total-2300;
+ let logoVisible=false,logoProgress=0;
+ if(state.elapsed<introEnd){logoVisible=true;logoProgress=Math.min(1,state.elapsed/2050)}
+ else if(state.elapsed>outroStart){logoVisible=true;logoProgress=Math.min(1,(total-state.elapsed)/2050)}
+ updateNexLogo(logoProgress,logoVisible);
  target.render(threeScene,threeCamera);
 }
+
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
 function drawProceduralBackground(c,w,h,idx,pal,now){
@@ -459,6 +501,11 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.restore();
  };
  const card=(x,y,ww,hh)=>{c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#03132bed";c.strokeStyle="#168cff";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
+ if(state.webglReady&&(state.elapsed<2600||state.elapsed>total-2300)){
+  const p=state.elapsed<2600?Math.min(1,state.elapsed/2050):Math.min(1,(total-state.elapsed)/2050);
+  c.save();c.globalAlpha=Math.max(0,Math.min(1,p*1.5));c.textAlign="center";c.textBaseline="middle";
+  c.font="800 "+(w*.026)+"px system-ui";c.fillStyle="#d9f6ff";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.20);c.restore();
+ }
  const enter=Math.max(0,Math.min(1,(local-.04)/.48)),e=1-Math.pow(1-enter,3);
  const textPanel=(x,y,ww,hh)=>{
   c.save();c.fillStyle="#03132beF";c.strokeStyle="#168cff";c.lineWidth=Math.max(1,w*.004);
