@@ -103,8 +103,7 @@ function buildThreeObjects(){
  const flow=createFlowSurface(112,28,chrome,(rand()-.5)*6.2);
  flow.userData.flowLayer=0;
  flow.rotation.set(.08,-.12,style==="Kinetic Typography"?.42:style==="Editorial / Magazine"?.12:style==="Futuristic Motion"?-.28:.24);
- flow.scale.set(1.02,2.18,1.12);
- flow.position.set(.05,.02,-.25);
+ flow.scale.set(1.02,2.18,1.12);flow.position.set(.05,.02,-.25);
  main.add(flow);flows.push(flow);
  threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
@@ -147,6 +146,42 @@ function renderThree(now,target=threeRenderer){
  updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
  threeGroup.userData.particleField.rotation.y=phase*.025;
 
+}
+function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
+function drawProceduralBackground(c,w,h,idx,pal,now){
+ const t=now/1000,bg=pal[0],a=pal[2],b=pal[3]||pal[2],fg=pal[1];
+ const seed=(state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0;
+ const rand=seededRandom(seed);
+ // Har bir sahnaga mustaqil vizual yo‘nalish. Ketma-ket sahnalarda ayni effekt takrorlanmaydi.
+ let family=Math.floor(rand()*10);
+ if(idx>0){
+  const prev=seededRandom((state.backgroundSeed^Math.imul(idx,0x9E3779B1))|0);
+  const previous=Math.floor(prev()*10);
+  if(family===previous)family=(family+1+Math.floor(rand()*9))%10;
+ }
+ const angle=rand()*Math.PI*2+t*.025;
+ const gx=w*(.5+Math.cos(angle)*.7),gy=h*(.5+Math.sin(angle)*.7);
+ const gradient=c.createLinearGradient(gx,gy,w-gx,h-gy);
+ gradient.addColorStop(0,bg);gradient.addColorStop(.42,a+"55");gradient.addColorStop(.78,b+"44");gradient.addColorStop(1,bg);
+ c.fillStyle=gradient;c.fillRect(0,0,w,h);
+ // Keng yorug‘lik maydonlari.
+ for(let n=0;n<3;n++){
+  const phase=t*(.16+n*.045)+n*2.4+idx;
+  const x=w*(.5+Math.sin(phase)*.4),y=h*(.5+Math.cos(phase*.8)*.38),r=Math.max(w,h)*(.28+.08*Math.sin(phase));
+  const glow=c.createRadialGradient(x,y,0,x,y,r),col=n%2?a:b;
+  glow.addColorStop(0,col+"66");glow.addColorStop(.5,col+"1d");glow.addColorStop(1,col+"00");
+  c.fillStyle=glow;c.fillRect(0,0,w,h);
+ }
+ c.save();c.lineCap="round";c.lineJoin="round";
+ if(family===0){
+  // Oqimli suyuq to‘lqinlar.
+  for(let k=0;k<13;k++){const y=h*(.2+k*.055),phase=k*.48;
+   c.beginPath();for(let x=-20;x<=w+20;x+=8){const yy=y+Math.sin(x/w*5+t*.8+phase)*h*.035+Math.sin(x/w*2.4-t*.45+phase)*h*.022;if(x===-20)c.moveTo(x,yy);else c.lineTo(x,yy)}
+   c.strokeStyle=k%2?a:b;c.globalAlpha=.13+(k%4)*.035;c.lineWidth=Math.max(1,w*.003);c.stroke();
+  }
+ }else if(family===1){
+  // Zarralar girdobi — markazga tortiluvchi yulduzsimon oqim.
   const cx=w*(.5+Math.sin(t*.22)*.12),cy=h*(.5+Math.cos(t*.19)*.1);
   for(let i=0;i<115;i++){const q=i/115,phase=q*31+t*(.35+q*.8),radius=(.04+q*.52)*Math.min(w,h),x=cx+Math.cos(phase)*radius,y=cy+Math.sin(phase*1.13)*radius;
    c.globalAlpha=.12+.55*q;c.fillStyle=i%3?a:b;c.beginPath();c.arc(x,y,1+w*q*.006,0,Math.PI*2);c.fill();
