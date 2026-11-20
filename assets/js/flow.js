@@ -61,15 +61,7 @@ function generateRecommendationScript(){
   proofLine+(profileDetail?" "+profileDetail:""),
   cta
  ];
- const voices=[
-  "Bugun "+clean(niche)+" mavzusiga qiziqqanlar uchun bir sahifani ko‘rib chiqamiz. "+hook,
-  clean(name)+" profilida "+clean(bio.charAt(0).toLowerCase()+bio.slice(1))+".",
-  "Bu sahifadan olishingiz mumkin bo‘lgan asosiy foyda — "+clean(benefit).toLowerCase()+". "+(audience? "U "+clean(audience)+" uchun ayniqsa dolzarb bo‘lishi mumkin.":"Mavzu sizga mosligini postlar orqali baholang."),
-  proof
-   ?"Tavsiya sababi sifatida mana shu jihatni ko‘rsatish mumkin: "+clean(proof)+". "+(followers?"Profil obunachilari soni: "+clean(followers)+".":"")
-   :"Sahifa haqida yakuniy fikr bildirishdan oldin postlar muntazamligi, manbalari va amaliy foydasini tekshiring.",
-  cta+" Saqlab qo‘yish yoki fikr bildirishni ham unutmang."
- ];
+
  state.script=scripts;
  const textIds=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"];
  textIds.forEach((id,i)=>$(id).value=scripts[i]);
@@ -625,8 +617,11 @@ function drawRecommendationScene(c,w,h,now,pal){
   {lead:convert(state.script[4]),body:link||name,extra:""}
  ][idx];
  const p=Math.max(0,Math.min(1,(local-.02)/.34)),ease=1-Math.pow(1-p,3);
- c.save();c.fillStyle="#05080f";c.fillRect(0,0,w,h);
- const glow=c.createRadialGradient(w*.5,h*.40,0,w*.5,h*.48,h*.72);glow.addColorStop(0,"#283746");glow.addColorStop(.55,"#101923");glow.addColorStop(1,"#05080f");c.fillStyle=glow;c.fillRect(0,0,w,h);
+ c.save();
+ if(!state.webglReady){c.fillStyle="#05080f";c.fillRect(0,0,w,h)}
+ const glow=c.createRadialGradient(w*.5,h*.40,0,w*.5,h*.48,h*.72);glow.addColorStop(0,"rgba(40,55,70,.44)");glow.addColorStop(.55,"rgba(16,25,35,.42)");glow.addColorStop(1,"rgba(5,8,15,.38)");c.fillStyle=glow;c.fillRect(0,0,w,h);
+ const outroStart=Math.max(0,total-5200),cardVisible=state.elapsed>=2600&&state.elapsed<outroStart;
+ if(cardVisible){
  const x=w*.075,y=h*.205,cw=w*.85,ch=h*.59,r=w*.055;
  c.save();c.globalAlpha=.96;c.shadowColor="#000000aa";c.shadowBlur=w*.07;c.shadowOffsetY=h*.018;
  const paper=c.createLinearGradient(x,y,x+cw,y+ch);paper.addColorStop(0,"#f8fafb");paper.addColorStop(1,"#cbd2d8");
@@ -653,7 +648,8 @@ function drawRecommendationScene(c,w,h,now,pal){
  const base=y+ch-w*.105;c.strokeStyle="#87939c";c.lineWidth=w*.004;c.beginPath();c.moveTo(tx,base);c.lineTo(tx+inner,base);c.stroke();
  const silver=c.createLinearGradient(tx,base,tx+inner,base);silver.addColorStop(0,"#59636c");silver.addColorStop(.5,"#f7fafc");silver.addColorStop(1,"#59636c");c.strokeStyle=silver;c.lineWidth=w*.009;c.beginPath();c.moveTo(tx,base+w*.012);c.lineTo(tx+inner,base+w*.012);c.stroke();
  c.restore();
- const outroStart=Math.max(0,total-5200);if(state.elapsed>=outroStart)drawMercuryOutro(c,w,h,(state.elapsed-outroStart)/5200,now);
+ }
+ if(state.elapsed>=outroStart)drawMercuryOutro(c,w,h,(state.elapsed-outroStart)/5200,now);
  c.restore();
 }
 function drawScene(c,w,h,now){
