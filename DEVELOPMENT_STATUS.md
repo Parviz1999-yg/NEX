@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.7.0**  
+Amaldagi versiya: **v0.7.1**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -252,3 +252,16 @@ Material parametrlari, HTML cache-buster va versiya yozuvi manba kodida tekshiri
 
 ### v0.7.0 tekshiruv chegarasi
 Kod GitHub main tarmog‘iga joylandi. Koddagi strukturaviy o‘zgarishlar manba darajasida tekshirildi; real Android/WebGL vizual sinovi bajarilgan deb hisoblanmaydi.
+
+
+## v0.7.1 — 3D suyuqlik harakati va mobil GPU resurslari
+- [x] Kinetic Typography suyuq metall tasmasiga zichroq to‘lqin, tezroq burilish va keskinroq aks etish harakati berildi.
+- [x] Editorial / Magazine suyuqlik harakati kengroq, sokinroq va yumshoqroq oqimga moslandi.
+- [x] Futuristic Motion suyuq metall yuzasiga yuqori chastotali fazoviy puls va chuqurlik tebranishi qo‘shildi.
+- [x] Barcha yo‘nalishlarda asosiy material neytral kumushrang xrom bo‘lib qoladi; rangli aksentlar faqat yorug‘lik va tipografik urg‘ularda ishlatiladi.
+- [x] Sahna almashganda oldingi Three.js geometriya va materiallari GPU xotirasidan bo‘shatiladi; uzoq davom etadigan mobil sessiyalarda xotira yig‘ilib qolish xavfi kamaytirildi.
+- [x] Ishlatilmayotgan qo‘shimcha material obyektlari olib tashlandi.
+- [ ] Android qurilmada barcha art-directionlar, sahnalar va uzoq davom etadigan preview/record rejimi sinovdan o‘tkaziladi.
+
+### v0.7.1 tekshiruv chegarasi
+Manba kodiga o‘zgartirishlar kiritilib GitHub main tarmog‘iga joylandi. GPU resurslarini bo‘shatish va art-direction bo‘yicha geometriya modulyatsiyasi kod darajasida tekshirildi. Real qurilmadagi FPS, qizish va ko‘rinish hali tasdiqlanmagan.
