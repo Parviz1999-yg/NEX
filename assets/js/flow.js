@@ -95,19 +95,44 @@ function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const chrome=new THREE.MeshPhysicalMaterial({color:0xf4fbff,metalness:1,roughness:.065,clearcoat:1,clearcoatRoughness:.025,envMapIntensity:4.8,side:THREE.DoubleSide});
- const blueMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[2]),metalness:1,roughness:.085,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:4.2,side:THREE.DoubleSide});
- const iceMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[3]||"#8bdcff"),metalness:.98,roughness:.075,clearcoat:1,clearcoatRoughness:.03,envMapIntensity:4.5,side:THREE.DoubleSide});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.018,envMapIntensity:5.8,side:THREE.DoubleSide});
+ const blueMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[2]),metalness:1,roughness:.055,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,emissive:new THREE.Color(pal[2]),emissiveIntensity:.12,side:THREE.DoubleSide});
+ const iceMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[3]||"#8bdcff"),metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,emissive:new THREE.Color(pal[3]||"#8bdcff"),emissiveIntensity:.09,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
  const count=style==="Editorial / Magazine"?2:3;
  for(let i=0;i<count;i++){
   const flow=createFlowSurface(76,18,i===0?chrome:i===1?blueMetal:iceMetal,(rand()-.5)*6.2+i*2.1);
-  flow.position.set((i-1)*.12,(i-1)*.24,-i*.58);
+  flow.userData.flowLayer=i;flow.position.set((i-1)*.12,(i-1)*.24,-i*.58);
   flow.rotation.set((rand()-.5)*.22,(rand()-.5)*.38,style==="Kinetic Typography"?.32:style==="Editorial / Magazine"?.035:style==="Futuristic Motion"?-.24:.14);
   const scale=style==="Editorial / Magazine"?[1.12,.9,.78][i]:style==="Kinetic Typography"?[1.02,.88,.74][i]:[1,.92,.78][i];
   const widthScale=style==="Editorial / Magazine"?2.05:style==="Kinetic Typography"?1.65:style==="Futuristic Motion"?1.9:1.8;
   flow.scale.set(scale,widthScale,scale);main.add(flow);flows.push(flow);
  }
+ // Tavsiya akkaunt HOOK sahnasi uchun haqiqiy 3D jo‘mrak–oqim–to‘qnashuv–sachrash kompozitsiyasi.
+ const faucet=new THREE.Group();
+ const pipeCurve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(1.58,2.55,-.15),new THREE.Vector3(1.22,2.52,-.12),
+  new THREE.Vector3(.94,2.32,-.08),new THREE.Vector3(.88,2.02,-.05),
+  new THREE.Vector3(.88,1.76,-.05)
+ ]);
+ const pipe=new THREE.Mesh(new THREE.TubeGeometry(pipeCurve,48,.105,16,false),chrome);
+ faucet.add(pipe);
+ const lip=new THREE.Mesh(new THREE.TorusGeometry(.108,.025,12,40),iceMetal);
+ lip.position.set(.88,1.76,-.05);lip.rotation.x=Math.PI/2;faucet.add(lip);
+ const streamCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(.88,1.74,-.04),new THREE.Vector3(.86,1.15,-.02),new THREE.Vector3(.82,.48,0),new THREE.Vector3(.78,-.12,.02)]);
+ const stream=new THREE.Mesh(new THREE.TubeGeometry(streamCurve,48,.038,10,false),blueMetal);
+ faucet.add(stream);
+ const impact=new THREE.Group();impact.position.set(.78,-.12,.03);faucet.add(impact);
+ const impactCore=new THREE.Mesh(new THREE.SphereGeometry(.13,24,16),chrome);impact.add(impactCore);
+ const splashRing=new THREE.Mesh(new THREE.TorusGeometry(.25,.022,10,64),iceMetal);impact.add(splashRing);
+ const beadGeometry=new THREE.SphereGeometry(1,10,8);
+ const beads=new THREE.InstancedMesh(beadGeometry,chrome,48);beads.instanceMatrix.setUsage(THREE.DynamicDrawUsage);faucet.add(beads);
+ const dummy=new THREE.Object3D(),beadSizes=[];
+ for(let i=0;i<48;i++)beadSizes.push(.018+rand()*.045);
+ const confetti=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),blueMetal,24);confetti.instanceMatrix.setUsage(THREE.DynamicDrawUsage);faucet.add(confetti);
+ const confettiSizes=Array.from({length:24},()=>[.025+rand()*.035,.07+rand()*.08,.012]);
+ const spray=new THREE.Group();spray.add(faucet);threeGroup.add(spray);
+ threeGroup.userData.splash={spray,beads,confetti,dummy,beadSizes,confettiSizes,impactCore,splashRing,seed:rand()*6.28};
  const particles=[];for(let i=0;i<34;i++)particles.push((rand()-.5)*8,(rand()-.5)*10,-2-rand()*5);
  const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.Float32BufferAttribute(particles,3));
  const particleField=new THREE.Points(pg,new THREE.PointsMaterial({color:0xb4a18a,size:.012,sizeAttenuation:true,transparent:true,opacity:.38}));
@@ -124,9 +149,11 @@ function createFlowSurface(segments,widthSegments,material,seed){
 function updateFlowSurfaces(flows,time,intensity=1){
  for(const mesh of flows){
   const attr=mesh.geometry.attributes.position,base=mesh.userData.flowBase,seed=mesh.userData.flowSeed;
-  const style=state.style,speed=style==="Kinetic Typography"?.82:style==="Editorial / Magazine"?.34:style==="Futuristic Motion"?.68:.48;
-  const amplitude=style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.58:style==="Futuristic Motion"?1.42:1;
-  const direction=Math.sin(time*speed+seed*.3),phase=time*(style==="Editorial / Magazine"?.92:1.7)*direction+seed;
+  const style=state.style,layer=mesh.userData.flowLayer||0;
+  const baseSpeed=style==="Kinetic Typography"?.82:style==="Editorial / Magazine"?.34:style==="Futuristic Motion"?.68:.48;
+  const speed=baseSpeed*[.58,1.0,1.47][layer]||baseSpeed;
+  const amplitude=(style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.58:style==="Futuristic Motion"?1.42:1)*[.88,1.12,.72][layer];
+  const direction=Math.sin(time*speed+seed*.3),phase=time*(style==="Editorial / Magazine"?.92:1.7)*direction+seed+layer*.9;
   for(let i=0;i<attr.count;i++){
    const k=i*3,x=base[k],v=base[k+1],u=base[k+2],envelope=.24+.76*Math.pow(Math.sin(Math.PI*u),.55);
    const crest=Math.sin(x*1.55-phase+v*1.4)+.42*Math.sin(x*2.8-phase*.72-v*2.1),cross=Math.cos(x*1.05-phase*.63+v*3.2);
@@ -149,6 +176,32 @@ function renderThree(now,target=threeRenderer){
  main.scale.setScalar([1.02,.96,1.04,.98,1.02][state.scene]);
  updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
  threeGroup.userData.particleField.rotation.y=phase*.025;
+ const splash=threeGroup.userData.splash;
+ if(splash){
+  const active=state.mode==="tavsiya"&&state.scene===0;
+  splash.spray.visible=active;main.visible=!active;
+  if(active){
+   const localTime=now/1000+splash.seed,impact=splash.impactCore,ring=splash.splashRing;
+   impact.scale.setScalar(.55+.45*(.5+.5*Math.sin(localTime*2.8)));
+   const pulse=.5+.5*Math.sin(localTime*2.8);
+   ring.scale.setScalar(.55+pulse*1.65);ring.rotation.z=localTime*.42;
+   const beadMesh=splash.beads,confettiMesh=splash.confetti;
+   for(let i=0;i<splash.beadSizes.length;i++){
+    const phase=(localTime*.72+i*.037)%1,launch=Math.max(0,phase-.48),x0=.88,y0=1.68;
+    let x,y,z;
+    if(phase<.48){const p=phase/.48;x=x0+Math.sin(i*2.17)*.035;y=y0-p*1.78;z=-.02+Math.cos(i*1.31)*.035;}
+    else{const angle=i*2.399963;const speed=.65+(i%7)*.105,dt=launch*1.5;x=.78+Math.cos(angle)*speed*dt;y=-.12+Math.sin(angle)*speed*dt-1.5*dt*dt;z=.03+Math.sin(angle*1.7)*dt*.48;}
+    dummy.position.set(x,y,z);dummy.scale.setScalar(splash.beadSizes[i]*(phase<.48?.9:Math.max(.18,1-launch*.75)));dummy.rotation.set(i*.3+localTime,i*.17,localTime*.7);dummy.updateMatrix();beadMesh.setMatrixAt(i,dummy.matrix);
+   }
+   beadMesh.instanceMatrix.needsUpdate=true;
+   for(let i=0;i<splash.confettiSizes.length;i++){
+    const phase=(localTime*.57+i*.061)%1,dt=Math.max(0,phase-.45)*1.7,angle=i*2.4;
+    dummy.position.set(.78+Math.cos(angle)*(.25+dt*.9),-.12+Math.sin(angle)*(.2+dt*.95)-1.1*dt*dt,.04+Math.sin(angle*1.4)*dt*.3);
+    const sz=splash.confettiSizes[i];dummy.scale.set(sz[0],sz[1],sz[2]);dummy.rotation.set(dt*5+i,dt*7+i*.4,dt*4);dummy.updateMatrix();confettiMesh.setMatrixAt(i,dummy.matrix);
+   }
+   confettiMesh.instanceMatrix.needsUpdate=true;
+  }
+ }
  const cx=[0,.12,-.1,.1,0][state.scene],cy=[0,-.08,.12,-.06,.04][state.scene],z=8.35+(1-ease)*.45;
  threeCamera.position.x+=(cx+Math.sin(phase*.27)*.12-threeCamera.position.x)*.035;
  threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
@@ -413,35 +466,42 @@ function drawRecommendationScene(c,w,h,now,pal){
   else{c.fillStyle=ac;c.font="900 "+(r*.9)+"px system-ui";c.textAlign="center";c.textBaseline="middle";c.fillText((state.account.name||"N").replace(/^@/,"").slice(0,1).toUpperCase(),x,y)}
   c.restore();
  };
- const card=(x,y,ww,hh)=>{c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#ffffff0d";c.strokeStyle=ac+"99";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
+ const card=(x,y,ww,hh)=>{c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#03132bed";c.strokeStyle="#168cff";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
  const enter=Math.max(0,Math.min(1,(local-.04)/.48)),e=1-Math.pow(1-enter,3);
+ const textPanel=(x,y,ww,hh)=>{
+  c.save();c.fillStyle="#03132beF";c.strokeStyle="#168cff";c.lineWidth=Math.max(1,w*.004);
+  c.beginPath();c.roundRect(x,y,ww,hh,w*.025);c.fill();c.stroke();
+  c.fillStyle="#65caff";c.fillRect(x+w*.02,y+h*.012,w*.13,Math.max(2,w*.007));c.restore();
+ };
  if(idx===0){
-  c.save();c.globalAlpha=.75;c.fillStyle=ac;c.fillRect(w*.09,h*.25,w*.018,h*.45);c.restore();pill("NEX TAVSIYA QILADI",w*.14,h*.22);
-  c.save();c.translate((1-e)*w*.16,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.13,h*.39,w*.76,w*.105,fg,"900","left",5);
-  c.globalAlpha=.72;text(state.account.niche||"Yangi bilim va foydali kontent",w*.14,h*.78,w*.7,w*.034,fg,"700","left",2);c.restore();
+  textPanel(w*.055,h*.27,w*.64,h*.53);
+  pill("NEX TAVSIYA QILADI",w*.09,h*.20);
+  c.save();c.translate((1-e)*w*.05,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.10,h*.39,w*.53,w*.082,"#FFFFFF","900","left",5);
+  c.globalAlpha=.95;text(state.account.niche||"Yangi bilim va foydali kontent",w*.10,h*.73,w*.53,w*.032,"#8BD8FF","800","left",2);c.restore();
  }else if(idx===1){
-  const y=h*.18+((1-e)*h*.2);card(w*.08,y,w*.84,h*.70);avatar(w*.5,y+h*.15,w*.105);
+  const y=h*.18+((1-e)*h*.2);c.save();c.fillStyle="#03132bed";c.strokeStyle="#168cff";c.lineWidth=w*.004;c.beginPath();c.roundRect(w*.07,y,w*.86,h*.70,w*.035);c.fill();c.stroke();c.restore();avatar(w*.5,y+h*.15,w*.105);
   text(state.account.name||"Akkaunt nomi",w*.5,y+h*.30,w*.72,w*.047,fg,"850","center",2);
   text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,fg,"750","center",2);
   text(state.account.bio||copy,w*.5,y+h*.445,w*.68,w*.031,fg,"500","center",3);
   if(state.account.followers){c.save();c.fillStyle=ac+"22";c.beginPath();c.roundRect(w*.2,y+h*.62,w*.6,h*.07,w*.025);c.fill();c.restore();text(state.account.followers+" obunachi",w*.5,y+h*.655,w*.54,w*.03,fg,"800","center",1)}
   pill("AKKAUNT BILAN TANISHING",w*.14,h*.13);
  }else if(idx===2){
-  pill("SIZGA QANDAY FOYDA BERADI?",w*.1,h*.2);c.save();c.globalAlpha=.16;c.fillStyle=ac;c.beginPath();c.arc(w*.82,h*.42,w*.24,0,Math.PI*2);c.fill();c.restore();
-  text(copy||state.account.benefit,w*.12,h*.37,w*.76,w*.078,fg,"900","left",5);c.save();c.fillStyle=ac;c.fillRect(w*.12,h*.72,w*.17,h*.012);c.restore();
-  text(state.account.audience?"Kimlar uchun: "+state.account.audience:"",w*.12,h*.79,w*.75,w*.03,sub,"650","left",3);
+  textPanel(w*.055,h*.27,w*.66,h*.48);pill("SIZGA QANDAY FOYDA BERADI?",w*.09,h*.20);c.save();c.globalAlpha=.16;c.fillStyle=ac;c.beginPath();c.arc(w*.82,h*.42,w*.24,0,Math.PI*2);c.fill();c.restore();
+  text(copy||state.account.benefit,w*.10,h*.40,w*.54,w*.069,"#FFFFFF","900","left",5);c.save();c.fillStyle=ac;c.fillRect(w*.12,h*.72,w*.17,h*.012);c.restore();
+  text(state.account.audience?"Kimlar uchun: "+state.account.audience:"",w*.10,h*.70,w*.55,w*.027,"#8BD8FF","750","left",3);
  }else if(idx===3){
-  pill("NEGA AYNAN SHU SAHIFA?",w*.1,h*.17);card(w*.1,h*.29,w*.8,h*.43);
+  textPanel(w*.055,h*.24,w*.66,h*.55);pill("NEGA AYNAN SHU SAHIFA?",w*.09,h*.17);
   c.save();c.fillStyle=ac;c.font="900 "+(w*.19)+"px Georgia";c.textAlign="left";c.fillText("“",w*.17,h*.4);c.restore();
-  text(copy||state.account.proof||state.account.bio,w*.18,h*.49,w*.64,w*.064,fg,"750","left",5);
+  text(copy||state.account.proof||state.account.bio,w*.14,h*.46,w*.52,w*.056,"#FFFFFF","800","left",5);
   c.save();c.fillStyle=ac;c.fillRect(w*.18,h*.67,w*.2,h*.009);c.restore();
-  text(state.account.proof?"TAVSIYA SABABI":"O‘ZIGA XOS JIHATI",w*.18,h*.76,w*.64,w*.025,sub,"800","left",2);
+  text(state.account.proof?"TAVSIYA SABABI":"O‘ZIGA XOS JIHATI",w*.14,h*.73,w*.52,w*.025,"#8BD8FF","850","left",2);
  }else{
+  textPanel(w*.055,h*.28,w*.66,h*.50);
   c.save();c.globalAlpha=.16;c.strokeStyle=ac;c.lineWidth=w*.018;
   for(let r=0;r<5;r++){c.beginPath();c.arc(w*.5,h*.48,w*(.16+r*.075),t*.15+r*.3,t*.15+r*.3+Math.PI*1.5);c.stroke()}c.restore();
-  pill("KEYINGI QADAM",w*.1,h*.24);text(copy||"Foydali deb bilsangiz, kuzatib boring.",w*.12,h*.43,w*.76,w*.09,fg,"900","left",4);
-  text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,fg,"850","left",2);
-  if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
+  pill("KEYINGI QADAM",w*.09,h*.22);text(copy||"Foydali deb bilsangiz, kuzatib boring.",w*.10,h*.42,w*.54,w*.075,"#FFFFFF","900","left",4);
+  text(state.account.name||"",w*.10,h*.70,w*.54,w*.04,"#8BD8FF","850","left",2);
+  if(state.account.link)text("Havola profil tavsifida",w*.10,h*.78,w*.54,w*.025,"#D7F0FF","700","left",1);
  }
 
  c.save();c.globalAlpha=Math.max(0,1-local/.18)*.65;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-local*5),0);c.lineTo(w*(1.2-local*5),0);c.lineTo(w*(.2-local*5),h);c.lineTo(w*(-local*5),h);c.closePath();c.fill();c.restore();
