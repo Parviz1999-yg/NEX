@@ -178,3 +178,16 @@ Kodning sintaksisi va eski jo‘mrak/sachrash obyektlari olib tashlanganligi sta
 
 ### Tekshiruv chegarasi
 Manba kodida tugma hodisasi, 6 holatli kompozitsiya almashishi, versiya va element ID mosligi tekshirildi. Haqiqiy brauzerda ishlashi va Android WebGL renderi hali tasdiqlanmagan.
+
+
+## v0.5.6 — 3D NEX logo reveal va suyuqlik transitionlari
+- [x] Three.js orqali xrom va elektr-ko‘k materiallardan haqiqiy 3D TubeGeometry harflari N, E, X yaratildi.
+- [x] Harflar konturi vaqt bo‘yicha bosqichma-bosqich chiziladi; 2D Canvas NEX wordmarki WebGL logo mavjud bo‘lganda yashiriladi.
+- [x] Intro va outro vaqtida 3D logo ko‘rinadi; har bir sahna boshida qisqa logo-reveal transition qo‘llanadi.
+- [x] Mavjud suyuq metall tasma logo orqasida harakatlanib, identifikatsiyaning bir qismiga aylanadi.
+- [x] Preview va ekran yozish rendererlarida bir xil 3D logo sahnasi ishlatiladi.
+- [x] Versiya va JS cache-buster v0.5.6 ga yangilandi.
+- [ ] Android qurilmada harflar chizilishi, transition davomiyligi, suyuqlik bilan qatlamlanishi va matn o‘qilishi ko‘z bilan tekshirilishi kerak.
+
+### Tekshiruv chegarasi
+Kod strukturasi va versiya mosligi tekshiriladi. Bu haqiqiy brauzer/WebGL yoki Android vizual sinovi o‘rnini bosmaydi.
