@@ -77,6 +77,22 @@ function generateRecommendationScript(){
  const button=$("generateAccountScript");button.textContent="✓ Ssenariy tayyor — tahrirlashingiz mumkin";
  calculateDurations();
 }
+function getMotionProfile(){
+ const profiles={
+  "Silliq":{speed:.72,flow:.78,camera:.68,entrance:"soft",wipe:.78},
+  "Dinamik":{speed:1.72,flow:1.3,camera:1.12,entrance:"snap",wipe:1.35},
+  "Kinematik":{speed:.88,flow:.96,camera:1.62,entrance:"dolly",wipe:.62},
+  "Ijodiy":{speed:1.24,flow:1.18,camera:1.16,entrance:"scene",wipe:1.08},
+  "Aralash":{speed:1.02,flow:1.06,camera:1.2,entrance:"mix",wipe:.92}
+ };
+ const p=profiles[state.animation]||profiles["Silliq"];
+ const tone={"Jiddiy":.92,"Ilmiy":.82,"Sodda va tushunarli":.96,"Yumor":1.18,"Tahliliy":.88,"Motivatsion":1.12,"Sirli va qiziqarli":.9,"Falsafiy":.76}[state.tone]||1;
+ return {...p,speed:p.speed*tone,flow:p.flow*tone};
+}
+function getTopicSignature(){
+ const labels={"Instagram akkaunt":"PROFILE / FIELD NOTE","Ta’lim va ilm-fan":"STUDY / KNOWLEDGE","Texnologiya":"TECH / SYSTEM","Kitob va adabiyot":"CULTURE / CHAPTER","Tarix va madaniyat":"ARCHIVE / HERITAGE","Hayotiy kuzatuv":"OBSERVATION / DAILY","Motivatsiya va fikr":"IDEA / PERSPECTIVE","Boshqa":"CREATIVE / SUBJECT"};
+ return labels[state.topicType]||"NEX / ORIGINAL STORY";
+}
 function sceneTitle(i){return state.mode==="tavsiya"?["HOOK","AKKAUNT TAVSIYASI","NIMA UCHUN?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV"][i]:scenes[i]}function sceneCopy(i){return state.script[i]||""}function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length}
 function calculateDurations(){const ids=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];state.voice=ids.map(id=>$(id).value.trim());state.sceneDurations=state.voice.map((v,i)=>{const words=wordCount(v||state.script[i]);return Math.max(2500,Math.ceil(words/2.5*1000)+850)});total=state.sceneDurations.reduce((a,b)=>a+b,0);refreshVoiceTiming()}
 function sceneStart(i){return state.sceneDurations.slice(0,i).reduce((a,b)=>a+b,0)}
@@ -259,19 +275,21 @@ function renderThree(now,target=threeRenderer){
  if(threeSeed!==state.backgroundSeed)buildThreeObjects();
  threeScene.background=new THREE.Color("#05080f");
  const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene]));
- const phase=t*(state.animation==="Dinamik"?1.42:state.animation==="Silliq"?.82:1)+threeGroup.userData.phase;
+ const motion=getMotionProfile();
+ const phase=t*motion.speed+threeGroup.userData.phase;
  const main=threeGroup.userData.main;
- const entrance=1-Math.pow(1-Math.min(1,local/.30),3);
+ const entranceRaw=Math.min(1,local/(motion.entrance==="snap"?.18:motion.entrance==="soft"?.42:.30));
+ const entrance=motion.entrance==="snap"?1-Math.pow(1-entranceRaw,5):motion.entrance==="dolly"?1-Math.pow(1-entranceRaw,2):1-Math.pow(1-entranceRaw,3);
  const sceneTilt=[-.12,.22,-.28,.34,-.18][state.scene];
- main.rotation.y=sceneTilt+Math.sin(phase*.31)*.14;
- main.rotation.x=[-.08,.18,-.12,.26,-.22][state.scene]+Math.sin(phase*.48)*.07;
- main.rotation.z=[-.10,.18,.02,-.22,.28][state.scene]+Math.sin(phase*.27)*.045;
+ main.rotation.y=sceneTilt+Math.sin(phase*.31)*.14*motion.camera;
+ main.rotation.x=[-.08,.18,-.12,.26,-.22][state.scene]+Math.sin(phase*.48)*.07*motion.camera;
+ main.rotation.z=[-.10,.18,.02,-.22,.28][state.scene]+Math.sin(phase*.27)*.045*motion.camera;
  main.position.y=[-.72,.18,-.28,.52,-.42][state.scene]*(1-entrance)+Math.sin(phase*.5)*.16;
  main.position.x=[-.48,.24,.42,-.32,.18][state.scene]*(1-entrance)+Math.sin(phase*.35)*.20;
  main.position.z=.34+[.18,.42,.08,.55,.28][state.scene]+Math.sin(phase*.62)*.12;
  const sceneScale=[1.04,1.18,1.12,1.22,1.10][state.scene];
  main.scale.setScalar(sceneScale*(.82+.18*entrance));
- updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.2:state.animation==="Silliq"?.86:1);
+ updateFlowSurfaces(threeGroup.userData.flows,phase,motion.flow);
  const cameraMoves=[
   [0,-.08,7.55],
   [Math.sin(phase*.28)*.34,.18,7.15],
@@ -280,9 +298,10 @@ function renderThree(now,target=threeRenderer){
   [0,Math.sin(phase*.36)*.24,7.05]
  ];
  const move=cameraMoves[state.scene];
- threeCamera.position.x+=(move[0]-threeCamera.position.x)*.045;
- threeCamera.position.y+=(move[1]-threeCamera.position.y)*.045;
- threeCamera.position.z+=(move[2]-threeCamera.position.z)*.045;
+ const cameraLerp=Math.min(.12,.045*motion.camera);
+ threeCamera.position.x+=(move[0]-threeCamera.position.x)*cameraLerp;
+ threeCamera.position.y+=(move[1]-threeCamera.position.y)*cameraLerp;
+ threeCamera.position.z+=(move[2]-threeCamera.position.z)*cameraLerp;
  threeCamera.lookAt(0,0,0);
  const introEnd=2600,outroStart=total-2300;
  let logoVisible=false,logoProgress=0;
@@ -528,7 +547,10 @@ function drawRecommendationScene(c,w,h,now,pal){
  // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
  const cameraRand=seededRandom((state.backgroundSeed^Math.imul(idx+71,0xC2B2AE35))|0);
  const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
- const phase=t*.42+idx*1.13,amp= cameraEase;
+ const motion=getMotionProfile();
+ const phase=t*.42*motion.camera+idx*1.13,amp=cameraEase*motion.camera;
+ c.translate(w*.5,h*.5);c.rotate((cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6));
+ c.scale(1+(cameraStyle===0?.065:cameraStyle===1?-.04:cameraStyle===2?.035:.025)*amp*Math.sin(phase*.65),1+(cameraStyle===0?.045:cameraStyle===3?.03:.018)*amp*Math.cos(phase*.55));c.translate(-w*.5,-h*.5);
  const cameraX=cameraStyle===0?Math.sin(phase)*w*.025*amp:cameraStyle===2?Math.cos(phase*.7)*w*.035*amp:cameraStyle===4?Math.sin(phase*1.2)*w*.022*amp:0;
  const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
  const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
@@ -557,13 +579,17 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.save();c.globalAlpha=Math.max(0,Math.min(1,p*1.5));c.textAlign="center";c.textBaseline="middle";
   c.font="800 "+(w*.026)+"px system-ui";c.fillStyle="#d9f6ff";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.20);c.restore();
  }
- const enter=Math.max(0,Math.min(1,(local-.04)/.48)),e=1-Math.pow(1-enter,3);
+ const enter=Math.max(0,Math.min(1,(local-.025)/(.48/motion.wipe)));
+ const e=motion.entrance==="snap"?1-Math.pow(1-enter,5):motion.entrance==="dolly"?1-Math.pow(1-enter,2):motion.entrance==="mix"?(idx%2?1-Math.pow(1-enter,4):1-Math.pow(1-enter,2)):1-Math.pow(1-enter,3);
  const textPanel=(x,y,ww,hh)=>{
   c.save();c.fillStyle="#03132beF";c.strokeStyle="#168cff";c.lineWidth=Math.max(1,w*.004);
   c.beginPath();c.roundRect(x,y,ww,hh,w*.025);c.fill();c.stroke();
   c.fillStyle="#65caff";c.fillRect(x+w*.02,y+h*.012,w*.13,Math.max(2,w*.007));c.restore();
  };
- // Three alternative editorial systems now affect the actual Tavsiya studio, not only other content modes.
+ // Topic identity is visible in every art direction, not merely stored in the project summary.
+ const topicSignature=getTopicSignature();
+ c.save();c.globalAlpha=.72;c.fillStyle=state.style==="Editorial / Magazine"?"#283747":ac;c.font="800 "+(w*.018)+"px monospace";c.textAlign="right";c.textBaseline="middle";c.fillText(topicSignature,w*.90,h*.105);c.restore();
+ // Four independent art directions each retain their own composition, typography and graphic grammar.
  if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
   pill(["STOP & LOOK","ACCOUNT / 01","YOUR BENEFIT","WHY THIS ONE","FOLLOW / SAVE"][idx],w*.10,h*.18);
