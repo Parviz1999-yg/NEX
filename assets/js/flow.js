@@ -99,11 +99,56 @@ function drawProceduralBackground(c,w,h,idx,pal,now){
  }
  c.restore();
 }
+
+function draw3DStage(c,w,h,idx,pal,now){
+ const t=now/1000,accent=pal[2],secondary=pal[3]||pal[2],fg=pal[1];
+ // Perspective floor: converging rails create a visible vanishing point.
+ const vanishX=w*(.5+Math.sin(t*.16+idx)*.07),vanishY=h*.43;
+ c.save();c.globalAlpha=.22;c.lineWidth=Math.max(1,w*.002);c.strokeStyle=secondary;
+ for(let i=-6;i<=6;i++){
+  c.beginPath();c.moveTo(vanishX+i*w*.012,vanishY);c.lineTo(w*(.5+i*.19),h*1.04);c.stroke();
+ }
+ for(let j=1;j<=8;j++){
+  const q=j/8,yy=vanishY+(h-vanishY)*q*q;
+  c.globalAlpha=.08+q*.13;c.beginPath();c.moveTo(0,yy);c.lineTo(w,yy);c.stroke();
+ }
+ c.restore();
+ // Three-dimensional rotating wire objects, projected from a lightweight 3D model.
+ const project=(x,y,z,cx,cy,scale,rot)=>{
+  const X=x*Math.cos(rot)-z*Math.sin(rot),Z=x*Math.sin(rot)+z*Math.cos(rot);
+  const depth=3.8/(3.8+Z);
+  return [cx+X*scale*depth,cy+y*scale*depth,depth];
+ };
+ const cube=(cx,cy,size,rot,color,phase)=>{
+  const v=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+  const pts=v.map(p=>project(p[0],p[1],p[2],cx,cy,size,rot+phase));
+  const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  c.save();c.strokeStyle=color;c.lineWidth=Math.max(1.2,w*.003);c.shadowColor=color;c.shadowBlur=w*.018;
+  edges.forEach((e,i)=>{c.globalAlpha=.32+pts[e[0]][2]*.24;c.beginPath();c.moveTo(pts[e[0]][0],pts[e[0]][1]);c.lineTo(pts[e[1]][0],pts[e[1]][1]);c.stroke()});
+  c.restore();
+ };
+ cube(w*.16+Math.sin(t*.42+idx)*w*.025,h*(.26+Math.sin(t*.55)*.025),w*.105,t*.42,accent,.35);
+ cube(w*.84+Math.cos(t*.34+idx)*w*.02,h*(.66+Math.cos(t*.48)*.025),w*.075,-t*.31,secondary,.6);
+ // Layered glass-like 3D slabs with visible side faces.
+ for(let i=0;i<3;i++){
+  const phase=t*.38+i*2.1+idx*.7,x=w*(.5+Math.sin(phase)*.34),y=h*(.22+i*.25+Math.cos(phase*.8)*.035);
+  const ww=w*(.13-i*.018),hh=h*(.018-i*.002),dx=w*.025,dy=h*.018;
+  c.save();c.globalAlpha=.17;c.fillStyle=i%2?secondary:accent;c.strokeStyle=fg;c.lineWidth=Math.max(1,w*.0018);
+  c.beginPath();c.moveTo(x-ww,y-hh);c.lineTo(x+ww,y-hh);c.lineTo(x+ww+dx,y-hh+dy);c.lineTo(x-ww+dx,y-hh+dy);c.closePath();c.fill();c.stroke();
+  c.globalAlpha=.12;c.beginPath();c.moveTo(x-ww,y-hh);c.lineTo(x-ww+dx,y-hh+dy);c.lineTo(x-ww+dx,y+hh+dy);c.lineTo(x-ww,y+hh);c.closePath();c.fill();
+  c.restore();
+ }
+ // Rotating elliptical depth rings.
+ c.save();c.translate(w*.5,h*.52);c.rotate(Math.sin(t*.25+idx)*.16);c.globalAlpha=.13;c.strokeStyle=accent;c.lineWidth=w*.003;
+ for(let i=0;i<3;i++){c.beginPath();c.ellipse(0,0,w*(.27+i*.055),h*(.075+i*.016),t*.08+i*.22,0,Math.PI*2);c.stroke()}
+ c.restore();
+}
+
 function drawScene(c,w,h,now){
  const pal=paletteMap[state.palette]||paletteMap.Midnight,bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const txt=$("sceneText").value||sceneCopy(idx),t=now/1000;
- c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);drawProceduralBackground(c,w,h,idx,pal,now);
+ c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);drawProceduralBackground(c,w,h,idx,pal,now);draw3DStage(c,w,h,idx,pal,now);
  const glow=c.createRadialGradient(w*(idx%2?.78:.2)+Math.sin(t*.24)*w*.06,h*(.24+.08*Math.sin(t*.7)),0,w*.5,h*.48,w*.82);
  glow.addColorStop(0,ac+"55");glow.addColorStop(.48,ac+"18");glow.addColorStop(1,bg);
  c.fillStyle=glow;c.fillRect(0,0,w,h);
@@ -139,10 +184,13 @@ function drawScene(c,w,h,now){
   else if(entrance===4){scale=.45+.55*k;rot=(1-k)*-.22}
   else{dx=(1-k)*w*.24;dy=(1-k)*h*.2;rot=(1-k)*.16;scale=.78+.22*k}
   c.save();c.globalAlpha=k;c.translate(anchorX+dx,y+dy);c.rotate(rot);c.scale(scale,scale);
-  c.textAlign=align;c.textBaseline="middle";c.font="900 "+baseSize+"px system-ui";
-  const depth=entrance===4?7:5;
-  for(let z=depth;z>=1;z--){c.fillStyle=z%2?ac+"88":"#02040acc";c.fillText(ln,z*w*.0015,z*w*.0018)}
-  c.shadowColor=ac;c.shadowBlur=w*.022;c.fillStyle=fg;c.fillText(ln,0,0);c.shadowBlur=0;
+  c.textAlign=align;c.textBaseline="middle";c.font="950 "+baseSize+"px system-ui";
+  // Extruded typography: multiple offset faces plus a perspective shear and a hard cast shadow.
+  const depth=entrance===4?15:11,tilt=(idx%2===0?.075:-.075)*(1-local*.35);
+  c.transform(1,tilt,0,1,0,0);
+  for(let z=depth;z>=1;z--){const kDepth=z/depth;c.fillStyle=z%2?ac+"bb":"#02040add";c.fillText(ln,z*w*.0022,z*w*.0028)}
+  c.shadowColor="#000000";c.shadowBlur=w*.035;c.shadowOffsetX=w*.012;c.shadowOffsetY=w*.018;c.fillStyle=fg;c.fillText(ln,0,0);
+  c.shadowColor=ac;c.shadowBlur=w*.025;c.shadowOffsetX=0;c.shadowOffsetY=0;c.strokeStyle=fg+"88";c.lineWidth=Math.max(1,w*.0012);c.strokeText(ln,0,0);c.shadowBlur=0;
   if(i===shown.length-1){const width=Math.min(c.measureText(ln).width,w*.68);c.globalAlpha=k*.7;c.fillStyle=ac;c.fillRect(align==="left"?0:align==="right"?-width:-width/2,baseSize*.62,width,Math.max(2,w*.003))}
   c.restore();
  });
