@@ -88,7 +88,7 @@ async function initThreeEngine(){
   const rim=new THREE.PointLight(0x8b7cff,24,18);rim.position.set(4,1,3);threeScene.add(rim);
   const fill=new THREE.PointLight(0x35d6c5,15,16);fill.position.set(-4,-3,2);threeScene.add(fill);
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
- }catch(error){threeFailed=true;state.webglReady=false;state.webglError="Haqiqiy 3D dvigatel yuklanmadi. Internet aloqasini tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
+ }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
 function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);threeGroup=new THREE.Group();threeScene.add(threeGroup);
