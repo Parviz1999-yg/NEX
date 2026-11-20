@@ -16,3 +16,14 @@
 .account-fields label{margin-top:5px}
 .account-fields input:focus,.account-fields textarea:focus{border-color:var(--accent);outline:none}
 .account-fields small{color:var(--muted);font-size:11px;line-height:1.5}
+
+/* NEX v0.2.0 — mustaqil kreativ yo‘nalishlar */
+.creative-directions{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px}
+.creative-directions .option{min-height:124px;position:relative;overflow:hidden;padding:22px 20px 18px 24px;background:linear-gradient(135deg,#141c2c,#0b111c)}
+.creative-directions .option:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent),transparent);opacity:.7}
+.creative-directions .option.selected{background:linear-gradient(135deg,#211e3d,#101827);border-color:var(--accent);box-shadow:0 12px 34px #0005,inset 0 0 0 1px var(--accent)}
+.creative-directions .option b{letter-spacing:.015em}
+.creative-directions .option small{max-width:300px}
+#shuffleBackground{border-color:#52617d;background:linear-gradient(110deg,#171f31,#101726);color:#dce6f7}
+#shuffleBackground.shuffle-flash{color:#07131b}
+@media(max-width:520px){.creative-directions{grid-template-columns:1fr}.creative-directions .option{min-height:104px}}
