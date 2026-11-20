@@ -5,75 +5,160 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#080b13">
   <title>NEX — Foydali manba</title>
-  <link rel="stylesheet" href="style.css?v=0.1.1">
+  <link rel="stylesheet" href="style.css?v=0.2.0">
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="../">NEX <span>/ FOYDALI MANBA</span></a><span class="step" id="stepLabel">01 — MANBA</span><span class="app-version">v0.1.1</span></header>
+  <header class="topbar">
+    <a class="brand" href="../">NEX <span>/ FOYDALI MANBA</span></a>
+    <span class="step" id="stepLabel">01 — MANBA</span>
+    <span class="app-version">v0.2.0</span>
+  </header>
   <main>
     <section class="intro">
       <p class="eyebrow">NEX · MUSTAQIL KONTENT STUDIYASI</p>
       <h1>Foydali manba<span>.</span></h1>
-      <p>Manbani tanlang, mazmunini kiriting va unga mos vizual hikoya tayyorlang.</p>
+      <p>Har bir sozlamani ketma-ket tanlang. Asosiy Reels sahnasi oxirgi bosqichda ochiladi.</p>
     </section>
 
-    <section class="workspace">
-      <div class="form-column">
-        <section class="panel">
-          <p class="eyebrow">01 — MANBA TURI</p>
-          <h2>Qaysi turdagi manba?</h2>
-          <div class="category-grid" id="categoryGrid">
-            <button class="category" data-category="sayt"><span>01</span><b>Sayt</b><small>Veb-resurs va platforma</small></button>
-            <button class="category" data-category="youtube"><span>02</span><b>YouTube</b><small>Video va kanallar</small></button>
-            <button class="category" data-category="telegram"><span>03</span><b>Telegram</b><small>Kanal, guruh va bot</small></button>
-            <button class="category" data-category="kitob"><span>04</span><b>Kitob</b><small>Kitob va qo‘llanmalar</small></button>
-          </div>
-          <div class="source-fields" id="sourceFields" hidden>
-            <label for="sourceName">Manba nomi</label>
-            <input id="sourceName" maxlength="90" placeholder="Masalan: Khan Academy">
-            <label for="sourceLink">Manba havolasi <span class="optional">— ixtiyoriy</span></label>
-            <input id="sourceLink" type="url" placeholder="https://...">
-            <p class="hint" id="sourceHint">Kategoriya tanlangach, manba nomiga mos 3D fon ishga tushadi.</p>
-          </div>
-        </section>
-
-        <section class="panel script-panel">
-          <p class="eyebrow">02 — ASOSIY MA’LUMOTLAR</p>
-          <h2>Hook’dan yakungacha.</h2>
-          <p class="section-copy">Tavsiya akkauntdagi kabi to‘rtta asosiy matn maydoni. Har bir matnni o‘zingiz yozing va istalgan vaqtda tahrirlang.</p>
-          <div class="script-field"><div class="field-head"><label for="hook">01 · HOOK — e’tiborni tortish</label><span>Majburiy</span></div><textarea id="hook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea></div>
-          <div class="script-field"><div class="field-head"><label for="reason">02 · SABAB — nima uchun kerak?</label><span>Majburiy</span></div><textarea id="reason" rows="3" maxlength="240" placeholder="Bu manba qanday ehtiyojni qondiradi yoki muammoni hal qiladi?"></textarea></div>
-          <div class="script-field"><div class="field-head"><label for="benefit">03 · USTUNLIK — asosiy foyda</label><span>Majburiy</span></div><textarea id="benefit" rows="3" maxlength="260" placeholder="Manbaning eng muhim imkoniyati yoki foydasini yozing..."></textarea></div>
-          <div class="script-field"><div class="field-head"><label for="cta">04 · CHORLOV — yakun</label><span>Majburiy</span></div><textarea id="cta" rows="3" maxlength="180" placeholder="Tomoshabinga keyingi qadamni ayting..."></textarea></div>
-        </section>
-
-        <section class="panel settings-panel">
-          <p class="eyebrow">03 — BAYON VA VIZUAL SOZLAMALAR</p>
-          <div class="settings-grid">
-            <div><label for="tone">Bayon uslubi</label><select id="tone"><option>Jiddiy</option><option>Ilmiy</option><option>Sodda va tushunarli</option><option>Yumor</option><option>Tahliliy</option><option>Motivatsion</option><option>Sirli va qiziqarli</option><option>Falsafiy</option></select></div>
-            <div><label for="visual">Vizual til</label><select id="visual"><option value="cinematic">Cinematic 3D</option><option value="kinetic">Kinetic Typography</option><option value="editorial">Editorial / Magazine</option><option value="future">Futuristic Motion</option></select></div>
-            <div><label for="palette">Rang palitrasi</label><select id="palette"><option value="silver">Arctic Silver</option><option value="blue">Electric Blue</option><option value="violet">Royal Violet</option><option value="emerald">Emerald Laser</option><option value="solar">Solar Chrome</option></select></div>
-            <div><label for="motion">Animatsiya</label><select id="motion"><option>Silliq</option><option>Dinamik</option><option>Kinematik</option><option>Ijodiy</option><option>Aralash</option></select></div>
-          </div>
-          <button class="primary-btn" id="previewBtn">Ma’lumotlarni ko‘rish →</button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </section>
+    <div class="progress-track" aria-label="Bosqichlar">
+      <span class="progress-fill" id="progressFill"></span>
+      <div class="progress-steps">
+        <span class="current" data-progress="1">01</span><span data-progress="2">02</span><span data-progress="3">03</span><span data-progress="4">04</span><span data-progress="5">05</span><span data-progress="6">06</span><span data-progress="7">07</span>
       </div>
+    </div>
 
-      <aside class="preview-column">
-        <div class="preview-heading"><span class="eyebrow">LIVE WEBGL PREVIEW</span><span class="live-dot">● REAL-TIME</span></div>
-        <div class="reel-frame">
-          <canvas id="webgl" aria-label="Manba nomiga mos jonli 3D fon"></canvas>
-          <div class="reel-shade"></div>
-          <div class="reel-content">
-            <span class="reel-kicker" id="reelCategory">FOYDALI MANBA</span>
-            <div class="reel-copy"><p id="reelHook">Manba tanlang va Hook matnini kiriting.</p><h3 id="reelTitle">Manba nomi</h3><p id="reelReason"></p><p id="reelBenefit"></p><strong id="reelCta"></strong></div>
-            <div class="reel-footer"><span>NEX / RESOURCE</span><span>9:16</span></div>
-          </div>
+    <section class="wizard-page active" id="step-1">
+      <div class="panel">
+        <p class="eyebrow">01 — MANBA</p>
+        <h2>Qaysi turdagi manbani tavsiya qilamiz?</h2>
+        <div class="category-grid" id="categoryGrid">
+          <button class="category" data-category="sayt"><span>01</span><b>Sayt</b><small>Veb-resurs va platforma</small></button>
+          <button class="category" data-category="youtube"><span>02</span><b>YouTube</b><small>Video va kanallar</small></button>
+          <button class="category" data-category="telegram"><span>03</span><b>Telegram</b><small>Kanal, guruh va bot</small></button>
+          <button class="category" data-category="kitob"><span>04</span><b>Kitob</b><small>Kitob va qo‘llanmalar</small></button>
         </div>
-        <p class="preview-note">Fon kategoriya tanlanganda ishga tushadi. Manba nomi o‘zgargan sari 3D sahna ham yangilanadi.</p>
-      </aside>
+        <div class="source-fields" id="sourceFields" hidden>
+          <label for="sourceName">Manba nomi</label>
+          <input id="sourceName" maxlength="90" placeholder="Masalan: Khan Academy">
+          <label for="sourceLink">Manba havolasi <span class="optional">— ixtiyoriy</span></label>
+          <input id="sourceLink" type="url" placeholder="https://...">
+          <p class="hint" id="sourceHint">Manba turini tanlang.</p>
+        </div>
+        <p class="form-status" id="sourceStatus" role="status"></p>
+        <div class="wizard-actions"><a class="text-link" href="../">← Bosh sahifa</a><button class="primary-btn" id="nextSource">Keyingi bosqich →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page" id="step-2">
+      <div class="panel script-panel">
+        <p class="eyebrow">02 — SSENARIY</p>
+        <h2>Hook’dan yakungacha.</h2>
+        <p class="section-copy">Manbaning qiymatini qisqa, aniq va ishonarli tarzda ochib bering.</p>
+        <div class="script-field"><div class="field-head"><label for="hook">01 · HOOK — e’tiborni tortish</label><span>Majburiy</span></div><textarea id="hook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea></div>
+        <div class="script-field"><div class="field-head"><label for="reason">02 · SABAB — nima uchun kerak?</label><span>Majburiy</span></div><textarea id="reason" rows="3" maxlength="240" placeholder="Bu manba qanday ehtiyojni qondiradi yoki muammoni hal qiladi?"></textarea></div>
+        <div class="script-field"><div class="field-head"><label for="benefit">03 · USTUNLIK — asosiy foyda</label><span>Majburiy</span></div><textarea id="benefit" rows="3" maxlength="260" placeholder="Manbaning eng muhim imkoniyati yoki foydasini yozing..."></textarea></div>
+        <div class="script-field"><div class="field-head"><label for="cta">04 · CHORLOV — yakun</label><span>Majburiy</span></div><textarea id="cta" rows="3" maxlength="180" placeholder="Tomoshabinga keyingi qadamni ayting..."></textarea></div>
+        <p class="form-status" id="scriptStatus" role="status"></p>
+        <div class="wizard-actions"><button class="secondary-btn" data-prev="1">← Orqaga</button><button class="primary-btn" id="nextScript">Davom etish →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page" id="step-3">
+      <div class="panel">
+        <p class="eyebrow">03 — BAYON USLUBI</p>
+        <h2>Tomoshabinga qanday murojaat qilamiz?</h2>
+        <p class="section-copy">Matnning ohangi va ma’lumotni yetkazish xarakterini tanlang.</p>
+        <div class="choice-grid" id="toneOptions">
+          <button class="choice selected" data-value="Jiddiy"><b>Jiddiy</b><small>Ishonchli, aniq va vazmin</small></button>
+          <button class="choice" data-value="Ilmiy"><b>Ilmiy</b><small>Dalil va tushunchalarga tayangan</small></button>
+          <button class="choice" data-value="Sodda va tushunarli"><b>Sodda va tushunarli</b><small>Oddiy, ravon va hammabop</small></button>
+          <button class="choice" data-value="Yumor"><b>Yumor</b><small>Yengil va hazil aralash</small></button>
+          <button class="choice" data-value="Tahliliy"><b>Tahliliy</b><small>Taqqoslash va izohga boy</small></button>
+          <button class="choice" data-value="Motivatsion"><b>Motivatsion</b><small>Harakatga undovchi</small></button>
+          <button class="choice" data-value="Sirli va qiziqarli"><b>Sirli va qiziqarli</b><small>Qiziqish uyg‘otuvchi</small></button>
+          <button class="choice" data-value="Falsafiy"><b>Falsafiy</b><small>Chuqur fikr va mulohaza</small></button>
+        </div>
+        <div class="wizard-actions"><button class="secondary-btn" data-prev="2">← Orqaga</button><button class="primary-btn" data-next="4">Davom etish →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page" id="step-4">
+      <div class="panel">
+        <p class="eyebrow">04 — VIZUAL TIL</p>
+        <h2>Reels qanday ko‘rinishda bo‘ladi?</h2>
+        <p class="section-copy">Vizual til kompozitsiya, obyektlar, tipografika va sahna harakatini belgilaydi.</p>
+        <div class="choice-grid" id="visualOptions">
+          <button class="choice selected" data-value="cinematic"><b>01 · Cinematic 3D</b><small>Hajmli obyektlar, metall material va chuqur kamera</small></button>
+          <button class="choice" data-value="kinetic"><b>02 · Kinetic Typography</b><small>Yirik tipografika, qatlamlar va dinamik matn</small></button>
+          <button class="choice" data-value="editorial"><b>03 · Editorial / Magazine</b><small>Jurnal maketi, ustunlar va tartibli kompozitsiya</small></button>
+          <button class="choice" data-value="future"><b>04 · Futuristic Motion</b><small>HUD panellar, signal chiziqlari va texnologik muhit</small></button>
+        </div>
+        <div class="wizard-actions"><button class="secondary-btn" data-prev="3">← Orqaga</button><button class="primary-btn" data-next="5">Davom etish →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page" id="step-5">
+      <div class="panel">
+        <p class="eyebrow">05 — RANG PALETRASI</p>
+        <h2>Rang xarakterini tanlang.</h2>
+        <p class="section-copy">Ranglar manba mazmuniga mos, matn esa doimo o‘qilishi aniq bo‘lishi kerak.</p>
+        <div class="choice-grid palette-options" id="paletteOptions">
+          <button class="choice selected" data-value="silver"><i class="swatch silver"></i><b>Arctic Silver</b><small>Muz-ko‘k va xrom-kumush</small></button>
+          <button class="choice" data-value="blue"><i class="swatch blue"></i><b>Electric Blue</b><small>Elektr ko‘k va yorqin oq</small></button>
+          <button class="choice" data-value="violet"><i class="swatch violet"></i><b>Royal Violet</b><small>Binafsha va kumush</small></button>
+          <button class="choice" data-value="emerald"><i class="swatch emerald"></i><b>Emerald Laser</b><small>Zumrad va oq metall</small></button>
+          <button class="choice" data-value="solar"><i class="swatch solar"></i><b>Solar Chrome</b><small>Quyosh oltini va oq metall</small></button>
+        </div>
+        <div class="wizard-actions"><button class="secondary-btn" data-prev="4">← Orqaga</button><button class="primary-btn" data-next="6">Davom etish →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page" id="step-6">
+      <div class="panel">
+        <p class="eyebrow">06 — ANIMATSIYA</p>
+        <h2>Sahnadagi harakat qanday bo‘lsin?</h2>
+        <p class="section-copy">Tanlov 3D obyektning aylanishi, kamera ritmi va matn kirish tezligiga ta’sir qiladi.</p>
+        <div class="choice-grid" id="motionOptions">
+          <button class="choice selected" data-value="Silliq"><b>Silliq</b><small>Yumshoq va sekin harakat</small></button>
+          <button class="choice" data-value="Dinamik"><b>Dinamik</b><small>Tez, keskin va energiyali</small></button>
+          <button class="choice" data-value="Kinematik"><b>Kinematik</b><small>Sokin kamera va chuqur parallax</small></button>
+          <button class="choice" data-value="Ijodiy"><b>Ijodiy</b><small>O‘zgaruvchan, noodatiy harakat</small></button>
+          <button class="choice" data-value="Aralash"><b>Aralash</b><small>Bir necha harakat ritmi uyg‘unligi</small></button>
+        </div>
+        <div class="wizard-actions"><button class="secondary-btn" data-prev="5">← Orqaga</button><button class="primary-btn" id="openStudio">Asosiy sahnani ochish →</button></div>
+      </div>
+    </section>
+
+    <section class="wizard-page studio-page" id="step-7">
+      <div class="studio-heading">
+        <p class="eyebrow">07 — NEX REELS STUDIO</p>
+        <h2>Asosiy sahna.</h2>
+        <p>Bu yerda barcha tanlovlaringiz birlashtiriladi. Telefoningizdagi ekran yozish funksiyasidan foydalanishingiz mumkin.</p>
+      </div>
+      <div class="studio-layout">
+        <div class="studio-controls panel">
+          <div class="summary" id="summary"></div>
+          <label for="sceneText">Sahna matni</label>
+          <textarea id="sceneText" rows="4" maxlength="260" placeholder="Sahna matnini shu yerda tahrirlang..."></textarea>
+          <p class="hint">Matnni o‘zgartirsangiz, 9:16 ko‘rinish ham yangilanadi.</p>
+          <button class="secondary-btn full-btn" id="restartScene">↺ Sahnani qayta boshlash</button>
+          <button class="secondary-btn full-btn" id="backSettings">← Sozlamalarga qaytish</button>
+        </div>
+        <aside class="preview-column">
+          <div class="preview-heading"><span class="eyebrow">LIVE WEBGL · 9:16</span><span class="live-dot">● REAL-TIME</span></div>
+          <div class="reel-frame">
+            <canvas id="webgl" aria-label="Manba turiga mos 3D Reels sahnasi"></canvas>
+            <div class="reel-shade"></div>
+            <div class="reel-content">
+              <span class="reel-kicker" id="reelCategory">FOYDALI MANBA</span>
+              <div class="reel-copy"><p id="reelHook"></p><h3 id="reelTitle"></h3><p id="reelReason"></p><p id="reelBenefit"></p><strong id="reelCta"></strong></div>
+              <div class="reel-footer"><span>NEX / RESOURCE</span><span>9:16</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </section>
   </main>
-  <script type="module" src="app.js?v=0.1.1"></script>
+  <script type="module" src="app.js?v=0.2.0"></script>
 </body>
 </html>
