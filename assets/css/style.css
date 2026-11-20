@@ -110,3 +110,19 @@ h1 em{color:#49adff}
 /* v0.5.5 — visible feedback for creative variant changes */
 #shuffleBackground{min-height:50px;font-weight:800;letter-spacing:.01em;touch-action:manipulation}
 #shuffleBackground.shuffle-flash{outline:2px solid #9be4ff;outline-offset:2px;transform:translateY(-1px) scale(1.01)}
+
+
+/* v0.8.5 — Reels sahnasi: toza xavfsiz hudud va mobil preview ustuvorligi */
+.studio-layout{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px}
+.reel-frame{width:100%;max-width:340px;margin-inline:auto;border-radius:12px}
+#reelCanvas,#reel3D{width:100%;height:100%}
+.studio-controls{min-width:0}
+.studio-controls textarea{line-height:1.5}
+.scene-list{gap:7px}
+.scene-chip{min-height:40px;font-weight:750}
+@media(max-width:700px){
+ .studio-layout{display:flex;flex-direction:column;gap:18px}
+ .preview-column{order:-1;width:min(100%,340px);margin:0 auto}
+ .studio-controls{order:1;width:100%}
+ .reel-frame{max-width:340px}
+}
