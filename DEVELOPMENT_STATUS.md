@@ -206,3 +206,11 @@ Kod strukturasi va versiya mosligi tekshiriladi. Bu haqiqiy brauzer/WebGL yoki A
 
 ### Tekshiruv chegarasi
 Bu yangilanish manba kodiga kiritildi. Hozircha haqiqiy Android brauzerida ko‘rish yoki WebGL kadrlarini qurilmada tasdiqlash bajarilmadi. Koddagi geometriya, sahna shartlari, cache-buster va versiya mosligi tekshirilishi kerak.
+
+
+## v0.6.1 — 9:16 kadrda xrom oqimini ko‘rinadigan qilish
+- [x] Oqim geometriyasining gorizontal koordinatalari portret kamera ko‘rish maydoniga moslashtirildi; keng 8.4 birlikli tasma endi kadr tashqarisiga chiqib ketmasligi kerak.
+- [x] Xrom materiali haddan tashqari qorong‘i metall aksidan chiqarildi: yorug‘ kumush asos, yumshoqroq roughness, cheklangan emissive to‘ldirish.
+- [x] Hemisphere, key, rim va fill yoritish kuchaytirildi; qora fon bilan qo‘shilib ketish xavfi kamaytirildi.
+- [x] Versiya/cache-buster v0.6.1.
+- [ ] Android kichik preview va katta screen-recording oynasida bir xil ko‘rinish foydalanuvchi tomonidan tekshirilishi kerak.
