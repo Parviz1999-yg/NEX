@@ -49,3 +49,8 @@
 .eyebrow{color:#83e9e7}
 @keyframes nexMetalSweep{0%{background-position:0% center}100%{background-position:220% center}}
 .reel-frame{border-color:#8ef4ed70;box-shadow:inset 0 0 0 1px #ffffff10}
+
+
+/* Palette guidance: readable type and chromatic 3D materials stay distinct. */
+.palette-note{margin:0 0 16px;padding:13px 15px;border:1px solid #ffffff22;border-left:3px solid #8b7cff;border-radius:12px;background:#ffffff08;color:#dce5f3;font-size:.9rem;line-height:1.55}
+.palette-note strong{color:#fff}
