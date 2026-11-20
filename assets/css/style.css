@@ -126,3 +126,12 @@ h1 em{color:#49adff}
  .studio-controls{order:1;width:100%}
  .reel-frame{max-width:340px}
 }
+
+
+/* v0.9.0 — sahna davomiyligini aniq boshqarish */
+.scene-duration-control{margin:16px 0 18px;padding:14px;border:1px solid #28517f;border-radius:12px;background:linear-gradient(145deg,#0b1d38,#07152b)}
+.scene-duration-control>label{display:block;margin:0 0 12px;color:#f2f8ff;font-weight:800;font-size:13px}
+.duration-value{display:flex;align-items:center;gap:12px}
+.duration-value input{flex:1;min-width:0;accent-color:#75d4ff}
+.duration-value output{min-width:88px;text-align:right;color:#9fe4ff;font-size:13px;font-weight:850;font-variant-numeric:tabular-nums}
+.duration-summary{margin:10px 0 0;color:#a9c6e8;font-size:11px;line-height:1.5}
