@@ -96,7 +96,7 @@ function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const chrome=new THREE.MeshPhysicalMaterial({color:0xf7fbff,metalness:.78,roughness:.14,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:3.8,emissive:0x718ba5,emissiveIntensity:.46,side:THREE.DoubleSide});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xbfc3c9,metalness:.94,roughness:.17,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:3.6,emissive:0x30343a,emissiveIntensity:.10,side:THREE.DoubleSide});
  const blueMetal=new THREE.MeshPhysicalMaterial({color:0xbfc8d2,metalness:1,roughness:.06,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,side:THREE.DoubleSide});
  const iceMetal=new THREE.MeshPhysicalMaterial({color:0xf1f4f7,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
