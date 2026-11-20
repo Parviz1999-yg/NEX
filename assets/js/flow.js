@@ -20,7 +20,7 @@ function configureTopicType(){
  select.innerHTML='<option value="">Tanlang</option>'+options.map(value=>'<option>'+value+'</option>').join("");
  state.topicType="";
 }
-document.querySelectorAll(".direction").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;configureTopicType();page("content")}));
+document.querySelectorAll(".direction").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.mode==="manba"){window.location.href="./foydali-manba/";return;}state.mode=b.dataset.mode;configureTopicType();page("content")}));
 document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",()=>page(b.dataset.back)));
 bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
 document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(b.dataset.colors||"").split(",");b.querySelectorAll(".swatches i").forEach((dot,i)=>dot.style.backgroundColor=colors[i]||"#777")});
