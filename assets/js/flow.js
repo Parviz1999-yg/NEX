@@ -29,12 +29,23 @@ function generateRecommendationScript(){
  const clean=s=>String(s||"").trim().replace(/[.!?]+$/,"");
  const who=audience?"Ayniqsa "+clean(audience)+" uchun.":"";
  const proofLine=proof?clean(proof)+".":"Bu sahifaning so‘nggi postlarini ko‘rib, sizga mosligini o‘zingiz baholang.";
- const scripts=[
+ const hookOptions=[
   "Sizga "+clean(niche)+" bo‘yicha foydali sahifa kerakmi?",
+  clean(niche)+" bilan shug‘ullanasizmi? Bu akkauntga e’tibor bering.",
+  "Yangi sahifa izlayapsizmi? "+clean(name)+" bilan tanishing."
+ ];
+ const ctaOptions=[
+  "Agar "+clean(niche)+" sizga qiziq bo‘lsa, "+clean(name)+" profilini ko‘rib chiqing.",
+  clean(name)+" sahifasiga o‘ting va so‘nggi postlarini o‘zingiz baholang.",
+  "Sizga mos bo‘lsa, "+clean(name)+" akkauntini kuzatib boring."
+ ];
+ const hook=hookOptions[Math.floor(Math.random()*hookOptions.length)],cta=ctaOptions[Math.floor(Math.random()*ctaOptions.length)];
+ const scripts=[
+  hook,
   clean(name)+" — "+clean(niche)+" yo‘nalishidagi akkaunt. "+clean(bio),
   "Asosiy foydasi: "+clean(benefit)+". "+who,
   proofLine,
-  "Agar "+clean(niche)+" sizga qiziq bo‘lsa, "+clean(name)+" profilini ko‘rib chiqing."
+  cta
  ];
  const voices=[
   "Agar siz "+clean(niche)+" mavzusiga qiziqsangiz, mana shu sahifaga e’tibor bering.",
