@@ -390,3 +390,15 @@ Manba kodidagi boshqaruvlar, avtomatik matnni olib tashlash va versiya mosligi s
 - Simobli yakun paytida muallif matni qayta ko‘rinib qolmasligi uchun matn outro boshlanishidan oldin to‘xtatiladi.
 - Versiya/cache-buster: v0.9.1.
 - [ ] Android qurilmada logo intro, simob wipe va logo-only yakunini vizual tekshirish.
+
+
+## v0.9.2 — Tavsiya akkaunt kartochkalari va metallik NEX identifikatsiyasi
+- Ovoz yozuvi uchun beshta maydon va ularga bog‘liq hisoblash kodi olib tashlandi; sahna davomiyligi ekrandagi kartochka matni uzunligidan hisoblanadi.
+- Tavsiya akkaunt rejimida umumiy ssenariy maydonlari yashiriladi; sayt kiritilgan profil ma’lumotlaridan beshta alohida kartochka mazmunini avtomatik tuzadi.
+- Har bir sahna profil rasmi, akkaunt nomi, yo‘nalish, tavsif, foyda, auditoriya, dalil/obunachi va yakuniy chaqiriqni bitta yaxlit kartochka ichida ko‘rsatadi.
+- NEX WebGL logotipining barcha chiziqlari bir xil neytral kumush xrom materialiga o‘tkazildi; outroda simob oqib ketgach metallik logo qoladi.
+- Versiya/cache-buster: v0.9.2.
+- [ ] Android qurilmada kartochka matni sig‘ishi, profil rasmi, 5 sahna almashinuvi va simobdan keyingi metallik logoni vizual tekshirish.
+
+### v0.9.2 tekshiruv chegarasi
+Manba kodida ovoz maydonlariga bog‘liqlikni yo‘qotish, kartochka ma’lumotlari va versiya mosligi tekshiriladi. Haqiqiy Android/WebGL vizual sinovi bajarilgan deb hisoblanmaydi.
