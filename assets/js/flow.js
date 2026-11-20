@@ -178,11 +178,22 @@ function drawRecommendationScene(c,w,h,now,pal){
  const copy=$("sceneText").value||sceneCopy(idx);
  c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);
  drawProceduralBackground(c,w,h,idx,pal,now);
+ // Tavsiya akkaunt sahnalarida ham alohida 3D obyekt qatlami ishlaydi.
+ draw3DStage(c,w,h,idx,pal,now);
  const wash=c.createRadialGradient(w*(idx%2?.78:.2),h*.36,0,w*.5,h*.5,w*.82);
  wash.addColorStop(0,ac+"38");wash.addColorStop(.55,sub+"16");wash.addColorStop(1,bg);
  c.fillStyle=wash;c.fillRect(0,0,w,h);
  c.save();c.globalAlpha=.22;c.strokeStyle=fg;c.lineWidth=1;
  for(let y=0;y<12;y++){const yy=h*(.12+y*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();
+ // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
+ const cameraRand=seededRandom((state.backgroundSeed^Math.imul(idx+71,0xC2B2AE35))|0);
+ const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
+ const phase=t*.42+idx*1.13,amp= cameraEase;
+ const cameraX=cameraStyle===0?Math.sin(phase)*w*.025*amp:cameraStyle===2?Math.cos(phase*.7)*w*.035*amp:cameraStyle===4?Math.sin(phase*1.2)*w*.022*amp:0;
+ const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
+ const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
+ const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
+ c.save();c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
   const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];c.font=weight+" "+fontSize+"px system-ui";let line="";
   for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
@@ -230,6 +241,7 @@ function drawRecommendationScene(c,w,h,now,pal){
   text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,ac,"850","left",2);
   if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
  }
+ c.restore();
  c.save();c.globalAlpha=Math.max(0,1-local/.18)*.65;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-local*5),0);c.lineTo(w*(1.2-local*5),0);c.lineTo(w*(.2-local*5),h);c.lineTo(w*(-local*5),h);c.closePath();c.fill();c.restore();
  drawBrand(c,w,h,ac,fg);c.restore();
 }
