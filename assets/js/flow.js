@@ -104,7 +104,7 @@ function buildThreeObjects(){
  }
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const chrome=new THREE.MeshPhysicalMaterial({color:0xbfc3c9,metalness:.94,roughness:.17,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:3.6,emissive:0x30343a,emissiveIntensity:.10,side:THREE.DoubleSide});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xd9dde3,metalness:.985,roughness:.115,clearcoat:1,clearcoatRoughness:.022,envMapIntensity:4.8,emissive:0x171b20,emissiveIntensity:.035,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
  // Monoxrom kompozitsiya: bitta keng, uzluksiz xrom-suyuqlik tasmasi.
  const flow=createFlowSurface(112,28,chrome,(rand()-.5)*6.2);
