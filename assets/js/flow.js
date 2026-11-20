@@ -305,7 +305,12 @@ function renderThree(now,target=threeRenderer){
  let logoVisible=false,logoProgress=0;
  if(state.elapsed<introEnd){logoVisible=true;logoProgress=Math.min(1,state.elapsed/2050)}
  else if(state.elapsed>outroStart){logoVisible=true;logoProgress=Math.min(1,(total-state.elapsed)/2050)}
- updateNexLogo(logoProgress,logoVisible&&state.mode!=="tavsiya");
+ if(state.mode==="tavsiya"){
+  const outroStart=Math.max(0,total-5200);
+  if(state.elapsed>=outroStart){logoVisible=true;logoProgress=Math.min(1,(state.elapsed-outroStart)/2400)}
+  else logoVisible=false;
+ }
+ updateNexLogo(logoProgress,logoVisible);
  target.render(threeScene,threeCamera);
 }
 
@@ -574,6 +579,40 @@ function drawTopicMotif(c,w,h,accent,topic,time,index,style){
  }
  c.restore();
 }
+function drawMercuryOutro(c,w,h,progress,now){
+ const p=Math.max(0,Math.min(1,progress));
+ // Suyuq simob pastdan yuqoriga ko‘tarilib butun kadrni yuvadi, so‘ng chekinib logotipni ochadi.
+ const cover=Math.min(1,p/.62),fade=p<.62?1:Math.max(0,1-(p-.62)/.38);
+ if(fade<=0)return;
+ const edge=h*(1.08-cover*1.2);
+ c.save();c.globalAlpha=fade;
+ c.beginPath();c.moveTo(0,h);c.lineTo(0,edge);
+ for(let x=0;x<=w+8;x+=8){
+  const wave=Math.sin(x/w* Math.PI*3.2+now*.003)*h*.018+
+              Math.sin(x/w*Math.PI*7.1-now*.0021)*h*.009;
+  c.lineTo(x,edge+wave);
+ }
+ c.lineTo(w,h);c.closePath();
+ const metal=c.createLinearGradient(0,Math.max(0,edge-h*.18),w,h);
+ metal.addColorStop(0,"#343b43");metal.addColorStop(.16,"#e7edf1");
+ metal.addColorStop(.29,"#7f8a94");metal.addColorStop(.43,"#fbfdff");
+ metal.addColorStop(.58,"#9da8b1");metal.addColorStop(.76,"#f3f6f8");
+ metal.addColorStop(1,"#414b55");
+ c.fillStyle=metal;c.shadowColor="#dce7f0";c.shadowBlur=w*.055;c.fill();
+ c.shadowBlur=0;
+ // Simob yuzasidagi uzun metallik akslar va oqim izlari.
+ for(let i=0;i<9;i++){
+  const y=edge+h*(.045+i*.028),shift=Math.sin(now*.0018+i*1.7)*w*.08;
+  c.beginPath();c.moveTo(-w*.1+shift,y);
+  c.bezierCurveTo(w*.22+shift,y-h*.025,w*.64+shift,y+h*.025,w*1.1+shift,y-h*.008);
+  c.strokeStyle=i%2?"#ffffff99":"#26313b88";c.lineWidth=Math.max(1,w*(i%3===0?.009:.003));c.stroke();
+ }
+ // Oldingi kadrni simob ostida qoldiradigan qoramtir, oynadek nam chekka.
+ c.beginPath();c.moveTo(0,edge-h*.012);
+ for(let x=0;x<=w+8;x+=8){const wave=Math.sin(x/w*Math.PI*3.2+now*.003)*h*.018+Math.sin(x/w*Math.PI*7.1-now*.0021)*h*.009;c.lineTo(x,edge+wave-h*.012)}
+ c.strokeStyle="#111820cc";c.lineWidth=h*.012;c.stroke();
+ c.restore();
+}
 function drawRecommendationScene(c,w,h,now,pal){
  const bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene,t=now/1000;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
@@ -605,6 +644,11 @@ function drawRecommendationScene(c,w,h,now,pal){
   const shown=lines.slice(0,4),lineH=w*size*1.22;
   c.save();c.globalAlpha=ease;c.translate(0,(1-ease)*h*.035);c.textAlign=state.style==="Kinetic Typography"?"left":"center";c.textBaseline="middle";c.fillStyle=color;
   shown.forEach((ln,i)=>c.fillText(ln,x,y+(i-(shown.length-1)/2)*lineH));c.restore();
+ }
+ const outroStart=Math.max(0,total-5200);
+ if(state.elapsed>=outroStart){
+  // Muallif yozuvi simob oqimi bilan to‘liq yopiladi; oxirida WebGL logotipi yolg‘iz qoladi.
+  drawMercuryOutro(c,w,h,(state.elapsed-outroStart)/5200,now);
  }
  c.restore();
 }
