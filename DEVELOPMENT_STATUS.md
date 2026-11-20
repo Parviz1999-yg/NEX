@@ -397,6 +397,8 @@ Manba kodidagi boshqaruvlar, avtomatik matnni olib tashlash va versiya mosligi s
 - Tavsiya akkaunt rejimida umumiy ssenariy maydonlari yashiriladi; sayt kiritilgan profil ma’lumotlaridan beshta alohida kartochka mazmunini avtomatik tuzadi.
 - Har bir sahna profil rasmi, akkaunt nomi, yo‘nalish, tavsif, foyda, auditoriya, dalil/obunachi va yakuniy chaqiriqni bitta yaxlit kartochka ichida ko‘rsatadi.
 - NEX WebGL logotipining barcha chiziqlari bir xil neytral kumush xrom materialiga o‘tkazildi; outroda simob oqib ketgach metallik logo qoladi.
+- Tavsiya rejimida qo‘lda kiritiladigan alohida ekran matni maydoni yashiriladi; kartochka matnini saytning avtomatik yig‘ishi asosiy oqim bo‘lib qoladi.
+- Render qatlamlari tuzatildi: 3D suyuqlik fonida saqlanadi, introda avval logo ochiladi, kartochkalar keyin chiqadi, outroda esa kartochka yashirilib simob chekingach faqat metallik logo qoladi.
 - Versiya/cache-buster: v0.9.2.
 - [ ] Android qurilmada kartochka matni sig‘ishi, profil rasmi, 5 sahna almashinuvi va simobdan keyingi metallik logoni vizual tekshirish.
 
