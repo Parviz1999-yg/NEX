@@ -177,7 +177,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  const style=state.style;
  const allowed=["Cinematic 3D","Kinetic Typography","Editorial / Magazine","Futuristic Motion"];
  if(!allowed.includes(style))return false;
- const motionFactor=state.animation==="Silliq"?.72:state.animation==="Dinamik"?1.48:state.animation==="Kinematik"?1.08:state.animation==="Ijodiy"?1.32:1.18;
+ const motionFactor=state.animation==="Silliq"?.72:state.animation==="Dinamik"?1.48:state.animation==="Kinematik"?1.08:state.animation==="Ijodiy"?1.32:state.animation==="Aralash"?.92+((state.backgroundSeed>>>3)%61)/100:1.18;
  const idx=state.scene,t=now/1000*motionFactor,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac;
  const seed=(state.backgroundSeed^Math.imul(idx+101,0x9E3779B1))|0,rand=seededRandom(seed);
