@@ -27,3 +27,8 @@
 #shuffleBackground{border-color:#52617d;background:linear-gradient(110deg,#171f31,#101726);color:#dce6f7}
 #shuffleBackground.shuffle-flash{color:#07131b}
 @media(max-width:520px){.creative-directions{grid-template-columns:1fr}.creative-directions .option{min-height:104px}}
+
+/* v0.3.0 — account-aware script generator */
+.script-generate{margin-top:12px;border-color:#7c70db;background:linear-gradient(110deg,#211e3d,#151b2b);color:#f4f1ff;min-height:48px}
+.script-generate:hover{border-color:#b2a8ff;box-shadow:0 8px 26px #8b7cff22}
+.generator-note{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
