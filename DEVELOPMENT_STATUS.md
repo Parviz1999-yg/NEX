@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.6.2**  
+Amaldagi versiya: **v0.6.3**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -225,3 +225,14 @@ Bu yangilanish manba kodiga kiritildi. Hozircha haqiqiy Android brauzerida ko‘
 
 ### Tekshiruv chegarasi
 Manba kodidagi o‘lchamlar, material parametrlari va versiya/cache-buster tekshirildi. Real Android ekranida ko‘rish sinovi bajarilgani yo‘q.
+
+
+## v0.6.3 — Neytral kumushrang suyuq metall
+- [x] Asosiy suyuqlik materiali ko‘kimtir oqdan neytral kumushrang xromga o‘tkazildi.
+- [x] Metallik xususiyat kuchaytirildi: metalness 0.94; roughness 0.17 bilan kumush sirtning yorqin va qoramtir akslari muvozanatlashtirildi.
+- [x] Ko‘k emissive rang kamaytirildi; ko‘k neon akslar asosiy suyuqlik rangini bosib ketmaydi.
+- [x] Three.js material va JavaScript cache-buster v0.6.3 ga yangilandi.
+- [ ] Android preview va katta ekran yozish oynasida haqiqiy kumushrang ko‘rinish tekshirilishi kerak.
+
+### Tekshiruv chegarasi
+Material parametrlari, HTML cache-buster va versiya yozuvi manba kodida tekshirildi. Qurilmadagi real vizual sinov bajarilmadi.
