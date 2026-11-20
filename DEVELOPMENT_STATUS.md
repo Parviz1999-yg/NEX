@@ -369,3 +369,15 @@ Koddagi joylashuv, qatlam va responsive CSS o‘zgarishlari tekshiriladi. Androi
 - Editorial sahnadagi dekorativ inglizcha sarlavhalar va ortiqcha brend shiori olib tashlandi.
 - Auditoriya qiymati yorliqsiz ko‘rsatiladi; senariy matni esa o‘z joyida saqlanadi. Vizualda faqat senariy va akkauntning mazmunli ma’lumotlari qoladi.
 - Versiya: `v0.8.9`. Kod tekshiruvi bajariladi; telefon ekranidagi yakuniy ko‘rik foydalanuvchi tomonidan tasdiqlanishi kerak.
+
+
+## v0.9.0 — Muallif matni va sahna davomiyligini boshqarish
+- Tavsiya akkaunt roliklarida NEX tomonidan avtomatik chizilgan sarlavha, brend yozuvi, akkaunt tavsifi, foyda/izoh matnlari va dekorativ matnlar olib tashlandi.
+- Reels kadrida faqat muallif “Ekrandagi qisqa matn” maydoniga kiritgan yozuv ko‘rsatiladi; bo‘sh maydon bo‘lsa, avtomatik matn o‘rniga bo‘sh sahna qoladi.
+- Studiya ichidagi diktor/tavsif matni maydoni olib tashlanib, uning o‘rniga har bir sahna uchun 2,5–12 soniyali davomiylik slayderi qo‘shildi.
+- Har bir sahnaning davomiyligi mustaqil o‘zgartiriladi; umumiy rolik vaqti darhol qayta hisoblanadi. Dastlabki vaqt ssenariydagi ovoz matni uzunligidan taxminan hisoblanadi.
+- Versiya/cache-buster: v0.9.0.
+- [ ] Android qurilmada yozuvning ko‘rinishi, 5 sahna bo‘yicha vaqt sozlamasi va rolikning yakuniy davomiyligini ko‘z bilan tekshirish.
+
+### v0.9.0 tekshiruv chegarasi
+Manba kodidagi boshqaruvlar, avtomatik matnni olib tashlash va versiya mosligi statik tekshiruvdan o‘tkaziladi. Android/WebGL runtime sinovi bajarilgan deb hisoblanmaydi.
