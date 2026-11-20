@@ -96,47 +96,17 @@ function buildThreeObjects(){
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
  const chrome=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.018,envMapIntensity:5.8,side:THREE.DoubleSide});
- const blueMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[2]),metalness:1,roughness:.055,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,emissive:new THREE.Color(pal[2]),emissiveIntensity:.12,side:THREE.DoubleSide});
- const iceMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[3]||"#8bdcff"),metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,emissive:new THREE.Color(pal[3]||"#8bdcff"),emissiveIntensity:.09,side:THREE.DoubleSide});
+ const blueMetal=new THREE.MeshPhysicalMaterial({color:0xbfc8d2,metalness:1,roughness:.06,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,side:THREE.DoubleSide});
+ const iceMetal=new THREE.MeshPhysicalMaterial({color:0xf1f4f7,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
- const count=style==="Editorial / Magazine"?2:3;
- for(let i=0;i<count;i++){
-  const flow=createFlowSurface(76,18,i===0?chrome:i===1?blueMetal:iceMetal,(rand()-.5)*6.2+i*2.1);
-  flow.userData.flowLayer=i;flow.position.set((i-1)*.12,(i-1)*.24,-i*.58);
-  flow.rotation.set((rand()-.5)*.22,(rand()-.5)*.38,style==="Kinetic Typography"?.32:style==="Editorial / Magazine"?.035:style==="Futuristic Motion"?-.24:.14);
-  const scale=style==="Editorial / Magazine"?[1.12,.9,.78][i]:style==="Kinetic Typography"?[1.02,.88,.74][i]:[1,.92,.78][i];
-  const widthScale=style==="Editorial / Magazine"?2.05:style==="Kinetic Typography"?1.65:style==="Futuristic Motion"?1.9:1.8;
-  flow.scale.set(scale,widthScale,scale);main.add(flow);flows.push(flow);
- }
- // Tavsiya akkaunt HOOK sahnasi uchun haqiqiy 3D jo‘mrak–oqim–to‘qnashuv–sachrash kompozitsiyasi.
- const faucet=new THREE.Group();
- const pipeCurve=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(1.58,2.55,-.15),new THREE.Vector3(1.22,2.52,-.12),
-  new THREE.Vector3(.94,2.32,-.08),new THREE.Vector3(.88,2.02,-.05),
-  new THREE.Vector3(.88,1.76,-.05)
- ]);
- const pipe=new THREE.Mesh(new THREE.TubeGeometry(pipeCurve,48,.105,16,false),chrome);
- faucet.add(pipe);
- const lip=new THREE.Mesh(new THREE.TorusGeometry(.108,.025,12,40),iceMetal);
- lip.position.set(.88,1.76,-.05);lip.rotation.x=Math.PI/2;faucet.add(lip);
- const streamCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(.88,1.74,-.04),new THREE.Vector3(.86,1.15,-.02),new THREE.Vector3(.82,.48,0),new THREE.Vector3(.78,-.12,.02)]);
- const stream=new THREE.Mesh(new THREE.TubeGeometry(streamCurve,48,.038,10,false),blueMetal);
- faucet.add(stream);
- const impact=new THREE.Group();impact.position.set(.78,-.12,.03);faucet.add(impact);
- const impactCore=new THREE.Mesh(new THREE.SphereGeometry(.13,24,16),chrome);impact.add(impactCore);
- const splashRing=new THREE.Mesh(new THREE.TorusGeometry(.25,.022,10,64),iceMetal);impact.add(splashRing);
- const beadGeometry=new THREE.SphereGeometry(1,10,8);
- const beads=new THREE.InstancedMesh(beadGeometry,chrome,48);beads.instanceMatrix.setUsage(THREE.DynamicDrawUsage);faucet.add(beads);
- const dummy=new THREE.Object3D(),beadSizes=[];
- for(let i=0;i<48;i++)beadSizes.push(.018+rand()*.045);
- const confetti=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),blueMetal,24);confetti.instanceMatrix.setUsage(THREE.DynamicDrawUsage);faucet.add(confetti);
- const confettiSizes=Array.from({length:24},()=>[.025+rand()*.035,.07+rand()*.08,.012]);
- const spray=new THREE.Group();spray.add(faucet);threeGroup.add(spray);
- threeGroup.userData.splash={spray,beads,confetti,dummy,beadSizes,confettiSizes,impactCore,splashRing,seed:rand()*6.28};
- const particles=[];for(let i=0;i<34;i++)particles.push((rand()-.5)*8,(rand()-.5)*10,-2-rand()*5);
- const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.Float32BufferAttribute(particles,3));
- const particleField=new THREE.Points(pg,new THREE.PointsMaterial({color:0xb4a18a,size:.012,sizeAttenuation:true,transparent:true,opacity:.38}));
- threeGroup.add(particleField);threeGroup.userData={main,flows,phase:rand()*Math.PI*2,particleField};
+ // Monoxrom kompozitsiya: bitta keng, uzluksiz xrom-suyuqlik tasmasi.
+ const flow=createFlowSurface(112,28,chrome,(rand()-.5)*6.2);
+ flow.userData.flowLayer=0;
+ flow.rotation.set(.08,-.12,style==="Kinetic Typography"?.42:style==="Editorial / Magazine"?.12:style==="Futuristic Motion"?-.28:.24);
+ flow.scale.set(1.02,2.18,1.12);
+ flow.position.set(.05,.02,-.25);
+ main.add(flow);flows.push(flow);
+ threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
 }
 function createFlowSurface(segments,widthSegments,material,seed){
@@ -157,9 +127,9 @@ function updateFlowSurfaces(flows,time,intensity=1){
   for(let i=0;i<attr.count;i++){
    const k=i*3,x=base[k],v=base[k+1],u=base[k+2],envelope=.24+.76*Math.pow(Math.sin(Math.PI*u),.55);
    const crest=Math.sin(x*1.55-phase+v*1.4)+.42*Math.sin(x*2.8-phase*.72-v*2.1),cross=Math.cos(x*1.05-phase*.63+v*3.2);
-   const width=.36+envelope*(.42+.18*Math.sin(x*1.25-phase*.8));
-   const y=v*width+crest*.17*intensity*amplitude*envelope,z=crest*.38*intensity*amplitude+cross*.18+Math.sin(v*4.5+phase*.82)*.11;
-   const drift=Math.sin(time*.48+seed*.3)*.42+Math.sin(x*1.1-phase*.6)*.12;
+   const width=.24+envelope*(.48+.26*Math.sin(x*1.05-phase*.72)+.12*Math.sin(x*2.1+phase*.4));
+   const y=v*width+Math.sin(x*.72-phase*.58)*.42+crest*.2*intensity*amplitude*envelope,z=crest*.42*intensity*amplitude+cross*.24+Math.sin(v*4.5+phase*.82)*.15;
+   const drift=Math.sin(time*.34+seed*.3)*.28+Math.sin(x*.86-phase*.6)*.18;
    attr.setXYZ(i,x+drift+Math.sin(v*2.2+phase)*.13,y,z);
   }
   attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
@@ -169,79 +139,14 @@ function updateFlowSurfaces(flows,time,intensity=1){
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap["Electric Blue"];
  if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
- threeScene.background=new THREE.Color(pal[0]);
+ threeScene.background=new THREE.Color("#08090c");
  const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3);
  const phase=t*(state.animation==="Dinamik"?1.35:state.animation==="Silliq"?.78:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
  main.rotation.y=Math.sin(phase*.22)*.14;main.rotation.x=Math.sin(phase*.31)*.1;main.position.y=Math.sin(phase*.48)*.18;main.position.x=Math.sin(phase*.38)*.22;
  main.scale.setScalar([1.02,.96,1.04,.98,1.02][state.scene]);
  updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
  threeGroup.userData.particleField.rotation.y=phase*.025;
- const splash=threeGroup.userData.splash;
- if(splash){
-  const active=state.mode==="tavsiya"&&state.scene===0;
-  splash.spray.visible=active;main.visible=!active;
-  if(active){
-   const localTime=now/1000+splash.seed,impact=splash.impactCore,ring=splash.splashRing;
-   impact.scale.setScalar(.55+.45*(.5+.5*Math.sin(localTime*2.8)));
-   const pulse=.5+.5*Math.sin(localTime*2.8);
-   ring.scale.setScalar(.55+pulse*1.65);ring.rotation.z=localTime*.42;
-   const beadMesh=splash.beads,confettiMesh=splash.confetti;
-   for(let i=0;i<splash.beadSizes.length;i++){
-    const phase=(localTime*.72+i*.037)%1,launch=Math.max(0,phase-.48),x0=.88,y0=1.68;
-    let x,y,z;
-    if(phase<.48){const p=phase/.48;x=x0+Math.sin(i*2.17)*.035;y=y0-p*1.78;z=-.02+Math.cos(i*1.31)*.035;}
-    else{const angle=i*2.399963;const speed=.65+(i%7)*.105,dt=launch*1.5;x=.78+Math.cos(angle)*speed*dt;y=-.12+Math.sin(angle)*speed*dt-1.5*dt*dt;z=.03+Math.sin(angle*1.7)*dt*.48;}
-    dummy.position.set(x,y,z);dummy.scale.setScalar(splash.beadSizes[i]*(phase<.48?.9:Math.max(.18,1-launch*.75)));dummy.rotation.set(i*.3+localTime,i*.17,localTime*.7);dummy.updateMatrix();beadMesh.setMatrixAt(i,dummy.matrix);
-   }
-   beadMesh.instanceMatrix.needsUpdate=true;
-   for(let i=0;i<splash.confettiSizes.length;i++){
-    const phase=(localTime*.57+i*.061)%1,dt=Math.max(0,phase-.45)*1.7,angle=i*2.4;
-    dummy.position.set(.78+Math.cos(angle)*(.25+dt*.9),-.12+Math.sin(angle)*(.2+dt*.95)-1.1*dt*dt,.04+Math.sin(angle*1.4)*dt*.3);
-    const sz=splash.confettiSizes[i];dummy.scale.set(sz[0],sz[1],sz[2]);dummy.rotation.set(dt*5+i,dt*7+i*.4,dt*4);dummy.updateMatrix();confettiMesh.setMatrixAt(i,dummy.matrix);
-   }
-   confettiMesh.instanceMatrix.needsUpdate=true;
-  }
- }
- const cx=[0,.12,-.1,.1,0][state.scene],cy=[0,-.08,.12,-.06,.04][state.scene],z=8.35+(1-ease)*.45;
- threeCamera.position.x+=(cx+Math.sin(phase*.27)*.12-threeCamera.position.x)*.035;
- threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
- threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(0,0,0);target.render(threeScene,threeCamera);
-}
-function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
-function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
-function drawProceduralBackground(c,w,h,idx,pal,now){
- const t=now/1000,bg=pal[0],a=pal[2],b=pal[3]||pal[2],fg=pal[1];
- const seed=(state.backgroundSeed^Math.imul(idx+1,0x9E3779B1))|0;
- const rand=seededRandom(seed);
- // Har bir sahnaga mustaqil vizual yo‘nalish. Ketma-ket sahnalarda ayni effekt takrorlanmaydi.
- let family=Math.floor(rand()*10);
- if(idx>0){
-  const prev=seededRandom((state.backgroundSeed^Math.imul(idx,0x9E3779B1))|0);
-  const previous=Math.floor(prev()*10);
-  if(family===previous)family=(family+1+Math.floor(rand()*9))%10;
- }
- const angle=rand()*Math.PI*2+t*.025;
- const gx=w*(.5+Math.cos(angle)*.7),gy=h*(.5+Math.sin(angle)*.7);
- const gradient=c.createLinearGradient(gx,gy,w-gx,h-gy);
- gradient.addColorStop(0,bg);gradient.addColorStop(.42,a+"55");gradient.addColorStop(.78,b+"44");gradient.addColorStop(1,bg);
- c.fillStyle=gradient;c.fillRect(0,0,w,h);
- // Keng yorug‘lik maydonlari.
- for(let n=0;n<3;n++){
-  const phase=t*(.16+n*.045)+n*2.4+idx;
-  const x=w*(.5+Math.sin(phase)*.4),y=h*(.5+Math.cos(phase*.8)*.38),r=Math.max(w,h)*(.28+.08*Math.sin(phase));
-  const glow=c.createRadialGradient(x,y,0,x,y,r),col=n%2?a:b;
-  glow.addColorStop(0,col+"66");glow.addColorStop(.5,col+"1d");glow.addColorStop(1,col+"00");
-  c.fillStyle=glow;c.fillRect(0,0,w,h);
- }
- c.save();c.lineCap="round";c.lineJoin="round";
- if(family===0){
-  // Oqimli suyuq to‘lqinlar.
-  for(let k=0;k<13;k++){const y=h*(.2+k*.055),phase=k*.48;
-   c.beginPath();for(let x=-20;x<=w+20;x+=8){const yy=y+Math.sin(x/w*5+t*.8+phase)*h*.035+Math.sin(x/w*2.4-t*.45+phase)*h*.022;if(x===-20)c.moveTo(x,yy);else c.lineTo(x,yy)}
-   c.strokeStyle=k%2?a:b;c.globalAlpha=.13+(k%4)*.035;c.lineWidth=Math.max(1,w*.003);c.stroke();
-  }
- }else if(family===1){
-  // Zarralar girdobi — markazga tortiluvchi yulduzsimon oqim.
+
   const cx=w*(.5+Math.sin(t*.22)*.12),cy=h*(.5+Math.cos(t*.19)*.1);
   for(let i=0;i<115;i++){const q=i/115,phase=q*31+t*(.35+q*.8),radius=(.04+q*.52)*Math.min(w,h),x=cx+Math.cos(phase)*radius,y=cy+Math.sin(phase*1.13)*radius;
    c.globalAlpha=.12+.55*q;c.fillStyle=i%3?a:b;c.beginPath();c.arc(x,y,1+w*q*.006,0,Math.PI*2);c.fill();
