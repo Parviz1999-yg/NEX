@@ -177,7 +177,8 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  const style=state.style;
  const allowed=["Cinematic 3D","Kinetic Typography","Editorial / Magazine","Futuristic Motion"];
  if(!allowed.includes(style))return false;
- const idx=state.scene,t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
+ const motionFactor=state.animation==="Silliq"?.72:state.animation==="Dinamik"?1.48:state.animation==="Kinematik"?1.08:state.animation==="Ijodiy"?1.32:1.18;
+ const idx=state.scene,t=now/1000*motionFactor,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac;
  const seed=(state.backgroundSeed^Math.imul(idx+101,0x9E3779B1))|0,rand=seededRandom(seed);
  const variant=Math.floor(rand()*4),align=variant===0?"left":variant===1?"center":variant===2?"right":"left";
@@ -188,7 +189,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  const ease=1-Math.pow(1-Math.max(0,Math.min(1,(local-.035)/.62)),3);
  const wrap=(value,maxWidth,size,family)=>{c.font="750 "+size+"px "+family;const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}if(line)lines.push(line);return lines};
  const text=(value,px,py,maxWidth,size,color,weight="750",alignText="left",maxLines=5,family="system-ui")=>{
-  const lines=wrap(value,maxWidth,size,family).slice(0,maxLines);c.save();c.textAlign=alignText;c.textBaseline="middle";c.font=weight+" "+size+"px "+family;c.fillStyle=color;
+  const allLines=wrap(value,maxWidth,size,family),lines=allLines.slice(0,maxLines);if(allLines.length>maxLines&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/[.,;:!?…]*$/,"")+"…";c.save();c.textAlign=alignText;c.textBaseline="middle";c.font=weight+" "+size+"px "+family;c.fillStyle=color;
   const lineH=size*1.22;lines.forEach((line,i)=>{const p=Math.max(0,Math.min(1,(local-i*.075)/.42)),k=1-Math.pow(1-p,3);c.save();c.globalAlpha=k;c.translate((1-k)*(alignText==="right"?-w*.12:w*.12),0);c.shadowColor=style==="Cinematic 3D"?"#000000aa":ac+"55";c.shadowBlur=style==="Cinematic 3D"?w*.025:w*.008;c.fillText(line,px,py+i*lineH);c.restore()});c.restore();return lines.length*lineH;
  };
  const pill=(value,px,py)=>{c.save();c.font="800 "+(w*.023)+"px system-ui";const ww=Math.min(w*.76,c.measureText(value).width+w*.06);c.fillStyle=ac+"25";c.strokeStyle=ac+"99";c.lineWidth=1;c.beginPath();c.roundRect(align==="right"?px-ww:px,py,ww,h*.043,h*.018);c.fill();c.stroke();c.fillStyle=fg;c.textBaseline="middle";c.textAlign=align==="right"?"right":"left";c.fillText(value,align==="right"?px-ww+w*.03:px+w*.03,py+h*.0215);c.restore()};
@@ -244,7 +245,12 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  c.save();c.globalAlpha=.32;c.strokeStyle=ac;c.lineWidth=w*.002;
  const drift=Math.sin(t*.7+variant)*w*.018;
  c.beginPath();c.moveTo(w*.08+drift,h*.08);c.lineTo(w*.08+drift,h*.17);c.moveTo(w*.08+drift,h*.08);c.lineTo(w*.18+drift,h*.08);c.stroke();c.restore();
- const sweep=1-ease;c.save();c.globalAlpha=sweep*.5;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-sweep*1.7),0);c.lineTo(w*(1.16-sweep*1.7),0);c.lineTo(w*(.16-sweep*1.7),h);c.lineTo(w*(-sweep*1.7),h);c.closePath();c.fill();c.restore();
+ const sweep=1-ease;c.save();c.globalAlpha=sweep*.62;c.fillStyle=ac;
+ if(style==="Kinetic Typography"){c.fillRect(0,0,w*sweep,h);c.globalAlpha=sweep*.42;c.fillStyle=fg;c.fillRect(w*sweep*.72,0,w*.018,h)}
+ else if(style==="Editorial / Magazine"){c.fillStyle=fg;c.fillRect(0,0,w*sweep,h);c.globalAlpha=sweep*.5;c.fillStyle=ac;c.fillRect(w*sweep*.92,0,w*.012,h)}
+ else if(style==="Futuristic Motion"){c.fillRect(0,0,w,h*sweep);c.globalAlpha=sweep*.5;c.fillStyle=fg;c.fillRect(0,h*sweep,w,w*.008)}
+ else{c.beginPath();c.moveTo(w*(1-sweep*1.7),0);c.lineTo(w*(1.16-sweep*1.7),0);c.lineTo(w*(.16-sweep*1.7),h);c.lineTo(w*(-sweep*1.7),h);c.closePath();c.fill()}
+ c.restore();
  drawBrand(c,w,h,ac,fg);
  c.restore();return true;
 }
