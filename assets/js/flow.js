@@ -86,7 +86,8 @@ async function initThreeEngine(){
   threeScene.add(new THREE.HemisphereLight(0xeaf6ff,0x07142d,2.4));
   const key=new THREE.DirectionalLight(0xffffff,5.2);key.position.set(-4,6,7);threeScene.add(key);
   const rim=new THREE.PointLight(0x168cff,72,22);rim.position.set(4,1,3);threeScene.add(rim);
-  const fill=new THREE.PointLight(0x8bdcff,58,22);fill.position.set(-4,-3,2);threeScene.add(fill);\n  const topLight=new THREE.PointLight(0xffffff,48,20);topLight.position.set(0,5,1);threeScene.add(topLight);
+  const fill=new THREE.PointLight(0x8bdcff,58,22);fill.position.set(-4,-3,2);threeScene.add(fill);
+  const topLight=new THREE.PointLight(0xffffff,48,20);topLight.position.set(0,5,1);threeScene.add(topLight);
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
  }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
