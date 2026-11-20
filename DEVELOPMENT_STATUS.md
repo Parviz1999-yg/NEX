@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.7**  
+Amaldagi versiya: **v0.8.8**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -354,3 +354,10 @@ Koddagi joylashuv, qatlam va responsive CSS o‘zgarishlari tekshiriladi. Androi
 - [x] Intro/outro sarlavhasi faqat Cinematic 3D kompozitsiyasida ko‘rsatiladi; Kinetic Typography va Futuristic Motion sarlavha/pill elementlari bilan ustma-ust kelmaydi.
 - [x] To‘rtta vizual tilning mustaqil tipografik ierarxiyasi saqlanadi.
 - [ ] Yakuniy Android tasdiqlashi.
+
+
+## v0.8.8 — Tavsiya kartalari yozuvi
+- Tavsiya kartalaridagi barcha dinamik matnlar maxsus yozuvga o‘tkazildi: `sh → ş`, `ch → ç`, `o‘ → ö`, `g‘ → ğ`.
+- Karta ichidagi yorliq/pill matnlari va alohida chiziladigan statik sarlavhalar ham shu qoidaga moslashtirildi.
+- Almashtirish katta-kichik harfni saqlaydi; akkaunt nomi, tavsif, foyda, auditoriya va boshqa foydalanuvchi kiritgan matnlar ham kartada bir xil yozuvda ko‘rinadi.
+- Versiya: `v0.8.8`. Strukturaviy tekshiruvlar bajariladi; qurilma ekranidagi yakuniy vizual tekshiruv foydalanuvchi tomonidan tasdiqlanishi kerak.
