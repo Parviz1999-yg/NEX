@@ -37,3 +37,15 @@
 .reel-frame{position:relative;isolation:isolate}#reel3D,#reelCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}#reel3D{z-index:0}#reelCanvas{z-index:1;background:transparent}.record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);overflow:hidden}#record3D,#recordCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}#record3D{z-index:0}#recordCanvas{z-index:1;object-fit:fill;background:transparent}
 
 .webgl-warning{margin-top:10px;padding:10px 12px;border:1px solid #9b7540;border-radius:9px;color:#f0c98a;font-size:12px;line-height:1.5}
+
+/* NEX Liquid Metal identity — sharp neon, refractive glass and polished metal */
+:root{--nex-cyan:#72f6ef;--nex-violet:#a995ff;--nex-silver:#eaf8ff}
+.topbar{border-bottom-color:#72f6ef38}
+.topbar .brand{font-weight:950;letter-spacing:.13em;background:linear-gradient(105deg,#fff 0%,#a9c7d4 22%,#fff 38%,#72f6ef 56%,#b5a3ff 76%,#fff 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nexMetalSweep 8s linear infinite}
+.topbar .brand span{color:#82e9e6;-webkit-text-fill-color:#82e9e6;font-size:9px;letter-spacing:.18em}
+.direction,.panel,.option,.palette{border-color:#a8e9f033}
+.direction.selected,.option.selected{border-color:#72f6ef;box-shadow:inset 0 0 0 1px #72f6ef55}
+.btn.primary{background:linear-gradient(115deg,#dffcff,#72f6ef 48%,#a995ff);color:#06121b;border:1px solid #d8ffff}
+.eyebrow{color:#83e9e7}
+@keyframes nexMetalSweep{0%{background-position:0% center}100%{background-position:220% center}}
+.reel-frame{border-color:#8ef4ed70;box-shadow:inset 0 0 0 1px #ffffff10}
