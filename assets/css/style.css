@@ -106,3 +106,7 @@ h1 em{color:#49adff}
 .studio-controls .summary{background:#061a38;border:1px solid #168cff;color:#f4fbff}
 .scene-chip{background:#06142b;border-color:#2869a5;color:#d8efff}
 .scene-chip.active{background:#1679d7;border-color:#a8e5ff;color:#fff}
+
+/* v0.5.5 — visible feedback for creative variant changes */
+#shuffleBackground{min-height:50px;font-weight:800;letter-spacing:.01em;touch-action:manipulation}
+#shuffleBackground.shuffle-flash{outline:2px solid #9be4ff;outline-offset:2px;transform:translateY(-1px) scale(1.01)}
