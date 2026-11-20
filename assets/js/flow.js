@@ -12,7 +12,7 @@ function bindOptions(id,prop){$(id).querySelectorAll("button").forEach(b=>b.addE
 function configureTopicType(){
  const select=$("topicType"),label=$("topicTypeLabel"),prompt=$("contentPrompt");
  const recommendation=state.mode==="tavsiya";
- const options=recommendation?["Kreativ va dizayn","Ilm-fan","Texnologiya va IT","Ta’lim","Biznes va moliya","Shaxsiy rivojlanish","Yumor va ko‘ngilochar","Media va madaniyat"]:["Instagram akkaunt","Ta’lim va ilm-fan","Texnologiya","Kitob va adabiyot","Tarix va madaniyat","Hayotiy kuzatuv","Motivatsiya va fikr","Boshqa"];
+ const options=recommendation?["Kreativ","Ilm-fan","Texnologiya","Yumor"]:["Instagram akkaunt","Ta’lim va ilm-fan","Texnologiya","Kitob va adabiyot","Tarix va madaniyat","Hayotiy kuzatuv","Motivatsiya va fikr","Boshqa"];
  label.textContent=recommendation?"Akkaunt yo‘nalishi":"Mavzu turi";
  prompt.textContent=recommendation?"Qanday yo‘nalishdagi akkauntni tavsiya qilamiz?":"Qaysi mavzu haqida Reels tayyorlaymiz?";
  select.innerHTML='<option value="">Tanlang</option>'+options.map(value=>'<option>'+value+'</option>').join("");
@@ -540,7 +540,13 @@ function drawTopicMotif(c,w,h,accent,topic,time,index,style){
  const x=w*(style==="Editorial / Magazine"?.84:.86);
  const y=h*(style==="Editorial / Magazine"?.235:style==="Futuristic Motion"?.285:.125);
  const r=w*(style==="Editorial / Magazine"?.026:.03);
- if(topic==="Texnologiya"){
+ if(topic==="Kreativ"){
+  c.save();c.translate(x,y);c.rotate(time*.22);c.strokeRect(-r*.72,-r*.72,r*1.44,r*1.44);c.rotate(-time*.44);c.beginPath();c.arc(0,0,r*.9,0,Math.PI*1.55);c.stroke();c.beginPath();c.moveTo(-r*1.35,r*.9);c.lineTo(r*1.25,-r*.95);c.stroke();c.restore();
+ }else if(topic==="Yumor"){
+  const bounce=Math.abs(Math.sin(time*2.2))*r*.38;c.beginPath();c.arc(x-r*.62,y-bounce,r*.34,0,Math.PI*2);c.arc(x+r*.58,y-r*.22,r*.25,0,Math.PI*2);c.stroke();c.beginPath();c.arc(x,y+r*.55,r*.62,.12,Math.PI-.12);c.stroke();
+ }else if(topic==="Ilm-fan"){
+  c.beginPath();c.ellipse(x,y,r*1.25,r*.48,time*.24,0,Math.PI*2);c.ellipse(x,y,r*.48,r*1.25,-time*.18,0,Math.PI*2);c.arc(x,y,r*.18,0,Math.PI*2);c.stroke();c.globalAlpha=.9;c.beginPath();c.arc(x+Math.cos(time)*r*1.25,y+Math.sin(time)*r*.48,r*.12,0,Math.PI*2);c.fill();
+ }else if(topic==="Texnologiya"){
   c.strokeRect(x-r,y-r,r*2,r*2);c.beginPath();c.moveTo(x-r*1.4,y);c.lineTo(x+r*1.4,y);c.moveTo(x,y-r*1.4);c.lineTo(x,y+r*1.4);c.stroke();
   c.globalAlpha=.8;c.fillRect(x-r,y-r+((time*18)% (r*2)),r*2,w*.003);
  }else if(topic==="Ta’lim va ilm-fan"){
