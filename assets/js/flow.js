@@ -602,7 +602,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  ][idx];
  const bg=pal[0],fg=pal[1],accent=pal[2],sub=pal[3]||accent;
  c.save();
- const backdrop=c.createLinearGradient(0,0,w,h);backdrop.addColorStop(0,bg);backdrop.addColorStop(.55,"#05080f");backdrop.addColorStop(1,bg);c.fillStyle=backdrop;c.fillRect(0,0,w,h);
+ const backdrop=c.createLinearGradient(0,0,w,h);backdrop.addColorStop(0,bg+"38");backdrop.addColorStop(.55,"#05080f66");backdrop.addColorStop(1,bg+"22");c.fillStyle=backdrop;c.fillRect(0,0,w,h);
  const glow=c.createRadialGradient(w*(.5+Math.sin(t*.22)*.12),h*.39,0,w*.5,h*.48,h*.76);glow.addColorStop(0,accent+"38");glow.addColorStop(.52,sub+"18");glow.addColorStop(1,bg+"00");c.fillStyle=glow;c.fillRect(0,0,w,h);
  if(style==="Kinetic Typography"){
   c.save();c.globalAlpha=.11;c.fillStyle=accent;c.font="950 "+(w*.78)+"px system-ui";c.textAlign="center";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.5,h*.47);c.restore();
