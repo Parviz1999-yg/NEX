@@ -1,11 +1,11 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.1**  
+Amaldagi versiya: **v0.4.2**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
 
-## Bajarildi — v0.4.1
+## Bajarildi — v0.4.2
 - [x] NEX brendining asosiy vizual tili Liquid Metal / Mercury sifatida belgilandi.
 - [x] Three.js RoomEnvironment va PMREM orqali 3D materiallar uchun atrof-muhit aks ettirishi qo‘shildi.
 - [x] Yuqori darajadagi transmission, past roughness, iridescence va clearcoat bilan suyuq shisha-simob materiali yaratildi.
@@ -34,3 +34,10 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - Ssenariy generatori hozircha shablonli, AI fakt-tekshiruvi yo‘q.
 - Video eksport mavjud emas; ekran yozish telefon orqali bajariladi.
 - Statik sintaksis tekshiruvi Android vizual sinovi o‘rnini bosmaydi.
+
+
+## v0.4.2 — WebGL modul bog‘lanishini tuzatish
+- HTML import map qo‘shildi: `three` bare-specifier manzili Three.js 0.180.0 build moduliga bog‘landi.
+- `RoomEnvironment` modulining ichki `import 'three'` so‘rovi brauzerda yechilishi uchun import map ishlatiladi.
+- WebGL xatosi endi foydalanuvchiga haqiqiy xato matnini ham ko‘rsatadi.
+- Tekshiruv: statik kod tahlili; haqiqiy Android/WebGL ishga tushishi hali qurilmada tasdiqlanmagan.
