@@ -89,10 +89,6 @@ function getMotionProfile(){
  const tone={"Jiddiy":.92,"Ilmiy":.82,"Sodda va tushunarli":.96,"Yumor":1.18,"Tahliliy":.88,"Motivatsion":1.12,"Sirli va qiziqarli":.9,"Falsafiy":.76}[state.tone]||1;
  return {...p,speed:p.speed*tone,flow:p.flow*tone};
 }
-function getTopicSignature(){
- const labels={"Instagram akkaunt":"PROFILE / FIELD NOTE","Ta’lim va ilm-fan":"STUDY / KNOWLEDGE","Texnologiya":"TECH / SYSTEM","Kitob va adabiyot":"CULTURE / CHAPTER","Tarix va madaniyat":"ARCHIVE / HERITAGE","Hayotiy kuzatuv":"OBSERVATION / DAILY","Motivatsiya va fikr":"IDEA / PERSPECTIVE","Boshqa":"CREATIVE / SUBJECT"};
- return labels[state.topicType]||"NEX / ORIGINAL STORY";
-}
 function sceneTitle(i){return state.mode==="tavsiya"?["HOOK","AKKAUNT TAVSIYASI","NIMA UCHUN?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV"][i]:scenes[i]}function sceneCopy(i){return state.script[i]||""}function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length}
 function calculateDurations(){const ids=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];state.voice=ids.map(id=>$(id).value.trim());state.sceneDurations=state.voice.map((v,i)=>{const words=wordCount(v||state.script[i]);return Math.max(2500,Math.ceil(words/2.5*1000)+850)});total=state.sceneDurations.reduce((a,b)=>a+b,0);refreshVoiceTiming()}
 function sceneStart(i){return state.sceneDurations.slice(0,i).reduce((a,b)=>a+b,0)}
@@ -539,14 +535,14 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
 
 function getToneVisual(){
  const tones={
-  "Jiddiy":{weight:35,size:1.0,tracking:"DISCIPLINED"},
-  "Ilmiy":{weight:-45,size:.94,tracking:"RESEARCH"},
-  "Sodda va tushunarli":{weight:-10,size:1.04,tracking:"CLEAR"},
-  "Yumor":{weight:75,size:1.08,tracking:"PLAYFUL"},
-  "Tahliliy":{weight:5,size:.96,tracking:"ANALYSIS"},
-  "Motivatsion":{weight:85,size:1.10,tracking:"ENERGY"},
-  "Sirli va qiziqarli":{weight:45,size:1.02,tracking:"MYSTERY"},
-  "Falsafiy":{weight:-65,size:.98,tracking:"REFLECTION"}
+  "Jiddiy":{weight:35,size:1.0},
+  "Ilmiy":{weight:-45,size:.94},
+  "Sodda va tushunarli":{weight:-10,size:1.04},
+  "Yumor":{weight:75,size:1.08},
+  "Tahliliy":{weight:5,size:.96},
+  "Motivatsion":{weight:85,size:1.10},
+  "Sirli va qiziqarli":{weight:45,size:1.02},
+  "Falsafiy":{weight:-65,size:.98}
  };
  return tones[state.tone]||tones["Jiddiy"];
 }
@@ -617,8 +613,6 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.beginPath();c.roundRect(x,y,ww,hh,w*.025);c.fill();c.stroke();
   c.fillStyle="#65caff";c.fillRect(x+w*.02,y+h*.012,w*.13,Math.max(2,w*.007));c.restore();
  };
- // Bitta kichik, mavzuga mos grafik belgi — ortiqcha metadata qatlamlarisiz.
- drawTopicMotif(c,w,h,ac,state.topicType,t,idx,state.style);
  // Four independent art directions each retain their own composition, typography and graphic grammar.
  if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
@@ -666,6 +660,8 @@ function drawRecommendationScene(c,w,h,now,pal){
   }
   c.save();c.fillStyle=ac;c.fillRect(w*.14,h*.84,w*.22,h*.006);c.fillRect(w*.14,h*.86,w*.12,h*.006);c.restore();
  }
+ // Draw the topic mark after each art-direction background so paper and HUD layers cannot cover it.
+ drawTopicMotif(c,w,h,ac,state.topicType,t,idx,state.style);
  if(state.style!=="Cinematic 3D"){
   const q=1-e;c.save();c.globalAlpha=q*.72;c.fillStyle=state.style==="Editorial / Magazine"?"#f1eee5":ac;
   if(state.style==="Kinetic Typography")c.fillRect(0,0,w*q,h);
