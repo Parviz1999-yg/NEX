@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=id=>document.getElementById(id), pages=["home","content","script","style","palette","animation","studio"];
 const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — SSENARIY","04 — VIZUAL USLUB","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — STUDIYA"];
-const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Cinematic 3D",palette:"Electric Blue",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295),variantIndex:0};
+const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Cinematic 3D",palette:"Arctic Silver",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295),variantIndex:0};
 const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
 const paletteMap={"Electric Blue":["#06142F","#F4FAFF","#168CFF","#76D9FF"],"Cobalt Chrome":["#071A3B","#F5FAFF","#287BFF","#A8D9FF"],"Arctic Silver":["#0B1A2B","#F8FCFF","#73C8FF","#C8E8FF"],"Azure Pulse":["#061B35","#F2FAFF","#00A7FF","#59E0FF"],"Royal Violet":["#130E36","#FAF7FF","#8B5CFF","#C1A7FF"],"Crimson Chrome":["#260D24","#FFF7FC","#FF3F78","#FFB4D1"],"Emerald Laser":["#061F24","#F2FFFC","#00D5B2","#8CFFE8"],"Solar Chrome":["#241A08","#FFFCF2","#FFB52E","#FFE49A"]};
@@ -24,35 +24,52 @@ function readAccountForm(){
  return state.account;
 }
 function generateRecommendationScript(){
- const a=readAccountForm(),name=a.name,niche=a.niche,bio=a.bio,benefit=a.benefit,audience=a.audience,proof=a.proof;
+ const a=readAccountForm(),name=a.name,niche=a.niche,bio=a.bio,benefit=a.benefit,audience=a.audience,proof=a.proof,followers=a.followers;
  if(!name||!niche||!bio||!benefit){alert("Avval akkaunt nomi, yo‘nalishi, tavsifi va foydasini to‘ldiring.");return}
  const clean=s=>String(s||"").trim().replace(/[.!?]+$/,"");
+ const sentence=s=>{const v=clean(s);return v?v+".":""};
  const who=audience?"Ayniqsa "+clean(audience)+" uchun.":"";
- const proofLine=proof?clean(proof)+".":"Bu sahifaning so‘nggi postlarini ko‘rib, sizga mosligini o‘zingiz baholang.";
  const hookOptions=[
-  "Sizga "+clean(niche)+" bo‘yicha foydali sahifa kerakmi?",
-  clean(niche)+" bilan shug‘ullanasizmi? Bu akkauntga e’tibor bering.",
-  "Yangi sahifa izlayapsizmi? "+clean(name)+" bilan tanishing."
+  "Siz "+clean(niche)+" bo‘yicha yangi va foydali sahifa izlayapsizmi?",
+  clean(niche)+" mavzusida kontent qidirayotgan bo‘lsangiz, bu profilga qarang.",
+  "Bir akkauntni shunchaki kuzatish emas, undan foyda olish muhim. "+clean(name)+" bilan tanishing.",
+  " "+clean(name)+" — "+clean(niche)+" mavzusiga qiziqqanlar e’tibor berishi mumkin bo‘lgan sahifa.",
+  "Sizga mos kontentni topish har doim ham oson emas. Mana bir variant: "+clean(name)+".",
+  clean(niche)+"ga qiziqasizmi? Unda keyingi profilni ko‘rib chiqing."
  ];
  const ctaOptions=[
-  "Agar "+clean(niche)+" sizga qiziq bo‘lsa, "+clean(name)+" profilini ko‘rib chiqing.",
-  clean(name)+" sahifasiga o‘ting va so‘nggi postlarini o‘zingiz baholang.",
-  "Sizga mos bo‘lsa, "+clean(name)+" akkauntini kuzatib boring."
+  clean(name)+" profiliga kirib, so‘nggi uchta postini ko‘rib chiqing.",
+  "Kontenti sizga mos tushsa, "+clean(name)+" sahifasini kuzatib boring.",
+  "Profilni saqlab qo‘ying — keyinroq mazmunini batafsil ko‘rib chiqasiz.",
+  "Sizningcha, "+clean(name)+" kimlarga foydali bo‘lishi mumkin? Fikringizni yozing.",
+  "Avval sahifani o‘zingiz baholang, keyin kuzatish haqida qaror qiling."
  ];
- const hook=hookOptions[Math.floor(Math.random()*hookOptions.length)],cta=ctaOptions[Math.floor(Math.random()*ctaOptions.length)];
+ const hook=hookOptions[Math.floor(Math.random()*hookOptions.length)].trim();
+ const cta=ctaOptions[Math.floor(Math.random()*ctaOptions.length)];
+ const proofLine=proof
+  ?"E’tibor berishga arziydigan jihat: "+clean(proof)+"."
+  :"Aniq xulosa qilishdan oldin sahifadagi postlar, mualliflik va ma’lumotlar sifatini tekshiring.";
+ const audienceLine=audience
+  ?"Bu yo‘nalish, ayniqsa, "+clean(audience)+" uchun qiziqarli bo‘lishi mumkin."
+  :"Agar mavzu sizga yaqin bo‘lsa, sahifadagi materiallarni ko‘rib chiqing.";
+ const profileDetail=followers
+  ?"Profil hozir "+clean(followers)+" obunachiga ega. Bu raqam sifat kafolati emas, faqat profil haqidagi ma’lumot."
+  :"";
  const scripts=[
   hook,
-  clean(name)+" — "+clean(niche)+" yo‘nalishidagi akkaunt. "+clean(bio),
-  "Asosiy foydasi: "+clean(benefit)+". "+who,
-  proofLine,
+  clean(name)+" — "+clean(niche)+" yo‘nalishidagi sahifa. "+sentence(bio),
+  "Siz olishingiz mumkin bo‘lgan foyda: "+clean(benefit)+". "+audienceLine,
+  proofLine+(profileDetail?" "+profileDetail:""),
   cta
  ];
  const voices=[
-  "Agar siz "+clean(niche)+" mavzusiga qiziqsangiz, mana shu sahifaga e’tibor bering.",
-  clean(name)+" sahifasida "+clean(bio.charAt(0).toLowerCase()+bio.slice(1)),
-  "Bu akkauntning sizga berishi mumkin bo‘lgan asosiy foydasi — "+clean(benefit).toLowerCase()+". "+(audience?"U ayniqsa "+clean(audience)+" uchun mos bo‘lishi mumkin.":""),
-  proof?("Tavsiya qilishimizga sabab: "+clean(proof)+"."):"Shoshilmay, so‘nggi postlarini ko‘rib chiqing va mazmuni sizga mos kelishini tekshiring.",
-  "Qiziq bo‘lsa, "+clean(name)+" profiliga o‘ting va kontentini baholab ko‘ring."
+  "Bugun "+clean(niche)+" mavzusiga qiziqqanlar uchun bir sahifani ko‘rib chiqamiz. "+hook,
+  clean(name)+" profilida "+clean(bio.charAt(0).toLowerCase()+bio.slice(1))+".",
+  "Bu sahifadan olishingiz mumkin bo‘lgan asosiy foyda — "+clean(benefit).toLowerCase()+". "+(audience? "U "+clean(audience)+" uchun ayniqsa dolzarb bo‘lishi mumkin.":"Mavzu sizga mosligini postlar orqali baholang."),
+  proof
+   ?"Tavsiya sababi sifatida mana shu jihatni ko‘rsatish mumkin: "+clean(proof)+". "+(followers?"Profil obunachilari soni: "+clean(followers)+".":"")
+   :"Sahifa haqida yakuniy fikr bildirishdan oldin postlar muntazamligi, manbalari va amaliy foydasini tekshiring.",
+  cta+" Saqlab qo‘yish yoki fikr bildirishni ham unutmang."
  ];
  state.script=scripts;state.voice=voices;
  const textIds=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"],voiceIds=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];
