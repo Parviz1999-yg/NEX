@@ -93,18 +93,19 @@ async function initThreeEngine(){
 function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
- const pal=paletteMap[state.palette]||paletteMap.Graphite,rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0);
+ const pal=paletteMap[state.palette]||paletteMap.Graphite,rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
  const chrome=new THREE.MeshPhysicalMaterial({color:0xdce0e3,metalness:1,roughness:.105,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:3.1});
  const warmMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[2]),metalness:1,roughness:.16,clearcoat:1,clearcoatRoughness:.07,envMapIntensity:2.7});
  const darkMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[3]||pal[2]),metalness:.96,roughness:.19,clearcoat:1,envMapIntensity:2.3});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
- const count=state.style==="Editorial / Magazine"?2:3;
+ const count=style==="Editorial / Magazine"?2:3;
  for(let i=0;i<count;i++){
   const flow=createFlowSurface(76,18,i===0?chrome:i===1?warmMetal:darkMetal,(rand()-.5)*6.2+i*2.1);
   flow.position.set((i-1)*.12,(i-1)*.2,-i*.72);
-  flow.rotation.set((rand()-.5)*.26,(rand()-.5)*.42,(rand()-.5)*.24);
-  const scale=state.style==="Editorial / Magazine"?[1.08,.82,.72][i]:[1,.92,.78][i];
-  flow.scale.set(scale,scale,scale);main.add(flow);flows.push(flow);
+  flow.rotation.set((rand()-.5)*.22,(rand()-.5)*.38,style==="Kinetic Typography"?.32:style==="Editorial / Magazine"?.035:style==="Futuristic Motion"?-.24:.14);
+  const scale=style==="Editorial / Magazine"?[1.12,.9,.78][i]:style==="Kinetic Typography"?[1.02,.88,.74][i]:[1,.92,.78][i];
+  const widthScale=style==="Editorial / Magazine"?1.28:style==="Kinetic Typography"?.62:style==="Futuristic Motion"?.92:.84;
+  flow.scale.set(scale,widthScale,scale);main.add(flow);flows.push(flow);
  }
  const particles=[];for(let i=0;i<34;i++)particles.push((rand()-.5)*8,(rand()-.5)*10,-2-rand()*5);
  const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.Float32BufferAttribute(particles,3));
@@ -122,12 +123,14 @@ function createFlowSurface(segments,widthSegments,material,seed){
 function updateFlowSurfaces(flows,time,intensity=1){
  for(const mesh of flows){
   const attr=mesh.geometry.attributes.position,base=mesh.userData.flowBase,seed=mesh.userData.flowSeed;
-  const direction=Math.sin(time*.48+seed*.3),phase=time*1.7*direction+seed;
+  const style=state.style,speed=style==="Kinetic Typography"?.82:style==="Editorial / Magazine"?.34:style==="Futuristic Motion"?.68:.48;
+  const amplitude=style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.58:style==="Futuristic Motion"?1.42:1;
+  const direction=Math.sin(time*speed+seed*.3),phase=time*(style==="Editorial / Magazine"?.92:1.7)*direction+seed;
   for(let i=0;i<attr.count;i++){
    const k=i*3,x=base[k],v=base[k+1],u=base[k+2],envelope=.24+.76*Math.pow(Math.sin(Math.PI*u),.55);
    const crest=Math.sin(x*1.55-phase+v*1.4)+.42*Math.sin(x*2.8-phase*.72-v*2.1),cross=Math.cos(x*1.05-phase*.63+v*3.2);
    const width=.36+envelope*(.42+.18*Math.sin(x*1.25-phase*.8));
-   const y=v*width+crest*.17*intensity*envelope,z=crest*.38*intensity+cross*.18+Math.sin(v*4.5+phase*.82)*.11;
+   const y=v*width+crest*.17*intensity*amplitude*envelope,z=crest*.38*intensity*amplitude+cross*.18+Math.sin(v*4.5+phase*.82)*.11;
    const drift=Math.sin(time*.48+seed*.3)*.42+Math.sin(x*1.1-phase*.6)*.12;
    attr.setXYZ(i,x+drift+Math.sin(v*2.2+phase)*.13,y,z);
   }
