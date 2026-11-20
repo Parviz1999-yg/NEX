@@ -381,3 +381,12 @@ Koddagi joylashuv, qatlam va responsive CSS o‘zgarishlari tekshiriladi. Androi
 
 ### v0.9.0 tekshiruv chegarasi
 Manba kodidagi boshqaruvlar, avtomatik matnni olib tashlash va versiya mosligi statik tekshiruvdan o‘tkaziladi. Android/WebGL runtime sinovi bajarilgan deb hisoblanmaydi.
+
+
+## v0.9.1 — NEX WebGL logo intro/outro va simobli yakun
+- Tavsiya akkaunt roliklarida NEX TubeGeometry logotipi WebGL orqali introda animatsion ochiladi; outroda yana chizilib, yakuniy kadrda to‘liq qoladi.
+- Tavsiya rejimida logotip 3D sahna markaziga joylashtirildi.
+- Outrodagi so‘nggi 5,2 soniyada metallik simob oqimi kadrni pastdan yuqoriga yuvadi; oqim chekingach, orqa fonda faqat WebGL NEX logotipi qoladi.
+- Simobli yakun paytida muallif matni qayta ko‘rinib qolmasligi uchun matn outro boshlanishidan oldin to‘xtatiladi.
+- Versiya/cache-buster: v0.9.1.
+- [ ] Android qurilmada logo intro, simob wipe va logo-only yakunini vizual tekshirish.
