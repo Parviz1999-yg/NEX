@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.1**  
+Amaldagi versiya: **v0.8.2**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -289,3 +289,18 @@ Manba kodiga o‘zgartirishlar kiritilib GitHub main tarmog‘iga joylandi. GPU 
 
 ### v0.8.1 tekshiruv chegarasi
 Manba kodidagi generator mantiqi, palitra tanlovi, HTML/JS versiya mosligi va o‘zgartirilgan fayllarning qayta o‘qilishi tekshiriladi. Haqiqiy Android brauzerida ko‘rish va WebGL unumdorligi sinovi bajarilgan deb hisoblanmaydi.
+
+
+## v0.8.2 — Vizual til va harakat tanlovlarini real boshqaruvga ulash
+- [x] To‘rtta art-direction tavsifi aniq kompozitsion va tipografik xususiyatlar bilan yangilandi.
+- [x] Besh animatsiya rejimi mustaqil parametrlar bilan ishlaydi: tezlik, suyuqlik deformatsiyasi, kamera amplitudasi, kirish easing'i va wipe ritmi.
+- [x] Silliq, Dinamik, Kinematik, Ijodiy va Aralash rejimlari endi bir xil fallback harakatdan foydalanmaydi.
+- [x] Mavzu turi har bir vizual tilda metadata/signature sifatida ko‘rsatiladi.
+- [x] Bayon uslubi harakat profilining ritmiga ta’sir qiladi.
+- [x] Ilova versiyasi va JavaScript cache-buster v0.8.2 ga yangilandi.
+- [ ] Barcha 4 × 5 kombinatsiya Android qurilmada vizual tekshiruvdan o‘tkaziladi.
+- [ ] Har bir mavzu turi va bayon uslubi bo‘yicha kompozitsiya farqlari alohida ko‘z bilan tekshiriladi.
+- [ ] Mobil FPS, GPU yuklamasi va ekran yozish sinovi qayta bajariladi.
+
+### v0.8.2 tekshiruv chegarasi
+Manba kodiga boshqaruv parametrlari kiritildi. Bu commit real brauzer yoki Android qurilmasida bajarilgan vizual sinov deb hisoblanmaydi.
