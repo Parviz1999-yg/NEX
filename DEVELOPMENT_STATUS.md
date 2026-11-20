@@ -133,3 +133,15 @@ Statik JavaScript sintaksisi, takroriy renderer yo‘qligi, palitra kalitlari va
 
 ### v0.5.2 tekshiruv chegarasi
 Kodning sintaksisi va asosiy strukturaviy tekshiruvlar bajariladi. Haqiqiy brauzer/WebGL animatsiyasi va Android qurilmadagi vizual sifat hali tasdiqlanmagan.
+
+
+## v0.5.3 — Monoxrom xrom-suyuqlik kompozitsiyasi
+- [x] HOOK sahnasidagi jo‘mrak, quvur, oqim trubasi, zarba yadrosi va konfetti olib tashlandi.
+- [x] Uch rangli oqim qatlamlari o‘rniga bitta keng, uzluksiz kumush-xrom tasmasi qoldirildi.
+- [x] Suyuqlik tasmasiga egilish, kengayish-torayish va mustaqil sirt to‘lqini berildi; kompozitsiya markaziy obyektni o‘rab o‘tadigan abstrakt shaklga yo‘naltirildi.
+- [x] 3D fon qora-grafit rangga o‘tkazildi; metall ranglari kumush va oq xrom bilan cheklab qo‘yildi.
+- [x] Versiya v0.5.3 va cache-buster yangilandi.
+- [ ] Android qurilmada suyuqlik tasmasining kompozitsiyasi, kontrasti va animatsiya ravonligi ko‘z bilan tekshirilishi kerak.
+
+### v0.5.3 tekshiruv chegarasi
+Koddagi eski jo‘mrak/sachrash obyektlari olib tashlanganligi va JavaScript sintaksisi statik tekshiruvdan o‘tkaziladi. Real WebGL kadr va Android qurilma sinovi hali tasdiqlanmagan.
