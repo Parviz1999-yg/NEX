@@ -157,3 +157,11 @@ Koddagi eski jo‘mrak/sachrash obyektlari olib tashlanganligi va JavaScript sin
 
 ### v0.5.3 tekshiruv chegarasi
 Kodning sintaksisi va eski jo‘mrak/sachrash obyektlari olib tashlanganligi statik tekshiruvdan o‘tkaziladi. Real WebGL va Android sinovi hali tasdiqlanmagan.
+
+
+## v0.5.4 — Kreativ variant tugmasi va kesh yangilanishi
+- [x] WebGL render siklida eski particleField murojaati olib tashlangan; kamera va render chaqiruvi mavjud.
+- [x] Yangi kreativ variant tugmasi bosilganda fon seed'i yangilanadi, sahna indeksi qayta belgilanadi va WebGL obyektlari majburiy qayta quriladi.
+- [x] Tugma xatolik yuz bersa konsolga yozadi va foydalanuvchiga xatolik matnini ko‘rsatadi.
+- [x] HTML versiyasi va JavaScript cache-buster v0.5.4 ga ko‘tarildi; eski v0.5.3 JavaScript keshi ishlatilmasligi uchun.
+- [ ] Android brauzerida real sinov foydalanuvchi tomonidan tasdiqlanishi kerak.
