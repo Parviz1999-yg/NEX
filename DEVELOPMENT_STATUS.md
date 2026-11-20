@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.2**  
+Amaldagi versiya: **v0.8.3**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -304,3 +304,15 @@ Manba kodidagi generator mantiqi, palitra tanlovi, HTML/JS versiya mosligi va o�
 
 ### v0.8.2 tekshiruv chegarasi
 Manba kodiga boshqaruv parametrlari kiritildi. Bu commit real brauzer yoki Android qurilmasida bajarilgan vizual sinov deb hisoblanmaydi.
+
+
+## v0.8.3 — Mavzu va bayon uslubining vizual identifikatsiyasi
+- [x] Mavzu turiga qarab mustaqil grafik motivlar qo‘shildi: texnologik crosshair/scan, ta’limiy diagramma, kitob sahifasi, tarixiy arxiv muhri, motivatsion yo‘nalish belgisi va boshqa mavzularga mos abstrakt mark.
+- [x] Bayon uslubi tipografik og‘irlik, shrift masshtabi va vizual ritm yorlig‘iga ta’sir qiladi.
+- [x] Oldindan hisoblangan kamera siljishi endi 2D kompozitsiyaga ham qo‘llanadi.
+- [x] HTML versiyasi va JavaScript cache-buster v0.8.3 ga yangilandi.
+- [ ] Har bir mavzu turi va bayon uslubini barcha art-directionlar bilan real qurilmada ko‘rib chiqish.
+- [ ] Grafik motivlar matn va profil kartasi bilan to‘qnashmasligini tekshirish.
+
+### v0.8.3 tekshiruv chegarasi
+Kod darajasida parametrlar va bog‘lanishlar tekshirildi. Haqiqiy Android vizual sinovi va FPS o‘lchovi bajarilmagan.
