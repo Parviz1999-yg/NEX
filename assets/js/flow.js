@@ -578,6 +578,12 @@ function drawRecommendationScene(c,w,h,now,pal){
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const copy=$("sceneText").value||sceneCopy(idx);
  const toneVisual=getToneVisual();
+ // Tavsiya kartalari uchun maxsus lotin yozuvi: sh→ş, ch→ç, o‘→ö, g‘→ğ.
+ const cardAlphabet=value=>String(value??"").replace(/(sh|ch|o[ʻʼ‘’']|g[ʻʼ‘’'])/gi,match=>{
+  const lower=match.toLowerCase();
+  const converted=lower.startsWith("sh")?"ş":lower.startsWith("ch")?"ç":lower[0]==="o"?"ö":"ğ";
+  return match[0]===match[0].toUpperCase()?converted.toUpperCase():converted;
+ });
  c.save();
  if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);}
  // Matn va grafik qatlamlar 9:16 xavfsiz hududida barqaror turadi; kamera harakati faqat 3D qatlamda.
@@ -604,7 +610,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  if(state.style==="Cinematic 3D"&&state.webglReady&&(state.elapsed<2600||state.elapsed>total-2300)){
   const p=state.elapsed<2600?Math.min(1,state.elapsed/2050):Math.min(1,(total-state.elapsed)/2050);
   c.save();c.globalAlpha=Math.max(0,Math.min(1,p*1.5));c.textAlign="center";c.textBaseline="middle";
-  c.font="800 "+(w*.026)+"px system-ui";c.fillStyle="#d9f6ff";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.20);c.restore();
+  c.font="800 "+(w*.026)+"px system-ui";c.fillStyle="#d9f6ff";c.fillText(cardAlphabet("FIKR VA IMKONIYATLAR MAKONI"),w*.5,h*.20);c.restore();
  }
  const enter=Math.max(0,Math.min(1,(local-.025)/(.48/motion.wipe)));
  const e=motion.entrance==="snap"?1-Math.pow(1-enter,5):motion.entrance==="dolly"?1-Math.pow(1-enter,2):motion.entrance==="mix"?(idx%2?1-Math.pow(1-enter,4):1-Math.pow(1-enter,2)):1-Math.pow(1-enter,3);
@@ -629,8 +635,8 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.save();c.strokeStyle=ac;c.lineWidth=w*.004;c.beginPath();c.moveTo(w*.08,h*.91);c.lineTo(w*.92,h*.91);c.stroke();c.restore();
  }else if(state.style==="Editorial / Magazine"){
   c.save();c.fillStyle="#f1eee5";c.fillRect(w*.055,h*.075,w*.89,h*.85);c.strokeStyle="#17202a66";c.lineWidth=1;c.strokeRect(w*.075,h*.095,w*.85,h*.81);
-  c.fillStyle="#17202a";c.font="900 "+(w*.024)+"px system-ui";c.textAlign="left";c.textBaseline="middle";c.fillText("NEX  /  CULTURE & IDEAS",w*.10,h*.13);
-  c.textAlign="right";c.font="700 "+(w*.021)+"px system-ui";c.fillText("FIELD NOTE  0"+(idx+1),w*.90,h*.13);
+  c.fillStyle="#17202a";c.font="900 "+(w*.024)+"px system-ui";c.textAlign="left";c.textBaseline="middle";c.fillText(cardAlphabet("NEX  /  CULTURE & IDEAS"),w*.10,h*.13);
+  c.textAlign="right";c.font="700 "+(w*.021)+"px system-ui";c.fillText(cardAlphabet("FIELD NOTE  0"+(idx+1)),w*.90,h*.13);
   c.strokeStyle="#17202a55";c.beginPath();c.moveTo(w*.10,h*.17);c.lineTo(w*.90,h*.17);c.stroke();c.fillStyle="#1768a5";c.fillRect(w*.10,h*.22,w*.12,h*.009);c.restore();
   if(idx===1){
    avatar(w*.5,h*.36,w*.095);
@@ -642,7 +648,7 @@ function drawRecommendationScene(c,w,h,now,pal){
    c.save();c.strokeStyle="#17202a66";c.beginPath();c.moveTo(w*.11,h*.72);c.lineTo(w*.89,h*.72);c.stroke();c.restore();
    text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Keyingi qadam"):state.account.niche,w*.11,h*.79,w*.73,w*.026,"#283747","500","left",3);
   }
-  c.save();c.fillStyle="#17202a";c.font="800 "+(w*.021)+"px system-ui";c.textAlign="center";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.885);c.restore();
+  c.save();c.fillStyle="#17202a";c.font="800 "+(w*.021)+"px system-ui";c.textAlign="center";c.fillText(cardAlphabet("FIKR VA IMKONIYATLAR MAKONI"),w*.5,h*.885);c.restore();
  }else if(state.style==="Futuristic Motion"){
   c.save();const top=h*.23,bottom=h*.80;c.strokeStyle=ac+"99";c.lineWidth=1;
   for(let i=0;i<9;i++){const x=w*(.08+i*.105);c.beginPath();c.moveTo(x,top);c.lineTo(x,bottom);c.stroke()}
