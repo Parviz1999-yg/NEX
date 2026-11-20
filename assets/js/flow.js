@@ -601,7 +601,7 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.restore();
  };
  const card=(x,y,ww,hh)=>{c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#03132bed";c.strokeStyle="#168cff";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
- if(state.webglReady&&(state.elapsed<2600||state.elapsed>total-2300)){
+ if(state.style==="Cinematic 3D"&&state.webglReady&&(state.elapsed<2600||state.elapsed>total-2300)){
   const p=state.elapsed<2600?Math.min(1,state.elapsed/2050):Math.min(1,(total-state.elapsed)/2050);
   c.save();c.globalAlpha=Math.max(0,Math.min(1,p*1.5));c.textAlign="center";c.textBaseline="middle";
   c.font="800 "+(w*.026)+"px system-ui";c.fillStyle="#d9f6ff";c.fillText("FIKR VA IMKONIYATLAR MAKONI",w*.5,h*.20);c.restore();
