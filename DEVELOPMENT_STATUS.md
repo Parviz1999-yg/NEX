@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.0**  
+Amaldagi versiya: **v0.8.1**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -276,3 +276,16 @@ Manba kodiga o‘zgartirishlar kiritilib GitHub main tarmog‘iga joylandi. GPU 
 - [x] Yangi Reel varianti tanlangandagina geometriya qayta quriladi; oldingi GPU resurslarini bo‘shatish saqlanadi.
 - [ ] Android qurilmada vizual sinov: metall tasma matnni to‘smasligi, oldingi planda aniq ko‘rinishi va sahnalar orasida silliq ochilishi.
 - [ ] Ekran yozish rejimida FPS va qizish sinovi.
+
+
+## v0.8.1 — Tavsiya akkaunt mazmuni va kumush rang identifikatsiyasi
+- [x] Tavsiya akkaunt ssenariy generatoriga oltita turli hook va beshta CTA varianti qo‘shildi; boshlanish va yakun bir xil jumlalarga bog‘lanib qolmaydi.
+- [x] Ssenariy foyda, auditoriya va dalil maydonlarini alohida ishlatadi; dalil kiritilmaganida tasdiqlanmagan ustunlik uydirilmaydi, tekshirish tavsiyasi beriladi.
+- [x] Obunachi soni kiritilsa, u faqat profil ma’lumoti sifatida beriladi va sifat kafolati emasligi ochiq ko‘rsatiladi.
+- [x] Diktor matni ekrandagi matndan tabiiyroq, kengaytirilgan izoh sifatida tuzildi.
+- [x] Standart palitra Electric Blue’dan Arctic Silver’ga o‘tkazildi; elektr ko‘k asosiy rang emas, cheklangan aksent sifatida qoldirildi.
+- [x] Ilova versiyasi va JavaScript cache-buster v0.8.1 ga yangilandi.
+- [ ] Android qurilmada ssenariylar, kumush rang balansi, WebGL FPS va ekran yozish sinovi foydalanuvchi tomonidan tekshirilishi kerak.
+
+### v0.8.1 tekshiruv chegarasi
+Manba kodidagi generator mantiqi, palitra tanlovi, HTML/JS versiya mosligi va o‘zgartirilgan fayllarning qayta o‘qilishi tekshiriladi. Haqiqiy Android brauzerida ko‘rish va WebGL unumdorligi sinovi bajarilgan deb hisoblanmaydi.
