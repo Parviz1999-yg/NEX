@@ -93,12 +93,18 @@ async function initThreeEngine(){
  }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
 function buildThreeObjects(){
- if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
+ if(!threeReady)return;
+ // Release old GPU resources whenever a scene is rebuilt; important on mobile WebGL.
+ if(threeGroup){
+  threeScene.remove(threeGroup);
+  threeGroup.traverse(object=>{
+   if(object.geometry)object.geometry.dispose();
+   if(object.material){if(Array.isArray(object.material))object.material.forEach(material=>material.dispose());else object.material.dispose()}
+  });
+ }
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
- const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
+ const rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
  const chrome=new THREE.MeshPhysicalMaterial({color:0xbfc3c9,metalness:.94,roughness:.17,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:3.6,emissive:0x30343a,emissiveIntensity:.10,side:THREE.DoubleSide});
- const blueMetal=new THREE.MeshPhysicalMaterial({color:0xbfc8d2,metalness:1,roughness:.06,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,side:THREE.DoubleSide});
- const iceMetal=new THREE.MeshPhysicalMaterial({color:0xf1f4f7,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
  // Monoxrom kompozitsiya: bitta keng, uzluksiz xrom-suyuqlik tasmasi.
  const flow=createFlowSurface(112,28,chrome,(rand()-.5)*6.2);
@@ -162,8 +168,26 @@ function updateFlowSurfaces(flows,time,intensity=1){
    const entranceKick=transition*Math.sin(u*Math.PI*5+phase*1.8)*.48;
    py+=entranceKick*(scene===4?-.8:1);
    pz+=transition*Math.cos(u*Math.PI*4-phase)*.32;
-   const styleBoost=style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.78:style==="Futuristic Motion"?1.42:1;
-   // Portrait camera framing: compress horizontal choreography so the full liquid form remains inside 9:16.\n   px*=.34;\n   attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
+   // The liquid surface itself adopts a distinct motion signature for each visual direction.
+   if(style==="Kinetic Typography"){
+    const snap=Math.sin(u*Math.PI*7.5-phase*1.35);
+    px+=Math.sin(u*Math.PI*4.2+phase)*.16*edge;
+    py+=snap*.19*edge;
+    pz+=Math.cos(u*Math.PI*9-phase*1.1)*.22*edge;
+   }else if(style==="Editorial / Magazine"){
+    py=py*.82+Math.sin(u*Math.PI*1.65+phase*.42)*.13*edge;
+    pz*=.68;
+    px+=Math.sin(u*Math.PI*2.1-phase*.25)*.075*edge;
+   }else if(style==="Futuristic Motion"){
+    const pulse=Math.sin(u*Math.PI*11-phase*1.6);
+    py+=pulse*.24*edge;
+    pz+=Math.cos(u*Math.PI*8+phase*1.25)*.28*edge;
+    px+=Math.sin(u*Math.PI*6+phase*.7)*.12*edge;
+   }
+   const styleBoost=style==="Kinetic Typography"?1.18:style==="Editorial / Magazine"?.82:style==="Futuristic Motion"?1.34:1;
+   // Portrait camera framing: preserve the full ribbon inside the 9:16 stage.
+   px*=.34;
+   attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
   }
   attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
  }
