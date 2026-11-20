@@ -413,3 +413,16 @@ Manba kodida ovoz maydonlariga bog‘liqlikni yo‘qotish, kartochka ma’lumotl
 - Tavsiya ssenariysi uchun Hook, Sabab, Ustunlik va Chorlov kiritilishi tekshiriladi; vaqt hisobi tegishli kartochka matnlaridan olinadi.
 - Versiya/cache-buster: v0.9.3.
 - [ ] Android qurilmada besh kartochkaning har biridagi matn kiritilgan qiymatga aynan mosligini ko‘z bilan tekshirish.
+
+ 
+## v0.9.4 — Rang, vizual uslub va animatsiya sozlamalarini real renderga ulash
+- Tavsiya akkaunt kartochkasi tanlangan rang palitrasidan fon, aksent, matn va ikkilamchi ranglarni oladi; 3D sahna foni hamda xrom aks ettiruvchi rim/fill chiroqlari shu palitraga ulanadi.
+- Tavsiya rejimida to‘rtta vizual yo‘nalish alohida kartochka kompozitsiyasi, tipografika, sirt va grafik qatlamlar bilan ishlaydi: Cinematic 3D, Kinetic Typography, Editorial / Magazine, Futuristic Motion.
+- Hook, Sabab, Ustunlik va Chorlov kartalarida faqat tegishli muallif matni chiqariladi; akkaunt foydasi boshqa kartalarga avtomatik qo‘shilib ketmaydi.
+- Boshqa kontent rejimlarida oldindan yozilgan art-direction renderer endi real render oqimidan chaqiriladi.
+- Animatsiya profillari 2D va Tavsiya kartochkalariga ham ulanadi; Aralash rejimi besh sahnada turli tezlik, oqim, kamera va kirish profilini navbatlaydi.
+- Versiya/cache-buster: v0.9.4.
+- [ ] Android brauzerida 8 palitra × 4 vizual uslub × 5 animatsiya kombinatsiyalarini vizual tasdiqlash; bu statik kod tekshiruvining o‘rnini bosmaydi.
+
+### v0.9.4 tekshiruv chegarasi
+Manba kodidagi render chaqiruvlari, palitra ranglarining Canvas/WebGL qatlamlariga uzatilishi, foydalanuvchi matnlarining alohida sahnalarga bog‘lanishi va versiya/cache-buster mosligi tekshirildi. Haqiqiy Android qurilmasida vizual/WebGL sinovi hali bajarilmagan.
