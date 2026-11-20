@@ -590,13 +590,13 @@ function drawRecommendationScene(c,w,h,now,pal){
  const motion=getMotionProfile();
 
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
-  const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[],scaledSize=fontSize*toneVisual.size,scaledWeight=Math.max(400,Math.min(950,Number(weight)+toneVisual.weight));c.font=scaledWeight+" "+scaledSize+"px system-ui";let line="";
+  const words=cardAlphabet(value).trim().split(/\s+/).filter(Boolean),lines=[],scaledSize=fontSize*toneVisual.size,scaledWeight=Math.max(400,Math.min(950,Number(weight)+toneVisual.weight));c.font=scaledWeight+" "+scaledSize+"px system-ui";let line="";
   for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
   if(line)lines.push(line);const shown=lines.slice(0,maxLines);if(lines.length>maxLines&&shown.length)shown[shown.length-1]+="…";
   c.save();c.textAlign=align;c.textBaseline="middle";c.fillStyle=color;shown.forEach((ln,i)=>c.fillText(ln,x,y+i*scaledSize*1.28));c.restore();return shown.length*scaledSize*1.28;
  };
  const pill=(label,x,y)=>{
-  c.save();c.font="800 "+(w*.025)+"px system-ui";const ww=Math.min(w*.78,c.measureText(label).width+w*.07);
+  label=cardAlphabet(label);c.save();c.font="800 "+(w*.025)+"px system-ui";const ww=Math.min(w*.78,c.measureText(label).width+w*.07);
   c.fillStyle=ac+"25";c.strokeStyle=ac+"99";c.lineWidth=1;c.beginPath();c.roundRect(x,y,ww,h*.045,h*.022);c.fill();c.stroke();
   c.fillStyle=fg;c.textBaseline="middle";c.fillText(label,x+w*.035,y+h*.022);c.restore();
  };
