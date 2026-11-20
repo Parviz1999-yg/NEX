@@ -72,7 +72,52 @@ $("sceneText").addEventListener("input",()=>{state.script[state.scene]=$("sceneT
 $("accountImage").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{state.account.image=reader.result;accountPhoto=new Image();accountPhoto.onload=()=>draw();accountPhoto.src=reader.result};reader.readAsDataURL(file)});
 $("generateAccountScript").addEventListener("click",generateRecommendationScript);
 function updateSceneUI(){state.scene=sceneIndexAt(state.elapsed);document.querySelectorAll(".scene-chip").forEach((b,i)=>b.classList.toggle("active",i===state.scene));$("sceneCounter").textContent="SAHNA "+String(state.scene+1).padStart(2,"0")+" / 05";$("sceneTime").textContent="00:"+String(Math.floor(state.elapsed/1000)).padStart(2,"0");$("progress").style.width=(state.elapsed/total*100)+"%";if(state.lastScene!==state.scene){$("sceneText").value=sceneCopy(state.scene);$("sceneVoice").value=state.voice[state.scene]||"";state.lastScene=state.scene}draw(performance.now())}
-const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rctx=rc.getContext("2d");let accountPhoto=null;
+const canvas=$("reelCanvas"),ctx=canvas.getContext("2d",{alpha:true}),rc=$("recordCanvas"),rctx=rc.getContext("2d",{alpha:true}),threeCanvas=$("reel3D"),recordThreeCanvas=$("record3D");
+let accountPhoto=null,THREE=null,threeReady=false,threeFailed=false,threeScene=null,threeCamera=null,threeRenderer=null,recordRenderer=null,threeGroup=null,threeSeed=-1,threeSceneIndex=-1;
+async function initThreeEngine(){
+ try{
+  THREE=await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
+  const makeRenderer=target=>{const r=new THREE.WebGLRenderer({canvas:target,antialias:true,alpha:false,powerPreference:"high-performance"});r.setPixelRatio(1);r.setSize(target.width,target.height,false);r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.15;return r};
+  threeRenderer=makeRenderer(threeCanvas);recordRenderer=makeRenderer(recordThreeCanvas);
+  threeScene=new THREE.Scene();threeCamera=new THREE.PerspectiveCamera(34,360/640,.1,100);threeCamera.position.set(0,0,9);
+  threeScene.add(new THREE.HemisphereLight(0xe7efff,0x101521,2));
+  const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(-4,6,7);threeScene.add(key);
+  const rim=new THREE.PointLight(0x8b7cff,24,18);rim.position.set(4,1,3);threeScene.add(rim);
+  const fill=new THREE.PointLight(0x35d6c5,15,16);fill.position.set(-4,-3,2);threeScene.add(fill);
+  threeReady=true;state.webglReady=true;buildThreeObjects();draw();
+ }catch(error){threeFailed=true;state.webglReady=false;console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent="Haqiqiy 3D dvigatel yuklanmadi. Internet aloqasini tekshirib, sahifani yangilang.";$("summary").appendChild(n)}
+}
+function buildThreeObjects(){
+ if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);threeGroup=new THREE.Group();threeScene.add(threeGroup);
+ const pal=paletteMap[state.palette]||paletteMap.Midnight,accent=new THREE.Color(pal[2]),secondary=new THREE.Color(pal[3]||pal[2]),rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
+ const metal=new THREE.MeshPhysicalMaterial({color:accent,metalness:.78,roughness:.23,clearcoat:.9,clearcoatRoughness:.16}),bright=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.52,roughness:.3,clearcoat:.8}),dark=new THREE.MeshStandardMaterial({color:pal[0],metalness:.68,roughness:.32,wireframe:true});
+ const main=new THREE.Group();threeGroup.add(main);
+ const add=(g,m,x,y,z,sx=1,sy=sx,sz=sx)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.rotation.set(rand()*Math.PI,rand()*Math.PI,rand()*Math.PI);main.add(o);return o};
+ const v=Math.floor(rand()*5);
+ if(style==="Cinematic 3D"){
+  if(v===0){add(new THREE.TorusKnotGeometry(1.05,.28,180,24,2,3),metal,0,.2,0,1.15);add(new THREE.IcosahedronGeometry(.48,1),bright,-1.55,-1.35,-.7,.7)}
+  else if(v===1){add(new THREE.IcosahedronGeometry(1.35,1),metal,0,.1,0);add(new THREE.TorusGeometry(1.9,.035,12,100),bright,0,.1,-.4,1,1,.6)}
+  else if(v===2){for(let i=0;i<5;i++)add(new THREE.BoxGeometry(.72,.72,.72),i%2?bright:metal,(i-2)*.72,Math.sin(i*.8)*.55,-i*.24,.92)}
+  else if(v===3){add(new THREE.SphereGeometry(1.22,48,32),metal,0,0,0);add(new THREE.TorusGeometry(1.65,.045,16,120),bright,0,0,-.3,1,.68,1)}
+  else{add(new THREE.OctahedronGeometry(1.45,1),metal,0,0,0);add(new THREE.TorusKnotGeometry(.7,.07,100,12),bright,0,0,1.15)}
+ }else if(style==="Kinetic Typography"){
+  for(let i=0;i<7;i++){const bar=add(new THREE.BoxGeometry(.22,2.8,.16),i%2?bright:metal,-2.4+i*.8,0,-i*.18,.8,.45+rand(),1);bar.rotation.z=(rand()-.5)*.7}
+  add(new THREE.TorusGeometry(1.3,.055,12,90),bright,.2,.3,-.8,1.15,.6,1);
+ }else if(style==="Editorial / Magazine"){
+  add(new THREE.BoxGeometry(2.5,3.4,.18),dark,0,0,-.5);add(new THREE.BoxGeometry(2.1,.045,.05),bright,0,1.05,.1);add(new THREE.BoxGeometry(1.45,.055,.05),metal,-.3,.82,.12);add(new THREE.TorusGeometry(.72,.045,12,80),bright,.55,-.35,.25,1,.72,1);add(new THREE.IcosahedronGeometry(.46,1),metal,-.75,-.75,.4);
+ }else{
+  add(new THREE.TorusKnotGeometry(1.1,.09,160,18,3,5),metal,0,0,0);for(let i=0;i<6;i++){const a=i*Math.PI/3;add(new THREE.BoxGeometry(.38,.38,.38),bright,Math.cos(a)*2,Math.sin(a)*1.7,-.6,.8)}add(new THREE.OctahedronGeometry(.62,1),metal,0,0,1.15);
+ }
+ const pts=[];for(let i=0;i<90;i++)pts.push((rand()-.5)*8,(rand()-.5)*11,-2-rand()*7);const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));threeGroup.add(new THREE.Points(geo,new THREE.PointsMaterial({color:secondary,size:.025,sizeAttenuation:true,transparent:true,opacity:.72})));
+ threeGroup.userData={main,phase:rand()*Math.PI*2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
+}
+function renderThree(now,target=threeRenderer){
+ if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap.Midnight;if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
+ threeScene.background=new THREE.Color(pal[0]);const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3),phase=t*(state.animation==="Dinamik"?1.45:state.animation==="Silliq"?.65:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
+ main.rotation.y=phase*.24+(state.scene%2)*.35;main.rotation.x=Math.sin(phase*.55)*.16;main.position.y=Math.sin(phase*.7)*.16;
+ const cx=[-.7,.65,-.55,.8,0][state.scene],cy=[.2,-.25,.35,-.1,.25][state.scene],z=8.8+(1-ease)*[1.45,1.1,.9,1.25,1][state.scene];
+ threeCamera.position.x+=(cx+Math.sin(phase*.4)*.22-threeCamera.position.x)*.035;threeCamera.position.y+=(cy+Math.cos(phase*.35)*.12-threeCamera.position.y)*.035;threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(0,0,0);target.render(threeScene,threeCamera);
+}
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
 function drawProceduralBackground(c,w,h,idx,pal,now){
@@ -300,19 +345,12 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
 }
 
 function drawRecommendationScene(c,w,h,now,pal){
- if(drawCreativeDirectionScene(c,w,h,now,pal))return;
+ if(!state.webglReady&&drawCreativeDirectionScene(c,w,h,now,pal))return;
  const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac,idx=state.scene,t=now/1000;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const copy=$("sceneText").value||sceneCopy(idx);
- c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);
- drawProceduralBackground(c,w,h,idx,pal,now);
- // Tavsiya akkaunt sahnalarida ham alohida 3D obyekt qatlami ishlaydi.
- draw3DStage(c,w,h,idx,pal,now);
- const wash=c.createRadialGradient(w*(idx%2?.78:.2),h*.36,0,w*.5,h*.5,w*.82);
- wash.addColorStop(0,ac+"38");wash.addColorStop(.55,sub+"16");wash.addColorStop(1,bg);
- c.fillStyle=wash;c.fillRect(0,0,w,h);
- c.save();c.globalAlpha=.22;c.strokeStyle=fg;c.lineWidth=1;
- for(let y=0;y<12;y++){const yy=h*(.12+y*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();
+ c.save();
+ if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);drawProceduralBackground(c,w,h,idx,pal,now);draw3DStage(c,w,h,idx,pal,now);const wash=c.createRadialGradient(w*(idx%2?.78:.2),h*.36,0,w*.5,h*.5,w*.82);wash.addColorStop(0,ac+"38");wash.addColorStop(.55,sub+"16");wash.addColorStop(1,bg);c.fillStyle=wash;c.fillRect(0,0,w,h);c.save();c.globalAlpha=.22;c.strokeStyle=fg;c.lineWidth=1;for(let y=0;y<12;y++){const yy=h*(.12+y*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();}
  // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
  const cameraRand=seededRandom((state.backgroundSeed^Math.imul(idx+71,0xC2B2AE35))|0);
  const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
@@ -321,7 +359,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
  const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
  const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
- c.save();c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);
+ if(!state.webglReady){c.save();c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);}
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
   const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];c.font=weight+" "+fontSize+"px system-ui";let line="";
   for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
@@ -334,12 +372,12 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.fillStyle=fg;c.textBaseline="middle";c.fillText(label,x+w*.035,y+h*.022);c.restore();
  };
  const avatar=(x,y,r)=>{
-  c.save();c.shadowColor=ac;c.shadowBlur=w*.035;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();c.stroke();c.shadowBlur=0;
+  c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();c.stroke();c.shadowBlur=0;
   if(accountPhoto&&accountPhoto.complete&&accountPhoto.naturalWidth){c.save();c.beginPath();c.arc(x,y,r*.88,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,x-r*.88,y-r*.88,r*1.76,r*1.76);c.restore()}
   else{c.fillStyle=ac;c.font="900 "+(r*.9)+"px system-ui";c.textAlign="center";c.textBaseline="middle";c.fillText((state.account.name||"N").replace(/^@/,"").slice(0,1).toUpperCase(),x,y)}
   c.restore();
  };
- const card=(x,y,ww,hh)=>{c.save();c.shadowColor="#00000088";c.shadowBlur=w*.055;c.fillStyle="#ffffff0d";c.strokeStyle=ac+"99";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
+ const card=(x,y,ww,hh)=>{c.save();c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle="#ffffff0d";c.strokeStyle=ac+"99";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
  const enter=Math.max(0,Math.min(1,(local-.04)/.48)),e=1-Math.pow(1-enter,3);
  if(idx===0){
   c.save();c.globalAlpha=.75;c.fillStyle=ac;c.fillRect(w*.09,h*.25,w*.018,h*.45);c.restore();pill("NEX TAVSIYA QILADI",w*.14,h*.22);
@@ -369,12 +407,13 @@ function drawRecommendationScene(c,w,h,now,pal){
   text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,ac,"850","left",2);
   if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
  }
- c.restore();
+ if(!state.webglReady)c.restore();
  c.save();c.globalAlpha=Math.max(0,1-local/.18)*.65;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-local*5),0);c.lineTo(w*(1.2-local*5),0);c.lineTo(w*(.2-local*5),h);c.lineTo(w*(-local*5),h);c.closePath();c.fill();c.restore();
  drawBrand(c,w,h,ac,fg);c.restore();
 }
 
 function drawScene(c,w,h,now){
+ c.clearRect(0,0,w,h);
  if(state.mode==="tavsiya"){const pal=paletteMap[state.palette]||paletteMap.Midnight;drawRecommendationScene(c,w,h,now,pal);return;}
  const pal=paletteMap[state.palette]||paletteMap.Midnight,bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
@@ -472,7 +511,7 @@ const p=first?Math.min(1,state.elapsed/420):Math.min(1,(state.elapsed-(total-175
 const fade=first?Math.min(1,state.elapsed/180,(1250-state.elapsed)/220):Math.min(1,(state.elapsed-(total-1750))/240,(total-state.elapsed)/260);c.save();c.globalAlpha=Math.max(0,fade);
 c.translate(w*.5,h*(first?.22:.25));const scale=.78+.22*p;c.scale(scale,scale);
 c.textAlign="center";c.textBaseline="middle";
-c.shadowColor=ac;c.shadowBlur=w*.035;c.fillStyle=fg;c.font="950 "+(w*.19)+"px system-ui";c.fillText("NEX",0,0);c.shadowBlur=0;
+c.shadowColor="transparent";c.shadowBlur=0;c.fillStyle=fg;c.font="950 "+(w*.19)+"px system-ui";c.fillText("NEX",0,0);c.shadowBlur=0;
 // Abstract orbit/play mark, a short animated sweep around the wordmark.
 c.strokeStyle=ac;c.lineWidth=w*.009;c.beginPath();c.ellipse(0,0,w*.29,h*.055,-.2,Math.PI*.08,Math.PI*(.25+1.55*p));c.stroke();
 c.fillStyle=ac;c.beginPath();c.moveTo(w*.245,-h*.012);c.lineTo(w*.28,0);c.lineTo(w*.245,h*.012);c.closePath();c.fill();
@@ -480,9 +519,9 @@ if(last){c.font="600 "+(w*.031)+"px system-ui";c.fillStyle=fg;c.fillText("Fikr v
 c.restore();
 }
 function draw(){
-const now=performance.now();
-if(canvas&&ctx)drawScene(ctx,Number(canvas.width),Number(canvas.height),now);
-if(rc&&rctx&&state.recording&&!$("recordOverlay").hidden)drawScene(rctx,Number(rc.width),Number(rc.height),now);
+ const now=performance.now();if(threeReady){renderThree(now);if(state.recording&&!$("recordOverlay").hidden)renderThree(now,recordRenderer)}
+ if(canvas&&ctx)drawScene(ctx,Number(canvas.width),Number(canvas.height),now);
+ if(rc&&rctx&&state.recording&&!$("recordOverlay").hidden)drawScene(rctx,Number(rc.width),Number(rc.height),now);
 }
 function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.started);if(state.elapsed>=total){state.playing=false;state.elapsed=total}updateSceneUI()}draw();state.raf=requestAnimationFrame(frame)}
 function start(){if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}cancelAnimationFrame(state.raf);state.elapsed=0;state.started=performance.now();state.playing=true;state.raf=requestAnimationFrame(frame);$("startPreview").textContent="Ⅱ Pauza"}
@@ -507,4 +546,5 @@ $("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)stat
 $("recordExit").onclick=()=>{state.recording=false;$("recordOverlay").hidden=true;state.playing=false;$("startPreview").textContent="▶ Davom etish";draw()};
 $("finish").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;page("home")};
 window.addEventListener("resize",draw);
+initThreeEngine();
 })();
