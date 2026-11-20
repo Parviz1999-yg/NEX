@@ -1,28 +1,34 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.3.0**  
+Amaldagi versiya: **v0.4.0**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
 
-## Bajarildi — v0.3.0
-- [x] v0.2.0 dagi to‘rtta mustaqil dizayn yo‘nalishi va besh sahnali renderer saqlandi.
-- [x] Akkaunt ma’lumotlaridan besh sahnali tavsiya ssenariysi avtomatik tuziladi.
-- [x] Ekrandagi matn va ovozli matn alohida yaratiladi va tahrirlanadi.
-- [x] Hook va CTA uchun bir nechta matn variantidan tasodifiy tanlov qo‘shildi.
-- [x] Ssenariy faqat foydalanuvchi kiritgan akkaunt ma’lumotlariga asoslanadi; dalil bo‘lmasa, tekshirishga undovchi neytral matn ishlatiladi.
-- [x] Majburiy ma’lumotlar bo‘lmasa, generator ogohlantiradi.
-- [x] Ssenariy yaratilgach, taxminiy davomiylik qayta hisoblanadi.
-- [x] JavaScript sintaksisi, HTML ID takrorlanmasligi va statik DOM bog‘lanishlari tekshirildi.
+## Bajarildi — v0.4.0
+- [x] Three.js 0.180.0 asosidagi WebGL render dvigateli ulandi.
+- [x] Preview va ekran yozish oynasi uchun alohida WebGL render yuzalari qo‘shildi.
+- [x] 3D sahnalar haqiqiy geometriya, fizik materiallar, perspektiv kamera va yoritish orqali quriladi.
+- [x] To‘rtta vizual yo‘nalish uchun turli 3D geometriya kompozitsiyalari qo‘shildi.
+- [x] Besh sahnaga mos kamera pozitsiyasi va obyekt animatsiyasi kiritildi.
+- [x] 2D matn qatlami WebGL sahnasi ustida shaffof overlay sifatida ishlaydi.
+- [x] Tavsiya akkaunt yo‘nalishida Canvas 2D pseudo-3D fon va kamera transformatsiyasi asosiy renderdan chiqarildi.
+- [x] 3D obyektlarda blur/shadowBlur orqali hajm yasash olib tashlandi.
+- [x] Diktor matni tashqi ilovada ishlatilishi aniq yozildi; NEX audio yozmaydi va yuklamaydi.
+- [x] Versiya v0.4.0 ga ko‘tarildi.
 
 ## Hali bajarilmagan / alohida sinov talab qiladi
-- [ ] Android telefon brauzerida real vizual sinov.
-- [ ] Har bir dizayn yo‘nalishida 5 sahnani ko‘z bilan tekshirish.
-- [ ] Bir akkaunt uchun ketma-ket 5 ta Reel yaratib, vizual va matniy takrorlanishni baholash.
-- [ ] Turli uzunlikdagi akkaunt tavsiflari va foyda matnlarini sinash.
-- [ ] Profil rasmi, mobil ekran va ekran yozish rejimini qurilmada tekshirish.
-- [ ] Audio yozish/yuklash va sahnalar bilan sinxronlash.
-- [ ] Haqiqiy WebGL 3D yoki boshqa 3D render pipeline zaruratini baholash.
-- [ ] Video eksport funksiyasi (hozirgi ish oqimi ekran yozish asosida).
+- [ ] GitHub Pages deploy tugagach Android telefonda WebGL yuklanishi va ishlashi.
+- [ ] To‘rtta dizayn yo‘nalishining har birida barcha besh sahnani vizual tekshirish.
+- [ ] Ekran yozish rejimida WebGL va matn qatlamining birgalikda ko‘rinishini tekshirish.
+- [ ] Mobil GPU unumdorligi, qizish va batareya sarfini tekshirish.
+- [ ] Profil rasmi va uzun matnlar bilan real qurilma sinovi.
+- [ ] Bir akkaunt uchun ketma-ket besh Reel yaratib, kompozitsiya takrorlanishini baholash.
+- [ ] WebGL mavjud bo‘lmagan brauzerlar uchun fallback yo‘lini sinash.
 
-## Muhim texnik izoh
-Ssenariy generatori hozircha shablon va foydalanuvchi kiritgan ma’lumotlar asosida ishlaydi; tashqi AI xizmatiga ulanmagan. Dalil yoki faktlarni mustaqil tekshirmaydi. Hozirgi 3D ko‘rinish Canvas 2D orqali perspektiva, qatlam, soya va hajm illuziyasi bilan yaratiladi. Sintaksis tekshiruvi Android brauzeridagi to‘liq sinov o‘rnini bosmaydi.
+## Texnik qarorlar
+- Three.js CDN orqali yuklanadi; birinchi ochishda internet aloqasi zarur.
+- Render 9:16 formatga mo‘ljallangan; matn Canvas 2D overlay bo‘lib qoladi, hajmli sahna esa WebGL orqali chiziladi.
+- 3D geometriyada sun’iy blur va blur-soya ishlatilmaydi.
+- Ssenariy generatori shablonli; tashqi AI orqali fakt tekshiruvi yo‘q.
+- Video eksport yo‘q; foydalanuvchi telefon ekran yozish funksiyasidan foydalanadi.
+- Sintaksis tekshiruvi qurilmadagi vizual sinov o‘rnini bosmaydi.
