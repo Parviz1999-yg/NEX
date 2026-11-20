@@ -305,7 +305,7 @@ function renderThree(now,target=threeRenderer){
  let logoVisible=false,logoProgress=0;
  if(state.elapsed<introEnd){logoVisible=true;logoProgress=Math.min(1,state.elapsed/2050)}
  else if(state.elapsed>outroStart){logoVisible=true;logoProgress=Math.min(1,(total-state.elapsed)/2050)}
- updateNexLogo(logoProgress,logoVisible);
+ updateNexLogo(logoProgress,logoVisible&&state.mode!=="tavsiya");
  target.render(threeScene,threeCamera);
 }
 
