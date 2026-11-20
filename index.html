@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.1.1</span></span></header>
+  <header class="topbar"><a class="brand" href="#" aria-label="NEX bosh sahifa">NEX<span> / STUDIO</span></a><span class="topbar-meta"><span id="stepLabel">01 — YO‘NALISH</span><span class="app-version">v0.2.0</span></span></header>
 
   <main>
     <section class="page active" id="page-home">
@@ -65,12 +65,11 @@
 
     <section class="page" id="page-style">
       <div class="page-heading"><p class="eyebrow">04 — VIZUAL USLUB</p><h2>Qanday ko‘rinishda bo‘lsin?</h2><p>Tanlangan yo‘nalishga mos vizual tilni belgilang.</p></div>
-      <div class="option-grid" id="styleOptions">
-        <button class="option selected" data-value="Minimalistik"><b>Minimalistik</b><small>Toza kompozitsiya, aniq urg‘u</small></button>
-        <button class="option" data-value="Kinematik"><b>Kinematik</b><small>Chuqurlik, yorug‘lik va dramatik kadr</small></button>
-        <button class="option" data-value="Infografik"><b>Infografik</b><small>Ma’lumot va vizual izoh</small></button>
-        <button class="option" data-value="Tipografik"><b>Tipografik</b><small>Matn asosiy vizual qahramon</small></button>
-        <button class="option" data-value="Editorial"><b>Editorial</b><small>Jurnal va nashr estetikasi</small></button>
+      <div class="option-grid creative-directions" id="styleOptions">
+        <button class="option selected" data-value="Cinematic 3D"><b>01 · Cinematic 3D</b><small>Hajm, yorug‘lik, perspektiva va dramatik kamera</small></button>
+        <button class="option" data-value="Kinetic Typography"><b>02 · Kinetic Typography</b><small>Yirik tipografika, keskin ritm va harakatli urg‘u</small></button>
+        <button class="option" data-value="Editorial / Magazine"><b>03 · Editorial / Magazine</b><small>Jurnal maketi, serif sarlavha va nashriyot estetikasi</small></button>
+        <button class="option" data-value="Futuristic Motion"><b>04 · Futuristic Motion</b><small>HUD, neon interfeys, fazoviy panellar va texno-grid</small></button>
       </div>
       <div class="actions"><button class="btn ghost" data-back="script">Orqaga</button><button class="btn primary" id="toPalette">Davom etish →</button></div>
     </section>
@@ -108,7 +107,7 @@
       <div class="studio-layout">
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
-          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi fon kombinatsiyasi</button>
+          <label for="sceneText">Ekrandagi matn</label><textarea id="sceneText" rows="4" placeholder="Ushbu sahnada ko‘rinadigan matn..."></textarea><label for="sceneVoice">Ovozli matn (alohida yozib olinadi)</label><textarea id="sceneVoice" rows="3" placeholder="Ovozda aytiladigan matn..."></textarea><p id="voiceTiming" class="voice-timing">Ovoz davomiyligi taxminan hisoblanadi.</p><button class="btn ghost" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
           <div class="scene-list" id="sceneList"></div>
           <div class="actions vertical-actions"><button class="btn primary" id="startPreview">▶ Ko‘rishni boshlash</button><button class="btn ghost" id="recordMode">⛶ Ekran yozish rejimi</button><button class="btn text-btn" id="restart">↺ Boshidan boshlash</button></div>
         </div>
@@ -126,6 +125,6 @@
     <div class="record-controls"><span>NEX · SCREEN RECORDING</span><button id="recordPause">Ⅱ</button><button id="recordExit">✕</button></div>
   </div>
 </div>
-<script src="assets/js/flow.js?v=0.1.1"></script>
+<script src="assets/js/flow.js?v=0.2.0"></script>
 </body>
 </html>
