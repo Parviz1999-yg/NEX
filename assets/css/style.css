@@ -9,3 +9,10 @@
 
 .topbar-meta{display:flex;align-items:center;gap:10px}
 .app-version{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.06em}
+
+/* Tavsiya akkaunt — kengaytirilgan ma’lumot formasi */
+.account-fields{border-top:1px solid var(--line);margin-top:8px;padding-top:18px}
+.account-fields .eyebrow{color:var(--accent);font-size:10px;letter-spacing:.16em}
+.account-fields label{margin-top:5px}
+.account-fields input:focus,.account-fields textarea:focus{border-color:var(--accent);outline:none}
+.account-fields small{color:var(--muted);font-size:11px;line-height:1.5}
