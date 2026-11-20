@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.5**  
+Amaldagi versiya: **v0.5.0**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -85,3 +85,22 @@ JavaScript sintaksisi tekshirildi. Qurilmadagi real ko‘rinish va unumdorlik si
 
 ### Tekshiruv chegarasi
 Kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi. Real Android vizual sinovi va GPU unumdorligi hali tasdiqlanmagan.
+
+
+## v0.5.0 — NEX Liquid Flow / jiddiy rang tizimi
+- [x] 3D sahnalardan kub, shar, torus-halqa, kristall va torus-knot kompozitsiyalari olib tashlandi.
+- [x] Uch o‘lchamli uzluksiz sirtli suyuq metall lentalar yaratildi; har bir sirt vertex darajasida to‘lqinlanadi, cho‘ziladi, torayadi va egiladi.
+- [x] Oqim yo‘nalishi davriy ravishda oldinga-orqaga almashadi; bir necha qatlam turli tezlik va fazada harakatlanadi.
+- [x] Uchta fizik metall material: xrom-kumush, tanlangan palitradagi bronza/aksent va quyuq metall.
+- [x] Yorug‘lik tizimi sovuq ko‘k-yashil neonlardan neytral kumush va iliq bronza akslariga o‘tkazildi.
+- [x] 10 ta rang palitrasi jiddiy rang oilalariga almashtirildi: grafit, bronza, bordo, mis, slate, to‘q olxo‘ri, qumtosh, qadimiy oltin, kumush va monoxrom.
+- [x] Interfeysning asosiy ranglari, tanlangan holatlari, tugmalari va NEX wordmarki yangi vizual tilga moslashtirildi.
+- [x] Versiya v0.5.0; GitHub Pages cache-buster yangilandi.
+- [ ] Android telefonida 3D oqimning ko‘rinishi, silliqligi, matn bilan masofasi va ekran yozish rejimi sinovdan o‘tkaziladi.
+- [ ] To‘rtta art-direction va besh sahnada ketma-ket Reel’lar xilma-xilligi real ko‘rish orqali baholanadi.
+
+### v0.5.0 texnik tekshiruv
+- 3D kompozitsiya parametrik WebGL sirtlariga tayanadi; primitive geometrik obyektlar asosiy vizual kompozitsiyadan chiqarildi.
+- Har bir oqim sirtining geometriyasi har kadrda yangilanadi va normalari qayta hisoblanadi.
+- Mobil GPU unumdorligi hali o‘lchanmagan; 3D sirtlar soni va segmentlari keyingi qurilma sinoviga qarab optimallashtiriladi.
+- Hozirgi ish faqat Tavsiya akkaunt studiyasining 3D vizual tizimini yangilaydi; boshqa studiyalarni yakunlangan deb hisoblamaydi.
