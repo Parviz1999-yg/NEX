@@ -135,3 +135,7 @@ h1 em{color:#49adff}
 .duration-value input{flex:1;min-width:0;accent-color:#75d4ff}
 .duration-value output{min-width:88px;text-align:right;color:#9fe4ff;font-size:13px;font-weight:850;font-variant-numeric:tabular-nums}
 .duration-summary{margin:10px 0 0;color:#a9c6e8;font-size:11px;line-height:1.5}
+
+/* v0.9.4 — palitra tanlovi va vizual holatlarning aniq feedback'i */
+.palette.selected,.option.selected{outline:2px solid #dce8f5;outline-offset:2px}
+.palette:focus-visible,.option:focus-visible{outline:3px solid #9bdcff;outline-offset:3px}
