@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=id=>document.getElementById(id), pages=["home","content","script","style","palette","animation","studio"];
 const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — SSENARIY","04 — VIZUAL USLUB","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — STUDIYA"];
-const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",bio:"",followers:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Minimalistik",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295)};
+const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Minimalistik",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295)};
 const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
 const paletteMap={"Midnight":["#090D18","#F2F5FC","#8B7CFF","#35D6C5"],"Graphite Gold":["#111315","#F3F0E8","#C7A76C","#78909C"],"Arctic":["#0B1B2B","#F1F7FC","#66C7E8","#9B8CFF"],"Deep Forest":["#0C1B18","#EAF2E8","#78A88A","#D0B77A"],"Cobalt":["#101A3A","#F4F6FF","#5B83F5","#F0B86E"],"Burgundy":["#24121D","#FFF0F3","#D87591","#D8B17A"],"Sandstone":["#211C18","#F6EFE4","#C58E62","#8FA39A"],"Terracotta":["#281814","#FFF1E8","#D97858","#E4B66A"],"Orchid":["#1C1630","#F5F0FF","#B08BEE","#6ED4C6"],"Monochrome":["#111315","#F4F4F1","#A7ADB4","#6E7884"]};
@@ -14,7 +14,7 @@ document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",(
 bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
 document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(b.dataset.colors||"").split(",");b.querySelectorAll(".swatches i").forEach((dot,i)=>dot.style.backgroundColor=colors[i]||"#777")});
 $("toScript").onclick=()=>{state.topicType=$("topicType").value;state.title=$("topicTitle").value.trim();state.tone=$("tone").value;if(!state.topicType||!state.title){alert("Mavzu turi va mavzu nomini kiriting.");return}configureScript();page("script")};
-$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];state.voice=[$("voiceHook").value,$("voiceIntro").value,$("voiceWhy").value,$("voiceDiff").value,$("voiceCta").value];state.account={name:$("accountName").value,bio:$("accountBio").value,followers:$("accountFollowers").value,image:state.account.image};calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Ovoz yoki ekran matnini qisqartiring.");return}if(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim()){alert("Hook, E’lon va Chorlov maydonlarini to‘ldiring.");return}page("style")};
+$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];state.voice=[$("voiceHook").value,$("voiceIntro").value,$("voiceWhy").value,$("voiceDiff").value,$("voiceCta").value];state.account={name:$("accountName").value.trim(),niche:$("accountNiche").value.trim(),bio:$("accountBio").value.trim(),benefit:$("accountBenefit").value.trim(),audience:$("accountAudience").value.trim(),proof:$("accountProof").value.trim(),followers:$("accountFollowers").value.trim(),link:$("accountLink").value.trim(),image:state.account.image};if(state.mode==="tavsiya"&&(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit)){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Ovoz yoki ekran matnini qisqartiring.");return}if(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim()){alert("Hook, E’lon va Chorlov maydonlarini to‘ldiring.");return}page("style")};
 $("toPalette").onclick=()=>page("palette");$("toAnimation").onclick=()=>page("animation");$("toStudio").onclick=()=>{page("studio");try{buildStudio();start()}catch(error){console.error("NEX Studio error:",error);const summary=$("summary");if(summary)summary.textContent="Namoyish oynasini tayyorlashda xatolik yuz berdi: "+(error&&error.message?error.message:"Noma’lum xato");}};
 function buildStudio(){calculateDurations();state.backgroundSeed=Math.floor(Math.random()*4294967295);state.lastScene=-1;$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation+"<br><strong>Davomiylik: "+Math.ceil(total/1000)+" soniya</strong>";$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=sceneTitle(i);b.onclick=()=>{state.scene=i;state.elapsed=sceneStart(i);state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);$("sceneVoice").value=state.voice[0]||"";draw(performance.now())}
 function configureScript(){const labels=state.mode==="manba"?["HOOK — qiziqtirish","RESURSNI TANISHTIRISH","NIMA UCHUN KERAK?","QANDAY FOYDALANISH?","CHORLOV — yakun"]:state.mode==="fakt"?["HOOK — savol yoki kutilmagan fikr","FAKTNI OCHISH","IZOH — sabab va dalil","QIZIQARLI TAFSILOT","YAKUNIY FIKR"]:state.mode==="ibora"?["HOOK — fikrga kirish","ASOSIY IBORA","MA’NO — chuqurroq izoh","HAYOTIY BOG‘LANISH","YAKUNIY FIKR"]:["HOOK — e’tiborni tortish","E’LON — akkauntni tanishtirish","NIMA UCHUN KUZATISH KERAK?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV — yakun"];["introLabel","whyLabel","diffLabel","ctaLabel"].forEach((id,i)=>$(id).textContent=labels[i+1]);$("scriptHook").placeholder=labels[0]+"...";$("accountFields").hidden=state.mode!=="tavsiya";["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"].forEach((id,i)=>$(id).value=state.script[i]||"");["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"].forEach((id,i)=>$(id).value=state.voice[i]||"")}
@@ -172,7 +172,70 @@ function draw3DStage(c,w,h,idx,pal,now){
  }
  c.restore();
 }
+function drawRecommendationScene(c,w,h,now,pal){
+ const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac,idx=state.scene,t=now/1000;
+ const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
+ const copy=$("sceneText").value||sceneCopy(idx);
+ c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);
+ drawProceduralBackground(c,w,h,idx,pal,now);
+ const wash=c.createRadialGradient(w*(idx%2?.78:.2),h*.36,0,w*.5,h*.5,w*.82);
+ wash.addColorStop(0,ac+"38");wash.addColorStop(.55,sub+"16");wash.addColorStop(1,bg);
+ c.fillStyle=wash;c.fillRect(0,0,w,h);
+ c.save();c.globalAlpha=.22;c.strokeStyle=fg;c.lineWidth=1;
+ for(let y=0;y<12;y++){const yy=h*(.12+y*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();
+ const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
+  const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];c.font=weight+" "+fontSize+"px system-ui";let line="";
+  for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
+  if(line)lines.push(line);const shown=lines.slice(0,maxLines);if(lines.length>maxLines&&shown.length)shown[shown.length-1]+="…";
+  c.save();c.textAlign=align;c.textBaseline="middle";c.fillStyle=color;shown.forEach((ln,i)=>c.fillText(ln,x,y+i*fontSize*1.28));c.restore();return shown.length*fontSize*1.28;
+ };
+ const pill=(label,x,y)=>{
+  c.save();c.font="800 "+(w*.025)+"px system-ui";const ww=Math.min(w*.78,c.measureText(label).width+w*.07);
+  c.fillStyle=ac+"25";c.strokeStyle=ac+"99";c.lineWidth=1;c.beginPath();c.roundRect(x,y,ww,h*.045,h*.022);c.fill();c.stroke();
+  c.fillStyle=fg;c.textBaseline="middle";c.fillText(label,x+w*.035,y+h*.022);c.restore();
+ };
+ const avatar=(x,y,r)=>{
+  c.save();c.shadowColor=ac;c.shadowBlur=w*.035;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();c.stroke();c.shadowBlur=0;
+  if(accountPhoto&&accountPhoto.complete&&accountPhoto.naturalWidth){c.save();c.beginPath();c.arc(x,y,r*.88,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,x-r*.88,y-r*.88,r*1.76,r*1.76);c.restore()}
+  else{c.fillStyle=ac;c.font="900 "+(r*.9)+"px system-ui";c.textAlign="center";c.textBaseline="middle";c.fillText((state.account.name||"N").replace(/^@/,"").slice(0,1).toUpperCase(),x,y)}
+  c.restore();
+ };
+ const card=(x,y,ww,hh)=>{c.save();c.shadowColor="#00000088";c.shadowBlur=w*.055;c.fillStyle="#ffffff0d";c.strokeStyle=ac+"99";c.lineWidth=w*.003;c.beginPath();c.roundRect(x,y,ww,hh,w*.035);c.fill();c.stroke();c.restore()};
+ const enter=Math.max(0,Math.min(1,(local-.04)/.48)),e=1-Math.pow(1-enter,3);
+ if(idx===0){
+  c.save();c.globalAlpha=.75;c.fillStyle=ac;c.fillRect(w*.09,h*.25,w*.018,h*.45);c.restore();pill("NEX TAVSIYA QILADI",w*.14,h*.22);
+  c.save();c.translate((1-e)*w*.16,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.13,h*.39,w*.76,w*.105,fg,"900","left",5);
+  c.globalAlpha=.72;text(state.account.niche||"Yangi bilim va foydali kontent",w*.14,h*.78,w*.7,w*.034,ac,"700","left",2);c.restore();
+ }else if(idx===1){
+  const y=h*.23+((1-e)*h*.2);card(w*.08,y,w*.84,h*.54);avatar(w*.5,y+h*.145,w*.105);
+  text(state.account.name||"Akkaunt nomi",w*.5,y+h*.30,w*.72,w*.047,fg,"850","center",2);
+  text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,ac,"750","center",2);
+  text(state.account.bio||copy,w*.5,y+h*.445,w*.68,w*.031,fg,"500","center",3);
+  if(state.account.followers){c.save();c.fillStyle=ac+"22";c.beginPath();c.roundRect(w*.2,y+h*.62,w*.6,h*.07,w*.025);c.fill();c.restore();text(state.account.followers+" obunachi",w*.5,y+h*.655,w*.54,w*.03,fg,"800","center",1)}
+  pill("AKKAUNT BILAN TANISHING",w*.14,h*.13);
+ }else if(idx===2){
+  pill("SIZGA QANDAY FOYDA BERADI?",w*.1,h*.2);c.save();c.globalAlpha=.16;c.fillStyle=ac;c.beginPath();c.arc(w*.82,h*.42,w*.24,0,Math.PI*2);c.fill();c.restore();
+  text(copy||state.account.benefit,w*.12,h*.37,w*.76,w*.078,fg,"900","left",5);c.save();c.fillStyle=ac;c.fillRect(w*.12,h*.72,w*.17,h*.012);c.restore();
+  text(state.account.audience?"Kimlar uchun: "+state.account.audience:"",w*.12,h*.79,w*.75,w*.03,sub,"650","left",3);
+ }else if(idx===3){
+  pill("NEGA AYNAN SHU SAHIFA?",w*.1,h*.17);card(w*.1,h*.29,w*.8,h*.43);
+  c.save();c.fillStyle=ac;c.font="900 "+(w*.19)+"px Georgia";c.textAlign="left";c.fillText("“",w*.17,h*.4);c.restore();
+  text(copy||state.account.proof||state.account.bio,w*.18,h*.49,w*.64,w*.064,fg,"750","left",5);
+  c.save();c.fillStyle=ac;c.fillRect(w*.18,h*.67,w*.2,h*.009);c.restore();
+  text(state.account.proof?"TAVSIYA SABABI":"O‘ZIGA XOS JIHATI",w*.18,h*.76,w*.64,w*.025,sub,"800","left",2);
+ }else{
+  c.save();c.globalAlpha=.16;c.strokeStyle=ac;c.lineWidth=w*.018;
+  for(let r=0;r<5;r++){c.beginPath();c.arc(w*.5,h*.48,w*(.16+r*.075),t*.15+r*.3,t*.15+r*.3+Math.PI*1.5);c.stroke()}c.restore();
+  pill("KEYINGI QADAM",w*.1,h*.24);text(copy||"Foydali deb bilsangiz, kuzatib boring.",w*.12,h*.43,w*.76,w*.09,fg,"900","left",4);
+  text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,ac,"850","left",2);
+  if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
+ }
+ c.save();c.globalAlpha=Math.max(0,1-local/.18)*.65;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-local*5),0);c.lineTo(w*(1.2-local*5),0);c.lineTo(w*(.2-local*5),h);c.lineTo(w*(-local*5),h);c.closePath();c.fill();c.restore();
+ drawBrand(c,w,h,ac,fg);c.restore();
+}
+
 function drawScene(c,w,h,now){
+ if(state.mode==="tavsiya"){const pal=paletteMap[state.palette]||paletteMap.Midnight;drawRecommendationScene(c,w,h,now,pal);return;}
  const pal=paletteMap[state.palette]||paletteMap.Midnight,bg=pal[0],fg=pal[1],ac=pal[2],idx=state.scene;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const txt=$("sceneText").value||sceneCopy(idx),t=now/1000;
