@@ -171,7 +171,7 @@ function drawScene(c,w,h,now){
  const wrapText=size=>{
   const out=[];let line="";
   c.font="850 "+size+"px system-ui";
-  for(const word of String(txt).trim().split(/\\s+/).filter(Boolean)){
+  for(const word of String(txt).trim().split(/\s+/).filter(Boolean)){
    const test=line?line+" "+word:word;
    if(line&&c.measureText(test).width>maxW){out.push(line);line=word}else line=test;
   }
