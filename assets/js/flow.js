@@ -83,8 +83,8 @@ async function initThreeEngine(){
   threeScene=new THREE.Scene();threeCamera=new THREE.PerspectiveCamera(34,360/640,.1,100);threeCamera.position.set(0,0,9);
   const pmrem=new THREE.PMREMGenerator(threeRenderer);pmrem.compileEquirectangularShader();
   const room=new RoomEnvironment(threeRenderer);threeScene.environment=pmrem.fromScene(room,.04).texture;room.dispose();pmrem.dispose();
-  threeScene.add(new THREE.HemisphereLight(0xf4f9ff,0x24364c,3.1));
-  const key=new THREE.DirectionalLight(0xffffff,7.5);key.position.set(-4,6,7);threeScene.add(key);
+  threeScene.add(new THREE.HemisphereLight(0xf8fbff,0x30445d,3.35));
+  const key=new THREE.DirectionalLight(0xffffff,8.0);key.position.set(-4,6,7);threeScene.add(key);
   const rim=new THREE.PointLight(0x168cff,95,22);rim.position.set(4,1,3);threeScene.add(rim);
   const fill=new THREE.PointLight(0xb9eaff,88,22);fill.position.set(-4,-3,2);threeScene.add(fill);
   const topLight=new THREE.PointLight(0xffffff,72,20);topLight.position.set(0,5,1);threeScene.add(topLight);
@@ -96,7 +96,7 @@ function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const chrome=new THREE.MeshPhysicalMaterial({color:0xf7fbff,metalness:.78,roughness:.14,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:3.2,emissive:0x536a80,emissiveIntensity:.34,side:THREE.DoubleSide});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xf7fbff,metalness:.78,roughness:.14,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:3.8,emissive:0x718ba5,emissiveIntensity:.46,side:THREE.DoubleSide});
  const blueMetal=new THREE.MeshPhysicalMaterial({color:0xbfc8d2,metalness:1,roughness:.06,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,side:THREE.DoubleSide});
  const iceMetal=new THREE.MeshPhysicalMaterial({color:0xf1f4f7,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
@@ -189,8 +189,8 @@ function buildNexLogo(){
   mesh.userData.indexCount=indexCount;
   threeLogo.add(mesh);logoStrokes.push(mesh);
  });
- threeLogo.position.set(0,1.48,1.9);
- threeLogo.scale.setScalar(1.02);
+ threeLogo.position.set(0,1.22,.35);
+ threeLogo.scale.setScalar(.74);
  threeLogo.visible=false;
  threeScene.add(threeLogo);
 }
@@ -206,7 +206,7 @@ function updateNexLogo(progress,visible){
   mesh.geometry.setDrawRange(0,Math.floor(mesh.userData.indexCount*local));
  });
  const pulse=1+.025*Math.sin(reveal*Math.PI*2);
- threeLogo.scale.setScalar(1.02*pulse);
+ threeLogo.scale.setScalar(.74*pulse);
 }
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;
