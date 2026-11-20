@@ -133,7 +133,7 @@ function buildThreeObjects(){
   const pulse=new THREE.Mesh(new THREE.TorusGeometry(1.48,.045,16,120),neon);pulse.rotation.set(.7,.2,-.25);motif.add(pulse);
   motif.position.set(0,0,0);
  }
- const v=Math.floor(rand()*5); const v=Math.floor(rand()*5);
+ const v=Math.floor(rand()*5);
  if(style==="Cinematic 3D"){
   if(v===0){add(new THREE.TorusKnotGeometry(1.05,.28,180,24,2,3),metal,0,.2,0,1.15);add(new THREE.IcosahedronGeometry(.48,1),bright,-1.55,-1.35,-.7,.7)}
   else if(v===1){add(new THREE.IcosahedronGeometry(1.35,1),metal,0,.1,0);add(new THREE.TorusGeometry(1.9,.035,12,100),bright,0,.1,-.4,1,1,.6)}
