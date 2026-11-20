@@ -32,3 +32,6 @@
 .script-generate{margin-top:12px;border-color:#7c70db;background:linear-gradient(110deg,#211e3d,#151b2b);color:#f4f1ff;min-height:48px}
 .script-generate:hover{border-color:#b2a8ff;box-shadow:0 8px 26px #8b7cff22}
 .generator-note{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
+
+/* v0.4.0 — WebGL 3D sahna va shaffof tipografik qatlam */
+.reel-frame{position:relative;isolation:isolate}#reel3D,#reelCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}#reel3D{z-index:0}#reelCanvas{z-index:1;background:transparent}.record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);overflow:hidden}#record3D,#recordCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}#record3D{z-index:0}#recordCanvas{z-index:1;object-fit:fill;background:transparent}
