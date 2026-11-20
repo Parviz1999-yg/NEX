@@ -1,35 +1,36 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.0**  
+Amaldagi versiya: **v0.4.1**  
+Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
 
-## Bajarildi — v0.4.0
-- [x] Three.js 0.180.0 asosidagi WebGL render dvigateli ulandi.
-- [x] Preview va ekran yozish oynasi uchun alohida WebGL render yuzalari qo‘shildi.
-- [x] 3D sahnalar haqiqiy geometriya, fizik materiallar, perspektiv kamera va yoritish orqali quriladi.
-- [x] To‘rtta vizual yo‘nalish uchun turli 3D geometriya kompozitsiyalari qo‘shildi.
-- [x] Besh sahnaga mos kamera pozitsiyasi va obyekt animatsiyasi kiritildi.
-- [x] 2D matn qatlami WebGL sahnasi ustida shaffof overlay sifatida ishlaydi.
-- [x] Tavsiya akkaunt yo‘nalishida Canvas 2D pseudo-3D fon va kamera transformatsiyasi asosiy renderdan chiqarildi.
-- [x] 3D obyektlarda blur/shadowBlur orqali hajm yasash olib tashlandi.
-- [x] Diktor matni tashqi ilovada ishlatilishi aniq yozildi; NEX audio yozmaydi va yuklamaydi.
-- [x] Versiya v0.4.0 ga ko‘tarildi.
+## Bajarildi — v0.4.1
+- [x] NEX brendining asosiy vizual tili Liquid Metal / Mercury sifatida belgilandi.
+- [x] Three.js RoomEnvironment va PMREM orqali 3D materiallar uchun atrof-muhit aks ettirishi qo‘shildi.
+- [x] Yuqori darajadagi transmission, past roughness, iridescence va clearcoat bilan suyuq shisha-simob materiali yaratildi.
+- [x] Organik deformatsiyalangan 3D tomchi, mayda simob tomchilari va neon metall orbitlar qo‘shildi.
+- [x] Simob shakli va orbitlar vaqt bo‘yicha mustaqil animatsiya qilinadi.
+- [x] NEX interfeys wordmarkiga kumush-neon gradient identifikatsiyasi qo‘shildi.
+- [x] Cinematic 3D yo‘nalishi tavsifi NEX Liquid Metal estetikasi bilan yangilandi.
+- [x] Audio tashqi ilovada qoladi; NEX audio yozish/yuklash/sinxronlashni bajarmaydi.
 
-## Hali bajarilmagan / alohida sinov talab qiladi
-- [ ] GitHub Pages deploy tugagach Android telefonda WebGL yuklanishi va ishlashi.
-- [ ] To‘rtta dizayn yo‘nalishining har birida barcha besh sahnani vizual tekshirish.
-- [ ] Ekran yozish rejimida WebGL va matn qatlamining birgalikda ko‘rinishini tekshirish.
-- [ ] Mobil GPU unumdorligi, qizish va batareya sarfini tekshirish.
-- [ ] Profil rasmi va uzun matnlar bilan real qurilma sinovi.
-- [ ] Bir akkaunt uchun ketma-ket besh Reel yaratib, kompozitsiya takrorlanishini baholash.
-- [x] WebGL ishlamasa, 3D o‘rniga yolg‘on hajm ko‘rsatmaydigan tekis fonli ogohlantirish holati qo‘shildi.
-- [ ] WebGL mavjud bo‘lmagan brauzerda ogohlantirish va tekis fallback holatini qurilmada sinash.
+## Oldingi bosqichda bajarilgan — v0.4.0
+- [x] Three.js WebGL render dvigateli va alohida preview/record canvases.
+- [x] To‘rtta 3D art-direction kompozitsiyasi va besh sahnaga mos kamera harakati.
+- [x] Matn uchun alohida shaffof Canvas overlay.
+- [x] 3D hajm uchun blur/shadowBlur ishlatilmaydi.
 
-## Texnik qarorlar
-- Three.js CDN orqali yuklanadi; birinchi ochishda internet aloqasi zarur.
-- Render 9:16 formatga mo‘ljallangan; matn Canvas 2D overlay bo‘lib qoladi, hajmli sahna esa WebGL orqali chiziladi.
-- 3D geometriyada sun’iy blur va blur-soya ishlatilmaydi.
-- Ssenariy generatori shablonli; tashqi AI orqali fakt tekshiruvi yo‘q.
-- Video eksport yo‘q; foydalanuvchi telefon ekran yozish funksiyasidan foydalanadi.
-- Sintaksis tekshiruvi qurilmadagi vizual sinov o‘rnini bosmaydi.
+## Hali bajarilmagan / sinov talab qiladi
+- [ ] Android qurilmada WebGL, RoomEnvironment va transmission materialini tekshirish.
+- [ ] Suyuq metall effektining ekran yozish rejimida to‘g‘ri aks etishini tekshirish.
+- [ ] Besh sahnada matn va simob obyektlari o‘zaro to‘qnashmasligini tekshirish.
+- [ ] To‘rtta art-direction va ketma-ket besh Reel bo‘yicha kompozitsiya xilma-xilligini sinash.
+- [ ] Mobil GPU unumdorligi, qizish va batareya sarfini o‘lchash.
+
+## Texnik qaydlar
+- Three.js 0.180.0 va RoomEnvironment CDN orqali yuklanadi; internet zarur.
+- 3D materiallar haqiqiy WebGL fizik materiallari; blur bilan hajm yasalmaydi.
+- Ssenariy generatori hozircha shablonli, AI fakt-tekshiruvi yo‘q.
+- Video eksport mavjud emas; ekran yozish telefon orqali bajariladi.
+- Statik sintaksis tekshiruvi Android vizual sinovi o‘rnini bosmaydi.
