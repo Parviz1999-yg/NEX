@@ -164,36 +164,60 @@ function drawScene(c,w,h,now){
  const layoutRand=seededRandom((state.backgroundSeed^Math.imul(idx+19,0x85EBCA6B))|0);
  const entrance=(Math.floor(layoutRand()*6)+idx)%6,alignPick=Math.floor(layoutRand()*3);
  const align=alignPick===0?"left":alignPick===1?"center":"right";
- const anchorX=align==="left"?w*(.12+layoutRand()*.12):align==="right"?w*(.76+layoutRand()*.12):w*(.42+layoutRand()*.16);
- const maxW=w*(align==="center"?.76:.72),baseSize=idx===3?w*.088:w*(.069+layoutRand()*.018);
- const words=txt.split(/\s+/),lines=[];let line="";
- c.font="900 "+baseSize+"px system-ui";
- for(const word of words){const test=line?line+" "+word:word;if(c.measureText(test).width>maxW&&line){lines.push(line);line=word}else line=test}
- if(line)lines.push(line);
- const shown=lines.slice(0,6),lineH=baseSize*1.22,blockH=shown.length*lineH;
- const centerY=h*(.32+layoutRand()*.34),top=Math.max(h*.18,Math.min(h*.72-blockH,centerY-blockH*.5));
- shown.forEach((ln,i)=>{
-  const lineProgress=Math.max(0,Math.min(1,(local-i*.055)/.52));
-  if(lineProgress<=0)return;
-  const k=1-Math.pow(1-lineProgress,3),y=top+i*lineH;
+ const anchorX=align==="left"?w*.13:align==="right"?w*.87:w*.5;
+ const maxW=w*.74;
+ // Matnni qisqartirib tashlamasdan, ekran balandligiga moslab joylashtirish.
+ let baseSize=w*(.075+layoutRand()*.012),lines=[];
+ const wrapText=size=>{
+  const out=[];let line="";
+  c.font="850 "+size+"px system-ui";
+  for(const word of String(txt).trim().split(/\\s+/).filter(Boolean)){
+   const test=line?line+" "+word:word;
+   if(line&&c.measureText(test).width>maxW){out.push(line);line=word}else line=test;
+  }
+  if(line)out.push(line);
+  return out;
+ };
+ lines=wrapText(baseSize);
+ while(lines.length>7&&baseSize>w*.043){baseSize*=.92;lines=wrapText(baseSize)}
+ if(lines.length>7){lines=lines.slice(0,7);lines[6]=lines[6].replace(/[.,;:!?…]*$/,"")+"…"}
+ const sizes=lines.map((_,i)=>i===0?baseSize:baseSize*.76);
+ const lineHeights=sizes.map((size,i)=>size*(i===0?1.34:1.38));
+ const blockH=lineHeights.reduce((a,b)=>a+b,0);
+ const centerY=h*(.48+layoutRand()*.06),top=Math.max(h*.17,Math.min(h*.76-blockH,centerY-blockH*.5));
+ // Matn ortida yengil kontrast qatlam: fon harakatda qoladi, yozuv esa ravshan o‘qiladi.
+ const plateX=align==="left"?anchorX-w*.035:align==="right"?anchorX-maxW-w*.035:anchorX-maxW*.5-w*.035;
+ const plateY=top-baseSize*.42;
+ c.save();c.globalAlpha=.24;c.fillStyle=bg;c.shadowColor="#000";c.shadowBlur=w*.045;
+ c.beginPath();c.roundRect(plateX,plateY,maxW+w*.07,blockH+baseSize*.85,w*.025);c.fill();c.restore();
+ let y=top;
+ lines.forEach((ln,i)=>{
+  const lineProgress=Math.max(0,Math.min(1,(local-i*.085)/.48));
+  if(lineProgress<=0){y+=lineHeights[i];return}
+  const k=1-Math.pow(1-lineProgress,3),fontSize=sizes[i];
   let dx=0,dy=0,rot=0,scale=1;
   if(entrance===0)dx=(1-k)*-w*.72;
   else if(entrance===1)dx=(1-k)*w*.72;
-  else if(entrance===2)dy=(1-k)*h*.38;
-  else if(entrance===3)dy=(1-k)*-h*.38;
-  else if(entrance===4){scale=.45+.55*k;rot=(1-k)*-.22}
-  else{dx=(1-k)*w*.24;dy=(1-k)*h*.2;rot=(1-k)*.16;scale=.78+.22*k}
+  else if(entrance===2)dy=(1-k)*h*.34;
+  else if(entrance===3)dy=(1-k)*-h*.34;
+  else if(entrance===4){scale=.55+.45*k;rot=(1-k)*-.18}
+  else{dx=(1-k)*w*.2;dy=(1-k)*h*.16;rot=(1-k)*.13;scale=.82+.18*k}
   c.save();c.globalAlpha=k;c.translate(anchorX+dx,y+dy);c.rotate(rot);c.scale(scale,scale);
-  c.textAlign=align;c.textBaseline="middle";c.font="950 "+baseSize+"px system-ui";
-  // Extruded typography: multiple offset faces plus a perspective shear and a hard cast shadow.
-  const depth=entrance===4?15:11,tilt=(idx%2===0?.075:-.075)*(1-local*.35);
+  c.textAlign=align;c.textBaseline="middle";c.font=(i===0?"950 ":"760 ")+fontSize+"px system-ui";
+  const depth=i===0?13:7,tilt=(idx%2===0?.055:-.055)*(1-local*.3);
   c.transform(1,tilt,0,1,0,0);
-  for(let z=depth;z>=1;z--){const kDepth=z/depth;c.fillStyle=z%2?ac+"bb":"#02040add";c.fillText(ln,z*w*.0022,z*w*.0028)}
-  c.shadowColor="#000000";c.shadowBlur=w*.035;c.shadowOffsetX=w*.012;c.shadowOffsetY=w*.018;c.fillStyle=fg;c.fillText(ln,0,0);
-  c.shadowColor=ac;c.shadowBlur=w*.025;c.shadowOffsetX=0;c.shadowOffsetY=0;c.strokeStyle=fg+"88";c.lineWidth=Math.max(1,w*.0012);c.strokeText(ln,0,0);c.shadowBlur=0;
-  if(i===shown.length-1){const width=Math.min(c.measureText(ln).width,w*.68);c.globalAlpha=k*.7;c.fillStyle=ac;c.fillRect(align==="left"?0:align==="right"?-width:-width/2,baseSize*.62,width,Math.max(2,w*.003))}
-  c.restore();
+  for(let z=depth;z>=1;z--){c.fillStyle=z%2?ac+"bb":"#02040add";c.fillText(ln,z*w*.0018,z*w*.0024)}
+  c.shadowColor="#000000";c.shadowBlur=w*.03;c.shadowOffsetX=w*.009;c.shadowOffsetY=w*.014;
+  c.fillStyle=i===0?ac:fg;c.fillText(ln,0,0);
+  c.shadowColor=ac;c.shadowBlur=w*.018;c.shadowOffsetX=0;c.shadowOffsetY=0;
+  c.strokeStyle=(i===0?ac:fg)+"66";c.lineWidth=Math.max(1,w*.001);c.strokeText(ln,0,0);
+  c.restore();y+=lineHeights[i];
  });
+ // Asosiy sarlavhani ikkilamchi matndan ajratadigan nozik grafik urg‘u.
+ c.save();c.globalAlpha=.78;c.fillStyle=ac;
+ const ruleY=top+lineHeights[0]*.78,ruleW=Math.min(w*.24,Math.max(w*.09,c.measureText(lines[0]||"").width*.28));
+ const ruleX=align==="left"?anchorX:align==="right"?anchorX-ruleW:anchorX-ruleW/2;
+ c.fillRect(ruleX,ruleY,ruleW,Math.max(2,w*.004));c.restore();
  c.restore();
  // Account profile reveal as a floating 3D card, only on recommendation scene.
  if(idx===1&&state.mode==="tavsiya"){
