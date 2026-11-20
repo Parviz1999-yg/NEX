@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.7.1**  
+Amaldagi versiya: **v0.8.0**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -265,3 +265,14 @@ Kod GitHub main tarmog‘iga joylandi. Koddagi strukturaviy o‘zgarishlar manba
 
 ### v0.7.1 tekshiruv chegarasi
 Manba kodiga o‘zgartirishlar kiritilib GitHub main tarmog‘iga joylandi. GPU resurslarini bo‘shatish va art-direction bo‘yicha geometriya modulyatsiyasi kod darajasida tekshirildi. Real qurilmadagi FPS, qizish va ko‘rinish hali tasdiqlanmagan.
+
+
+## v0.8.0 — Suyuq metallni foreground sahna aktyoriga aylantirish
+- [x] 3D xrom tasmasining portret kadrdagi eni kengaytirildi; u endi ingichka fon elementi emas.
+- [x] Tasmaning chuqurligi kamera tomonga ko‘chirildi va sahna kompozitsiyasiga yaqinlashtirildi.
+- [x] Besh sahnaga alohida 3D tilt, x/y/z harakati va masshtab yo‘li berildi.
+- [x] Kamera harakati kuchaytirildi: sahnaga qarab yaqinlashish va yonlama parallax.
+- [x] Sahna almashganda 3D geometriya qayta qurilmaydi; suyuqlik tekis lentadan yangi sahna shakliga animatsion ochiladi.
+- [x] Yangi Reel varianti tanlangandagina geometriya qayta quriladi; oldingi GPU resurslarini bo‘shatish saqlanadi.
+- [ ] Android qurilmada vizual sinov: metall tasma matnni to‘smasligi, oldingi planda aniq ko‘rinishi va sahnalar orasida silliq ochilishi.
+- [ ] Ekran yozish rejimida FPS va qizish sinovi.
