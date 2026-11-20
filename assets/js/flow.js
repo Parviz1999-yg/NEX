@@ -16,7 +16,7 @@ document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(
 $("toScript").onclick=()=>{state.topicType=$("topicType").value;state.title=$("topicTitle").value.trim();state.tone=$("tone").value;if(!state.topicType||!state.title){alert("Mavzu turi va mavzu nomini kiriting.");return}configureScript();page("script")};
 $("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];state.voice=[$("voiceHook").value,$("voiceIntro").value,$("voiceWhy").value,$("voiceDiff").value,$("voiceCta").value];readAccountForm();if(state.mode==="tavsiya"&&(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit)){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Ovoz yoki ekran matnini qisqartiring.");return}if(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim()){alert("Hook, E’lon va Chorlov maydonlarini to‘ldiring.");return}page("style")};
 $("toPalette").onclick=()=>page("palette");$("toAnimation").onclick=()=>page("animation");$("toStudio").onclick=()=>{page("studio");try{buildStudio();start()}catch(error){console.error("NEX Studio error:",error);const summary=$("summary");if(summary)summary.textContent="Namoyish oynasini tayyorlashda xatolik yuz berdi: "+(error&&error.message?error.message:"Noma’lum xato");}};
-function buildStudio(){calculateDurations();state.backgroundSeed=Math.floor(Math.random()*4294967295);state.lastScene=-1;$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation+"<br><strong>Davomiylik: "+Math.ceil(total/1000)+" soniya</strong>";$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=sceneTitle(i);b.onclick=()=>{state.scene=i;state.elapsed=sceneStart(i);state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);$("sceneVoice").value=state.voice[0]||"";draw(performance.now())}
+function buildStudio(){calculateDurations();state.backgroundSeed=Math.floor(Math.random()*4294967295);state.lastScene=-1;$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation+"<br><strong>Davomiylik: "+Math.ceil(total/1000)+" soniya</strong>";if(state.webglError){const warning=document.createElement("p");warning.className="webgl-warning";warning.textContent=state.webglError;$("summary").appendChild(warning)}$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=sceneTitle(i);b.onclick=()=>{state.scene=i;state.elapsed=sceneStart(i);state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);$("sceneVoice").value=state.voice[0]||"";draw(performance.now())}
 function configureScript(){const labels=state.mode==="manba"?["HOOK — qiziqtirish","RESURSNI TANISHTIRISH","NIMA UCHUN KERAK?","QANDAY FOYDALANISH?","CHORLOV — yakun"]:state.mode==="fakt"?["HOOK — savol yoki kutilmagan fikr","FAKTNI OCHISH","IZOH — sabab va dalil","QIZIQARLI TAFSILOT","YAKUNIY FIKR"]:state.mode==="ibora"?["HOOK — fikrga kirish","ASOSIY IBORA","MA’NO — chuqurroq izoh","HAYOTIY BOG‘LANISH","YAKUNIY FIKR"]:["HOOK — e’tiborni tortish","E’LON — akkauntni tanishtirish","NIMA UCHUN KUZATISH KERAK?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV — yakun"];["introLabel","whyLabel","diffLabel","ctaLabel"].forEach((id,i)=>$(id).textContent=labels[i+1]);$("scriptHook").placeholder=labels[0]+"...";$("accountFields").hidden=state.mode!=="tavsiya";["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"].forEach((id,i)=>$(id).value=state.script[i]||"");["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"].forEach((id,i)=>$(id).value=state.voice[i]||"")}
 
 function readAccountForm(){
@@ -85,7 +85,7 @@ async function initThreeEngine(){
   const rim=new THREE.PointLight(0x8b7cff,24,18);rim.position.set(4,1,3);threeScene.add(rim);
   const fill=new THREE.PointLight(0x35d6c5,15,16);fill.position.set(-4,-3,2);threeScene.add(fill);
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
- }catch(error){threeFailed=true;state.webglReady=false;console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent="Haqiqiy 3D dvigatel yuklanmadi. Internet aloqasini tekshirib, sahifani yangilang.";$("summary").appendChild(n)}
+ }catch(error){threeFailed=true;state.webglReady=false;state.webglError="Haqiqiy 3D dvigatel yuklanmadi. Internet aloqasini tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
 function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);threeGroup=new THREE.Group();threeScene.add(threeGroup);
@@ -279,10 +279,10 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  const wrap=(value,maxWidth,size,family)=>{c.font="750 "+size+"px "+family;const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}if(line)lines.push(line);return lines};
  const text=(value,px,py,maxWidth,size,color,weight="750",alignText="left",maxLines=5,family="system-ui")=>{
   const allLines=wrap(value,maxWidth,size,family),lines=allLines.slice(0,maxLines);if(allLines.length>maxLines&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/[.,;:!?…]*$/,"")+"…";c.save();c.textAlign=alignText;c.textBaseline="middle";c.font=weight+" "+size+"px "+family;c.fillStyle=color;
-  const lineH=size*1.22;lines.forEach((line,i)=>{const p=Math.max(0,Math.min(1,(local-i*.075)/.42)),k=1-Math.pow(1-p,3);c.save();c.globalAlpha=k;c.translate((1-k)*(alignText==="right"?-w*.12:w*.12),0);c.shadowColor=style==="Cinematic 3D"?"#000000aa":ac+"55";c.shadowBlur=style==="Cinematic 3D"?w*.025:w*.008;c.fillText(line,px,py+i*lineH);c.restore()});c.restore();return lines.length*lineH;
+  const lineH=size*1.22;lines.forEach((line,i)=>{const p=Math.max(0,Math.min(1,(local-i*.075)/.42)),k=1-Math.pow(1-p,3);c.save();c.globalAlpha=k;c.translate((1-k)*(alignText==="right"?-w*.12:w*.12),0);c.shadowColor=style==="Cinematic 3D"?"#000000aa":ac+"55";c.shadowBlur=0;c.fillText(line,px,py+i*lineH);c.restore()});c.restore();return lines.length*lineH;
  };
  const pill=(value,px,py)=>{c.save();c.font="800 "+(w*.023)+"px system-ui";const ww=Math.min(w*.76,c.measureText(value).width+w*.06);c.fillStyle=ac+"25";c.strokeStyle=ac+"99";c.lineWidth=1;c.beginPath();c.roundRect(align==="right"?px-ww:px,py,ww,h*.043,h*.018);c.fill();c.stroke();c.fillStyle=fg;c.textBaseline="middle";c.textAlign=align==="right"?"right":"left";c.fillText(value,align==="right"?px-ww+w*.03:px+w*.03,py+h*.0215);c.restore()};
- const profile=(cx,cy,r)=>{c.save();c.shadowColor=ac;c.shadowBlur=w*.04;c.fillStyle="#ffffff18";c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fill();c.stroke();c.shadowBlur=0;if(accountPhoto&&accountPhoto.complete&&accountPhoto.naturalWidth){c.save();c.beginPath();c.arc(cx,cy,r*.88,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,cx-r*.88,cy-r*.88,r*1.76,r*1.76);c.restore()}else{text((state.account.name||"N").replace(/^@/,"").slice(0,1).toUpperCase(),cx,cy,r*1.4,r*.9,fg,"900","center",1)}c.restore()};
+ const profile=(cx,cy,r)=>{c.save();c.shadowColor=ac;c.shadowBlur=0;c.fillStyle="#ffffff18";c.strokeStyle=ac;c.lineWidth=w*.006;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fill();c.stroke();c.shadowBlur=0;if(accountPhoto&&accountPhoto.complete&&accountPhoto.naturalWidth){c.save();c.beginPath();c.arc(cx,cy,r*.88,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,cx-r*.88,cy-r*.88,r*1.76,r*1.76);c.restore()}else{text((state.account.name||"N").replace(/^@/,"").slice(0,1).toUpperCase(),cx,cy,r*1.4,r*.9,fg,"900","center",1)}c.restore()};
  c.save();c.fillStyle=bg;c.fillRect(0,0,w,h);
  // Four independent art-direction languages. The seed changes layout and object variants per new Reel.
  if(style==="Cinematic 3D"){
@@ -345,12 +345,12 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
 }
 
 function drawRecommendationScene(c,w,h,now,pal){
- if(!state.webglReady&&drawCreativeDirectionScene(c,w,h,now,pal))return;
+ // WebGL 3D is the only volumetric renderer; fallback stays deliberately flat.
  const bg=pal[0],fg=pal[1],ac=pal[2],sub=pal[3]||ac,idx=state.scene,t=now/1000;
  const local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(idx))/state.sceneDurations[idx]));
  const copy=$("sceneText").value||sceneCopy(idx);
  c.save();
- if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);drawProceduralBackground(c,w,h,idx,pal,now);draw3DStage(c,w,h,idx,pal,now);const wash=c.createRadialGradient(w*(idx%2?.78:.2),h*.36,0,w*.5,h*.5,w*.82);wash.addColorStop(0,ac+"38");wash.addColorStop(.55,sub+"16");wash.addColorStop(1,bg);c.fillStyle=wash;c.fillRect(0,0,w,h);c.save();c.globalAlpha=.22;c.strokeStyle=fg;c.lineWidth=1;for(let y=0;y<12;y++){const yy=h*(.12+y*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();}
+ if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);}
  // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
  const cameraRand=seededRandom((state.backgroundSeed^Math.imul(idx+71,0xC2B2AE35))|0);
  const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
@@ -359,7 +359,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
  const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
  const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
- if(!state.webglReady){c.save();c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);}
+
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
   const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[];c.font=weight+" "+fontSize+"px system-ui";let line="";
   for(const word of words){const test=line?line+" "+word:word;if(line&&c.measureText(test).width>maxWidth){lines.push(line);line=word}else line=test}
@@ -407,7 +407,7 @@ function drawRecommendationScene(c,w,h,now,pal){
   text(state.account.name||"",w*.12,h*.72,w*.76,w*.045,ac,"850","left",2);
   if(state.account.link)text("Havola profil tavsifida",w*.12,h*.81,w*.72,w*.027,sub,"650","left",1);
  }
- if(!state.webglReady)c.restore();
+
  c.save();c.globalAlpha=Math.max(0,1-local/.18)*.65;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-local*5),0);c.lineTo(w*(1.2-local*5),0);c.lineTo(w*(.2-local*5),h);c.lineTo(w*(-local*5),h);c.closePath();c.fill();c.restore();
  drawBrand(c,w,h,ac,fg);c.restore();
 }
@@ -458,7 +458,7 @@ function drawScene(c,w,h,now){
  // Matn ortida yengil kontrast qatlam: fon harakatda qoladi, yozuv esa ravshan o‘qiladi.
  const plateX=align==="left"?anchorX-w*.035:align==="right"?anchorX-maxW-w*.035:anchorX-maxW*.5-w*.035;
  const plateY=top-baseSize*.42;
- c.save();c.globalAlpha=.24;c.fillStyle=bg;c.shadowColor="#000";c.shadowBlur=w*.045;
+ c.save();c.globalAlpha=.24;c.fillStyle=bg;c.shadowColor="#000";c.shadowBlur=0;
  c.beginPath();c.roundRect(plateX,plateY,maxW+w*.07,blockH+baseSize*.85,w*.025);c.fill();c.restore();
  let y=top;
  lines.forEach((ln,i)=>{
@@ -477,9 +477,9 @@ function drawScene(c,w,h,now){
   const depth=i===0?13:7,tilt=(idx%2===0?.055:-.055)*(1-local*.3);
   c.transform(1,tilt,0,1,0,0);
   for(let z=depth;z>=1;z--){c.fillStyle=z%2?ac+"bb":"#02040add";c.fillText(ln,z*w*.0018,z*w*.0024)}
-  c.shadowColor="#000000";c.shadowBlur=w*.03;c.shadowOffsetX=w*.009;c.shadowOffsetY=w*.014;
+  c.shadowColor="#000000";c.shadowBlur=0;c.shadowOffsetX=w*.009;c.shadowOffsetY=w*.014;
   c.fillStyle=i===0?ac:fg;c.fillText(ln,0,0);
-  c.shadowColor=ac;c.shadowBlur=w*.018;c.shadowOffsetX=0;c.shadowOffsetY=0;
+  c.shadowColor=ac;c.shadowBlur=0;c.shadowOffsetX=0;c.shadowOffsetY=0;
   c.strokeStyle=(i===0?ac:fg)+"66";c.lineWidth=Math.max(1,w*.001);c.strokeText(ln,0,0);
   c.restore();y+=lineHeights[i];
  });
@@ -493,7 +493,7 @@ function drawScene(c,w,h,now){
  if(idx===1&&state.mode==="tavsiya"){
   const p=Math.min(1,Math.max(0,(local-.12)*2.4));c.save();
   c.translate(w*.5+Math.sin(t*.65)*w*.012,h*.78+Math.cos(t*.8)*h*.008);c.rotate((1-p)*-.13+Math.sin(t*.45)*.012);c.scale(.82+.18*p,.82+.18*p);c.globalAlpha=p;
-  c.shadowColor="#00000099";c.shadowBlur=w*.05;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.004;
+  c.shadowColor="#00000099";c.shadowBlur=0;c.fillStyle="#ffffff12";c.strokeStyle=ac;c.lineWidth=w*.004;
   c.beginPath();c.roundRect(-w*.39,-h*.105,w*.78,h*.21,w*.025);c.fill();c.stroke();c.shadowBlur=0;
   if(accountPhoto&&accountPhoto.complete){c.save();c.beginPath();c.arc(-w*.27,0,w*.065,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,-w*.335,-w*.065,w*.13,w*.13);c.restore()}
   c.textAlign="left";c.textBaseline="middle";c.fillStyle=fg;c.font="800 "+w*.036+"px system-ui";c.fillText(state.account.name||"Tavsiya etilgan akkaunt",-w*.16,-h*.025);
