@@ -93,16 +93,17 @@ async function initThreeEngine(){
 function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap.Midnight,accent=new THREE.Color(pal[2]),secondary=new THREE.Color(pal[3]||pal[2]),rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const metal=new THREE.MeshPhysicalMaterial({color:accent,metalness:.78,roughness:.23,clearcoat:.9,clearcoatRoughness:.16}),bright=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.52,roughness:.3,clearcoat:.8}),dark=new THREE.MeshStandardMaterial({color:pal[0],metalness:.68,roughness:.32,wireframe:true});
- const mercury=new THREE.MeshPhysicalMaterial({color:0xd8f6ff,metalness:.24,roughness:.045,transmission:.96,thickness:2.4,ior:1.32,clearcoat:1,clearcoatRoughness:.025,iridescence:.88,iridescenceIOR:1.8,iridescenceThicknessRange:[110,680],envMapIntensity:2.1});
+ const metal=new THREE.MeshPhysicalMaterial({color:accent,metalness:.96,roughness:.16,clearcoat:1,clearcoatRoughness:.08,envMapIntensity:2.6}),bright=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.92,roughness:.14,clearcoat:1,clearcoatRoughness:.07,envMapIntensity:2.4}),dark=new THREE.MeshStandardMaterial({color:pal[0],metalness:.82,roughness:.24,wireframe:true});
+ // Asosiy tomchi shisha emas: yuqori aks ettiruvchi haqiqiy xrom/simob metalli.
+ const mercury=new THREE.MeshPhysicalMaterial({color:0xe5f2fa,metalness:1,roughness:.115,transmission:0,clearcoat:1,clearcoatRoughness:.055,iridescence:.42,iridescenceIOR:1.8,iridescenceThicknessRange:[120,620],envMapIntensity:3.4});
  const neon=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.48,roughness:.12,clearcoat:1,emissive:secondary,emissiveIntensity:1.15});
- const liquidGeometry=new THREE.IcosahedronGeometry(1.12,5),liquidPositions=liquidGeometry.attributes.position;
+ const liquidGeometry=new THREE.IcosahedronGeometry(1.12,4),liquidPositions=liquidGeometry.attributes.position;
  for(let i=0;i<liquidPositions.count;i++){const x=liquidPositions.getX(i),y=liquidPositions.getY(i),z=liquidPositions.getZ(i),n=1+.105*Math.sin(x*3.4+y*2.2)*Math.cos(z*3.1)+.045*Math.sin(y*7.2+z*2.8);liquidPositions.setXYZ(i,x*n,y*n,z*n)}
  liquidGeometry.computeVertexNormals();
  const main=new THREE.Group();threeGroup.add(main);
  // NEX signature: suyuq simob tomchisi, shaffof metall va neon orbitasi.
  const sceneIndex=state.scene;
- const liquid=new THREE.Mesh(liquidGeometry,mercury);liquid.position.set(sceneIndex===0?1.12:sceneIndex===4?-.95:1.28,.18,-.45);liquid.scale.setScalar(sceneIndex===1?.82:1.02);liquid.visible=sceneIndex===0;main.add(liquid);
+ const liquid=new THREE.Mesh(liquidGeometry,mercury);liquid.name="nex-liquid-core";liquid.position.set(sceneIndex===0?.72:sceneIndex===4?-.55:.72,.18,-.2);liquid.scale.setScalar(sceneIndex===1?.82:1.02);liquid.visible=sceneIndex===0;main.add(liquid);
  const dropletA=new THREE.Mesh(new THREE.SphereGeometry(.27,32,24),mercury);dropletA.position.set(-1.55,-1.2,.15);dropletA.scale.set(.72,1.25,.72);dropletA.visible=sceneIndex===0;main.add(dropletA);
  const dropletB=new THREE.Mesh(new THREE.SphereGeometry(.14,24,18),mercury);dropletB.position.set(1.95,1.45,-.3);dropletB.visible=sceneIndex===0;main.add(dropletB);
  const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.68,.018,12,144),neon);orbit.position.copy(liquid.position);orbit.rotation.set(.72,.18,-.34);orbit.visible=sceneIndex===0;main.add(orbit);
@@ -149,7 +150,7 @@ function buildThreeObjects(){
   add(new THREE.TorusKnotGeometry(1.1,.09,160,18,3,5),metal,0,0,0);for(let i=0;i<6;i++){const a=i*Math.PI/3;add(new THREE.BoxGeometry(.38,.38,.38),bright,Math.cos(a)*2,Math.sin(a)*1.7,-.6,.8)}add(new THREE.OctahedronGeometry(.62,1),metal,0,0,1.15);
  }
  const pts=[];for(let i=0;i<90;i++)pts.push((rand()-.5)*8,(rand()-.5)*11,-2-rand()*7);const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));threeGroup.add(new THREE.Points(geo,new THREE.PointsMaterial({color:secondary,size:.025,sizeAttenuation:true,transparent:true,opacity:.72})));
- const morphTargets=prepareOrganicMorphs(motif,(state.backgroundSeed^Math.imul(sceneIndex+1,0x45d9f3b))|0);threeGroup.userData={main,motif,motifBaseY:motif.position.y,morphTargets,phase:rand()*Math.PI*2,liquid,dropletA,dropletB,orbit,orbit2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
+ const morphTargets=prepareOrganicMorphs(main,(state.backgroundSeed^Math.imul(sceneIndex+1,0x45d9f3b))|0);threeGroup.userData={main,motif,motifBaseY:motif.position.y,morphTargets,phase:rand()*Math.PI*2,liquid,dropletA,dropletB,orbit,orbit2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
 }
 function prepareOrganicMorphs(root,seed){
  const targets=[];let index=0;
@@ -158,19 +159,29 @@ function prepareOrganicMorphs(root,seed){
   obj.geometry=obj.geometry.clone();
   const attr=obj.geometry.attributes.position,base=new Float32Array(attr.array.length);
   base.set(attr.array);
-  targets.push({mesh:obj,base,seed:(seed+index++*17.31),strength:obj.geometry.type==="TorusGeometry"?.075:.115});
+  const isLiquid=obj.name==="nex-liquid-core",isRing=obj.geometry.type==="TorusGeometry";
+  targets.push({mesh:obj,base,seed:(seed+index++*17.31),strength:isLiquid?.19:isRing?.025:.052,isLiquid});
  });
  return targets;
 }
 function updateOrganicMorphs(targets,time,intensity=1){
  for(const item of targets){
-  const attr=item.mesh.geometry.attributes.position,base=item.base,phase=time*.72+item.seed;
+  const attr=item.mesh.geometry.attributes.position,base=item.base,phase=time*1.12+item.seed;
   for(let i=0;i<attr.count;i++){
-   const k=i*3,x=base[k],y=base[k+1],z=base[k+2];
-   const wave=Math.sin(x*2.7+phase)*Math.cos(y*2.15-phase*.73)+.48*Math.sin(z*3.1-phase*1.17+x*1.4);
-   const amount=1+wave*item.strength*intensity;
-   const len=Math.hypot(x,y,z)||1;
-   attr.setXYZ(i,x+(x/len)*(amount-1)*len,y+(y/len)*(amount-1)*len,z+(z/len)*(amount-1)*len);
+   const k=i*3,x=base[k],y=base[k+1],z=base[k+2],len=Math.hypot(x,y,z)||1;
+   const nx=x/len,ny=y/len,nz=z/len;
+   const flowA=Math.sin(x*2.35+phase+Math.sin(z*1.65-phase*.62)*.72);
+   const flowB=Math.cos(y*2.75-phase*.83+x*.68);
+   const flowC=Math.sin(z*3.15+phase*1.18+y*.54);
+   const wave=flowA*.58+flowB*.31+flowC*.27;
+   const displacement=wave*item.strength*intensity;
+   if(item.isLiquid){
+    const lateralX=Math.sin(y*2.1+phase*.72)*.035*intensity;
+    const lateralY=Math.cos(x*2.25-phase*.66)*.03*intensity;
+    attr.setXYZ(i,x+nx*displacement+lateralX,y+ny*displacement+lateralY,z+nz*displacement);
+   }else{
+    attr.setXYZ(i,x+nx*displacement,y+ny*displacement,z+nz*displacement);
+   }
   }
   attr.needsUpdate=true;item.mesh.geometry.computeVertexNormals();
  }
@@ -178,10 +189,10 @@ function updateOrganicMorphs(targets,time,intensity=1){
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap.Midnight;if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
  threeScene.background=new THREE.Color(pal[0]);const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3),phase=t*(state.animation==="Dinamik"?1.45:state.animation==="Silliq"?.65:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
- main.rotation.y=phase*.18+(state.scene%2)*.24;main.rotation.x=Math.sin(phase*.4)*.09;main.position.y=Math.sin(phase*.7)*.09;main.scale.setScalar([.78,.68,.76,.78,.76][state.scene]);main.position.x=[1.38,1.48,1.42,1.42,1.35][state.scene];main.position.z=-.45;updateOrganicMorphs(threeGroup.userData.morphTargets,phase, state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.72:1);
- const signature=threeGroup.userData;signature.liquid.rotation.y=-phase*.32;signature.liquid.rotation.z=Math.sin(phase*.8)*.12;signature.liquid.scale.setScalar((state.scene===1?.82:1.02)*(1+.035*Math.sin(phase*1.4)));signature.dropletA.position.y=-1.2+Math.sin(phase*1.2)*.14;signature.dropletB.position.y=1.45+Math.cos(phase*1.5)*.12;signature.orbit.rotation.z=phase*.18;signature.orbit2.rotation.x=1.12+Math.sin(phase*.42)*.14;signature.motif.rotation.y=Math.sin(phase*.48)*.16;signature.motif.rotation.x=Math.cos(phase*.36)*.09;signature.motif.position.y=signature.motifBaseY+Math.sin(phase*.9)*.075;
- const cx=[-.7,.65,-.55,.8,0][state.scene],cy=[.2,-.25,.35,-.1,.25][state.scene],z=8.8+(1-ease)*[1.45,1.1,.9,1.25,1][state.scene];
- threeCamera.position.x+=(cx+Math.sin(phase*.4)*.22-threeCamera.position.x)*.035;threeCamera.position.y+=(cy+Math.cos(phase*.35)*.12-threeCamera.position.y)*.035;threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(.28,0,0);target.render(threeScene,threeCamera);
+ main.rotation.y=phase*.27+(state.scene%2)*.24;main.rotation.x=Math.sin(phase*.58)*.14;main.position.y=Math.sin(phase*.82)*.14;main.scale.setScalar([.9,.86,.88,.9,.88][state.scene]);main.position.x=[.62,.66,.62,.68,.58][state.scene];main.position.z=-.15;updateOrganicMorphs(threeGroup.userData.morphTargets,phase, state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.72:1);
+ const signature=threeGroup.userData;signature.liquid.rotation.y=-phase*.38+Math.sin(phase*.31)*.12;signature.liquid.rotation.z=Math.sin(phase*.72)*.2;signature.liquid.scale.set(1.02+.075*Math.sin(phase*1.18),.98+.11*Math.sin(phase*.86+1.1),1+.065*Math.cos(phase*1.04));signature.dropletA.position.y=-1.2+Math.sin(phase*1.2)*.14;signature.dropletB.position.y=1.45+Math.cos(phase*1.5)*.12;signature.orbit.rotation.z=phase*.18;signature.orbit2.rotation.x=1.12+Math.sin(phase*.42)*.14;signature.motif.rotation.y=Math.sin(phase*.48)*.16;signature.motif.rotation.x=Math.cos(phase*.36)*.09;signature.motif.position.y=signature.motifBaseY+Math.sin(phase*.9)*.075;
+ const cx=[-.18,.18,-.12,.22,0][state.scene],cy=[.12,-.12,.18,-.08,.12][state.scene],z=7.8+(1-ease)*[.9,.7,.65,.8,.7][state.scene];
+ threeCamera.position.x+=(cx+Math.sin(phase*.4)*.22-threeCamera.position.x)*.035;threeCamera.position.y+=(cy+Math.cos(phase*.35)*.12-threeCamera.position.y)*.035;threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(.18,0,0);target.render(threeScene,threeCamera);
 }
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
