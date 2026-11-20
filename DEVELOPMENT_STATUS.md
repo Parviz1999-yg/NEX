@@ -165,3 +165,16 @@ Kodning sintaksisi va eski jo‘mrak/sachrash obyektlari olib tashlanganligi sta
 - [x] Tugma xatolik yuz bersa konsolga yozadi va foydalanuvchiga xatolik matnini ko‘rsatadi.
 - [x] HTML versiyasi va JavaScript cache-buster v0.5.4 ga ko‘tarildi; eski v0.5.3 JavaScript keshi ishlatilmasligi uchun.
 - [ ] Android brauzerida real sinov foydalanuvchi tomonidan tasdiqlanishi kerak.
+
+
+## v0.5.5 — Yangi kreativ variant tugmasini qayta ishlash
+- [x] Tugma hodisasi alohida funksiya orqali to‘g‘ridan-to‘g‘ri `onclick` ga biriktirildi.
+- [x] Har bosishda 6 xil kompozitsion joylashuv navbat bilan tanlanadi: tasma burchagi, vertikal masshtab va joylashuv o‘zgaradi.
+- [x] Tugma bosilishi bilan darhol ko‘rinadigan holat matni va kontrastli vizual tasdiq beriladi.
+- [x] 3D dvigatel hali yuklanmagan holatda ham tanlangan variant holati saqlanadi; dvigatel tayyor bo‘lgach joriy variant bilan obyektlar quriladi.
+- [x] Qayta chizish xatosi tugma hodisasini jim to‘xtatib qo‘ymasligi uchun render chaqiruvi alohida himoyalandi.
+- [x] HTML va JS cache-buster v0.5.5 ga yangilandi.
+- [ ] Android brauzerida tugmaning haqiqiy bosilishi va olti variantning ko‘zga ko‘rinadigan farqi foydalanuvchi tomonidan tasdiqlanishi kerak.
+
+### Tekshiruv chegarasi
+Manba kodida tugma hodisasi, 6 holatli kompozitsiya almashishi, versiya va element ID mosligi tekshirildi. Haqiqiy brauzerda ishlashi va Android WebGL renderi hali tasdiqlanmagan.
