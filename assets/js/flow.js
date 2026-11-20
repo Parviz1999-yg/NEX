@@ -28,7 +28,6 @@ function generateRecommendationScript(){
  if(!name||!niche||!bio||!benefit){alert("Avval akkaunt nomi, yo‘nalishi, tavsifi va foydasini to‘ldiring.");return}
  const clean=s=>String(s||"").trim().replace(/[.!?]+$/,"");
  const sentence=s=>{const v=clean(s);return v?v+".":""};
- const who=audience?"Ayniqsa "+clean(audience)+" uchun.":"";
  const hookOptions=[
   "Siz "+clean(niche)+" bo‘yicha yangi va foydali sahifa izlayapsizmi?",
   clean(niche)+" mavzusida kontent qidirayotgan bo‘lsangiz, bu profilga qarang.",
