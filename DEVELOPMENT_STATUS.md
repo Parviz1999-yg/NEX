@@ -404,3 +404,12 @@ Manba kodidagi boshqaruvlar, avtomatik matnni olib tashlash va versiya mosligi s
 
 ### v0.9.2 tekshiruv chegarasi
 Manba kodida ovoz maydonlariga bog‘liqlikni yo‘qotish, kartochka ma’lumotlari va versiya mosligi tekshiriladi. Haqiqiy Android/WebGL vizual sinovi bajarilgan deb hisoblanmaydi.
+
+
+## v0.9.3 — Tavsiya matnlarini muallif kiritgan qiymat bilan sinxronlash
+- Tavsiya rejimida Hook, Sabab, Ustunlik va Chorlov maydonlari qayta ko‘rsatildi; akkaunt tanishtirish kartochkasi esa profil ma’lumotlaridan avtomatik tuziladi.
+- Har bir matn o‘z sahnasiga bevosita bog‘landi: Hook → 1-karta, akkaunt profili → 2-karta, Sabab → 3-karta, Ustunlik → 4-karta, Chorlov → 5-karta.
+- Akkaunt kartochkasini yangilash tugmasi muallif yozgan matnlarni endi tasodifiy yoki avtomatik matn bilan almashtirmaydi.
+- Tavsiya ssenariysi uchun Hook, Sabab, Ustunlik va Chorlov kiritilishi tekshiriladi; vaqt hisobi tegishli kartochka matnlaridan olinadi.
+- Versiya/cache-buster: v0.9.3.
+- [ ] Android qurilmada besh kartochkaning har biridagi matn kiritilgan qiymatga aynan mosligini ko‘z bilan tekshirish.
