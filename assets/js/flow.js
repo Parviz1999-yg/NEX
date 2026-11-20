@@ -622,7 +622,6 @@ function drawRecommendationScene(c,w,h,now,pal){
  // Four independent art directions each retain their own composition, typography and graphic grammar.
  if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
-  pill(["STOP & LOOK","ACCOUNT / 01","YOUR BENEFIT","WHY THIS ONE","FOLLOW / SAVE"][idx],w*.10,h*.18);
   if(idx===1){
    avatar(w*.5,h*.39,w*.105);
    text(state.account.name||copy,w*.5,h*.57,w*.82,w*.064,fg,"950","center",2);
@@ -635,34 +634,29 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.save();c.strokeStyle=ac;c.lineWidth=w*.004;c.beginPath();c.moveTo(w*.08,h*.91);c.lineTo(w*.92,h*.91);c.stroke();c.restore();
  }else if(state.style==="Editorial / Magazine"){
   c.save();c.fillStyle="#f1eee5";c.fillRect(w*.055,h*.075,w*.89,h*.85);c.strokeStyle="#17202a66";c.lineWidth=1;c.strokeRect(w*.075,h*.095,w*.85,h*.81);
-  c.fillStyle="#17202a";c.font="900 "+(w*.024)+"px system-ui";c.textAlign="left";c.textBaseline="middle";c.fillText(cardAlphabet("NEX  /  CULTURE & IDEAS"),w*.10,h*.13);
-  c.textAlign="right";c.font="700 "+(w*.021)+"px system-ui";c.fillText(cardAlphabet("FIELD NOTE  0"+(idx+1)),w*.90,h*.13);
-  c.strokeStyle="#17202a55";c.beginPath();c.moveTo(w*.10,h*.17);c.lineTo(w*.90,h*.17);c.stroke();c.fillStyle="#1768a5";c.fillRect(w*.10,h*.22,w*.12,h*.009);c.restore();
+  c.strokeStyle="#17202a55";c.beginPath();c.moveTo(w*.10,h*.17);c.lineTo(w*.90,h*.17);c.stroke();c.restore();
   if(idx===1){
    avatar(w*.5,h*.36,w*.095);
    text(state.account.name||copy,w*.5,h*.52,w*.72,w*.057,"#17202a","900","center",2);
    text(state.account.niche+" · "+state.account.bio,w*.5,h*.65,w*.70,w*.027,"#283747","500","center",4);
    if(state.account.followers)text(state.account.followers+" FOLLOWERS",w*.5,h*.79,w*.7,w*.023,"#1768a5","800","center",1);
   }else{
-   text(copy||state.account.benefit||"Tavsiya etilgan sahifa",w*.11,h*.39,w*.76,w*(idx===0?.078:.067),"#17202a","900","left",6);
+   text(copy||state.account.benefit||"",w*.11,h*.39,w*.76,w*(idx===0?.078:.067),"#17202a","900","left",6);
    c.save();c.strokeStyle="#17202a66";c.beginPath();c.moveTo(w*.11,h*.72);c.lineTo(w*.89,h*.72);c.stroke();c.restore();
-   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Keyingi qadam"):state.account.niche,w*.11,h*.79,w*.73,w*.026,"#283747","500","left",3);
+   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||""):state.account.niche,w*.11,h*.79,w*.73,w*.026,"#283747","500","left",3);
   }
-  c.save();c.fillStyle="#17202a";c.font="800 "+(w*.021)+"px system-ui";c.textAlign="center";c.fillText(cardAlphabet("FIKR VA IMKONIYATLAR MAKONI"),w*.5,h*.885);c.restore();
  }else if(state.style==="Futuristic Motion"){
   c.save();const top=h*.23,bottom=h*.80;c.strokeStyle=ac+"99";c.lineWidth=1;
   for(let i=0;i<9;i++){const x=w*(.08+i*.105);c.beginPath();c.moveTo(x,top);c.lineTo(x,bottom);c.stroke()}
   for(let i=0;i<7;i++){const y=h*(.25+i*.085);c.beginPath();c.moveTo(w*.08,y);c.lineTo(w*.92,y);c.stroke()}
   c.strokeStyle=ac;c.lineWidth=w*.004;c.strokeRect(w*.08,top,w*.84,bottom-top);c.fillStyle=ac+"16";c.fillRect(w*.08,top,w*.84,bottom-top);c.restore();
-  pill("NEX // "+["SIGNAL","IDENTITY","BENEFIT","ANALYSIS","ACTION"][idx],w*.12,h*.16);
-  c.save();c.fillStyle=ac;c.font="800 "+(w*.021)+"px monospace";c.textAlign="right";c.fillText("0"+(idx+1)+" / 05",w*.88,h*.20);c.restore();
   if(idx===1){
    avatar(w*.5,h*.38,w*.09);
    text(state.account.name||copy,w*.5,h*.54,w*.72,w*.052,fg,"850","center",2);
    text(state.account.niche+" · "+state.account.bio,w*.5,h*.67,w*.72,w*.027,sub,"650","center",4);
   }else{
-   text(copy||"Tavsiya etilgan foydali sahifa",w*.14,h*.41,w*.72,w*.068,fg,"850","left",5);
-   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||"Profilga o‘ting"):state.account.niche,w*.14,h*.68,w*.70,w*.027,sub,"650","left",3);
+   text(copy||"",w*.14,h*.41,w*.72,w*.068,fg,"850","left",5);
+   text(idx===2?(state.account.benefit||state.account.audience):idx===3?(state.account.proof||state.account.bio):idx===4?(state.account.name||""):state.account.niche,w*.14,h*.68,w*.70,w*.027,sub,"650","left",3);
   }
   c.save();c.fillStyle=ac;c.fillRect(w*.14,h*.84,w*.22,h*.006);c.fillRect(w*.14,h*.86,w*.12,h*.006);c.restore();
  }
@@ -677,7 +671,6 @@ function drawRecommendationScene(c,w,h,now,pal){
  }
  if(idx===0){
   textPanel(w*.055,h*.27,w*.64,h*.53);
-  pill("NEX TAVSIYA QILADI",w*.09,h*.20);
   c.save();c.translate((1-e)*w*.05,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.10,h*.39,w*.53,w*.082,"#FFFFFF","900","left",5);
   c.globalAlpha=.95;text(state.account.niche||"Yangi bilim va foydali kontent",w*.10,h*.73,w*.53,w*.032,"#8BD8FF","800","left",2);c.restore();
  }else if(idx===1){
@@ -686,22 +679,20 @@ function drawRecommendationScene(c,w,h,now,pal){
   text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,fg,"750","center",2);
   text(state.account.bio||copy,w*.5,y+h*.445,w*.68,w*.031,fg,"500","center",3);
   if(state.account.followers){c.save();c.fillStyle=ac+"22";c.beginPath();c.roundRect(w*.2,y+h*.62,w*.6,h*.07,w*.025);c.fill();c.restore();text(state.account.followers+" obunachi",w*.5,y+h*.655,w*.54,w*.03,fg,"800","center",1)}
-  pill("AKKAUNT BILAN TANISHING",w*.14,h*.13);
  }else if(idx===2){
-  textPanel(w*.055,h*.27,w*.66,h*.48);pill("SIZGA QANDAY FOYDA BERADI?",w*.09,h*.20);c.save();c.globalAlpha=.16;c.fillStyle=ac;c.beginPath();c.arc(w*.82,h*.42,w*.24,0,Math.PI*2);c.fill();c.restore();
+  textPanel(w*.055,h*.27,w*.66,h*.48);c.save();c.globalAlpha=.16;c.fillStyle=ac;c.beginPath();c.arc(w*.82,h*.42,w*.24,0,Math.PI*2);c.fill();c.restore();
   text(copy||state.account.benefit,w*.10,h*.40,w*.54,w*.069,"#FFFFFF","900","left",5);c.save();c.fillStyle=ac;c.fillRect(w*.12,h*.72,w*.17,h*.012);c.restore();
-  text(state.account.audience?"Kimlar uchun: "+state.account.audience:"",w*.10,h*.70,w*.55,w*.027,"#8BD8FF","750","left",3);
+  text(state.account.audience||"",w*.10,h*.70,w*.55,w*.027,"#8BD8FF","750","left",3);
  }else if(idx===3){
-  textPanel(w*.055,h*.24,w*.66,h*.55);pill("NEGA AYNAN SHU SAHIFA?",w*.09,h*.17);
+  textPanel(w*.055,h*.24,w*.66,h*.55);
   c.save();c.fillStyle=ac;c.font="900 "+(w*.19)+"px Georgia";c.textAlign="left";c.fillText("“",w*.17,h*.4);c.restore();
   text(copy||state.account.proof||state.account.bio,w*.14,h*.46,w*.52,w*.056,"#FFFFFF","800","left",5);
   c.save();c.fillStyle=ac;c.fillRect(w*.18,h*.67,w*.2,h*.009);c.restore();
-  text(state.account.proof?"TAVSIYA SABABI":"O‘ZIGA XOS JIHATI",w*.14,h*.73,w*.52,w*.025,"#8BD8FF","850","left",2);
  }else{
   textPanel(w*.055,h*.28,w*.66,h*.50);
   c.save();c.globalAlpha=.16;c.strokeStyle=ac;c.lineWidth=w*.018;
   for(let r=0;r<5;r++){c.beginPath();c.arc(w*.5,h*.48,w*(.16+r*.075),t*.15+r*.3,t*.15+r*.3+Math.PI*1.5);c.stroke()}c.restore();
-  pill("KEYINGI QADAM",w*.09,h*.22);text(copy||"Foydali deb bilsangiz, kuzatib boring.",w*.10,h*.42,w*.54,w*.075,"#FFFFFF","900","left",4);
+  text(copy,w*.10,h*.42,w*.54,w*.075,"#FFFFFF","900","left",4);
   text(state.account.name||"",w*.10,h*.70,w*.54,w*.04,"#8BD8FF","850","left",2);
   if(state.account.link)text("Havola profil tavsifida",w*.10,h*.78,w*.54,w*.025,"#D7F0FF","700","left",1);
  }
