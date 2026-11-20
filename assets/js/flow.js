@@ -207,7 +207,7 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.save();c.translate((1-e)*w*.16,0);c.globalAlpha=e;text(copy||"Siz izlayotgan foydali sahifa shu bo‘lishi mumkin.",w*.13,h*.39,w*.76,w*.105,fg,"900","left",5);
   c.globalAlpha=.72;text(state.account.niche||"Yangi bilim va foydali kontent",w*.14,h*.78,w*.7,w*.034,ac,"700","left",2);c.restore();
  }else if(idx===1){
-  const y=h*.23+((1-e)*h*.2);card(w*.08,y,w*.84,h*.54);avatar(w*.5,y+h*.145,w*.105);
+  const y=h*.18+((1-e)*h*.2);card(w*.08,y,w*.84,h*.70);avatar(w*.5,y+h*.15,w*.105);
   text(state.account.name||"Akkaunt nomi",w*.5,y+h*.30,w*.72,w*.047,fg,"850","center",2);
   text(state.account.niche||"Akkaunt yo‘nalishi",w*.5,y+h*.365,w*.72,w*.03,ac,"750","center",2);
   text(state.account.bio||copy,w*.5,y+h*.445,w*.68,w*.031,fg,"500","center",3);
