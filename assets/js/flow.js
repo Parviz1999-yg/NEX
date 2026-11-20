@@ -101,13 +101,39 @@ function buildThreeObjects(){
  liquidGeometry.computeVertexNormals();
  const main=new THREE.Group();threeGroup.add(main);
  // NEX signature: suyuq simob tomchisi, shaffof metall va neon orbitasi.
- const liquid=new THREE.Mesh(liquidGeometry,mercury);liquid.position.set(state.scene===0?1.12:state.scene===4?-.95:1.28,.18,-.45);liquid.scale.setScalar(state.scene===1?.82:1.02);main.add(liquid);
- const dropletA=new THREE.Mesh(new THREE.SphereGeometry(.27,32,24),mercury);dropletA.position.set(-1.55,-1.2,.15);dropletA.scale.set(.72,1.25,.72);main.add(dropletA);
- const dropletB=new THREE.Mesh(new THREE.SphereGeometry(.14,24,18),mercury);dropletB.position.set(1.95,1.45,-.3);main.add(dropletB);
- const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.68,.018,12,144),neon);orbit.position.copy(liquid.position);orbit.rotation.set(.72,.18,-.34);main.add(orbit);
- const orbit2=new THREE.Mesh(new THREE.TorusGeometry(1.94,.012,10,144),bright);orbit2.position.copy(liquid.position);orbit2.rotation.set(1.12,.6,.25);main.add(orbit2);
+ const sceneIndex=state.scene;
+ const liquid=new THREE.Mesh(liquidGeometry,mercury);liquid.position.set(sceneIndex===0?1.12:sceneIndex===4?-.95:1.28,.18,-.45);liquid.scale.setScalar(sceneIndex===1?.82:1.02);liquid.visible=sceneIndex===0;main.add(liquid);
+ const dropletA=new THREE.Mesh(new THREE.SphereGeometry(.27,32,24),mercury);dropletA.position.set(-1.55,-1.2,.15);dropletA.scale.set(.72,1.25,.72);dropletA.visible=sceneIndex===0;main.add(dropletA);
+ const dropletB=new THREE.Mesh(new THREE.SphereGeometry(.14,24,18),mercury);dropletB.position.set(1.95,1.45,-.3);dropletB.visible=sceneIndex===0;main.add(dropletB);
+ const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.68,.018,12,144),neon);orbit.position.copy(liquid.position);orbit.rotation.set(.72,.18,-.34);orbit.visible=sceneIndex===0;main.add(orbit);
+ const orbit2=new THREE.Mesh(new THREE.TorusGeometry(1.94,.012,10,144),bright);orbit2.position.copy(liquid.position);orbit2.rotation.set(1.12,.6,.25);orbit2.visible=sceneIndex===0;main.add(orbit2);
  const add=(g,m,x,y,z,sx=1,sy=sx,sz=sx)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.rotation.set(rand()*Math.PI,rand()*Math.PI,rand()*Math.PI);main.add(o);return o};
- const v=Math.floor(rand()*5);
+ const motif=new THREE.Group();main.add(motif);
+ // Har bir hikoya bosqichi uchun alohida 3D metafora: dekor emas, mazmunni ifodalovchi shakl.
+ if(sceneIndex===1){
+  const frame=new THREE.Mesh(new THREE.TorusGeometry(1.18,.075,20,120),bright);frame.scale.set(1,.82,1);motif.add(frame);
+  const core=new THREE.Mesh(new THREE.DodecahedronGeometry(.72,1),mercury);core.position.z=.12;motif.add(core);
+  for(let i=0;i<3;i++){const node=new THREE.Mesh(new THREE.SphereGeometry(.095,20,16),neon);const q=i*Math.PI*2/3;node.position.set(Math.cos(q)*1.52,Math.sin(q)*1.22,.22);motif.add(node)}
+  motif.position.set(0,.05,.1);
+ }else if(sceneIndex===2){
+  for(let i=0;i<4;i++){const crystal=new THREE.Mesh(new THREE.OctahedronGeometry(.48+i*.12,1),i%2?bright:mercury);crystal.position.set((i-1.5)*.67,-.45+i*.42,-i*.12);crystal.rotation.set(.3*i,.4*i,.2*i);motif.add(crystal)}
+  const base=new THREE.Mesh(new THREE.TorusGeometry(1.55,.025,12,100),neon);base.rotation.x=Math.PI/2;base.position.y=-1.2;motif.add(base);
+  motif.position.set(.12,0,0);
+ }else if(sceneIndex===3){
+  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(.94,.19,180,24,2,5),mercury);motif.add(knot);
+  const cut=new THREE.Mesh(new THREE.TorusGeometry(1.48,.045,16,120),neon);cut.rotation.set(.8,.2,.5);motif.add(cut);
+  const shard=new THREE.Mesh(new THREE.OctahedronGeometry(.48,1),bright);shard.position.set(1.38,-.95,.5);motif.add(shard);
+  motif.position.set(.05,.05,0);
+ }else if(sceneIndex===4){
+  for(let i=0;i<3;i++){const gate=new THREE.Mesh(new THREE.TorusGeometry(1.12+i*.28,.035-i*.006,16,120),i===1?mercury:neon);gate.rotation.y=(i-1)*.22;gate.position.z=-i*.28;motif.add(gate)}
+  const seed=new THREE.Mesh(new THREE.IcosahedronGeometry(.32,2),bright);seed.position.z=.35;motif.add(seed);
+  motif.position.set(0,.05,0);
+ }else{
+  const nucleus=new THREE.Mesh(new THREE.IcosahedronGeometry(1.02,3),mercury);motif.add(nucleus);
+  const pulse=new THREE.Mesh(new THREE.TorusGeometry(1.48,.045,16,120),neon);pulse.rotation.set(.7,.2,-.25);motif.add(pulse);
+  motif.position.set(0,0,0);
+ }
+ const v=Math.floor(rand()*5); const v=Math.floor(rand()*5);
  if(style==="Cinematic 3D"){
   if(v===0){add(new THREE.TorusKnotGeometry(1.05,.28,180,24,2,3),metal,0,.2,0,1.15);add(new THREE.IcosahedronGeometry(.48,1),bright,-1.55,-1.35,-.7,.7)}
   else if(v===1){add(new THREE.IcosahedronGeometry(1.35,1),metal,0,.1,0);add(new THREE.TorusGeometry(1.9,.035,12,100),bright,0,.1,-.4,1,1,.6)}
@@ -123,13 +149,13 @@ function buildThreeObjects(){
   add(new THREE.TorusKnotGeometry(1.1,.09,160,18,3,5),metal,0,0,0);for(let i=0;i<6;i++){const a=i*Math.PI/3;add(new THREE.BoxGeometry(.38,.38,.38),bright,Math.cos(a)*2,Math.sin(a)*1.7,-.6,.8)}add(new THREE.OctahedronGeometry(.62,1),metal,0,0,1.15);
  }
  const pts=[];for(let i=0;i<90;i++)pts.push((rand()-.5)*8,(rand()-.5)*11,-2-rand()*7);const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));threeGroup.add(new THREE.Points(geo,new THREE.PointsMaterial({color:secondary,size:.025,sizeAttenuation:true,transparent:true,opacity:.72})));
- threeGroup.userData={main,phase:rand()*Math.PI*2,liquid,dropletA,dropletB,orbit,orbit2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
+ threeGroup.userData={main,motif,phase:rand()*Math.PI*2,liquid,dropletA,dropletB,orbit,orbit2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
 }
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap.Midnight;if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
  threeScene.background=new THREE.Color(pal[0]);const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3),phase=t*(state.animation==="Dinamik"?1.45:state.animation==="Silliq"?.65:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
  main.rotation.y=phase*.24+(state.scene%2)*.35;main.rotation.x=Math.sin(phase*.55)*.16;main.position.y=Math.sin(phase*.7)*.16;
- const signature=threeGroup.userData;signature.liquid.rotation.y=-phase*.32;signature.liquid.rotation.z=Math.sin(phase*.8)*.12;signature.liquid.scale.setScalar((state.scene===1?.82:1.02)*(1+.035*Math.sin(phase*1.4)));signature.dropletA.position.y=-1.2+Math.sin(phase*1.2)*.14;signature.dropletB.position.y=1.45+Math.cos(phase*1.5)*.12;signature.orbit.rotation.z=phase*.18;signature.orbit2.rotation.x=1.12+Math.sin(phase*.42)*.14;
+ const signature=threeGroup.userData;signature.liquid.rotation.y=-phase*.32;signature.liquid.rotation.z=Math.sin(phase*.8)*.12;signature.liquid.scale.setScalar((state.scene===1?.82:1.02)*(1+.035*Math.sin(phase*1.4)));signature.dropletA.position.y=-1.2+Math.sin(phase*1.2)*.14;signature.dropletB.position.y=1.45+Math.cos(phase*1.5)*.12;signature.orbit.rotation.z=phase*.18;signature.orbit2.rotation.x=1.12+Math.sin(phase*.42)*.14;signature.motif.rotation.y=Math.sin(phase*.48)*.16;signature.motif.rotation.x=Math.cos(phase*.36)*.09;signature.motif.position.y+=Math.sin(phase*.9)*.0018;
  const cx=[-.7,.65,-.55,.8,0][state.scene],cy=[.2,-.25,.35,-.1,.25][state.scene],z=8.8+(1-ease)*[1.45,1.1,.9,1.25,1][state.scene];
  threeCamera.position.x+=(cx+Math.sin(phase*.4)*.22-threeCamera.position.x)*.035;threeCamera.position.y+=(cy+Math.cos(phase*.35)*.12-threeCamera.position.y)*.035;threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(0,0,0);target.render(threeScene,threeCamera);
 }
