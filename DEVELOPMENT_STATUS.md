@@ -426,3 +426,19 @@ Manba kodida ovoz maydonlariga bog‘liqlikni yo‘qotish, kartochka ma’lumotl
 
 ### v0.9.4 tekshiruv chegarasi
 Manba kodidagi render chaqiruvlari, palitra ranglarining Canvas/WebGL qatlamlariga uzatilishi, foydalanuvchi matnlarining alohida sahnalarga bog‘lanishi va versiya/cache-buster mosligi tekshirildi. Haqiqiy Android qurilmasida vizual/WebGL sinovi hali bajarilmagan.
+
+
+## v0.9.7 — Tavsiya akkaunt sozlamalarini yagona vizual tizimga ulash
+- [x] Tavsiya akkaunt yo‘nalishlari faqat to‘rtta qiymat bilan saqlandi: Kreativ, Ilm-fan, Texnologiya, Yumor.
+- [x] Yo‘nalish tanlovi Canvas motivlari, 3D xrom oqim geometriyasi, deformatsiya ritmi, kamera siljishi va sahna kompozitsiyasiga bevosita ta’sir qiladi.
+- [x] Rolik g‘oyasi/asosiy fokus maydoni Tavsiya rejimida aniq nomlandi; uning matnidan deterministik vizual seed va mavzu fokus signali olinadi. Matn qo‘shimcha dekorativ sarlavha sifatida kadrga chiqarilmaydi.
+- [x] Bayon uslubi endi faqat tezlik emas: shrift oilasi, qalinlik, matn masshtabi, qator oralig‘i va harakat energiyasini ham boshqaradi.
+- [x] To‘rtta mustaqil vizual til va beshta animatsiya profili mavzu/bayon profillari bilan birgalikda ishlaydi.
+- [x] O‘zgarishlar faqat Tavsiya akkaunt rejimiga cheklangan; boshqa studiyalarning avvalgi render yo‘li va harakati saqlangan.
+- [x] Ilova versiyasi va CSS/JS cache-buster v0.9.7 ga yangilandi.
+- [x] JavaScript sintaksisi tekshirildi.
+- [ ] Android brauzerida 4 yo‘nalish × 4 vizual til × 8 bayon uslubi × 5 animatsiya kombinatsiyalarini ko‘z bilan tekshirish.
+- [ ] Android qurilmada WebGL FPS, ekran yozish ravonligi va qizish sinovi.
+
+### v0.9.7 tekshiruv chegarasi
+JavaScript sintaksisi va manba kodidagi sozlama bog‘lanishlari tekshirildi. Haqiqiy Android/WebGL vizual sinovi bajarilgan deb hisoblanmaydi.
