@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.3**  
+Amaldagi versiya: **v0.8.4**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -316,3 +316,13 @@ Manba kodiga boshqaruv parametrlari kiritildi. Bu commit real brauzer yoki Andro
 
 ### v0.8.3 tekshiruv chegarasi
 Kod darajasida parametrlar va bog‘lanishlar tekshirildi. Haqiqiy Android vizual sinovi va FPS o‘lchovi bajarilmagan.
+
+
+## v0.8.4 — Kamera transformi tartibini tuzatish
+- [x] 2D kamera transformi kamera siljishi va masshtabi hisoblangandan keyin qo‘llanadi; vaqtinchalik qiymatga oldindan murojaat qilish xatosi bartaraf etildi.
+- [x] Kamera siljishi, aylanishi va masshtabi bitta hisoblangan profil orqali ishlaydi.
+- [x] HTML va JavaScript versiyasi/cache-buster v0.8.4 ga moslashtirildi.
+- [ ] Brauzer va Android qurilmada to‘liq vizual sinov.
+
+### v0.8.4 tekshiruv chegarasi
+Koddagi e’lon qilish va foydalanish tartibi tekshirildi; runtime sinovi hali bajarilmadi.
