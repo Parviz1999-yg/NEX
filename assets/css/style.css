@@ -70,3 +70,31 @@ body{background:radial-gradient(ellipse at 78% 0%,#29221b 0,transparent 40%),#10
 .palette-note strong{color:#f1eee8}
 #shuffleBackground{border-color:#65513c;background:linear-gradient(110deg,#27221d,#17191c);color:#e6ddd0}
 #shuffleBackground.shuffle-flash{color:#17130f;background:linear-gradient(110deg,#e0c59e,#b88752,#e0c59e);border-color:#e0c59e;box-shadow:0 0 0 3px #b8875222}
+
+/* NEX v0.5.1 — bright electric-blue / polished chrome identity */
+:root{color-scheme:dark;--bg:#050d20;--panel:#0b1830;--line:#244a78;--text:#f5faff;--muted:#a9c6e8;--accent:#168cff;--paper:#e8f5ff;--nex-blue:#168cff;--nex-ice:#8bdcff}
+body{background:radial-gradient(ellipse at 50% -12%,#123d78 0%,#0a1b3b 35%,transparent 72%),#050d20;color:var(--text)}
+.topbar{background:#06132bf5;border-bottom:1px solid #168cff88;backdrop-filter:none}
+.topbar .brand{background:linear-gradient(100deg,#fff 0%,#a9dfff 24%,#fff 42%,#168cff 62%,#dff6ff 82%,#fff 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar .brand span{color:#80ceff;-webkit-text-fill-color:#80ceff}
+.eyebrow,.topbar #stepLabel{color:#70c4ff}
+h1 em{color:#49adff}
+.direction,.panel,.option,.palette{background:linear-gradient(145deg,#102548,#09162d);border-color:#4d91d355}
+.direction:hover,.option:hover,.palette:hover{border-color:#56baff;background:linear-gradient(145deg,#153568,#0b1b38)}
+.direction.selected,.option.selected,.palette.selected{border-color:#36aaff;background:linear-gradient(145deg,#16447d,#0c2041);box-shadow:inset 0 0 0 1px #58baff99,0 0 22px #168cff26}
+.btn.primary{background:linear-gradient(115deg,#e9f8ff,#68c6ff 42%,#168cff 100%);color:#041126;border:1px solid #c9efff;box-shadow:0 4px 22px #168cff44}
+.btn.ghost{border-color:#3974ae;color:#eaf7ff}
+.form-panel input,.form-panel select,.studio-controls textarea,.script-step textarea,.account-fields textarea,.account-fields input,.studio-controls #sceneVoice{background:#06142b;border-color:#28517f;color:#f5faff}
+.form-panel input:focus,.form-panel select:focus,.studio-controls textarea:focus,.script-step textarea:focus,.account-fields input:focus,.account-fields textarea:focus,.studio-controls #sceneVoice:focus{border-color:#4bb7ff;box-shadow:0 0 0 2px #168cff25}
+.palette-note{border:1px solid #348bd866;border-left:4px solid #168cff;background:#0d2850;color:#e4f4ff}
+.palette-note strong{color:#fff}
+.swatches i{border-color:#0b1a32}
+.reel-frame{background:#06142f;border:1px solid #53baff;box-shadow:0 0 0 1px #168cff33,inset 0 0 28px #168cff18}
+.timeline{background:#18365b}.timeline div{background:linear-gradient(90deg,#9ce7ff,#168cff)}
+.scene-chip{background:#081831;border-color:#28517f;color:#a9c6e8}
+.scene-chip.active{background:#16447d;border-color:#5fc3ff;color:#fff;box-shadow:0 0 14px #168cff44}
+.summary{border-color:#28517f}
+#shuffleBackground{border-color:#459ce0;background:linear-gradient(110deg,#123568,#0a1b37);color:#effaff}
+#shuffleBackground.shuffle-flash{color:#041126;background:linear-gradient(110deg,#fff,#7bd5ff,#168cff);border-color:#dff8ff;box-shadow:0 0 0 3px #168cff35,0 0 30px #168cff77}
+.app-version{border-color:#367bb7;color:#a9dfff}
+.webgl-warning{border-color:#ffbf4d;color:#ffe0a1;background:#2c210c}
