@@ -875,9 +875,14 @@ function createNewCreativeVariant(){
  button._shuffleTimer=setTimeout(()=>{button.classList.remove("shuffle-flash");button.textContent="✧ Yangi kreativ variant";},2200);
 }
 if(shuffleButton){shuffleButton.onclick=createNewCreativeVariant;}
-$("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;$("recordPause").textContent="Ⅱ";draw()};
-$("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶"};
-$("recordExit").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;$("recordPause").textContent="Ⅱ";$("startPreview").textContent="▶ Davom etish";state.started=performance.now()-state.elapsed;updateSceneUI();draw()};
+let recordControlsTimer=0;
+function revealRecordControls(){const overlay=$("recordOverlay");overlay.classList.add("controls-visible");clearTimeout(recordControlsTimer);recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800)}
+const recordOverlay=$("recordOverlay"),recordControls=recordOverlay.querySelector(".record-controls");
+recordOverlay.addEventListener("click",event=>{if(event.target.closest(".record-controls"))return;revealRecordControls()});
+recordControls.addEventListener("click",event=>{event.stopPropagation();revealRecordControls()});
+$("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;$("recordPause").textContent="Ⅱ";revealRecordControls();draw()};
+$("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶";revealRecordControls()};
+$("recordExit").onclick=()=>{clearTimeout(recordControlsTimer);recordOverlay.classList.remove("controls-visible");state.playing=false;state.recording=false;$("recordOverlay").hidden=true;$("recordPause").textContent="Ⅱ";$("startPreview").textContent="▶ Davom etish";state.started=performance.now()-state.elapsed;updateSceneUI();draw()};
 $("finish").onclick=()=>{state.playing=false;state.recording=false;$("recordOverlay").hidden=true;page("home")};
 window.addEventListener("resize",draw);
 initThreeEngine();
