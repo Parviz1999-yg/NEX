@@ -83,11 +83,11 @@ async function initThreeEngine(){
   threeScene=new THREE.Scene();threeCamera=new THREE.PerspectiveCamera(34,360/640,.1,100);threeCamera.position.set(0,0,9);
   const pmrem=new THREE.PMREMGenerator(threeRenderer);pmrem.compileEquirectangularShader();
   const room=new RoomEnvironment(threeRenderer);threeScene.environment=pmrem.fromScene(room,.04).texture;room.dispose();pmrem.dispose();
-  threeScene.add(new THREE.HemisphereLight(0xeaf6ff,0x07142d,2.4));
-  const key=new THREE.DirectionalLight(0xffffff,5.2);key.position.set(-4,6,7);threeScene.add(key);
-  const rim=new THREE.PointLight(0x168cff,72,22);rim.position.set(4,1,3);threeScene.add(rim);
-  const fill=new THREE.PointLight(0x8bdcff,58,22);fill.position.set(-4,-3,2);threeScene.add(fill);
-  const topLight=new THREE.PointLight(0xffffff,48,20);topLight.position.set(0,5,1);threeScene.add(topLight);
+  threeScene.add(new THREE.HemisphereLight(0xf4f9ff,0x24364c,3.1));
+  const key=new THREE.DirectionalLight(0xffffff,7.5);key.position.set(-4,6,7);threeScene.add(key);
+  const rim=new THREE.PointLight(0x168cff,95,22);rim.position.set(4,1,3);threeScene.add(rim);
+  const fill=new THREE.PointLight(0xb9eaff,88,22);fill.position.set(-4,-3,2);threeScene.add(fill);
+  const topLight=new THREE.PointLight(0xffffff,72,20);topLight.position.set(0,5,1);threeScene.add(topLight);
   buildNexLogo();
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
  }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
@@ -96,7 +96,7 @@ function buildThreeObjects(){
  if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
  threeGroup=new THREE.Group();threeScene.add(threeGroup);
  const pal=paletteMap[state.palette]||paletteMap["Electric Blue"],rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const chrome=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.018,envMapIntensity:5.8,side:THREE.DoubleSide});
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xf7fbff,metalness:.78,roughness:.14,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:3.2,emissive:0x536a80,emissiveIntensity:.34,side:THREE.DoubleSide});
  const blueMetal=new THREE.MeshPhysicalMaterial({color:0xbfc8d2,metalness:1,roughness:.06,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.2,side:THREE.DoubleSide});
  const iceMetal=new THREE.MeshPhysicalMaterial({color:0xf1f4f7,metalness:1,roughness:.045,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:5.4,side:THREE.DoubleSide});
  const main=new THREE.Group();threeGroup.add(main);const flows=[];
@@ -163,7 +163,7 @@ function updateFlowSurfaces(flows,time,intensity=1){
    py+=entranceKick*(scene===4?-.8:1);
    pz+=transition*Math.cos(u*Math.PI*4-phase)*.32;
    const styleBoost=style==="Kinetic Typography"?1.28:style==="Editorial / Magazine"?.78:style==="Futuristic Motion"?1.42:1;
-   attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
+   // Portrait camera framing: compress horizontal choreography so the full liquid form remains inside 9:16.\n   px*=.34;\n   attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
   }
   attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
  }
