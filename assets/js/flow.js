@@ -113,7 +113,7 @@ function buildThreeObjects(){
  const variantRotation=[-.62,-.34,-.08,.22,.48,.72][variant];
  const variantScale=[1.82,2.02,2.28,1.94,2.16,1.88][variant];
  flow.rotation.set(.08+variant*.025,-.12,variantRotation+(style==="Kinetic Typography"?.12:style==="Editorial / Magazine"?.04:style==="Futuristic Motion"?-.1:0));
- flow.scale.set(variantScale*.72,variantScale*.72,1);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
+ flow.scale.set(variantScale*.86,variantScale*.78,1);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],.42);
  main.add(flow);flows.push(flow);
  threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
@@ -126,6 +126,8 @@ function createFlowSurface(segments,widthSegments,material,seed){
  const mesh=new THREE.Mesh(geometry,material);mesh.userData.flowBase=new Float32Array(base);mesh.userData.flowSeed=seed;return mesh;
 }
 function updateFlowSurfaces(flows,time,intensity=1){
+ const sceneLocal=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/Math.max(1,state.sceneDurations[state.scene])));
+ const reveal=1-Math.pow(1-Math.min(1,sceneLocal/.34),3);
  for(const mesh of flows){
   const attr=mesh.geometry.attributes.position,base=mesh.userData.flowBase,seed=mesh.userData.flowSeed;
   const style=state.style,scene=state.scene;
@@ -185,8 +187,12 @@ function updateFlowSurfaces(flows,time,intensity=1){
     px+=Math.sin(u*Math.PI*6+phase*.7)*.12*edge;
    }
    const styleBoost=style==="Kinetic Typography"?1.18:style==="Editorial / Magazine"?.82:style==="Futuristic Motion"?1.34:1;
-   // Portrait camera framing: preserve the full ribbon inside the 9:16 stage.
-   px*=.34;
+   // Portrait framing: the chrome ribbon now crosses the foreground instead of sitting as a narrow backdrop.
+   px*=.49;
+   const flatY=v*.13;
+   py=flatY+(py-flatY)*reveal;
+   pz*=reveal;
+   px*=.58+.42*reveal;
    attr.setXYZ(i,px,py*intensity*styleBoost,pz*intensity*styleBoost);
   }
   attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
@@ -234,23 +240,28 @@ function updateNexLogo(progress,visible){
 }
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;
- if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
+ if(threeSeed!==state.backgroundSeed)buildThreeObjects();
  threeScene.background=new THREE.Color("#05080f");
  const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene]));
  const phase=t*(state.animation==="Dinamik"?1.42:state.animation==="Silliq"?.82:1)+threeGroup.userData.phase;
  const main=threeGroup.userData.main;
- main.rotation.y=state.scene===1?Math.sin(phase*.22)*.22:Math.sin(phase*.31)*.12;
- main.rotation.x=state.scene===3?Math.sin(phase*.8)*.16:Math.sin(phase*.24)*.08;
- main.position.y=state.scene===4?Math.sin(phase*.42)*.24:Math.sin(phase*.5)*.12;
- main.position.x=state.scene===2?Math.sin(phase*.62)*.3:Math.sin(phase*.35)*.16;
- main.scale.setScalar(state.scene===1?1.12:state.scene===3?1.08:1);
+ const entrance=1-Math.pow(1-Math.min(1,local/.30),3);
+ const sceneTilt=[-.12,.22,-.28,.34,-.18][state.scene];
+ main.rotation.y=sceneTilt+Math.sin(phase*.31)*.14;
+ main.rotation.x=[-.08,.18,-.12,.26,-.22][state.scene]+Math.sin(phase*.48)*.07;
+ main.rotation.z=[-.10,.18,.02,-.22,.28][state.scene]+Math.sin(phase*.27)*.045;
+ main.position.y=[-.72,.18,-.28,.52,-.42][state.scene]*(1-entrance)+Math.sin(phase*.5)*.16;
+ main.position.x=[-.48,.24,.42,-.32,.18][state.scene]*(1-entrance)+Math.sin(phase*.35)*.20;
+ main.position.z=.34+[.18,.42,.08,.55,.28][state.scene]+Math.sin(phase*.62)*.12;
+ const sceneScale=[1.04,1.18,1.12,1.22,1.10][state.scene];
+ main.scale.setScalar(sceneScale*(.82+.18*entrance));
  updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.2:state.animation==="Silliq"?.86:1);
  const cameraMoves=[
-  [0,0,8.35],
-  [Math.sin(phase*.22)*.2,.08,8.05],
-  [-.22+Math.sin(phase*.35)*.16,0,8.6],
-  [Math.sin(phase*.55)*.12,.18,7.85],
-  [0,Math.sin(phase*.3)*.16,8.15]
+  [0,-.08,7.55],
+  [Math.sin(phase*.28)*.34,.18,7.15],
+  [-.42+Math.sin(phase*.42)*.24,-.12,7.35],
+  [Math.sin(phase*.62)*.26,.28,6.85],
+  [0,Math.sin(phase*.36)*.24,7.05]
  ];
  const move=cameraMoves[state.scene];
  threeCamera.position.x+=(move[0]-threeCamera.position.x)*.045;
