@@ -14,58 +14,31 @@ document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",(
 bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
 document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(b.dataset.colors||"").split(",");b.querySelectorAll(".swatches i").forEach((dot,i)=>dot.style.backgroundColor=colors[i]||"#777")});
 $("toScript").onclick=()=>{state.topicType=$("topicType").value;state.title=$("topicTitle").value.trim();state.tone=$("tone").value;if(!state.topicType||!state.title){alert("Mavzu turi va mavzu nomini kiriting.");return}configureScript();page("script")};
-$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];readAccountForm();if(state.mode==="tavsiya"){if(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}generateRecommendationScript()}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Kartochka matnini qisqartiring.");return}if(state.mode!=="tavsiya"&&(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim())){alert("Birinchi, ikkinchi va yakuniy matnlarni to‘ldiring.");return}page("style")};
+$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];readAccountForm();if(state.mode==="tavsiya"){if(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}generateRecommendationScript()}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Kartochka matnini qisqartiring.");return}if(state.mode==="tavsiya"&&(!state.script[0].trim()||!state.script[2].trim()||!state.script[3].trim()||!state.script[4].trim())){alert("Hook, Sabab, Ustunlik va Chorlov matnlarini kiriting.");return}if(state.mode!=="tavsiya"&&(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim())){alert("Birinchi, ikkinchi va yakuniy matnlarni to‘ldiring.");return}page("style")};
 $("toPalette").onclick=()=>page("palette");$("toAnimation").onclick=()=>page("animation");$("toStudio").onclick=()=>{page("studio");try{buildStudio();start()}catch(error){console.error("NEX Studio error:",error);const summary=$("summary");if(summary)summary.textContent="Namoyish oynasini tayyorlashda xatolik yuz berdi: "+(error&&error.message?error.message:"Noma’lum xato");}};
 function buildStudio(){calculateDurations();$("sceneTextLabel").hidden=state.mode==="tavsiya";$("sceneText").hidden=state.mode==="tavsiya";state.backgroundSeed=Math.floor(Math.random()*4294967295);state.lastScene=-1;$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation+"<br><strong>Davomiylik: "+Math.ceil(total/1000)+" soniya</strong>";if(state.webglError){const warning=document.createElement("p");warning.className="webgl-warning";warning.textContent=state.webglError;$("summary").appendChild(warning)}$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=sceneTitle(i);b.onclick=()=>{state.scene=i;state.elapsed=sceneStart(i);state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);refreshSceneDurationUI();draw(performance.now())}
-function configureScript(){const labels=state.mode==="manba"?["HOOK — qiziqtirish","RESURSNI TANISHTIRISH","NIMA UCHUN KERAK?","QANDAY FOYDALANISH?","CHORLOV — yakun"]:state.mode==="fakt"?["HOOK — savol yoki kutilmagan fikr","FAKTNI OCHISH","IZOH — sabab va dalil","QIZIQARLI TAFSILOT","YAKUNIY FIKR"]:state.mode==="ibora"?["HOOK — fikrga kirish","ASOSIY IBORA","MA’NO — chuqurroq izoh","HAYOTIY BOG‘LANISH","YAKUNIY FIKR"]:["HOOK — e’tiborni tortish","E’LON — akkauntni tanishtirish","NIMA UCHUN KUZATISH KERAK?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV — yakun"];["introLabel","whyLabel","diffLabel","ctaLabel"].forEach((id,i)=>$(id).textContent=labels[i+1]);$("scriptHook").placeholder=labels[0]+"...";$("accountFields").hidden=state.mode!=="tavsiya";["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"].forEach((id,i)=>$(id).value=state.script[i]||"");document.querySelectorAll("#page-script .script-step").forEach(el=>el.hidden=state.mode==="tavsiya");}
+function configureScript(){
+ const labels=state.mode==="manba"?["HOOK — qiziqtirish","RESURSNI TANISHTIRISH","NIMA UCHUN KERAK?","QANDAY FOYDALANISH?","CHORLOV — yakun"]:state.mode==="fakt"?["HOOK — savol yoki kutilmagan fikr","FAKTNI OCHISH","IZOH — sabab va dalil","QIZIQARLI TAFSILOT","YAKUNIY FIKR"]:state.mode==="ibora"?["HOOK — fikrga kirish","ASOSIY IBORA","MA’NO — chuqurroq izoh","HAYOTIY BOG‘LANISH","YAKUNIY FIKR"]:["HOOK — e’tiborni tortish","AKKAUNT KARTOCHKASI","SABAB — nega tavsiya qilinyapti?","USTUNLIK — nimasi bilan foydali?","CHORLOV — yakun"];
+ ["introLabel","whyLabel","diffLabel","ctaLabel"].forEach((id,i)=>$(id).textContent=labels[i+1]);
+ $("scriptHook").placeholder=labels[0]+"...";
+ $("accountFields").hidden=state.mode!=="tavsiya";
+ const ids=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"];
+ ids.forEach((id,i)=>$(id).value=state.script[i]||"");
+ document.querySelectorAll("#page-script .script-step").forEach((el,i)=>{
+  el.hidden=state.mode==="tavsiya"?(i===1):false;
+ });
+}
 
 function readAccountForm(){
  state.account={name:$("accountName").value.trim(),niche:$("accountNiche").value.trim(),bio:$("accountBio").value.trim(),benefit:$("accountBenefit").value.trim(),audience:$("accountAudience").value.trim(),proof:$("accountProof").value.trim(),followers:$("accountFollowers").value.trim(),link:$("accountLink").value.trim(),image:state.account.image};
  return state.account;
 }
 function generateRecommendationScript(){
- const a=readAccountForm(),name=a.name,niche=a.niche,bio=a.bio,benefit=a.benefit,audience=a.audience,proof=a.proof,followers=a.followers;
- if(!name||!niche||!bio||!benefit){alert("Avval akkaunt nomi, yo‘nalishi, tavsifi va foydasini to‘ldiring.");return}
- const clean=s=>String(s||"").trim().replace(/[.!?]+$/,"");
- const sentence=s=>{const v=clean(s);return v?v+".":""};
- const hookOptions=[
-  "Siz "+clean(niche)+" bo‘yicha yangi va foydali sahifa izlayapsizmi?",
-  clean(niche)+" mavzusida kontent qidirayotgan bo‘lsangiz, bu profilga qarang.",
-  "Bir akkauntni shunchaki kuzatish emas, undan foyda olish muhim. "+clean(name)+" bilan tanishing.",
-  " "+clean(name)+" — "+clean(niche)+" mavzusiga qiziqqanlar e’tibor berishi mumkin bo‘lgan sahifa.",
-  "Sizga mos kontentni topish har doim ham oson emas. Mana bir variant: "+clean(name)+".",
-  clean(niche)+"ga qiziqasizmi? Unda keyingi profilni ko‘rib chiqing."
- ];
- const ctaOptions=[
-  clean(name)+" profiliga kirib, so‘nggi uchta postini ko‘rib chiqing.",
-  "Kontenti sizga mos tushsa, "+clean(name)+" sahifasini kuzatib boring.",
-  "Profilni saqlab qo‘ying — keyinroq mazmunini batafsil ko‘rib chiqasiz.",
-  "Sizningcha, "+clean(name)+" kimlarga foydali bo‘lishi mumkin? Fikringizni yozing.",
-  "Avval sahifani o‘zingiz baholang, keyin kuzatish haqida qaror qiling."
- ];
- const hook=hookOptions[Math.floor(Math.random()*hookOptions.length)].trim();
- const cta=ctaOptions[Math.floor(Math.random()*ctaOptions.length)];
- const proofLine=proof
-  ?"E’tibor berishga arziydigan jihat: "+clean(proof)+"."
-  :"Aniq xulosa qilishdan oldin sahifadagi postlar, mualliflik va ma’lumotlar sifatini tekshiring.";
- const audienceLine=audience
-  ?"Bu yo‘nalish, ayniqsa, "+clean(audience)+" uchun qiziqarli bo‘lishi mumkin."
-  :"Agar mavzu sizga yaqin bo‘lsa, sahifadagi materiallarni ko‘rib chiqing.";
- const profileDetail=followers
-  ?"Profil hozir "+clean(followers)+" obunachiga ega. Bu raqam sifat kafolati emas, faqat profil haqidagi ma’lumot."
-  :"";
- const scripts=[
-  hook,
-  clean(name)+" — "+clean(niche)+" yo‘nalishidagi sahifa. "+sentence(bio),
-  "Siz olishingiz mumkin bo‘lgan foyda: "+clean(benefit)+". "+audienceLine,
-  proofLine+(profileDetail?" "+profileDetail:""),
-  cta
- ];
-
- state.script=scripts;
- const textIds=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"];
- textIds.forEach((id,i)=>$(id).value=scripts[i]);
- const button=$("generateAccountScript");button.textContent="✓ Kartochkalar tayyor — qayta tuzish";
+ const a=readAccountForm();
+ if(!a.name||!a.niche||!a.bio||!a.benefit){alert("Avval akkaunt nomi, yo‘nalishi, tavsifi va foydasini to‘ldiring.");return}
+ // Faqat akkaunt kartochkasi ma’lumotlari yangilanadi; muallif yozgan Hook, Sabab, Ustunlik va Chorlovga tegilmaydi.
+ state.script[1]=a.name+" — "+a.niche+". "+a.bio;
+ const button=$("generateAccountScript");button.textContent="✓ Akkaunt kartochkasi yangilandi";
  calculateDurations();
 }
 function getMotionProfile(){
@@ -80,8 +53,8 @@ function getMotionProfile(){
  const tone={"Jiddiy":.92,"Ilmiy":.82,"Sodda va tushunarli":.96,"Yumor":1.18,"Tahliliy":.88,"Motivatsion":1.12,"Sirli va qiziqarli":.9,"Falsafiy":.76}[state.tone]||1;
  return {...p,speed:p.speed*tone,flow:p.flow*tone};
 }
-function sceneTitle(i){return state.mode==="tavsiya"?["HOOK","AKKAUNT TAVSIYASI","NIMA UCHUN?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV"][i]:scenes[i]}function sceneCopy(i){return state.script[i]||""}function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length}
-function calculateDurations(){state.sceneDurations=state.script.map(v=>Math.min(12000,Math.max(3500,Math.ceil(wordCount(v)/2.5*1000)+1100)));total=state.sceneDurations.reduce((a,b)=>a+b,0);refreshDurationInfo()}
+function sceneTitle(i){return state.mode==="tavsiya"?["HOOK","AKKAUNT TAVSIYASI","SABAB","USTUNLIK","CHORLOV"][i]:scenes[i]}function sceneCopy(i){return state.script[i]||""}function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length}
+function calculateDurations(){state.sceneDurations=state.script.map((v,i)=>i===1&&state.mode==="tavsiya"?6500:Math.min(12000,Math.max(3500,Math.ceil(wordCount(v)/2.5*1000)+1100)));total=state.sceneDurations.reduce((a,b)=>a+b,0);refreshDurationInfo()}
 function sceneStart(i){return state.sceneDurations.slice(0,i).reduce((a,b)=>a+b,0)}
 function refreshSceneDurationUI(){const slider=$("sceneDuration"),value=$("sceneDurationValue"),summary=$("durationSummary");if(!slider)return;const seconds=state.sceneDurations[state.scene]/1000;slider.value=String(seconds);if(value)value.textContent=seconds.toFixed(1).replace(".",",")+" soniya";if(summary)summary.textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna · har birini alohida sozlang.";}
 function sceneIndexAt(ms){let t=0;for(let i=0;i<state.sceneDurations.length;i++){t+=state.sceneDurations[i];if(ms<t)return i}return 4}
@@ -610,11 +583,11 @@ function drawRecommendationScene(c,w,h,now,pal){
  const convert=s=>String(s||"").replace(/(sh|ch|o[ʻʼ‘’']|g[ʻʼ‘’'])/gi,m=>{const l=m.toLowerCase(),v=l.startsWith("sh")?"ş":l.startsWith("ch")?"ç":l[0]==="o"?"ö":"ğ";return m[0]===m[0].toUpperCase()?v.toUpperCase():v});
  const name=convert(a.name||"Akkaunt nomi"),niche=convert(a.niche),bio=convert(a.bio),benefit=convert(a.benefit),audience=convert(a.audience),proof=convert(a.proof),followers=convert(a.followers),link=convert(a.link);
  const details=[
-  {lead:convert(state.script[0]),body:bio,extra:niche},
+  {lead:convert(state.script[0]),body:"",extra:""},
   {lead:name,body:bio,extra:niche},
-  {lead:benefit,body:audience?audience+" uchun":niche,extra:""},
-  {lead:proof||benefit,body:audience?audience+" uchun":bio,extra:followers?followers+" obunachi":""},
-  {lead:convert(state.script[4]),body:link||name,extra:""}
+  {lead:convert(state.script[2]),body:"",extra:""},
+  {lead:convert(state.script[3]),body:"",extra:""},
+  {lead:convert(state.script[4]),body:link||"",extra:""}
  ][idx];
  const p=Math.max(0,Math.min(1,(local-.02)/.34)),ease=1-Math.pow(1-p,3);
  c.save();
