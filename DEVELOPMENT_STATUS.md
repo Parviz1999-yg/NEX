@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.2**  
+Amaldagi versiya: **v0.4.3**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -41,3 +41,19 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - `RoomEnvironment` modulining ichki `import 'three'` so‘rovi brauzerda yechilishi uchun import map ishlatiladi.
 - WebGL xatosi endi foydalanuvchiga haqiqiy xato matnini ham ko‘rsatadi.
 - Tekshiruv: statik kod tahlili; haqiqiy Android/WebGL ishga tushishi hali qurilmada tasdiqlanmagan.
+
+
+## v0.4.3 — Tavsiya akkaunt sahnalari uchun mazmunga mos 3D kompozitsiyalar
+- [x] Hook sahnasida simob yadrosi va energiya halqasi asosiy vizual markaz sifatida qoldirildi.
+- [x] Profil sahnasiga profil ramzi, markaziy kristall va uchta orbit nuqtasi qo‘shildi.
+- [x] Foyda sahnasiga bosqichma-bosqich ko‘tariluvchi kristall geometriyalar qo‘shildi.
+- [x] Farq sahnasiga murakkab torus-knot, kesishuvchi neon halqa va kristall urg‘u qo‘shildi.
+- [x] CTA sahnasiga uch qavatli portal halqalari va markaziy yadro qo‘shildi.
+- [x] Simob tomchisi va uning orbitlari endi har bir sahnada takrorlanmaydi; Hook sahnasiga xos.
+- [x] Har bir sahna motifi alohida animatsiyalanadi va o‘z boshlang‘ich joylashuviga nisbatan barqaror tebranadi.
+- [x] Interfeys versiyasi v0.4.3 ga yangilandi.
+- [ ] Android qurilmada barcha besh sahnaning vizual muvozanati va matn bilan to‘qnashmasligi tekshiriladi.
+- [ ] GPU yuklamasi va ekran yozish ravonligi real qurilmada o‘lchanadi.
+
+### Tekshiruv chegarasi
+Kod GitHub main tarmog‘iga joylandi. Bu bosqichda kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi; real Android qurilmada barcha besh kompozitsiyaning ko‘rinishi hali tasdiqlanmagan.
