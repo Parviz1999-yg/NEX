@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=id=>document.getElementById(id), pages=["home","content","script","style","palette","animation","studio"];
 const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — SSENARIY","04 — VIZUAL USLUB","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — STUDIYA"];
-const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Cinematic 3D",palette:"Electric Blue",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295)};
+const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Cinematic 3D",palette:"Electric Blue",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295),variantIndex:0};
 const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
 const paletteMap={"Electric Blue":["#06142F","#F4FAFF","#168CFF","#76D9FF"],"Cobalt Chrome":["#071A3B","#F5FAFF","#287BFF","#A8D9FF"],"Arctic Silver":["#0B1A2B","#F8FCFF","#73C8FF","#C8E8FF"],"Azure Pulse":["#061B35","#F2FAFF","#00A7FF","#59E0FF"],"Royal Violet":["#130E36","#FAF7FF","#8B5CFF","#C1A7FF"],"Crimson Chrome":["#260D24","#FFF7FC","#FF3F78","#FFB4D1"],"Emerald Laser":["#061F24","#F2FFFC","#00D5B2","#8CFFE8"],"Solar Chrome":["#241A08","#FFFCF2","#FFB52E","#FFE49A"]};
@@ -102,8 +102,11 @@ function buildThreeObjects(){
  // Monoxrom kompozitsiya: bitta keng, uzluksiz xrom-suyuqlik tasmasi.
  const flow=createFlowSurface(112,28,chrome,(rand()-.5)*6.2);
  flow.userData.flowLayer=0;
- flow.rotation.set(.08,-.12,style==="Kinetic Typography"?.42:style==="Editorial / Magazine"?.12:style==="Futuristic Motion"?-.28:.24);
- flow.scale.set(1.02,2.18,1.12);flow.position.set(.05,.02,-.25);
+ const variant=state.variantIndex%6;
+ const variantRotation=[-.62,-.34,-.08,.22,.48,.72][variant];
+ const variantScale=[1.82,2.02,2.28,1.94,2.16,1.88][variant];
+ flow.rotation.set(.08+variant*.025,-.12,variantRotation+(style==="Kinetic Typography"?.12:style==="Editorial / Magazine"?.04:style==="Futuristic Motion"?-.1:0));
+ flow.scale.set(1.02,variantScale,1.12);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
  main.add(flow);flows.push(flow);
  threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
@@ -567,22 +570,26 @@ function frame(now){if(state.playing){state.elapsed=Math.min(total,now-state.sta
 function start(){if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}cancelAnimationFrame(state.raf);state.elapsed=0;state.started=performance.now();state.playing=true;state.raf=requestAnimationFrame(frame);$("startPreview").textContent="Ⅱ Pauza"}
 $("startPreview").onclick=()=>{if(!state.playing&&total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}if(state.playing){state.playing=false;$("startPreview").textContent="▶ Davom etish"}else{state.started=performance.now()-state.elapsed;state.playing=true;$("startPreview").textContent="Ⅱ Pauza"}};
 $("restart").onclick=()=>start();
-$("shuffleBackground").addEventListener("click",()=>{
- const button=$("shuffleBackground");
- try{
-  state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
-  state.lastScene=-1;
-  if(threeReady){threeSeed=-1;buildThreeObjects();}
-  draw();
-  button.classList.remove("shuffle-flash");void button.offsetWidth;button.classList.add("shuffle-flash");
-  button.textContent="✓ Yangi variant yaratildi";
-  if(button._shuffleTimer)clearTimeout(button._shuffleTimer);
-  button._shuffleTimer=setTimeout(()=>{button.classList.remove("shuffle-flash");button.textContent="✧ Yangi kreativ variant";},1600);
- }catch(error){
-  console.error("NEX creative shuffle failed:",error);
-  button.textContent="Xatolik — qayta urinib ko‘ring";
+const shuffleButton=$("shuffleBackground");
+function createNewCreativeVariant(){
+ const button=shuffleButton;
+ if(!button)return;
+ state.variantIndex=(state.variantIndex+1)%6;
+ state.backgroundSeed=(state.backgroundSeed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
+ state.lastScene=-1;
+ button.textContent="✓ "+(state.variantIndex+1)+"/6 — yangi kompozitsiya";
+ button.classList.remove("shuffle-flash");void button.offsetWidth;button.classList.add("shuffle-flash");
+ if(threeReady){
+  try{threeSeed=-1;buildThreeObjects();renderThree(performance.now());}
+  catch(error){console.error("NEX 3D variant rebuild:",error);button.textContent="3D yangilanishida xatolik";}
+ }else{
+  button.textContent="✓ Variant "+(state.variantIndex+1)+" tanlandi — 3D yuklanmoqda";
  }
-});
+ try{draw()}catch(error){console.error("NEX redraw:",error)}
+ if(button._shuffleTimer)clearTimeout(button._shuffleTimer);
+ button._shuffleTimer=setTimeout(()=>{button.classList.remove("shuffle-flash");button.textContent="✧ Yangi kreativ variant";},2200);
+}
+if(shuffleButton){shuffleButton.onclick=createNewCreativeVariant;}
 $("recordMode").onclick=()=>{if(total>60000){alert("Reels 60 soniyadan oshib ketdi. Matnni qisqartiring.");return}state.recording=true;$("recordOverlay").hidden=false;state.started=performance.now()-state.elapsed;state.playing=true;draw()};
 $("recordPause").onclick=()=>{state.playing=!state.playing;if(state.playing)state.started=performance.now()-state.elapsed;$("recordPause").textContent=state.playing?"Ⅱ":"▶"};
 $("recordExit").onclick=()=>{state.recording=false;$("recordOverlay").hidden=true;state.playing=false;$("startPreview").textContent="▶ Davom etish";draw()};
