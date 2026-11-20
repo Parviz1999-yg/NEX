@@ -550,9 +550,11 @@ function getToneVisual(){
  };
  return tones[state.tone]||tones["Jiddiy"];
 }
-function drawTopicMotif(c,w,h,accent,topic,time,index){
- c.save();c.strokeStyle=accent;c.fillStyle=accent;c.lineWidth=Math.max(1,w*.0025);c.globalAlpha=.58;
- const x=w*.86,y=h*.155,r=w*.035;
+function drawTopicMotif(c,w,h,accent,topic,time,index,style){
+ c.save();c.strokeStyle=accent;c.fillStyle=accent;c.lineWidth=Math.max(1,w*.0025);c.globalAlpha=.48;
+ const x=w*(style==="Editorial / Magazine"?.84:.86);
+ const y=h*(style==="Editorial / Magazine"?.235:style==="Futuristic Motion"?.285:.125);
+ const r=w*(style==="Editorial / Magazine"?.026:.03);
  if(topic==="Texnologiya"){
   c.strokeRect(x-r,y-r,r*2,r*2);c.beginPath();c.moveTo(x-r*1.4,y);c.lineTo(x+r*1.4,y);c.moveTo(x,y-r*1.4);c.lineTo(x,y+r*1.4);c.stroke();
   c.globalAlpha=.8;c.fillRect(x-r,y-r+((time*18)% (r*2)),r*2,w*.003);
@@ -582,16 +584,8 @@ function drawRecommendationScene(c,w,h,now,pal){
  const toneVisual=getToneVisual();
  c.save();
  if(!state.webglReady){c.fillStyle=bg;c.fillRect(0,0,w,h);}
- // Har bir post va sahna uchun alohida kamera harakati: bir xil kompozitsiya hissini buzadi.
- const cameraRand=seededRandom((state.backgroundSeed^Math.imul(idx+71,0xC2B2AE35))|0);
- const cameraStyle=Math.floor(cameraRand()*5),cameraEase=1-Math.pow(1-Math.max(0,Math.min(1,(local-.03)/.72)),3);
+ // Matn va grafik qatlamlar 9:16 xavfsiz hududida barqaror turadi; kamera harakati faqat 3D qatlamda.
  const motion=getMotionProfile();
- const phase=t*.42*motion.camera+idx*1.13,amp=cameraEase*motion.camera;
- const cameraX=cameraStyle===0?Math.sin(phase)*w*.025*amp:cameraStyle===2?Math.cos(phase*.7)*w*.035*amp:cameraStyle===4?Math.sin(phase*1.2)*w*.022*amp:0;
- const cameraY=cameraStyle===1?Math.sin(phase)*h*.026*amp:cameraStyle===3?Math.cos(phase*.8)*h*.03*amp:cameraStyle===4?Math.cos(phase)*h*.018*amp:0;
- const cameraScale=cameraStyle===0?1+.065*amp*Math.sin(phase*.65):cameraStyle===1?.96+.045*amp:cameraStyle===2?1.035-.035*amp:cameraStyle===3?.975+.04*amp:1+.025*amp*Math.sin(phase);
- const cameraRotate=(cameraStyle===1?.018:cameraStyle===4?.027:cameraStyle===3?-.012:0)*amp*Math.sin(phase*.6);
- c.translate(w*.5+cameraX,h*.5+cameraY);c.rotate(cameraRotate);c.scale(cameraScale,cameraScale);c.translate(-w*.5,-h*.5);
 
  const text=(value,x,y,maxWidth,fontSize,color,weight="700",align="left",maxLines=4)=>{
   const words=String(value||"").trim().split(/\s+/).filter(Boolean),lines=[],scaledSize=fontSize*toneVisual.size,scaledWeight=Math.max(400,Math.min(950,Number(weight)+toneVisual.weight));c.font=scaledWeight+" "+scaledSize+"px system-ui";let line="";
@@ -623,11 +617,8 @@ function drawRecommendationScene(c,w,h,now,pal){
   c.beginPath();c.roundRect(x,y,ww,hh,w*.025);c.fill();c.stroke();
   c.fillStyle="#65caff";c.fillRect(x+w*.02,y+h*.012,w*.13,Math.max(2,w*.007));c.restore();
  };
- // Topic identity is visible in every art direction, not merely stored in the project summary.
- const topicSignature=getTopicSignature();
- c.save();c.globalAlpha=.72;c.fillStyle=state.style==="Editorial / Magazine"?"#283747":ac;c.font="800 "+(w*.018)+"px monospace";c.textAlign="right";c.textBaseline="middle";c.fillText(topicSignature,w*.90,h*.105);c.restore();
- drawTopicMotif(c,w,h,ac,state.topicType,t,idx);
- c.save();c.globalAlpha=.58;c.fillStyle=state.style==="Editorial / Magazine"?"#283747":ac;c.font="700 "+(w*.014)+"px monospace";c.textAlign="right";c.fillText(toneVisual.tracking,w*.90,h*.19);c.restore();
+ // Bitta kichik, mavzuga mos grafik belgi — ortiqcha metadata qatlamlarisiz.
+ drawTopicMotif(c,w,h,ac,state.topicType,t,idx,state.style);
  // Four independent art directions each retain their own composition, typography and graphic grammar.
  if(state.style==="Kinetic Typography"){
   c.save();c.globalAlpha=.10;c.fillStyle=fg;c.font="950 "+(w*.78)+"px system-ui";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.04,h*.30);c.restore();
