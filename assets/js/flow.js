@@ -12,7 +12,7 @@ function bindOptions(id,prop){$(id).querySelectorAll("button").forEach(b=>b.addE
 function configureTopicType(){
  const select=$("topicType"),label=$("topicTypeLabel"),prompt=$("contentPrompt");
  const recommendation=state.mode==="tavsiya";
- const options=recommendation?["Kreativ","Ilmiy","Technology","Yumor"]:["Instagram akkaunt","Ta’lim va ilm-fan","Texnologiya","Kitob va adabiyot","Tarix va madaniyat","Hayotiy kuzatuv","Motivatsiya va fikr","Boshqa"];
+ const options=recommendation?["Kreativ va dizayn","Ilm-fan","Texnologiya va IT","Ta’lim","Biznes va moliya","Shaxsiy rivojlanish","Yumor va ko‘ngilochar","Media va madaniyat"]:["Instagram akkaunt","Ta’lim va ilm-fan","Texnologiya","Kitob va adabiyot","Tarix va madaniyat","Hayotiy kuzatuv","Motivatsiya va fikr","Boshqa"];
  label.textContent=recommendation?"Akkaunt yo‘nalishi":"Mavzu turi";
  prompt.textContent=recommendation?"Qanday yo‘nalishdagi akkauntni tavsiya qilamiz?":"Qaysi mavzu haqida Reels tayyorlaymiz?";
  select.innerHTML='<option value="">Tanlang</option>'+options.map(value=>'<option>'+value+'</option>').join("");
