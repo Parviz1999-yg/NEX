@@ -107,7 +107,7 @@ function buildThreeObjects(){
  const variantRotation=[-.62,-.34,-.08,.22,.48,.72][variant];
  const variantScale=[1.82,2.02,2.28,1.94,2.16,1.88][variant];
  flow.rotation.set(.08+variant*.025,-.12,variantRotation+(style==="Kinetic Typography"?.12:style==="Editorial / Magazine"?.04:style==="Futuristic Motion"?-.1:0));
- flow.scale.set(1.02,variantScale,1.12);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
+ flow.scale.set(1.0,1.0,1.0);flow.position.set([-.22,.12,.02,-.1,.2,-.16][variant],[.08,-.06,.02,.12,-.1,0][variant],-.25);
  main.add(flow);flows.push(flow);
  threeGroup.userData={main,flows,phase:rand()*Math.PI*2};
  threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
