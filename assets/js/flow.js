@@ -144,8 +144,12 @@ function renderThree(now,target=threeRenderer){
  main.rotation.y=Math.sin(phase*.22)*.14;main.rotation.x=Math.sin(phase*.31)*.1;main.position.y=Math.sin(phase*.48)*.18;main.position.x=Math.sin(phase*.38)*.22;
  main.scale.setScalar([1.02,.96,1.04,.98,1.02][state.scene]);
  updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
- threeGroup.userData.particleField.rotation.y=phase*.025;
-
+ const cx=[0,.12,-.1,.1,0][state.scene],cy=[0,-.08,.12,-.06,.04][state.scene],z=8.35+(1-ease)*.45;
+ threeCamera.position.x+=(cx+Math.sin(phase*.27)*.12-threeCamera.position.x)*.035;
+ threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
+ threeCamera.position.z+=(z-threeCamera.position.z)*.045;
+ threeCamera.lookAt(0,0,0);
+ target.render(threeScene,threeCamera);
 }
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function seededRandom(seed){let x=seed|0;return()=>{x=(x+0x6D2B79F5)|0;let t=Math.imul(x^x>>>15,1|x);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296}}
