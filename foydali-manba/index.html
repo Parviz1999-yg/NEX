@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b13">
+  <title>NEX — Foydali manba</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="../">NEX <span>/ FOYDALI MANBA</span></a><span class="step" id="stepLabel">01 — MANBA</span></header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">NEX · MUSTAQIL KONTENT STUDIYASI</p>
+      <h1>Foydali manba<span>.</span></h1>
+      <p>Manbani tanlang, mazmunini kiriting va unga mos vizual hikoya tayyorlang.</p>
+    </section>
+
+    <section class="workspace">
+      <div class="form-column">
+        <section class="panel">
+          <p class="eyebrow">01 — MANBA TURI</p>
+          <h2>Qaysi turdagi manba?</h2>
+          <div class="category-grid" id="categoryGrid">
+            <button class="category" data-category="sayt"><span>01</span><b>Sayt</b><small>Veb-resurs va platforma</small></button>
+            <button class="category" data-category="youtube"><span>02</span><b>YouTube</b><small>Video va kanallar</small></button>
+            <button class="category" data-category="telegram"><span>03</span><b>Telegram</b><small>Kanal, guruh va bot</small></button>
+            <button class="category" data-category="kitob"><span>04</span><b>Kitob</b><small>Kitob va qo‘llanmalar</small></button>
+          </div>
+          <div class="source-fields" id="sourceFields" hidden>
+            <label for="sourceName">Manba nomi</label>
+            <input id="sourceName" maxlength="90" placeholder="Masalan: Khan Academy">
+            <label for="sourceLink">Manba havolasi <span class="optional">— ixtiyoriy</span></label>
+            <input id="sourceLink" type="url" placeholder="https://...">
+            <p class="hint" id="sourceHint">Kategoriya tanlangach, manba nomiga mos 3D fon ishga tushadi.</p>
+          </div>
+        </section>
+
+        <section class="panel script-panel">
+          <p class="eyebrow">02 — ASOSIY MA’LUMOTLAR</p>
+          <h2>Hook’dan yakungacha.</h2>
+          <p class="section-copy">Tavsiya akkauntdagi kabi to‘rtta asosiy matn maydoni. Har bir matnni o‘zingiz yozing va istalgan vaqtda tahrirlang.</p>
+          <div class="script-field"><div class="field-head"><label for="hook">01 · HOOK — e’tiborni tortish</label><span>Majburiy</span></div><textarea id="hook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea></div>
+          <div class="script-field"><div class="field-head"><label for="reason">02 · SABAB — nima uchun kerak?</label><span>Majburiy</span></div><textarea id="reason" rows="3" maxlength="240" placeholder="Bu manba qanday ehtiyojni qondiradi yoki muammoni hal qiladi?"></textarea></div>
+          <div class="script-field"><div class="field-head"><label for="benefit">03 · USTUNLIK — asosiy foyda</label><span>Majburiy</span></div><textarea id="benefit" rows="3" maxlength="260" placeholder="Manbaning eng muhim imkoniyati yoki foydasini yozing..."></textarea></div>
+          <div class="script-field"><div class="field-head"><label for="cta">04 · CHORLOV — yakun</label><span>Majburiy</span></div><textarea id="cta" rows="3" maxlength="180" placeholder="Tomoshabinga keyingi qadamni ayting..."></textarea></div>
+        </section>
+
+        <section class="panel settings-panel">
+          <p class="eyebrow">03 — BAYON VA VIZUAL SOZLAMALAR</p>
+          <div class="settings-grid">
+            <div><label for="tone">Bayon uslubi</label><select id="tone"><option>Jiddiy</option><option>Ilmiy</option><option>Sodda va tushunarli</option><option>Yumor</option><option>Tahliliy</option><option>Motivatsion</option><option>Sirli va qiziqarli</option><option>Falsafiy</option></select></div>
+            <div><label for="visual">Vizual til</label><select id="visual"><option value="cinematic">Cinematic 3D</option><option value="kinetic">Kinetic Typography</option><option value="editorial">Editorial / Magazine</option><option value="future">Futuristic Motion</option></select></div>
+            <div><label for="palette">Rang palitrasi</label><select id="palette"><option value="silver">Arctic Silver</option><option value="blue">Electric Blue</option><option value="violet">Royal Violet</option><option value="emerald">Emerald Laser</option><option value="solar">Solar Chrome</option></select></div>
+            <div><label for="motion">Animatsiya</label><select id="motion"><option>Silliq</option><option>Dinamik</option><option>Kinematik</option><option>Ijodiy</option><option>Aralash</option></select></div>
+          </div>
+          <button class="primary-btn" id="previewBtn">Ma’lumotlarni ko‘rish →</button>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </section>
+      </div>
+
+      <aside class="preview-column">
+        <div class="preview-heading"><span class="eyebrow">LIVE WEBGL PREVIEW</span><span class="live-dot">● REAL-TIME</span></div>
+        <div class="reel-frame">
+          <canvas id="webgl" aria-label="Manba nomiga mos jonli 3D fon"></canvas>
+          <div class="reel-shade"></div>
+          <div class="reel-content">
+            <span class="reel-kicker" id="reelCategory">FOYDALI MANBA</span>
+            <div class="reel-copy"><p id="reelHook">Manba tanlang va Hook matnini kiriting.</p><h3 id="reelTitle">Manba nomi</h3><p id="reelReason"></p><p id="reelBenefit"></p><strong id="reelCta"></strong></div>
+            <div class="reel-footer"><span>NEX / RESOURCE</span><span>9:16</span></div>
+          </div>
+        </div>
+        <p class="preview-note">Fon kategoriya tanlanganda ishga tushadi. Manba nomi o‘zgargan sari 3D sahna ham yangilanadi.</p>
+      </aside>
+    </section>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
