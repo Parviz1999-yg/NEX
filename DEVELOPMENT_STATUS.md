@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.4**  
+Amaldagi versiya: **v0.4.5**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -72,3 +72,16 @@ Kod GitHub main tarmog‘iga joylandi. Bu bosqichda kod o‘zgarishlari statik t
 
 ### Tekshiruv chegarasi
 JavaScript sintaksisi tekshirildi. Qurilmadagi real ko‘rinish va unumdorlik sinovi hali bajarilmadi.
+
+
+## v0.4.5 — Simob oqimi, metall aks va 3D kadrini tuzatish
+- [x] Asosiy simob materiali shaffof/transmission ko‘rinishidan yuqori aks ettiruvchi xrom-metall materialga o‘tkazildi; metalness 1.0, past roughness va kuchli environment reflection ishlatiladi.
+- [x] Organik deformatsiya endi faqat sahna motifida emas, asosiy 3D guruhidagi simob yadrosi va boshqa geometriyalarda ham ishlaydi.
+- [x] Simob yadrosiga ko‘p yo‘nalishli vaqtga bog‘liq sirt oqimi va yonlama siljish qo‘shildi; deformatsiya kuchi oshirildi.
+- [x] Simob yadrosi geometriyasi mobil qurilmada yangilanishi yengilroq bo‘lishi uchun optimallashtirildi.
+- [x] 3D kompozitsiyaning oldingi o‘ngga haddan tashqari surilgan joylashuvi tuzatildi; obyektlar endi kadr ichida ko‘rinishi uchun kamera masofasi va kompozitsiya markazi qayta sozlandi.
+- [x] 3D obyektning masshtabi, aylanishi va sirt oqimi jonliroq animatsiyaga moslashtirildi.
+- [ ] Android qurilmada yangi xrom akslari, shakl oqimi, kadr ichidagi joylashuv va FPS ko‘z bilan tekshiriladi.
+
+### Tekshiruv chegarasi
+Kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi. Real Android vizual sinovi va GPU unumdorligi hali tasdiqlanmagan.
