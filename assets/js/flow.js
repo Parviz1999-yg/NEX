@@ -14,10 +14,42 @@ document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",(
 bindOptions("styleOptions","style");bindOptions("paletteOptions","palette");bindOptions("animationOptions","animation");
 document.querySelectorAll("#paletteOptions .palette").forEach(b=>{const colors=(b.dataset.colors||"").split(",");b.querySelectorAll(".swatches i").forEach((dot,i)=>dot.style.backgroundColor=colors[i]||"#777")});
 $("toScript").onclick=()=>{state.topicType=$("topicType").value;state.title=$("topicTitle").value.trim();state.tone=$("tone").value;if(!state.topicType||!state.title){alert("Mavzu turi va mavzu nomini kiriting.");return}configureScript();page("script")};
-$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];state.voice=[$("voiceHook").value,$("voiceIntro").value,$("voiceWhy").value,$("voiceDiff").value,$("voiceCta").value];state.account={name:$("accountName").value.trim(),niche:$("accountNiche").value.trim(),bio:$("accountBio").value.trim(),benefit:$("accountBenefit").value.trim(),audience:$("accountAudience").value.trim(),proof:$("accountProof").value.trim(),followers:$("accountFollowers").value.trim(),link:$("accountLink").value.trim(),image:state.account.image};if(state.mode==="tavsiya"&&(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit)){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Ovoz yoki ekran matnini qisqartiring.");return}if(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim()){alert("Hook, E’lon va Chorlov maydonlarini to‘ldiring.");return}page("style")};
+$("toStyle").onclick=()=>{state.script=[$("scriptHook").value,$("scriptIntro").value,$("scriptWhy").value,$("scriptDiff").value,$("scriptCta").value];state.voice=[$("voiceHook").value,$("voiceIntro").value,$("voiceWhy").value,$("voiceDiff").value,$("voiceCta").value];readAccountForm();if(state.mode==="tavsiya"&&(!state.account.name||!state.account.niche||!state.account.bio||!state.account.benefit)){alert("Tavsiya uchun akkaunt nomi, yo‘nalishi, tavsifi va foydasini kiriting.");return}calculateDurations();if(total>60000){alert("Reels davomiyligi "+Math.ceil(total/1000)+" soniya bo‘ldi. Maksimum 60 soniya. Ovoz yoki ekran matnini qisqartiring.");return}if(!state.script[0].trim()||!state.script[1].trim()||!state.script[4].trim()){alert("Hook, E’lon va Chorlov maydonlarini to‘ldiring.");return}page("style")};
 $("toPalette").onclick=()=>page("palette");$("toAnimation").onclick=()=>page("animation");$("toStudio").onclick=()=>{page("studio");try{buildStudio();start()}catch(error){console.error("NEX Studio error:",error);const summary=$("summary");if(summary)summary.textContent="Namoyish oynasini tayyorlashda xatolik yuz berdi: "+(error&&error.message?error.message:"Noma’lum xato");}};
 function buildStudio(){calculateDurations();state.backgroundSeed=Math.floor(Math.random()*4294967295);state.lastScene=-1;$("summary").innerHTML="<strong>"+modes[state.mode]+"</strong><br>"+escapeHTML(state.topicType)+" · "+escapeHTML(state.title)+"<br>"+escapeHTML(state.tone)+" / "+state.style+" / "+state.palette+" / "+state.animation+"<br><strong>Davomiylik: "+Math.ceil(total/1000)+" soniya</strong>";$("sceneList").innerHTML="";scenes.forEach((s,i)=>{const b=document.createElement("button");b.className="scene-chip"+(i===0?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=sceneTitle(i);b.onclick=()=>{state.scene=i;state.elapsed=sceneStart(i);state.started=performance.now()-state.elapsed;updateSceneUI();};$("sceneList").appendChild(b)});$("sceneText").value=sceneCopy(0);$("sceneVoice").value=state.voice[0]||"";draw(performance.now())}
 function configureScript(){const labels=state.mode==="manba"?["HOOK — qiziqtirish","RESURSNI TANISHTIRISH","NIMA UCHUN KERAK?","QANDAY FOYDALANISH?","CHORLOV — yakun"]:state.mode==="fakt"?["HOOK — savol yoki kutilmagan fikr","FAKTNI OCHISH","IZOH — sabab va dalil","QIZIQARLI TAFSILOT","YAKUNIY FIKR"]:state.mode==="ibora"?["HOOK — fikrga kirish","ASOSIY IBORA","MA’NO — chuqurroq izoh","HAYOTIY BOG‘LANISH","YAKUNIY FIKR"]:["HOOK — e’tiborni tortish","E’LON — akkauntni tanishtirish","NIMA UCHUN KUZATISH KERAK?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV — yakun"];["introLabel","whyLabel","diffLabel","ctaLabel"].forEach((id,i)=>$(id).textContent=labels[i+1]);$("scriptHook").placeholder=labels[0]+"...";$("accountFields").hidden=state.mode!=="tavsiya";["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"].forEach((id,i)=>$(id).value=state.script[i]||"");["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"].forEach((id,i)=>$(id).value=state.voice[i]||"")}
+
+function readAccountForm(){
+ state.account={name:$("accountName").value.trim(),niche:$("accountNiche").value.trim(),bio:$("accountBio").value.trim(),benefit:$("accountBenefit").value.trim(),audience:$("accountAudience").value.trim(),proof:$("accountProof").value.trim(),followers:$("accountFollowers").value.trim(),link:$("accountLink").value.trim(),image:state.account.image};
+ return state.account;
+}
+function generateRecommendationScript(){
+ const a=readAccountForm(),name=a.name,niche=a.niche,bio=a.bio,benefit=a.benefit,audience=a.audience,proof=a.proof;
+ if(!name||!niche||!bio||!benefit){alert("Avval akkaunt nomi, yo‘nalishi, tavsifi va foydasini to‘ldiring.");return}
+ const clean=s=>String(s||"").trim().replace(/[.!?]+$/,"");
+ const who=audience?"Ayniqsa "+clean(audience)+" uchun.":"";
+ const proofLine=proof?clean(proof)+".":"Bu sahifaning so‘nggi postlarini ko‘rib, sizga mosligini o‘zingiz baholang.";
+ const scripts=[
+  "Sizga "+clean(niche)+" bo‘yicha foydali sahifa kerakmi?",
+  clean(name)+" — "+clean(niche)+" yo‘nalishidagi akkaunt. "+clean(bio),
+  "Asosiy foydasi: "+clean(benefit)+". "+who,
+  proofLine,
+  "Agar "+clean(niche)+" sizga qiziq bo‘lsa, "+clean(name)+" profilini ko‘rib chiqing."
+ ];
+ const voices=[
+  "Agar siz "+clean(niche)+" mavzusiga qiziqsangiz, mana shu sahifaga e’tibor bering.",
+  clean(name)+" sahifasida "+clean(bio.charAt(0).toLowerCase()+bio.slice(1)),
+  "Bu akkauntning sizga berishi mumkin bo‘lgan asosiy foydasi — "+clean(benefit).toLowerCase()+". "+(audience?"U ayniqsa "+clean(audience)+" uchun mos bo‘lishi mumkin.":""),
+  proof?("Tavsiya qilishimizga sabab: "+clean(proof)+"."):"Shoshilmay, so‘nggi postlarini ko‘rib chiqing va mazmuni sizga mos kelishini tekshiring.",
+  "Qiziq bo‘lsa, "+clean(name)+" profiliga o‘ting va kontentini baholab ko‘ring."
+ ];
+ state.script=scripts;state.voice=voices;
+ const textIds=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"],voiceIds=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];
+ textIds.forEach((id,i)=>$(id).value=scripts[i]);
+ voiceIds.forEach((id,i)=>$(id).value=voices[i]);
+ const button=$("generateAccountScript");button.textContent="✓ Ssenariy tayyor — tahrirlashingiz mumkin";
+ calculateDurations();
+}
 function sceneTitle(i){return state.mode==="tavsiya"?["HOOK","AKKAUNT TAVSIYASI","NIMA UCHUN?","BOSHQA AKKAUNTLARDAN FARQI","CHORLOV"][i]:scenes[i]}function sceneCopy(i){return state.script[i]||""}function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length}
 function calculateDurations(){const ids=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];state.voice=ids.map(id=>$(id).value.trim());state.sceneDurations=state.voice.map((v,i)=>{const words=wordCount(v||state.script[i]);return Math.max(2500,Math.ceil(words/2.5*1000)+850)});total=state.sceneDurations.reduce((a,b)=>a+b,0);refreshVoiceTiming()}
 function sceneStart(i){return state.sceneDurations.slice(0,i).reduce((a,b)=>a+b,0)}
@@ -27,6 +59,7 @@ function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":
 $("sceneText").addEventListener("input",()=>{state.script[state.scene]=$("sceneText").value;const ids=["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"];$(ids[state.scene]).value=$("sceneText").value;calculateDurations();draw(performance.now())});$("sceneVoice").addEventListener("input",()=>{state.voice[state.scene]=$("sceneVoice").value;const ids=["voiceHook","voiceIntro","voiceWhy","voiceDiff","voiceCta"];$(ids[state.scene]).value=$("sceneVoice").value;calculateDurations();draw(performance.now())});
 ["scriptHook","scriptIntro","scriptWhy","scriptDiff","scriptCta"].forEach((id,i)=>$(id).addEventListener("input",()=>{state.script[i]=$(id).value}));
 $("accountImage").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{state.account.image=reader.result;accountPhoto=new Image();accountPhoto.onload=()=>draw();accountPhoto.src=reader.result};reader.readAsDataURL(file)});
+$("generateAccountScript").addEventListener("click",generateRecommendationScript);
 function updateSceneUI(){state.scene=sceneIndexAt(state.elapsed);document.querySelectorAll(".scene-chip").forEach((b,i)=>b.classList.toggle("active",i===state.scene));$("sceneCounter").textContent="SAHNA "+String(state.scene+1).padStart(2,"0")+" / 05";$("sceneTime").textContent="00:"+String(Math.floor(state.elapsed/1000)).padStart(2,"0");$("progress").style.width=(state.elapsed/total*100)+"%";if(state.lastScene!==state.scene){$("sceneText").value=sceneCopy(state.scene);$("sceneVoice").value=state.voice[state.scene]||"";state.lastScene=state.scene}draw(performance.now())}
 const canvas=$("reelCanvas"),ctx=canvas.getContext("2d"),rc=$("recordCanvas"),rctx=rc.getContext("2d");let accountPhoto=null;
 function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
