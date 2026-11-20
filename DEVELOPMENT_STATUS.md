@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.6.3**  
+Amaldagi versiya: **v0.7.0**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -236,3 +236,19 @@ Manba kodidagi o‘lchamlar, material parametrlari va versiya/cache-buster teksh
 
 ### Tekshiruv chegarasi
 Material parametrlari, HTML cache-buster va versiya yozuvi manba kodida tekshirildi. Qurilmadagi real vizual sinov bajarilmadi.
+
+
+## v0.7.0 — Tavsiya akkaunt studiyasining professional kompozitsiya yangilanishi
+- [x] Tavsiya akkaunt rejimida to‘rtta vizual yo‘nalish endi haqiqatan alohida kompozitsiyaga ega: Cinematic 3D, Kinetic Typography, Editorial / Magazine va Futuristic Motion.
+- [x] Kinetic Typography uchun yirik raqamli tipografika, dinamik urg‘u chiziqlari va alohida matn ierarxiyasi qo‘shildi.
+- [x] Editorial / Magazine uchun och qog‘oz rangli jurnal maketi, serif sarlavha va nashriyot tipografikasi qo‘shildi.
+- [x] Futuristic Motion uchun HUD panjara, texnik belgilashlar va ma’lumot paneli kompozitsiyasi qo‘shildi.
+- [x] Cinematic 3D avvalgi qoramtir, kumush-suyuqlik bilan kontrastli kompozitsiya sifatida saqlandi.
+- [x] Kreativ variantlar uchun hisoblangan masshtab endi asosiy WebGL suyuqlik geometriyasiga amalda qo‘llanadi.
+- [x] NEX 3D logotipi vertikal kadrning yuqori xavfsiz hududiga ko‘chirildi va masshtabi qayta muvozanatlashtirildi.
+- [x] Interfeys versiyasi va JavaScript cache-buster v0.7.0 ga yangilandi.
+- [ ] Android qurilmada to‘rtta uslub, besh sahna, logo joylashuvi va matn o‘qilishi ko‘z bilan tekshiriladi.
+- [ ] Mobil GPU yuklamasi va ekran yozish ravonligi real qurilmada sinovdan o‘tkaziladi.
+
+### v0.7.0 tekshiruv chegarasi
+Kod GitHub main tarmog‘iga joylandi. Koddagi strukturaviy o‘zgarishlar manba darajasida tekshirildi; real Android/WebGL vizual sinovi bajarilgan deb hisoblanmaydi.
