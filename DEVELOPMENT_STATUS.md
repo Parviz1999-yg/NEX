@@ -191,3 +191,18 @@ Manba kodida tugma hodisasi, 6 holatli kompozitsiya almashishi, versiya va eleme
 
 ### Tekshiruv chegarasi
 Kod strukturasi va versiya mosligi tekshiriladi. Bu haqiqiy brauzer/WebGL yoki Android vizual sinovi o‘rnini bosmaydi.
+
+
+## v0.6.0 — NEX 3D logo va sahnaga mos suyuqlik dramaturgiyasi
+- [x] NEX logotipi qayta chizildi: N, E, X harflari alohida aniq 3D xrom/neon zarbalardan tuzildi; qalinligi, joylashuvi va 9:16 kadr ichidagi o‘lchami qayta sozlandi.
+- [x] Logo faqat intro va outroda namoyon bo‘ladi; avvalgi har bir sahna boshida logoni qayta chiqarish bekor qilindi.
+- [x] Bitta takroriy fon oqimi o‘rniga besh sahna uchun alohida 3D suyuqlik xoreografiyasi: S-egri intro oqimi, profil atrofida orbital o‘ralish, foyda sahnasida yoyilib ochilish, farq sahnasida markaziy to‘qnashuv, yakunda vertikal spiral tortilishi.
+- [x] Harakat geometriyasi 9:16 kadr chegarasiga moslashtirildi; oldingi ortiqcha vertikal masshtab olib tashlandi.
+- [x] Kamera harakati sahna vazifasiga mos farqlantirildi; suyuqlik animatsiyasi tanlangan kinetik/editorial/futuristik yo‘nalish bilan ham o‘zgaradi.
+- [x] Intro/outroda NEX shiori alohida ko‘rsatiladi.
+- [x] Versiya va JavaScript cache-buster v0.6.0 ga yangilandi.
+- [ ] Android brauzerida NEX logotipining to‘liq sig‘ishi, harflar aniqligi, 5 xil 3D oqim harakati va matn bilan qatlamlanishi foydalanuvchi tomonidan tekshirilishi kerak.
+- [ ] Past quvvatli telefonda FPS va qizish kuzatilishi kerak.
+
+### Tekshiruv chegarasi
+Bu yangilanish manba kodiga kiritildi. Hozircha haqiqiy Android brauzerida ko‘rish yoki WebGL kadrlarini qurilmada tasdiqlash bajarilmadi. Koddagi geometriya, sahna shartlari, cache-buster va versiya mosligi tekshirilishi kerak.
