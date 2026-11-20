@@ -4,7 +4,7 @@ const labels=["01 — YO‘NALISH","02 — MAZMUN","03 — SSENARIY","04 — VIZ
 const state={mode:"",script:["","","","",""],voice:["","","","",""],sceneDurations:[5000,5000,5000,5000,5000],account:{name:"",niche:"",bio:"",benefit:"",audience:"",proof:"",followers:"",link:"",image:""},topicType:"",title:"",tone:"Jiddiy",style:"Cinematic 3D",palette:"Midnight",animation:"Silliq",scene:0,playing:false,started:0,elapsed:0,raf:0,recording:false,backgroundSeed:Math.floor(Math.random()*4294967295)};
 const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fakt",ibora:"Maxsus iboralar"};
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
-const paletteMap={"Midnight":["#090D18","#F2F5FC","#8B7CFF","#35D6C5"],"Graphite Gold":["#111315","#F3F0E8","#C7A76C","#78909C"],"Arctic":["#0B1B2B","#F1F7FC","#66C7E8","#9B8CFF"],"Deep Forest":["#0C1B18","#EAF2E8","#78A88A","#D0B77A"],"Cobalt":["#101A3A","#F4F6FF","#5B83F5","#F0B86E"],"Burgundy":["#24121D","#FFF0F3","#D87591","#D8B17A"],"Sandstone":["#211C18","#F6EFE4","#C58E62","#8FA39A"],"Terracotta":["#281814","#FFF1E8","#D97858","#E4B66A"],"Orchid":["#1C1630","#F5F0FF","#B08BEE","#6ED4C6"],"Monochrome":["#111315","#F4F4F1","#A7ADB4","#6E7884"]};
+const paletteMap={"Graphite":["#101113","#F1EEE8","#AEB4BA","#6F747A"],"Obsidian Bronze":["#11100F","#F3EDE3","#B88752","#6D5140"],"Deep Burgundy":["#1B1015","#F4EAE8","#9E4D5D","#C49A72"],"Black Copper":["#15110F","#F1E9DF","#B66E43","#744B38"],"Warm Slate":["#17191B","#F0ECE5","#A99B89","#68615A"],"Dark Plum":["#17121A","#F2EAF0","#856A82","#B18C76"],"Sandstone":["#211C18","#F6EFE4","#C58E62","#8A705B"],"Antique Gold":["#171512","#F2EBDD","#B69A5B","#746447"],"Midnight Silver":["#101216","#F1F2F3","#AEB8C2","#68727D"],"Monochrome":["#111315","#F4F4F1","#A7ADB4","#6E7884"]};
 let total=25000;
 function page(name){pages.forEach((p,i)=>$("page-"+p).classList.toggle("active",p===name));$("stepLabel").textContent=labels[pages.indexOf(name)];window.scrollTo(0,0)}
 function selectGroup(id,key){$(id).querySelectorAll("button").forEach(b=>{b.classList.toggle("selected",b.dataset.value===key)});}
@@ -85,106 +85,70 @@ async function initThreeEngine(){
   const room=new RoomEnvironment(threeRenderer);threeScene.environment=pmrem.fromScene(room,.04).texture;room.dispose();pmrem.dispose();
   threeScene.add(new THREE.HemisphereLight(0xe7efff,0x101521,1.7));
   const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(-4,6,7);threeScene.add(key);
-  const rim=new THREE.PointLight(0x8b7cff,24,18);rim.position.set(4,1,3);threeScene.add(rim);
-  const fill=new THREE.PointLight(0x35d6c5,15,16);fill.position.set(-4,-3,2);threeScene.add(fill);
+  const rim=new THREE.PointLight(0xd1a36c,34,18);rim.position.set(4,1,3);threeScene.add(rim);
+  const fill=new THREE.PointLight(0xd7dce2,22,16);fill.position.set(-4,-3,2);threeScene.add(fill);
   threeReady=true;state.webglReady=true;buildThreeObjects();draw();
  }catch(error){threeFailed=true;state.webglReady=false;state.webglError="3D dvigatel yuklanmadi: "+(error&&error.message?error.message:"noma’lum xato")+". Internetni tekshirib, sahifani yangilang.";console.error("NEX WebGL initialization failed:",error);const n=document.createElement("p");n.className="webgl-warning";n.textContent=state.webglError;$("summary").appendChild(n)}
 }
 function buildThreeObjects(){
- if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);threeGroup=new THREE.Group();threeScene.add(threeGroup);
- const pal=paletteMap[state.palette]||paletteMap.Midnight,accent=new THREE.Color(pal[2]),secondary=new THREE.Color(pal[3]||pal[2]),rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0),style=state.style;
- const metal=new THREE.MeshPhysicalMaterial({color:accent,metalness:.96,roughness:.16,clearcoat:1,clearcoatRoughness:.08,envMapIntensity:2.6}),bright=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.92,roughness:.14,clearcoat:1,clearcoatRoughness:.07,envMapIntensity:2.4}),dark=new THREE.MeshStandardMaterial({color:pal[0],metalness:.82,roughness:.24,wireframe:true});
- // Asosiy tomchi shisha emas: yuqori aks ettiruvchi haqiqiy xrom/simob metalli.
- const mercury=new THREE.MeshPhysicalMaterial({color:0xe5f2fa,metalness:1,roughness:.115,transmission:0,clearcoat:1,clearcoatRoughness:.055,iridescence:.42,iridescenceIOR:1.8,iridescenceThicknessRange:[120,620],envMapIntensity:3.4});
- const neon=new THREE.MeshPhysicalMaterial({color:secondary,metalness:.48,roughness:.12,clearcoat:1,emissive:secondary,emissiveIntensity:1.15});
- const liquidGeometry=new THREE.IcosahedronGeometry(1.12,4),liquidPositions=liquidGeometry.attributes.position;
- for(let i=0;i<liquidPositions.count;i++){const x=liquidPositions.getX(i),y=liquidPositions.getY(i),z=liquidPositions.getZ(i),n=1+.105*Math.sin(x*3.4+y*2.2)*Math.cos(z*3.1)+.045*Math.sin(y*7.2+z*2.8);liquidPositions.setXYZ(i,x*n,y*n,z*n)}
- liquidGeometry.computeVertexNormals();
- const main=new THREE.Group();threeGroup.add(main);
- // NEX signature: suyuq simob tomchisi, shaffof metall va neon orbitasi.
- const sceneIndex=state.scene;
- const liquid=new THREE.Mesh(liquidGeometry,mercury);liquid.name="nex-liquid-core";liquid.position.set(sceneIndex===0?.72:sceneIndex===4?-.55:.72,.18,-.2);liquid.scale.setScalar(sceneIndex===1?.82:1.02);liquid.visible=sceneIndex===0;main.add(liquid);
- const dropletA=new THREE.Mesh(new THREE.SphereGeometry(.27,32,24),mercury);dropletA.position.set(-1.55,-1.2,.15);dropletA.scale.set(.72,1.25,.72);dropletA.visible=sceneIndex===0;main.add(dropletA);
- const dropletB=new THREE.Mesh(new THREE.SphereGeometry(.14,24,18),mercury);dropletB.position.set(1.95,1.45,-.3);dropletB.visible=sceneIndex===0;main.add(dropletB);
- const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.68,.018,12,144),neon);orbit.position.copy(liquid.position);orbit.rotation.set(.72,.18,-.34);orbit.visible=sceneIndex===0;main.add(orbit);
- const orbit2=new THREE.Mesh(new THREE.TorusGeometry(1.94,.012,10,144),bright);orbit2.position.copy(liquid.position);orbit2.rotation.set(1.12,.6,.25);orbit2.visible=sceneIndex===0;main.add(orbit2);
- const add=(g,m,x,y,z,sx=1,sy=sx,sz=sx)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.rotation.set(rand()*Math.PI,rand()*Math.PI,rand()*Math.PI);main.add(o);return o};
- const motif=new THREE.Group();main.add(motif);
- // Har bir hikoya bosqichi uchun alohida 3D metafora: dekor emas, mazmunni ifodalovchi shakl.
- if(sceneIndex===1){
-  const frame=new THREE.Mesh(new THREE.TorusGeometry(1.18,.075,20,120),bright);frame.scale.set(1,.82,1);motif.add(frame);
-  const core=new THREE.Mesh(new THREE.DodecahedronGeometry(.72,1),mercury);core.position.z=.12;motif.add(core);
-  for(let i=0;i<3;i++){const node=new THREE.Mesh(new THREE.SphereGeometry(.095,20,16),neon);const q=i*Math.PI*2/3;node.position.set(Math.cos(q)*1.52,Math.sin(q)*1.22,.22);motif.add(node)}
-  motif.position.set(0,.05,.1);
- }else if(sceneIndex===2){
-  for(let i=0;i<4;i++){const crystal=new THREE.Mesh(new THREE.OctahedronGeometry(.48+i*.12,1),i%2?bright:mercury);crystal.position.set((i-1.5)*.67,-.45+i*.42,-i*.12);crystal.rotation.set(.3*i,.4*i,.2*i);motif.add(crystal)}
-  const base=new THREE.Mesh(new THREE.TorusGeometry(1.55,.025,12,100),neon);base.rotation.x=Math.PI/2;base.position.y=-1.2;motif.add(base);
-  motif.position.set(.12,0,0);
- }else if(sceneIndex===3){
-  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(.94,.19,180,24,2,5),mercury);motif.add(knot);
-  const cut=new THREE.Mesh(new THREE.TorusGeometry(1.48,.045,16,120),neon);cut.rotation.set(.8,.2,.5);motif.add(cut);
-  const shard=new THREE.Mesh(new THREE.OctahedronGeometry(.48,1),bright);shard.position.set(1.38,-.95,.5);motif.add(shard);
-  motif.position.set(.05,.05,0);
- }else if(sceneIndex===4){
-  for(let i=0;i<3;i++){const gate=new THREE.Mesh(new THREE.TorusGeometry(1.12+i*.28,.035-i*.006,16,120),i===1?mercury:neon);gate.rotation.y=(i-1)*.22;gate.position.z=-i*.28;motif.add(gate)}
-  const seed=new THREE.Mesh(new THREE.IcosahedronGeometry(.32,2),bright);seed.position.z=.35;motif.add(seed);
-  motif.position.set(0,.05,0);
- }else{
-  const nucleus=new THREE.Mesh(new THREE.IcosahedronGeometry(1.02,3),mercury);motif.add(nucleus);
-  const pulse=new THREE.Mesh(new THREE.TorusGeometry(1.48,.045,16,120),neon);pulse.rotation.set(.7,.2,-.25);motif.add(pulse);
-  motif.position.set(0,0,0);
+ if(!threeReady)return;if(threeGroup)threeScene.remove(threeGroup);
+ threeGroup=new THREE.Group();threeScene.add(threeGroup);
+ const pal=paletteMap[state.palette]||paletteMap.Graphite,rand=seededRandom((state.backgroundSeed^Math.imul(state.scene+53,0x9E3779B1))|0);
+ const chrome=new THREE.MeshPhysicalMaterial({color:0xdce0e3,metalness:1,roughness:.105,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:3.1});
+ const warmMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[2]),metalness:1,roughness:.16,clearcoat:1,clearcoatRoughness:.07,envMapIntensity:2.7});
+ const darkMetal=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal[3]||pal[2]),metalness:.96,roughness:.19,clearcoat:1,envMapIntensity:2.3});
+ const main=new THREE.Group();threeGroup.add(main);const flows=[];
+ const count=state.style==="Editorial / Magazine"?2:3;
+ for(let i=0;i<count;i++){
+  const flow=createFlowSurface(76,18,i===0?chrome:i===1?warmMetal:darkMetal,(rand()-.5)*6.2+i*2.1);
+  flow.position.set((i-1)*.12,(i-1)*.2,-i*.72);
+  flow.rotation.set((rand()-.5)*.26,(rand()-.5)*.42,(rand()-.5)*.24);
+  const scale=state.style==="Editorial / Magazine"?[1.08,.82,.72][i]:[1,.92,.78][i];
+  flow.scale.set(scale,scale,scale);main.add(flow);flows.push(flow);
  }
- const v=Math.floor(rand()*5);
- if(style==="Cinematic 3D"){
-  if(v===0){add(new THREE.TorusKnotGeometry(1.05,.28,180,24,2,3),metal,0,.2,0,1.15);add(new THREE.IcosahedronGeometry(.48,1),bright,-1.55,-1.35,-.7,.7)}
-  else if(v===1){add(new THREE.IcosahedronGeometry(1.35,1),metal,0,.1,0);add(new THREE.TorusGeometry(1.9,.035,12,100),bright,0,.1,-.4,1,1,.6)}
-  else if(v===2){for(let i=0;i<5;i++)add(new THREE.BoxGeometry(.72,.72,.72),i%2?bright:metal,(i-2)*.72,Math.sin(i*.8)*.55,-i*.24,.92)}
-  else if(v===3){add(new THREE.SphereGeometry(1.22,48,32),metal,0,0,0);add(new THREE.TorusGeometry(1.65,.045,16,120),bright,0,0,-.3,1,.68,1)}
-  else{add(new THREE.OctahedronGeometry(1.45,1),metal,0,0,0);add(new THREE.TorusKnotGeometry(.7,.07,100,12),bright,0,0,1.15)}
- }else if(style==="Kinetic Typography"){
-  for(let i=0;i<7;i++){const bar=add(new THREE.BoxGeometry(.22,2.8,.16),i%2?bright:metal,-2.4+i*.8,0,-i*.18,.8,.45+rand(),1);bar.rotation.z=(rand()-.5)*.7}
-  add(new THREE.TorusGeometry(1.3,.055,12,90),bright,.2,.3,-.8,1.15,.6,1);
- }else if(style==="Editorial / Magazine"){
-  add(new THREE.BoxGeometry(2.5,3.4,.18),dark,0,0,-.5);add(new THREE.BoxGeometry(2.1,.045,.05),bright,0,1.05,.1);add(new THREE.BoxGeometry(1.45,.055,.05),metal,-.3,.82,.12);add(new THREE.TorusGeometry(.72,.045,12,80),bright,.55,-.35,.25,1,.72,1);add(new THREE.IcosahedronGeometry(.46,1),metal,-.75,-.75,.4);
- }else{
-  add(new THREE.TorusKnotGeometry(1.1,.09,160,18,3,5),metal,0,0,0);for(let i=0;i<6;i++){const a=i*Math.PI/3;add(new THREE.BoxGeometry(.38,.38,.38),bright,Math.cos(a)*2,Math.sin(a)*1.7,-.6,.8)}add(new THREE.OctahedronGeometry(.62,1),metal,0,0,1.15);
- }
- const pts=[];for(let i=0;i<90;i++)pts.push((rand()-.5)*8,(rand()-.5)*11,-2-rand()*7);const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));threeGroup.add(new THREE.Points(geo,new THREE.PointsMaterial({color:secondary,size:.025,sizeAttenuation:true,transparent:true,opacity:.72})));
- const morphTargets=prepareOrganicMorphs(main,(state.backgroundSeed^Math.imul(sceneIndex+1,0x45d9f3b))|0);threeGroup.userData={main,motif,motifBaseY:motif.position.y,morphTargets,phase:rand()*Math.PI*2,liquid,dropletA,dropletB,orbit,orbit2};threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
+ const particles=[];for(let i=0;i<34;i++)particles.push((rand()-.5)*8,(rand()-.5)*10,-2-rand()*5);
+ const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.Float32BufferAttribute(particles,3));
+ const particleField=new THREE.Points(pg,new THREE.PointsMaterial({color:0xb4a18a,size:.012,sizeAttenuation:true,transparent:true,opacity:.38}));
+ threeGroup.add(particleField);threeGroup.userData={main,flows,phase:rand()*Math.PI*2,particleField};
+ threeSeed=state.backgroundSeed;threeSceneIndex=state.scene;
 }
-function prepareOrganicMorphs(root,seed){
- const targets=[];let index=0;
- root.traverse(obj=>{
-  if(!obj.isMesh||!obj.geometry||!obj.geometry.attributes.position||obj.geometry.attributes.position.count<24)return;
-  obj.geometry=obj.geometry.clone();
-  const attr=obj.geometry.attributes.position,base=new Float32Array(attr.array.length);
-  base.set(attr.array);
-  const isLiquid=obj.name==="nex-liquid-core",isRing=obj.geometry.type==="TorusGeometry";
-  targets.push({mesh:obj,base,seed:(seed+index++*17.31),strength:isLiquid?.19:isRing?.025:.052,isLiquid});
- });
- return targets;
+function createFlowSurface(segments,widthSegments,material,seed){
+ const positions=[],indices=[],base=[];
+ for(let iy=0;iy<=widthSegments;iy++){const v=iy/widthSegments*2-1;for(let ix=0;ix<=segments;ix++){const u=ix/segments,x=(u-.5)*8.4;positions.push(x,v*.55,0);base.push(x,v,u)}}
+ for(let iy=0;iy<widthSegments;iy++)for(let ix=0;ix<segments;ix++){const a=iy*(segments+1)+ix,b=a+1,c=a+segments+1,d=c+1;indices.push(a,c,b,b,c,d)}
+ const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();
+ const mesh=new THREE.Mesh(geometry,material);mesh.userData.flowBase=new Float32Array(base);mesh.userData.flowSeed=seed;return mesh;
 }
-function updateOrganicMorphs(targets,time,intensity=1){
- for(const item of targets){
-  const attr=item.mesh.geometry.attributes.position,base=item.base,phase=time*1.12+item.seed;
+function updateFlowSurfaces(flows,time,intensity=1){
+ for(const mesh of flows){
+  const attr=mesh.geometry.attributes.position,base=mesh.userData.flowBase,seed=mesh.userData.flowSeed;
+  const direction=Math.sin(time*.48+seed*.3),phase=time*1.7*direction+seed;
   for(let i=0;i<attr.count;i++){
-   const k=i*3,x=base[k],y=base[k+1],z=base[k+2],len=Math.hypot(x,y,z)||1;
-   const nx=x/len,ny=y/len,nz=z/len;
-   const flowA=Math.sin(x*2.35+phase+Math.sin(z*1.65-phase*.62)*.72);
-   const flowB=Math.cos(y*2.75-phase*.83+x*.68);
-   const flowC=Math.sin(z*3.15+phase*1.18+y*.54);
-   const wave=flowA*.58+flowB*.31+flowC*.27;
-   const displacement=wave*item.strength*intensity;
-   if(item.isLiquid){
-    const lateralX=Math.sin(y*2.1+phase*.72)*.035*intensity;
-    const lateralY=Math.cos(x*2.25-phase*.66)*.03*intensity;
-    attr.setXYZ(i,x+nx*displacement+lateralX,y+ny*displacement+lateralY,z+nz*displacement);
-   }else{
-    attr.setXYZ(i,x+nx*displacement,y+ny*displacement,z+nz*displacement);
-   }
+   const k=i*3,x=base[k],v=base[k+1],u=base[k+2],envelope=.24+.76*Math.pow(Math.sin(Math.PI*u),.55);
+   const crest=Math.sin(x*1.55-phase+v*1.4)+.42*Math.sin(x*2.8-phase*.72-v*2.1),cross=Math.cos(x*1.05-phase*.63+v*3.2);
+   const width=.36+envelope*(.42+.18*Math.sin(x*1.25-phase*.8));
+   const y=v*width+crest*.17*intensity*envelope,z=crest*.38*intensity+cross*.18+Math.sin(v*4.5+phase*.82)*.11;
+   const drift=Math.sin(time*.48+seed*.3)*.42+Math.sin(x*1.1-phase*.6)*.12;
+   attr.setXYZ(i,x+drift+Math.sin(v*2.2+phase)*.13,y,z);
   }
-  attr.needsUpdate=true;item.mesh.geometry.computeVertexNormals();
+  attr.needsUpdate=true;mesh.geometry.computeVertexNormals();
  }
+}
+
+function renderThree(now,target=threeRenderer){
+ if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap.Graphite;
+ if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
+ threeScene.background=new THREE.Color(pal[0]);
+ const t=now/1000,local=Math.max(0,Math.min(1,(state.elapsed-sceneStart(state.scene))/state.sceneDurations[state.scene])),ease=1-Math.pow(1-local,3);
+ const phase=t*(state.animation==="Dinamik"?1.35:state.animation==="Silliq"?.78:1)+threeGroup.userData.phase,main=threeGroup.userData.main;
+ main.rotation.y=Math.sin(phase*.22)*.14;main.rotation.x=Math.sin(phase*.31)*.1;main.position.y=Math.sin(phase*.48)*.18;main.position.x=Math.sin(phase*.38)*.22;
+ main.scale.setScalar([.92,.84,.9,.88,.94][state.scene]);
+ updateFlowSurfaces(threeGroup.userData.flows,phase,state.animation==="Dinamik"?1.25:state.animation==="Silliq"?.82:1);
+ threeGroup.userData.particleField.rotation.y=phase*.025;
+ const cx=[0,.12,-.1,.1,0][state.scene],cy=[0,-.08,.12,-.06,.04][state.scene],z=8.35+(1-ease)*.45;
+ threeCamera.position.x+=(cx+Math.sin(phase*.27)*.12-threeCamera.position.x)*.035;
+ threeCamera.position.y+=(cy+Math.cos(phase*.24)*.1-threeCamera.position.y)*.035;
+ threeCamera.position.z+=(z-threeCamera.position.z)*.045;threeCamera.lookAt(0,0,0);target.render(threeScene,threeCamera);
 }
 function renderThree(now,target=threeRenderer){
  if(!threeReady||!target)return;const pal=paletteMap[state.palette]||paletteMap.Midnight;if(threeSeed!==state.backgroundSeed||threeSceneIndex!==state.scene)buildThreeObjects();
