@@ -1,6 +1,6 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.4.3**  
+Amaldagi versiya: **v0.4.4**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
@@ -57,3 +57,18 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 
 ### Tekshiruv chegarasi
 Kod GitHub main tarmog‘iga joylandi. Bu bosqichda kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi; real Android qurilmada barcha besh kompozitsiyaning ko‘rinishi hali tasdiqlanmagan.
+
+
+## v0.4.4 — Matn kontrasti va organik 3D morfing
+- [x] Tavsiya akkaunt sahnalarida asosiy yozuvlar palitraning och foreground rangiga o‘tkazildi; aksent ranglar grafik urg‘ular uchun qoldirildi.
+- [x] 3D metall materiallar palitraning aksent va ikkilamchi ranglaridan foydalanadi; matn bilan rang roli ajratildi.
+- [x] 3D asosiy kompozitsiyasi kichraytirilib, matnning asosiy o‘qish hududidan o‘ng tomonga surildi.
+- [x] 3D obyekt geometriyalariga vertex asosidagi organik morfing qo‘shildi: shakllar faqat aylanmaydi, sirtlari ham sekin o‘zgaradi.
+- [x] Morfing amplitudasi animatsiya rejimiga moslashtirildi.
+- [x] Rang tanlash sahifasida matn va 3D obyektlar uchun kontrast qoidasi tushuntirildi.
+- [x] Interfeys versiyasi v0.4.4 ga yangilandi.
+- [ ] Android qurilmada matn/3D kesishishi, kontrast va morfing ravonligi ko‘z bilan tekshiriladi.
+- [ ] Uzoq davom etuvchi animatsiyada mobil GPU yuklamasi o‘lchanadi.
+
+### Tekshiruv chegarasi
+JavaScript sintaksisi tekshirildi. Qurilmadagi real ko‘rinish va unumdorlik sinovi hali bajarilmadi.
