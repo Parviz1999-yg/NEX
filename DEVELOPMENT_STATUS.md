@@ -118,3 +118,18 @@ Kod o‘zgarishlari statik tekshiruvdan o‘tkaziladi. Real Android vizual sinov
 
 ### v0.5.1 tekshiruv chegarasi
 Statik JavaScript sintaksisi, takroriy renderer yo‘qligi, palitra kalitlari va HTML/CSS versiya mosligi tekshiriladi. Real Android vizual sinovi hali bajarilmagan.
+
+
+## v0.5.2 — Tavsiya sahnasida jo‘mrak oqimi, to‘qnashuv va yuqori kontrast
+- [x] Har bir suyuq metall qatlamiga mustaqil tezlik, faza va amplituda berildi; oqimlar endi bir xil ritmda yurmaydi.
+- [x] Tavsiya akkauntning birinchi HOOK sahnasiga Three.js WebGL jo‘mragi, egri quvur, oqim trubasi, zarba yadrosi va kengayuvchi metall sachrash halqasi qo‘shildi.
+- [x] Oqim zarba nuqtasiga yetgach 48 ta xrom tomchi va 24 ta metall konfetti bo‘lagi turli trayektoriyalarda sochiladi; harakat takrorlanuvchi siklda animatsiyalanadi.
+- [x] HOOK sahnasida umumiy lentalar vaqtincha yashiriladi, jo‘mrak va sachrash kompozitsiyasi alohida ko‘rinadi.
+- [x] Tavsiya sahnalarining matni chap xavfsiz hududga joylashtirildi; quyuq, aniq chegarali panel oq matnni 3D fonidan ajratadi.
+- [x] Xrom materiallarining roughness kamaytirildi, environment reflection va ko‘k emissive aks kuchaytirildi.
+- [x] Profil, foyda, farq va CTA matn panellari ham kontrastli qilindi.
+- [x] Versiya v0.5.2 va script cache-buster yangilandi.
+- [ ] Android qurilmada jo‘mrakdan oqish, zarba, sachrash, matn o‘qilishi va FPS ko‘z bilan tasdiqlanishi kerak.
+
+### v0.5.2 tekshiruv chegarasi
+Kodning sintaksisi va asosiy strukturaviy tekshiruvlar bajariladi. Haqiqiy brauzer/WebGL animatsiyasi va Android qurilmadagi vizual sifat hali tasdiqlanmagan.
