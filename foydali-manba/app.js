@@ -1,12 +1,12 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+let THREE=null;
 
 const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, clock:new THREE.Clock(), raf:0,
+  camera:null, group:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
-  playbackStarted:0, playbackRaf:0, sceneTexts:["","","","",""],
+  playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
 };
 const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
@@ -66,6 +66,7 @@ $("nextSource").addEventListener("click",()=>{
   const required=[["sourceName","manba nomi"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
   const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
   if(!state.category)missing.unshift("manba turi");
+  if(read("sourceLink")){try{const url=new URL(read("sourceLink"));if(!["http:","https:"].includes(url.protocol))throw new Error("protocol");}catch{setStatus("sourceStatus","Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}}
   if(missing.length){setStatus("sourceStatus","Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".");return;}
   setStatus("sourceStatus","Ma’lumotlar qabul qilindi.");
   showStep(2);
@@ -96,10 +97,11 @@ $("paletteOptions").querySelectorAll("[data-value]").forEach(button=>button.addE
 $("motionOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
   state.motion=button.dataset.value;choose("motionOptions",state.motion);
 }));
-function setupWebGL(){
+async function setupWebGL(){
   if(state.renderer)return true;
   const canvas=$("webgl");
   try{
+    if(!THREE)THREE=await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
     state.renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
     state.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
     state.renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -110,8 +112,12 @@ function setupWebGL(){
     state.scene.add(new THREE.HemisphereLight(0xeaf5ff,0x142238,2.2));
     const key=new THREE.DirectionalLight(0xffffff,4.5);key.position.set(-3,5,6);state.scene.add(key);
     const rim=new THREE.PointLight(0x72caff,85,18);rim.position.set(3,1,4);state.scene.add(rim);
-    rebuildScene();resize();animate();
+    rebuildScene();resize();state.animationStarted=performance.now();animate();
     window.addEventListener("resize",resize);
+    canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
+    canvas.addEventListener("webglcontextrestored",()=>{try{rebuildScene();resize();setStatus("studioStatus","3D sahna qayta tiklandi.");}catch(error){setStatus("studioStatus","3D sahnani tiklashda xatolik: "+error.message);}});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)pausePlayback();});
+    setStatus("studioStatus","3D sahna tayyor. Ekran yozish uchun alohida rejim mavjud.");
     return true;
   }catch(error){
     setStatus("studioStatus","3D sahna ishga tushmadi: "+error.message);
@@ -172,7 +178,7 @@ function rebuildScene(){
 function animate(){
   state.raf=requestAnimationFrame(animate);
   if(!state.renderer||!state.scene)return;
-  const t=state.clock.getElapsedTime();
+  const t=(performance.now()-state.animationStarted)/1000;
   if(state.group){
     const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15}};
     const profile=motionProfiles[state.motion]||motionProfiles.Silliq;
@@ -184,6 +190,7 @@ function animate(){
     state.camera.lookAt(0,0,0);
   }
   state.renderer.render(state.scene,state.camera);
+  if(state.recording&&state.recordRenderer)state.recordRenderer.render(state.scene,state.camera);
 }
 const sceneLabels=["HOOK","MANBA","SABAB","FOYDA","YAKUN"];
 function readSceneTexts(){
@@ -205,7 +212,7 @@ function renderSceneList(){
     const button=document.createElement("button");
     button.type="button";button.className="scene-chip"+(index===state.sceneIndex?" active":"");
     button.textContent=String(index+1).padStart(2,"0");button.title=label;
-    button.addEventListener("click",()=>{pausePlayback();showScene(index);});
+    button.addEventListener("click",()=>{pausePlayback();state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);showScene(index);$("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";});
     list.appendChild(button);
   });
 }
@@ -219,6 +226,7 @@ function showScene(index){
   $("reelReason").textContent=state.sceneIndex===1&&read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):(state.sceneIndex===2?text:"");
   $("reelBenefit").textContent=state.sceneIndex===3?text:"";
   $("reelCta").textContent=state.sceneIndex===4?text:"";
+  syncRecordText();
   $("sceneCounter").textContent="SAHNA "+String(state.sceneIndex+1).padStart(2,"0")+" / 05";
   $("sceneDuration").value=String(state.sceneDurations[state.sceneIndex]/1000);
   $("sceneDurationValue").textContent=(state.sceneDurations[state.sceneIndex]/1000).toFixed(1).replace(".",",")+" soniya";
@@ -229,24 +237,33 @@ function refreshDurationSummary(){
   $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
 }
 function pausePlayback(){
+  if(state.playing)state.playbackElapsed=Math.min(state.sceneDurations.reduce((sum,value)=>sum+value,0),performance.now()-state.playbackStarted);
   state.playing=false;
   if(state.playbackRaf)cancelAnimationFrame(state.playbackRaf);
   state.playbackRaf=0;
-  if($("startPreview"))$("startPreview").textContent="▶ Ko‘rishni boshlash";
+  if($("startPreview"))$("startPreview").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺ Qayta ko‘rish":"▶ Davom etish";
 }
 function playbackFrame(now){
   if(!state.playing)return;
-  const elapsed=now-state.playbackStarted;
   const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
-  let cursor=elapsed%total,scene=0;
+  state.playbackElapsed=Math.min(total,now-state.playbackStarted);
+  if(state.playbackElapsed>=total){
+    state.playing=false;state.playbackRaf=0;showScene(4);
+    $("studioProgress").style.width="100%";
+    $("startPreview").textContent="↺ Qayta ko‘rish";
+    return;
+  }
+  let cursor=state.playbackElapsed,scene=0;
   while(scene<4&&cursor>=state.sceneDurations[scene]){cursor-=state.sceneDurations[scene];scene++;}
   if(scene!==state.sceneIndex)showScene(scene);
-  $("studioProgress").style.width=((elapsed%total)/total*100)+"%";
+  $("studioProgress").style.width=(state.playbackElapsed/total*100)+"%";
   state.playbackRaf=requestAnimationFrame(playbackFrame);
 }
 function startPlayback(){
   if(state.playing){pausePlayback();return;}
-  state.playing=true;state.playbackStarted=performance.now();
+  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+  if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";}
+  state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
   $("startPreview").textContent="Ⅱ To‘xtatish";
   state.playbackRaf=requestAnimationFrame(playbackFrame);
 }
@@ -278,8 +295,70 @@ function updatePreview(){
   $("reelCta").textContent=read("cta")||"Saqlab qo‘ying va foydalanib ko‘ring.";
 }
 function escapeHtml(value){return value.replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+
+function setupRecordRenderer(){
+  if(state.recordRenderer)return true;
+  if(!state.renderer||!state.scene||!state.camera)return false;
+  try{
+    const canvas=$("recordWebgl");
+    state.recordRenderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
+    state.recordRenderer.setPixelRatio(1);
+    state.recordRenderer.setSize(1080,1920,false);
+    state.recordRenderer.outputColorSpace=THREE.SRGBColorSpace;
+    state.recordRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+    return true;
+  }catch(error){
+    setStatus("studioStatus","Yuqori aniqlikdagi yozuv sahnasi ishga tushmadi: "+error.message);
+    return false;
+  }
+}
+function syncRecordText(){
+  [["reelCategory","recordCategory"],["reelHook","recordHook"],["reelTitle","recordTitle"],["reelReason","recordReason"],["reelBenefit","recordBenefit"],["reelCta","recordCta"]].forEach(([from,to])=>{
+    const a=$(from),b=$(to);if(a&&b)b.textContent=a.textContent;
+  });
+}
+function revealRecordControls(){
+  const overlay=$("recordOverlay");overlay.classList.add("controls-visible");
+  clearTimeout(state.recordControlsTimer);
+  state.recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800);
+}
+function startRecordMode(){
+  if(!state.renderer){setStatus("studioStatus","3D sahna hali tayyor emas. Biroz kutib, qayta urinib ko‘ring.");return;}
+  setupRecordRenderer();
+  state.recording=true;$("recordOverlay").hidden=false;
+  state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";
+  state.playing=true;state.playbackStarted=performance.now();
+  $("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";
+  revealRecordControls();syncRecordText();
+  if(!state.playbackRaf)state.playbackRaf=requestAnimationFrame(playbackFrame);
+  setStatus("studioStatus","Ekran yozish rejimi faol. Telefoningizning ekran yozish funksiyasini ishga tushiring.");
+}
+function exitRecordMode(){
+  clearTimeout(state.recordControlsTimer);
+  const overlay=$("recordOverlay");
+  if(overlay){overlay.classList.remove("controls-visible");overlay.hidden=true;}
+  state.recording=false;pausePlayback();
+  if($("recordPause"))$("recordPause").textContent="Ⅱ";
+}
+$("recordMode").addEventListener("click",startRecordMode);
+$("recordPause").addEventListener("click",()=>{
+  if(state.playing){pausePlayback();$("recordPause").textContent="▶";}
+  else{
+    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);}
+    state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
+    $("recordPause").textContent="Ⅱ";
+    if(!state.playbackRaf)state.playbackRaf=requestAnimationFrame(playbackFrame);
+  }
+  revealRecordControls();
+});
+$("recordExit").addEventListener("click",exitRecordMode);
+$("recordOverlay").addEventListener("click",event=>{if(!event.target.closest(".record-controls"))revealRecordControls();});
+$("recordOverlay").querySelector(".record-controls").addEventListener("click",event=>{event.stopPropagation();revealRecordControls();});
+
 $("openStudio").addEventListener("click",()=>{
   readSceneTexts();
+  state.playbackElapsed=0;
   state.studioOpened=true;
   showStep(7);
   updatePreview();
@@ -288,7 +367,9 @@ $("openStudio").addEventListener("click",()=>{
 });
 $("startPreview").addEventListener("click",startPlayback);
 $("sceneDuration").addEventListener("input",()=>{
+  pausePlayback();
   state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
+  refreshDurationSummary();
   $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
   refreshDurationSummary();
 });
@@ -305,10 +386,12 @@ $("sceneText").addEventListener("input",()=>{
 $("restartScene").addEventListener("click",()=>{
   pausePlayback();
   state.sceneEdited=[false,false,false,false,false];
+  state.playbackElapsed=0;
+  $("studioProgress").style.width="0%";
   readSceneTexts();
   state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
   if(state.renderer)rebuildScene();
   state.clock.start();showScene(0);
 });
-$("backSettings").addEventListener("click",()=>showStep(6));
+$("backSettings").addEventListener("click",()=>{pausePlayback();exitRecordMode();showStep(6);});
 updatePreview();
