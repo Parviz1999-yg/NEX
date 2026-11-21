@@ -300,7 +300,6 @@ function refreshDurationSummary(){
   const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
   $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
   if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
-  if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
 }
 function updateSceneTime(){
   const seconds=Math.floor(state.playbackElapsed/1000);
@@ -438,7 +437,7 @@ $("recordOverlay").querySelector(".record-controls").addEventListener("click",ev
 
 $("openStudio").addEventListener("click",()=>{
   readSceneTexts();
-  state.playbackElapsed=0;
+  state.playbackElapsed=0;updateSceneTime();
   state.studioOpened=true;
   showStep(7);
   updatePreview();
@@ -452,6 +451,7 @@ $("sceneDuration").addEventListener("input",()=>{
   const offset=Math.max(0,state.playbackElapsed-before);
   state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
   state.playbackElapsed=before+Math.min(offset,state.sceneDurations[state.sceneIndex]);
+  updateSceneTime();
   $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
   refreshDurationSummary();
 });
