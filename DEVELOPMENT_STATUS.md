@@ -16,9 +16,15 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - [x] Harakat profili, bayon energiyasi va sahna indeksiga bog‘langan kamera/obyekt o‘tishlari.
 - [x] Yakuniy sahnada 3D NEX xrom logotipi va ko‘tariluvchi metall wipe/outro.
 - [x] TA andozasidagi alohida 9:16 ekran yozish oynasi; 1080×1920 WebGL va Canvas matn qatlamlari, qo‘llab-quvvatlansa fullscreen, yashirin/ko‘rinadigan boshqaruvlar, pauza va studiyaga qaytish.
+- [x] TA bilan bir xil to‘rt canvas arxitekturasi: 360×640 preview WebGL+Canvas hamda 1080×1920 yozuv WebGL+Canvas.
+- [x] Preview matni DOM emas, Canvas qatlamida chiziladi; matn animatsiyasi 4 vizual til va 5 harakat profiliga mos.
+- [x] TA’dagi segmentlangan xrom lenta geometriyasi, 5 sahna uchun alohida shakl almashishi va material/yoritish sozlamalari ko‘chirildi.
+- [x] TA NEX logotipining chizilib ochiladigan 3D intro/outro animatsiyasi ko‘chirildi.
+- [x] TA asosiy qobig‘iga mos header, asosiy kenglik, panel, preview va mobil joylashuv sozlandi.
+- [x] Playback vaqtini saqlash: sahna tanlash, davomiylikni o‘zgartirish va yozuv rejimiga o‘tishda ijro holati davom ettiriladi.
 - [x] Rolik yakunida to‘xtash, davom ettirish, vaqt hisoblagichi, sahna progressi, kreativ variant va yangi loyiha boshqaruvlari.
 - [x] WebGL import xatolari, kontekst yo‘qolishi/tiklanishi va brauzer tabining yashirilishiga munosabat.
-- [x] Statik tekshiruv: JavaScript parse, 63 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
+- [x] Statik tekshiruv: JavaScript parse, 64 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
 - [ ] Haqiqiy Android brauzerida 4 manba turi × 4 vizual til × 5 animatsiya × 5 sahna kombinatsiyalarini ko‘z bilan tekshirish.
 - [ ] 1080×1920 ekran yozish rejimida real qurilma sinovi, FPS, qizish va xotira sarfini o‘lchash.
 - [ ] WebGL kontekstini yo‘qotish/tiklash va CDN ishlamagan holatlarni real brauzerda tekshirish.
