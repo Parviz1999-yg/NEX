@@ -418,7 +418,7 @@ function setupRecordRenderer(){
   }
 }
 function syncRecordText(){
-  const value=id=>$ (id)?.textContent?.trim()||"";
+  const value=id=>$(id)?.textContent?.trim()||"";
   const render=(canvas)=>{
     if(!canvas)return;
     const ctx=canvas.getContext("2d",{alpha:true});
