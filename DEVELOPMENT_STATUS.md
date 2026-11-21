@@ -22,6 +22,7 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - [x] TA NEX logotipining chizilib ochiladigan 3D intro/outro animatsiyasi ko‘chirildi.
 - [x] TA asosiy qobig‘iga mos header, asosiy kenglik, panel, preview va mobil joylashuv sozlandi.
 - [x] FM `style.css` TA’ning himoyalangan umumiy stylesheet’ini import qiladi; modulga xos CSS alohida saqlanadi.
+- [x] Preview sarlavhasi, REAL-TIME belgisi, timeline, sahna hisoblagichi va pastki loyiha boshqaruvlari TA tartibiga moslashtirildi.
 - [x] Playback vaqtini saqlash: sahna tanlash, davomiylikni o‘zgartirish va yozuv rejimiga o‘tishda ijro holati davom ettiriladi.
 - [x] Rolik yakunida to‘xtash, davom ettirish, vaqt hisoblagichi, sahna progressi, kreativ variant va yangi loyiha boshqaruvlari.
 - [x] WebGL import xatolari, kontekst yo‘qolishi/tiklanishi va brauzer tabining yashirilishiga munosabat.
