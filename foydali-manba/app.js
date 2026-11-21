@@ -382,8 +382,12 @@ function setupRecordRenderer(){
     state.recordRenderer.outputColorSpace=THREE.SRGBColorSpace;
     state.recordRenderer.toneMapping=THREE.ACESFilmicToneMapping;
     state.recordRenderer.toneMappingExposure=1.55;
+    canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();pausePlayback();setStatus("studioStatus","Yozuv WebGL konteksti uzildi. Tiklanishini kuting yoki oynani qayta oching.");});
+    canvas.addEventListener("webglcontextrestored",()=>{try{state.recordRenderer?.setSize(1080,1920,false);setStatus("studioStatus","Yozuv WebGL qatlami qayta tiklandi.");}catch(error){setStatus("studioStatus","Yozuv qatlamini tiklashda xatolik: "+error.message);}});
     return true;
   }catch(error){
+    try{state.recordRenderer?.dispose();}catch{}
+    state.recordRenderer=null;
     setStatus("studioStatus","Yuqori aniqlikdagi yozuv sahnasi ishga tushmadi: "+error.message);
     return false;
   }
@@ -448,7 +452,7 @@ async function startRecordMode(){
   $("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";
   revealRecordControls();syncRecordText();
   if(!state.playbackRaf)state.playbackRaf=requestAnimationFrame(playbackFrame);
-  setStatus("studioStatus","Ekran yozish rejimi faol. Telefoningizning ekran yozish funksiyasini ishga tushiring.");
+  setStatus("studioStatus",recordReady?"Ekran yozish rejimi faol. Telefoningizning ekran yozish funksiyasini ishga tushiring.":"Ekran yozish oynasi ochildi, lekin 3D yozuv qatlami ishga tushmadi; faqat matn qatlami ko‘rinadi.");
 }
 function exitRecordMode(){
   clearTimeout(state.recordControlsTimer);
