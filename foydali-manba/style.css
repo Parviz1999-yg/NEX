@@ -99,3 +99,10 @@
 .record-controls button{min-height:36px;padding:0 13px;border:1px solid #ffffff24;border-radius:9px;background:#263047;color:#fff;font-weight:750;font-size:12px;cursor:pointer}
 .record-controls button:active{transform:scale(.97)}
 @media(max-width:420px){.record-controls{gap:6px;padding:8px}.record-controls button{padding:0 9px;font-size:11px}}
+
+
+/* FM studio — TA bilan bir xil vaqt va loyiha boshqaruvlari */
+.scene-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.scene-meta .hint{margin:0;font-variant-numeric:tabular-nums}
+#shuffleBackground{border-style:dashed}
+#shuffleBackground:active{transform:scale(.99)}
