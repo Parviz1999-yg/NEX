@@ -118,7 +118,7 @@ async function setupWebGL(){
       state.RoomEnvironment=modules[1]?.RoomEnvironment||null;
     }
     state.renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
-    state.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
+    state.renderer.setPixelRatio(1);
     state.renderer.outputColorSpace=THREE.SRGBColorSpace;
     state.renderer.toneMapping=THREE.ACESFilmicToneMapping;
     state.renderer.toneMappingExposure=1.55;
@@ -129,11 +129,13 @@ async function setupWebGL(){
       state.scene.environment=pmrem.fromScene(room,.04).texture;
       room.dispose();pmrem.dispose();
     }
-    state.camera=new THREE.PerspectiveCamera(38,9/16,.1,100);
-    state.camera.position.set(0,0,8);
-    state.scene.add(new THREE.HemisphereLight(0xeaf5ff,0x142238,2.2));
-    const key=new THREE.DirectionalLight(0xffffff,4.5);key.position.set(-3,5,6);state.scene.add(key);
-    const rim=new THREE.PointLight(0x72caff,85,18);rim.position.set(3,1,4);state.scene.add(rim);
+    state.camera=new THREE.PerspectiveCamera(34,9/16,.1,100);
+    state.camera.position.set(0,0,9);
+    state.scene.add(new THREE.HemisphereLight(0xf8fbff,0x30445d,3.35));
+    const key=new THREE.DirectionalLight(0xffffff,8.0);key.position.set(-4,6,7);state.scene.add(key);
+    const rim=new THREE.PointLight(0x168cff,95,22);rim.position.set(4,1,3);state.scene.add(rim);
+    const fill=new THREE.PointLight(0xb9eaff,88,22);fill.position.set(-4,-3,2);state.scene.add(fill);
+    const topLight=new THREE.PointLight(0xffffff,72,20);topLight.position.set(0,5,1);state.scene.add(topLight);
     rebuildScene();resize();state.animationStarted=performance.now();animate();
     window.addEventListener("resize",resize);
     canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();state.webglFailed=true;pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
@@ -544,7 +546,7 @@ async function startRecordMode(){
   const recordReady=setupRecordRenderer();
   if(!recordReady)setStatus("studioStatus","Yozuv oynasining 3D qatlami ishga tushmadi; matn qatlami saqlanadi.");
   state.recording=true;$("recordOverlay").hidden=false;
-  state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";updateSceneTime();
+  state.playbackElapsed=0;state.sceneVisualFrom=state.sceneIndex;state.sceneVisualStarted=performance.now();showScene(0);$("studioProgress").style.width="0%";updateSceneTime();
   state.playing=true;state.playbackStarted=performance.now();
   $("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";
   revealRecordControls();syncRecordText();
@@ -579,6 +581,7 @@ $("openStudio").addEventListener("click",()=>{
   readSceneTexts();
   state.playbackElapsed=0;updateSceneTime();
   state.studioOpened=true;
+  state.sceneVisualFrom=0;state.sceneVisualStarted=performance.now();
   showStep(7);
   updatePreview();
   showScene(0);
@@ -607,7 +610,7 @@ $("sceneText").addEventListener("input",()=>{
   syncRecordText();
 });
 $("restartScene").addEventListener("click",()=>{
-  pausePlayback();state.playbackElapsed=0;$("studioProgress").style.width="0%";updateSceneTime();showScene(0);startPlayback();
+  pausePlayback();state.playbackElapsed=0;state.sceneVisualFrom=state.sceneIndex;state.sceneVisualStarted=performance.now();$("studioProgress").style.width="0%";updateSceneTime();showScene(0);startPlayback();
 });
 $("shuffleBackground").addEventListener("click",()=>{
   state.variantIndex=(state.variantIndex+1)%6;
