@@ -107,7 +107,7 @@ async function setupWebGL(){
     });
   }
   state.webglLoading=true;
-  const canvas=$("webgl");
+  const canvas=$("reel3D");
   try{
     if(!THREE){
       const modules=await Promise.all([
@@ -153,7 +153,7 @@ async function setupWebGL(){
 }
 function resize(){
   if(!state.renderer)return;
-  const canvas=$("webgl"),box=canvas.getBoundingClientRect();
+  const canvas=$("reel3D"),box=canvas.getBoundingClientRect();
   const w=Math.max(1,Math.round(box.width));
   const h=Math.max(1,Math.round(box.height));
   state.renderer.setSize(w,h,false);
@@ -400,7 +400,7 @@ function setupRecordRenderer(){
   if(state.recordRenderer)return true;
   if(!state.renderer||!state.scene||!state.camera)return false;
   try{
-    const canvas=$("recordWebgl");
+    const canvas=$("record3D");
     state.recordRenderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
     state.recordRenderer.setPixelRatio(1);
     state.recordRenderer.setSize(1080,1920,false);
@@ -418,46 +418,46 @@ function setupRecordRenderer(){
   }
 }
 function syncRecordText(){
-  const canvas=$("recordText"),ctx=canvas?.getContext("2d");
-  if(!ctx)return;
-  const value=id=>$(id)?.textContent?.trim()||"";
-  const wrap=(text,font,color,y,maxLines=5,lineHeight=94)=>{
-    if(!text)return;
-    ctx.font=font;ctx.fillStyle=color;ctx.textAlign="center";ctx.textBaseline="middle";
-    const words=text.split(/\s+/),lines=[];let line="";
-    for(const word of words){
-      const test=line?line+" "+word:word;
-      if(line&&ctx.measureText(test).width>880){lines.push(line);line=word;}
-      else line=test;
-    }
-    if(line)lines.push(line);
-    const shown=lines.slice(0,maxLines);
-    if(lines.length>maxLines)shown[maxLines-1]=shown[maxLines-1].replace(/[.,;:]?$/,"")+"…";
-    const start=y-(shown.length-1)*lineHeight/2;
-    shown.forEach((item,index)=>ctx.fillText(item,540,start+index*lineHeight,900));
+  const value=id=>$ (id)?.textContent?.trim()||"";
+  const render=(canvas)=>{
+    if(!canvas)return;
+    const ctx=canvas.getContext("2d",{alpha:true});
+    if(!ctx)return;
+    const width=canvas.width,height=canvas.height;
+    ctx.setTransform(width/1080,0,0,height/1920,0,0);
+    const wrap=(text,font,color,y,maxLines=5,lineHeight=94)=>{
+      if(!text)return;
+      ctx.font=font;ctx.fillStyle=color;ctx.textAlign="center";ctx.textBaseline="middle";
+      const words=text.split(/\\s+/),lines=[];let line="";
+      for(const word of words){
+        const test=line?line+" "+word:word;
+        if(line&&ctx.measureText(test).width>880){lines.push(line);line=word;}
+        else line=test;
+      }
+      if(line)lines.push(line);
+      const shown=lines.slice(0,maxLines);
+      if(lines.length>maxLines)shown[maxLines-1]=shown[maxLines-1].replace(/[.,;:]?$/,"")+"…";
+      const first=y-(shown.length-1)*lineHeight/2;
+      shown.forEach((item,index)=>ctx.fillText(item,540,first+index*lineHeight,900));
+    };
+    ctx.clearRect(0,0,1080,1920);ctx.save();
+    ctx.fillStyle="#d9f2ff";ctx.font="800 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText(value("reelCategory"),540,142);
+    ctx.globalAlpha=.48;ctx.fillRect(390,190,300,3);ctx.globalAlpha=1;
+    const scene=state.sceneIndex;
+    if(scene===0)wrap(value("reelHook"),"800 78px system-ui","#ffffff",930,6,102);
+    else if(scene===1){
+      wrap(value("reelHook"),"650 36px system-ui","#b9c8d8",680,3,52);
+      wrap(value("reelTitle"),"850 82px system-ui","#ffffff",930,5,100);
+      wrap(value("reelReason"),"600 34px system-ui","#b9e8ff",1190,3,48);
+    }else if(scene===2)wrap(value("reelReason"),"800 72px system-ui","#ffffff",940,6,96);
+    else if(scene===3)wrap(value("reelBenefit"),"800 72px system-ui","#ffffff",940,6,96);
+    else wrap(value("reelCta"),"850 78px system-ui","#ffffff",930,6,102);
+    ctx.fillStyle="#d7e5f1";ctx.font="700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
+    ctx.textAlign="right";ctx.fillText("9:16",1002,1800);ctx.restore();
   };
-  ctx.clearRect(0,0,1080,1920);
-  ctx.save();
-  ctx.fillStyle="#d9f2ff";ctx.font="800 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillText(value("reelCategory"),540,142);
-  ctx.globalAlpha=.48;ctx.fillRect(390,190,300,3);ctx.globalAlpha=1;
-  const scene=state.sceneIndex;
-  if(scene===0){
-    wrap(value("reelHook"),"800 78px system-ui","#ffffff",930,6,102);
-  }else if(scene===1){
-    wrap(value("reelHook"),"650 36px system-ui","#b9c8d8",680,3,52);
-    wrap(value("reelTitle"),"850 82px system-ui","#ffffff",930,5,100);
-    wrap(value("reelReason"),"600 34px system-ui","#b9e8ff",1190,3,48);
-  }else if(scene===2){
-    wrap(value("reelReason"),"800 72px system-ui","#ffffff",940,6,96);
-  }else if(scene===3){
-    wrap(value("reelBenefit"),"800 72px system-ui","#ffffff",940,6,96);
-  }else{
-    wrap(value("reelCta"),"850 78px system-ui","#ffffff",930,6,102);
-  }
-  ctx.fillStyle="#d7e5f1";ctx.font="700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
-  ctx.textAlign="right";ctx.fillText("9:16",1002,1800);
-  ctx.restore();
+  render($("reelCanvas"));
+  render($("recordCanvas"));
 }
 function revealRecordControls(){
   const overlay=$("recordOverlay");overlay.classList.add("controls-visible");
