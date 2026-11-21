@@ -4,6 +4,8 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 
 ## [0.9.7] — 2026-11-21
 
+- FM 3D suyuq metall geometriyasidagi yetishmayotgan `flow` animatsiya koeffitsiyenti tiklandi; NEX logotipi TA dagi yuqori kompozitsion joylashuvga moslandi va preview o‘lchamlari umumiy studiya andozasiga yaqinlashtirildi.
+
 - NEX ning amaldagi umumiy versiyasi `0.9.7` sifatida belgilandi.
 - Bosh sahifa va FM modulidagi ko‘rinadigan versiya yozuvlari yagona raqamga moslandi.
 - CSS va JavaScript fayllarining cache-buster parametrlariga ham yagona versiya qo‘llanadi.
