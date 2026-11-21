@@ -117,3 +117,28 @@
 #reelCanvas,#recordCanvas{z-index:1;background:transparent;pointer-events:none}
 .record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);overflow:hidden;isolation:isolate}
 #record3D,#recordCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* NEX TA etalonidan ko‘chirilgan umumiy vizual qobiq */
+:root{--bg:#080b13;--panel:#111725;--line:#273247;--text:#f1f4fa;--muted:#8e9aaf}
+body{background:radial-gradient(ellipse at 80% 0%,#17172b 0,transparent 38%),var(--bg)}
+.topbar{height:58px;padding:0 clamp(18px,5vw,64px);background:#080b13ef;backdrop-filter:blur(14px)}
+.brand{font-size:18px;font-weight:900;letter-spacing:.13em;color:var(--text)}
+.brand span{font-size:10px;color:var(--muted);font-weight:600}
+main{width:min(100% - 36px,1000px);margin:0 auto;padding:48px 0 64px}
+.panel{background:linear-gradient(145deg,#141c2a,#0d121d);border:1px solid var(--line);border-radius:18px;padding:22px}
+.preview-column{width:100%;position:static;top:auto}
+.studio-layout{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px}
+.reel-frame{width:100%;max-width:340px;margin-inline:auto;border:1px solid #168cff;border-radius:12px;background:#020b1d;box-shadow:inset 0 0 0 1px #8bd8ff55,0 0 22px #168cff22}
+.primary-btn{background:linear-gradient(115deg,#e9f8ff,#68c6ff 42%,#168cff 100%);color:#041126;border:1px solid #c9efff;box-shadow:0 4px 22px #168cff44}
+.secondary-btn{background:transparent;border-color:#3974ae;color:#eaf7ff}
+.record-overlay{background:#000;z-index:20}
+.record-frame{width:min(100vw,56.25vh);height:min(100vh,177.78vw);overflow:hidden}
+.record-controls{gap:12px;padding:10px 14px;background:#080b13e8}
+@media(max-width:700px){
+  main{padding-top:34px}
+  .studio-layout{display:flex;flex-direction:column;gap:18px}
+  .preview-column{order:-1;position:static;width:min(100%,340px);margin:0 auto}
+  .studio-controls{order:1;width:100%}
+  .reel-frame{max-width:340px}
+}
+@media(max-width:420px){main{padding-top:28px}}
