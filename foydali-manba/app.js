@@ -4,7 +4,9 @@ const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, clock:new THREE.Clock(), raf:0
+  camera:null, group:null, clock:new THREE.Clock(), raf:0,
+  sceneIndex:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
+  playbackStarted:0, playbackRaf:0, sceneTexts:["","","","",""]
 };
 const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
 const categoryHints={
@@ -169,6 +171,69 @@ function animate(){
   }
   state.renderer.render(state.scene,state.camera);
 }
+const sceneLabels=["HOOK","MANBA","SABAB","FOYDA","YAKUN"];
+function readSceneTexts(){
+  state.sceneTexts=[
+    read("hook"),
+    [read("sourceDirection"),read("sourceName")].filter(Boolean).join(" — "),
+    read("reason")||read("sourceDescription"),
+    read("benefit")||read("sourceBenefit"),
+    read("cta")
+  ];
+}
+function renderSceneList(){
+  const list=$("sceneList");if(!list)return;
+  list.innerHTML="";
+  sceneLabels.forEach((label,index)=>{
+    const button=document.createElement("button");
+    button.type="button";button.className="scene-chip"+(index===state.sceneIndex?" active":"");
+    button.textContent=String(index+1).padStart(2,"0");button.title=label;
+    button.addEventListener("click",()=>{pausePlayback();showScene(index);});
+    list.appendChild(button);
+  });
+}
+function showScene(index){
+  state.sceneIndex=Math.max(0,Math.min(4,index));
+  readSceneTexts();
+  const text=state.sceneTexts[state.sceneIndex]||"";
+  $("sceneText").value=text;
+  $("reelCategory").textContent=String(state.sceneIndex+1).padStart(2,"0")+" / "+sceneLabels[state.sceneIndex];
+  $("reelHook").textContent=state.sceneIndex===0?text:(state.sceneIndex===1?read("sourceDirection"):"");
+  $("reelTitle").textContent=state.sceneIndex===1?read("sourceName"):"";
+  $("reelReason").textContent=state.sceneIndex===2?text:"";
+  $("reelBenefit").textContent=state.sceneIndex===3?text:"";
+  $("reelCta").textContent=state.sceneIndex===4?text:"";
+  $("sceneCounter").textContent="SAHNA "+String(state.sceneIndex+1).padStart(2,"0")+" / 05";
+  $("sceneDuration").value=String(state.sceneDurations[state.sceneIndex]/1000);
+  $("sceneDurationValue").textContent=(state.sceneDurations[state.sceneIndex]/1000).toFixed(1).replace(".",",")+" soniya";
+  renderSceneList();refreshDurationSummary();
+}
+function refreshDurationSummary(){
+  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+  $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
+}
+function pausePlayback(){
+  state.playing=false;
+  if(state.playbackRaf)cancelAnimationFrame(state.playbackRaf);
+  state.playbackRaf=0;
+  if($("startPreview"))$("startPreview").textContent="▶ Ko‘rishni boshlash";
+}
+function playbackFrame(now){
+  if(!state.playing)return;
+  const elapsed=now-state.playbackStarted;
+  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+  let cursor=elapsed%total,scene=0;
+  while(scene<4&&cursor>=state.sceneDurations[scene]){cursor-=state.sceneDurations[scene];scene++;}
+  if(scene!==state.sceneIndex)showScene(scene);
+  $("studioProgress").style.width=((elapsed%total)/total*100)+"%";
+  state.playbackRaf=requestAnimationFrame(playbackFrame);
+}
+function startPlayback(){
+  if(state.playing){pausePlayback();return;}
+  state.playing=true;state.playbackStarted=performance.now();
+  $("startPreview").textContent="Ⅱ To‘xtatish";
+  state.playbackRaf=requestAnimationFrame(playbackFrame);
+}
 function updatePreview(){
   const category=categoryNames[state.category]||"FOYDALI MANBA";
   $("reelCategory").textContent=category;
@@ -185,8 +250,25 @@ function escapeHtml(value){return value.replace(/[&<>"']/g,ch=>({"&":"&amp;","<"
 $("openStudio").addEventListener("click",()=>{
   showStep(7);
   updatePreview();
+  showScene(0);
   setupWebGL();
 });
+$("startPreview").addEventListener("click",startPlayback);
+$("sceneDuration").addEventListener("input",()=>{
+  state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
+  $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
+  refreshDurationSummary();
+});
+$("sceneText").addEventListener("input",()=>{
+  const value=$("sceneText").value;
+  state.sceneTexts[state.sceneIndex]=value;
+  if(state.sceneIndex===0)$("reelHook").textContent=value;
+  if(state.sceneIndex===1)$("reelTitle").textContent=read("sourceName")||value;
+  if(state.sceneIndex===2)$("reelReason").textContent=value;
+  if(state.sceneIndex===3)$("reelBenefit").textContent=value;
+  if(state.sceneIndex===4)$("reelCta").textContent=value;
+});
+
 $("sceneText").addEventListener("input",()=>{
   const lines=$("sceneText").value.split("\n");
   $("reelHook").textContent=lines[0]||"";
@@ -194,8 +276,8 @@ $("sceneText").addEventListener("input",()=>{
   $("reelBenefit").textContent=lines.slice(2).join(" ");
 });
 $("restartScene").addEventListener("click",()=>{
-  state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
-  rebuildScene();state.clock.start();
+  pausePlayback();state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
+  rebuildScene();state.clock.start();showScene(0);
 });
 $("backSettings").addEventListener("click",()=>showStep(6));
 updatePreview();
