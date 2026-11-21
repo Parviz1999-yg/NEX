@@ -440,6 +440,12 @@ function revealRecordControls(){
   state.recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800);
 }
 async function startRecordMode(){
+  try{
+    if(document.documentElement.requestFullscreen&&!document.fullscreenElement){
+      const fullscreen=document.documentElement.requestFullscreen({navigationUI:"hide"});
+      fullscreen?.catch(()=>{});
+    }
+  }catch{}
   if(!state.renderer||state.webglFailed){
     const ready=await setupWebGL();
     if(!ready){setStatus("studioStatus","WebGL ishga tushmadi. Internet yoki brauzer grafik imkoniyatini tekshiring.");return;}
@@ -460,6 +466,7 @@ function exitRecordMode(){
   if(overlay){overlay.classList.remove("controls-visible");overlay.hidden=true;}
   state.recording=false;pausePlayback();
   if($("recordPause"))$("recordPause").textContent="Ⅱ";
+  if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
 }
 $("recordMode").addEventListener("click",startRecordMode);
 $("recordPause").addEventListener("click",()=>{
