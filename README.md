@@ -96,3 +96,18 @@ https://parviz1999-yg.github.io/NEX/
 ## 10. Asosiy tamoyil
 
 **TA — o‘zgarmas etalon. FM, QF va MI — TA tajribasidan foydalanadigan, lekin undan mustaqil ishlaydigan modullar.** Barcha o‘zgarishlar foydalanuvchi ruxsati va modullar izolyatsiyasi asosida bajariladi.
+
+
+## 11. Yagona versiya tizimi
+
+NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, FM, QF va MI uchun alohida versiya raqamlari yoki mustaqil versiya tarixlari ochilmaydi.
+
+- Joriy umumiy versiya `0.1.0`.
+- Versiya raqami loyiha ildizidagi `VERSION` faylida saqlanadi.
+- Barcha modullardagi o‘zgarishlar yagona `CHANGELOG.md` tarixiga yoziladi.
+- Qaysi modul yangilanishidan qat’i nazar, yangi loyiha relizi chiqarilganda faqat bitta umumiy versiya oshiriladi.
+- Versiyalash SemVer tamoyiliga amal qiladi: `MAJOR.MINOR.PATCH`. PATCH — moslikni buzmaydigan tuzatish; MINOR — moslikni saqlagan yangi imkoniyat; MAJOR — moslikni buzuvchi katta o‘zgarish.
+- Ichki ishchi commitlar avtomatik ravishda yangi reliz yoki versiya hisoblanmaydi. Versiya faqat umumiy reliz tayyorlanganda yangilanadi.
+- Modul nomi CHANGELOG yozuvida ko‘rsatilishi mumkin, ammo modulning alohida versiyasi bo‘lmaydi.
+
+**Asosiy qoida:** NEX — bitta mahsulot, bitta versiya raqami va bitta o‘zgarishlar tarixi.
