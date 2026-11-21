@@ -38,11 +38,25 @@
           <button class="category" data-category="kitob"><span>04</span><b>Kitob</b><small>Kitob va qo‘llanmalar</small></button>
         </div>
         <div class="source-fields" id="sourceFields" hidden>
-          <label for="sourceName">Manba nomi</label>
+          <p class="eyebrow">MANBA HAQIDA MA’LUMOT</p>
+          <label for="sourceName">Manba nomi *</label>
           <input id="sourceName" maxlength="90" placeholder="Masalan: Khan Academy">
           <label for="sourceLink">Manba havolasi <span class="optional">— ixtiyoriy</span></label>
           <input id="sourceLink" type="url" placeholder="https://...">
+          <label for="sourceDirection">Manbaning yo‘nalishi *</label>
+          <input id="sourceDirection" maxlength="100" placeholder="Masalan: ta’lim, dasturlash, ilm-fan">
+          <label for="sourceDescription">Manba haqida qisqa tavsif *</label>
+          <textarea id="sourceDescription" rows="3" maxlength="260" placeholder="Bu manbada qanday materiallar yoki imkoniyatlar mavjud?"></textarea>
+          <label for="sourceBenefit">Tomoshabinga asosiy foydasi *</label>
+          <textarea id="sourceBenefit" rows="3" maxlength="240" placeholder="Foydalanuvchi bu manbadan qanday naf oladi?"></textarea>
+          <label for="sourceAudience">Kimlar uchun?</label>
+          <input id="sourceAudience" maxlength="120" placeholder="Masalan: talabalar, o‘qituvchilar, yangi boshlovchilar">
+          <label for="sourceProof">Ishonchlilik dalili yoki tavsiya sababi</label>
+          <textarea id="sourceProof" rows="2" maxlength="220" placeholder="Muallif, tashkilot, tajriba, manba sifati yoki tekshirilgan dalil"></textarea>
+          <label for="sourceAuthor" id="sourceAuthorLabel">Muallif yoki tashkilot <span class="optional">— ixtiyoriy</span></label>
+          <input id="sourceAuthor" maxlength="100" placeholder="Muallif, kanal egasi yoki tashkilot nomi">
           <p class="hint" id="sourceHint">Manba turini tanlang.</p>
+          <small class="form-note">* Majburiy maydonlar. Faqat o‘zingiz tekshirgan ma’lumotlarni kiriting.</small>
         </div>
         <p class="form-status" id="sourceStatus" role="status"></p>
         <div class="wizard-actions"><a class="text-link" href="../">← Bosh sahifa</a><button class="primary-btn" id="nextSource">Keyingi bosqich →</button></div>
