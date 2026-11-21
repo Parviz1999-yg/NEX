@@ -194,7 +194,7 @@ function updateFlowSurface(time,profile,energy){
   if(!state.fluid)return;
   const attr=state.fluid.geometry.attributes.position,base=state.fluid.userData.flowBase;
   const phase=time*profile.speed*energy+state.fluid.userData.flowSeed;
-  const scene=state.sceneIndex,style=state.visual;
+  const scene=state.sceneIndex,style=state.visual,flowStrength=Number.isFinite(profile.flow)?profile.flow:1;
   const local=Math.max(0,Math.min(1,(performance.now()-state.sceneVisualStarted)/Math.max(700,state.sceneDurations[scene])));
   const reveal=1-Math.pow(1-Math.min(1,local/.34),3);
   for(let i=0;i<attr.count;i++){
@@ -243,7 +243,7 @@ function updateFlowSurface(time,profile,energy){
     py=flatY+(py-flatY)*reveal;
     pz*=reveal;
     px*=.58+.42*reveal;
-    attr.setXYZ(i,px,py*profile.flow*styleBoost,pz*profile.flow*styleBoost);
+    attr.setXYZ(i,px,py*flowStrength*styleBoost,pz*flowStrength*styleBoost);
   }
   attr.needsUpdate=true;state.fluid.geometry.computeVertexNormals();
 }
@@ -305,7 +305,7 @@ function buildNexLogo(){
     const mesh=new THREE.Mesh(geometry,chrome);mesh.userData.indexCount=count;
     state.logoGroup.add(mesh);state.logoStrokes.push(mesh);
   });
-  state.logoGroup.position.set(0,0,.35);state.logoGroup.scale.setScalar(.78);
+  state.logoGroup.position.set(0,1.78,.35);state.logoGroup.scale.setScalar(.78);
   state.logoGroup.visible=false;state.group.add(state.logoGroup);
 }
 function updateNexLogo(progress,visible,time){
@@ -326,7 +326,7 @@ function animate(){
   state.raf=requestAnimationFrame(animate);
   const now=performance.now(),t=(now-state.animationStarted)/1000;
   if(state.group){
-    const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15}};
+    const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08,flow:.82},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22,flow:1.28},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3,flow:.7},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18,flow:1.16},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15,flow:1}};
     const toneEnergy={"Jiddiy":.86,"Ilmiy":.76,"Sodda va tushunarli":.96,"Yumor":1.2,"Tahliliy":.84,"Motivatsion":1.12,"Sirli va qiziqarli":.94,"Falsafiy":.72};
     const profile=motionProfiles[state.motion]||motionProfiles.Silliq;
     const energy=toneEnergy[state.tone]||1;
