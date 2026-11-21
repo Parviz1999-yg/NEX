@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, fluid:null, recordRenderer:null, raf:0, animationStarted:0,
+  camera:null, group:null, fluid:null, logoGroup:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
   playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, webglFailed:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
@@ -166,7 +166,7 @@ function disposeGroup(){
     if(o.geometry)o.geometry.dispose();
     if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}
   });
-  state.fluid=null;
+  state.fluid=null;state.logoGroup=null;
 }
 function rebuildScene(){
   if(!state.scene)return;
@@ -207,6 +207,18 @@ function rebuildScene(){
     for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(1.65+i*.32,.018,8,120),glow);ring.rotation.set(.4+i*.35,.2,.15*i);state.group.add(ring);}
     for(let i=0;i<8;i++){const ray=new THREE.Mesh(new THREE.BoxGeometry(.025,3.8,.025),glow);ray.rotation.z=i*Math.PI/4;ray.position.z=-.5;state.group.add(ray);}
   }
+  const logoMaterial=new THREE.MeshPhysicalMaterial({color:0xdce7f2,metalness:.98,roughness:.16,clearcoat:1,clearcoatRoughness:.06});
+  const logo=new THREE.Group();
+  const stroke=(a,b)=>{
+    const start=new THREE.Vector3(a[0],a[1],a[2]),end=new THREE.Vector3(b[0],b[1],b[2]);
+    const mesh=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(start,end),24,.055,8,false),logoMaterial);
+    logo.add(mesh);
+  };
+  stroke([-1.35,-.42,.1],[-1.35,.42,.1]);stroke([-1.35,.42,.1],[-.7,-.42,.1]);stroke([-.7,-.42,.1],[-.7,.42,.1]);
+  stroke([-.32,-.42,.1],[-.32,.42,.1]);stroke([-.32,.42,.1],[.28,.42,.1]);stroke([-.32,0,.1],[.2,0,.1]);stroke([-.32,-.42,.1],[.28,-.42,.1]);
+  stroke([.68,.42,.1],[1.38,-.42,.1]);stroke([.68,-.42,.1],[1.38,.42,.1]);
+  logo.position.set(0,-1.72,.72);logo.scale.setScalar(.48);logo.visible=false;
+  state.logoGroup=logo;state.group.add(logo);
   for(let i=0;i<34;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);}
 }
 function animate(){
@@ -240,6 +252,19 @@ function animate(){
       }
       positions.needsUpdate=true;
       state.fluid.geometry.computeVertexNormals();
+      const wipe=state.sceneIndex===4?Math.max(0,1-(now-state.sceneVisualStarted)/1500):0;
+      state.fluid.position.y=-1.65*wipe;
+    }
+    if(state.logoGroup){
+      const outro=state.sceneIndex===4;
+      state.logoGroup.visible=outro;
+      if(outro){
+        const p=Math.min(1,Math.max(0,(now-state.sceneVisualStarted)/1100));
+        const reveal=p*p*(3-2*p);
+        state.logoGroup.scale.setScalar(.48*reveal);
+        state.logoGroup.rotation.y=Math.sin(t*.4)*.08;
+        state.logoGroup.rotation.z=Math.sin(t*.55)*.02;
+      }
     }
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
