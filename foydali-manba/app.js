@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, recordRenderer:null, raf:0, animationStarted:0,
+  camera:null, group:null, fluid:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
   playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
@@ -108,12 +108,26 @@ async function setupWebGL(){
   state.webglLoading=true;
   const canvas=$("webgl");
   try{
-    if(!THREE)THREE=await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
+    if(!THREE){
+      const modules=await Promise.all([
+        import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"),
+        import("https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/environments/RoomEnvironment.js").catch(()=>null)
+      ]);
+      THREE=modules[0];
+      state.RoomEnvironment=modules[1]?.RoomEnvironment||null;
+    }
     state.renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
     state.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
     state.renderer.outputColorSpace=THREE.SRGBColorSpace;
     state.renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    state.renderer.toneMappingExposure=1.55;
     state.scene=new THREE.Scene();
+    if(state.RoomEnvironment){
+      const pmrem=new THREE.PMREMGenerator(state.renderer);
+      const room=new state.RoomEnvironment(state.renderer);
+      state.scene.environment=pmrem.fromScene(room,.04).texture;
+      room.dispose();pmrem.dispose();
+    }
     state.camera=new THREE.PerspectiveCamera(38,9/16,.1,100);
     state.camera.position.set(0,0,8);
     state.scene.add(new THREE.HemisphereLight(0xeaf5ff,0x142238,2.2));
@@ -151,11 +165,18 @@ function disposeGroup(){
     if(o.geometry)o.geometry.dispose();
     if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}
   });
+  state.fluid=null;
 }
 function rebuildScene(){
   if(!state.scene)return;
   disposeGroup();
   state.group=new THREE.Group();state.scene.add(state.group);
+  const fluidGeometry=new THREE.PlaneGeometry(5.6,4.4,42,30);
+  const paletteForFluid=palettes[state.palette]||palettes.silver;
+  const fluidMaterial=new THREE.MeshPhysicalMaterial({color:0x9ba9b7,metalness:.94,roughness:.16,clearcoat:1,clearcoatRoughness:.08,emissive:paletteForFluid.accent,emissiveIntensity:.035,side:THREE.DoubleSide});
+  state.fluid=new THREE.Mesh(fluidGeometry,fluidMaterial);
+  state.fluid.position.set(0,0,-1.35);
+  state.group.add(state.fluid);
   const palette=palettes[state.palette]||palettes.silver;
   state.scene.background=new THREE.Color(palette.bg);
   let seed=state.seed||1;
@@ -208,6 +229,17 @@ function animate(){
     const blend=Math.min(1,Math.max(0,(now-state.sceneVisualStarted)/650));
     const ease=blend*blend*(3-2*blend);
     const mix=(a,b)=>a+(b-a)*ease;
+    if(state.fluid){
+      const positions=state.fluid.geometry.attributes.position;
+      const wave=t*profile.speed*energy;
+      for(let i=0;i<positions.count;i++){
+        const x=positions.getX(i),y=positions.getY(i);
+        const z=Math.sin(x*1.65+wave*1.2)*.13+Math.cos(y*1.8-wave*.82)*.095+Math.sin((x+y)*1.1-wave*.55)*.045;
+        positions.setZ(i,z);
+      }
+      positions.needsUpdate=true;
+      state.fluid.geometry.computeVertexNormals();
+    }
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
     state.group.rotation.z=mix(from.tilt,to.tilt)+Math.sin(t*profile.speed*1.3)*.035;
@@ -349,6 +381,7 @@ function setupRecordRenderer(){
     state.recordRenderer.setSize(1080,1920,false);
     state.recordRenderer.outputColorSpace=THREE.SRGBColorSpace;
     state.recordRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+    state.recordRenderer.toneMappingExposure=1.55;
     return true;
   }catch(error){
     setStatus("studioStatus","Yuqori aniqlikdagi yozuv sahnasi ishga tushmadi: "+error.message);
