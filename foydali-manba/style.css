@@ -142,3 +142,10 @@ main{width:min(100% - 36px,1000px);margin:0 auto;padding:48px 0 64px}
   .reel-frame{max-width:340px}
 }
 @media(max-width:420px){main{padding-top:28px}}
+
+/* Tipografika va panel o‘lchamlari TA etaloniga tenglashtirildi */
+.intro h1{font-size:clamp(38px,8vw,76px);line-height:1.02;letter-spacing:-.055em;margin:0 0 18px}
+.intro>p:last-child{color:var(--muted);line-height:1.65;max-width:590px;font-size:15px}
+.intro .eyebrow{margin:0 0 16px}
+.wizard-page h2{font-size:23px;letter-spacing:-.035em;margin:0 0 18px}
+.panel{padding:22px;border-radius:18px;background:linear-gradient(145deg,#141c2a,#0d121d)}
