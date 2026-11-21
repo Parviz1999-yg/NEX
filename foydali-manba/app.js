@@ -268,6 +268,7 @@ function refreshDurationSummary(){
   const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
   $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
   if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
+  if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
 }
 function updateSceneTime(){
   const seconds=Math.floor(state.playbackElapsed/1000);
@@ -304,7 +305,7 @@ function playbackFrame(now){
 function startPlayback(){
   if(state.playing){pausePlayback();return;}
   const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
-  if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";}
+  if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";updateSceneTime();}
   state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
   $("startPreview").textContent="Ⅱ To‘xtatish";
   state.playbackRaf=requestAnimationFrame(playbackFrame);
@@ -372,7 +373,7 @@ async function startRecordMode(){
   const recordReady=setupRecordRenderer();
   if(!recordReady)setStatus("studioStatus","Yozuv oynasining 3D qatlami ishga tushmadi; matn qatlami saqlanadi.");
   state.recording=true;$("recordOverlay").hidden=false;
-  state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";
+  state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";updateSceneTime();
   state.playing=true;state.playbackStarted=performance.now();
   $("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";
   revealRecordControls();syncRecordText();
@@ -433,14 +434,28 @@ $("sceneText").addEventListener("input",()=>{
   syncRecordText();
 });
 $("restartScene").addEventListener("click",()=>{
-  pausePlayback();
-  state.sceneEdited=[false,false,false,false,false];
-  state.playbackElapsed=0;
-  $("studioProgress").style.width="0%";
-  readSceneTexts();
-  state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
+  pausePlayback();state.playbackElapsed=0;$("studioProgress").style.width="0%";updateSceneTime();showScene(0);startPlayback();
+});
+$("shuffleBackground").addEventListener("click",()=>{
+  state.variantIndex=(state.variantIndex+1)%6;
+  state.seed=(state.seed+Math.floor(Math.random()*0x7fffffff)+1)>>>0;
   if(state.renderer)rebuildScene();
-  state.animationStarted=performance.now();showScene(0);
+  const button=$("shuffleBackground");button.textContent="✓ Variant "+(state.variantIndex+1)+"/6";
+  clearTimeout(state.variantTimer);state.variantTimer=setTimeout(()=>button.textContent="✧ Yangi kreativ variant",1800);
+});
+$("newProject").addEventListener("click",()=>{
+  exitRecordMode();
+  ["sourceName","sourceLink","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta"].forEach(id=>$(id).value="");
+  state.category="";state.name="";state.seed=1;state.variantIndex=0;state.tone="Jiddiy";state.visual="cinematic";state.palette="silver";state.motion="Silliq";
+  state.sceneIndex=0;state.sceneVisualFrom=0;state.sceneDurations=[5000,5000,5000,5000,5000];state.sceneTexts=["","","","",""];state.sceneEdited=[false,false,false,false,false];
+  state.playbackElapsed=0;state.studioOpened=false;
+  document.querySelectorAll(".category").forEach(button=>button.classList.remove("selected"));
+  $("sourceFields").hidden=true;
+  choose("toneOptions","Jiddiy");choose("visualOptions","cinematic");choose("paletteOptions","silver");choose("motionOptions","Silliq");
+  ["sourceStatus","scriptStatus","studioStatus"].forEach(id=>setStatus(id,""));
+  $("studioProgress").style.width="0%";$("sceneTime").textContent="00:00";
+  if(state.renderer)rebuildScene();
+  updatePreview();showStep(1);
 });
 $("backSettings").addEventListener("click",()=>{pausePlayback();exitRecordMode();showStep(6);});
 updatePreview();
