@@ -106,3 +106,6 @@
 .scene-meta .hint{margin:0;font-variant-numeric:tabular-nums}
 #shuffleBackground{border-style:dashed}
 #shuffleBackground:active{transform:scale(.99)}
+
+#recordText{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none;background:transparent}
+.record-content{display:none}
