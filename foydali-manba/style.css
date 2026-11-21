@@ -63,7 +63,7 @@
 .swatch.solar{background:linear-gradient(90deg,#211706,#fffcf2,#ffb52e)}
 .studio-heading{margin-bottom:20px}
 .studio-heading h2{font-size:clamp(28px,5vw,42px);letter-spacing:-.045em;margin:0 0 8px}
-.studio-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px;align-items:start}
+.studio-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
 .studio-controls{display:flex;flex-direction:column;gap:10px;min-width:0}
 .studio-controls .summary{padding:13px;border:1px solid #168cff;border-radius:10px;background:#061a38;color:#f4fbff;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
 .studio-controls textarea{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:#090e18;color:var(--text);line-height:1.5;resize:vertical}
@@ -104,9 +104,9 @@
 @media(max-width:700px){
   main{padding-top:34px}
   .studio-layout{display:flex;flex-direction:column;gap:18px}
-  .preview-column{order:-1;width:min(100%,340px);margin:0 auto}
+  .preview-column{order:-1;width:min(100%,310px);margin:0 auto}
   .studio-controls{order:1;width:100%}
-  .reel-frame{max-width:340px}
+  .reel-frame{max-width:310px}
   .wizard-actions{flex-wrap:wrap}
 }
 @media(max-width:520px){
