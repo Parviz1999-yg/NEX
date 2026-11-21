@@ -504,7 +504,7 @@ function syncRecordText(recordToo=true){
     const wrap=(text,font,color,y,maxLines=5,lineHeight=94)=>{
       if(!text)return;
       ctx.font=font;ctx.fillStyle=color;ctx.textAlign="center";ctx.textBaseline="middle";
-      const words=text.split(/\\s+/),lines=[];let line="";
+      const words=text.split(/\s+/),lines=[];let line="";
       for(const word of words){
         const test=line?line+" "+word:word;
         if(line&&ctx.measureText(test).width>880){lines.push(line);line=word;}
