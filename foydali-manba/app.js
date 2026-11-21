@@ -174,11 +174,14 @@ function animate(){
   if(!state.renderer||!state.scene)return;
   const t=state.clock.getElapsedTime();
   if(state.group){
-    const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07},Dinamik:{speed:.58,turn:.42,bob:.18},Kinematik:{speed:.1,turn:.12,bob:.045},Ijodiy:{speed:.36,turn:.55,bob:.2},Aralash:{speed:.28,turn:.3,bob:.12}};
+    const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15}};
     const profile=motionProfiles[state.motion]||motionProfiles.Silliq;
     state.group.rotation.y=Math.sin(t*profile.speed)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8)*profile.turn*.45;
     state.group.position.y=Math.sin(t*profile.speed*2)*profile.bob;
+    state.camera.position.x=Math.sin(t*profile.speed*.42)*profile.camera;
+    state.camera.position.y=Math.cos(t*profile.speed*.36)*profile.camera*.42;
+    state.camera.lookAt(0,0,0);
   }
   state.renderer.render(state.scene,state.camera);
 }
