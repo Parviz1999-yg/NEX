@@ -466,7 +466,7 @@ $("recordPause").addEventListener("click",()=>{
   if(state.playing){pausePlayback();$("recordPause").textContent="▶";}
   else{
     const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
-    if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);}
+    if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);updateSceneTime();}
     state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
     $("recordPause").textContent="Ⅱ";
     if(!state.playbackRaf)state.playbackRaf=requestAnimationFrame(playbackFrame);
