@@ -121,16 +121,28 @@ $("sourceName").addEventListener("input",()=>{
   if(state.category){state.seed=hash(state.category+"|"+state.name);rebuildScene();}
 });
 ["hook","reason","benefit","cta"].forEach(id=>$(id).addEventListener("input",updatePreview));
-$("palette").addEventListener("change",()=>{if(state.category){state.seed=hash(state.category+"|"+state.name+"|"+$("palette").value);rebuildScene();}});
-$("previewBtn").addEventListener("click",()=>{
-  const missing=[];
-  if(!state.category)missing.push("manba turi");
-  if(!$("sourceName").value.trim())missing.push("manba nomi");
-  ["hook","reason","benefit","cta"].forEach(id=>{if(!$ (id).value.trim())missing.push($(id).previousElementSibling?.querySelector("label")?.textContent||id);});
-  if(missing.length){$("formStatus").textContent="To‘ldirilishi kerak: "+missing.join(", ")+".";
-    return;}
+const paletteSelect=$("palette");
+if(paletteSelect)paletteSelect.addEventListener("change",()=>{if(state.category){state.seed=hash(state.category+"|"+state.name+"|"+paletteSelect.value);rebuildScene();}});
+
+const sourceFieldIds=["sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink"];
+sourceFieldIds.forEach(id=>{const field=$(id);if(field)field.addEventListener("input",updatePreview);});
+const nextSource=$("nextSource");
+if(nextSource)nextSource.addEventListener("click",()=>{
+  const required=[["sourceName","manba nomi"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
+  const missing=required.filter(([id])=>!$(id).value.trim()).map(([,label])=>label);
+  if(!state.category)missing.unshift("manba turi");
+  if(missing.length){$("sourceStatus").textContent="Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".";
+    $("sourceStatus").scrollIntoView({behavior:"smooth",block:"center"});return;}
   updatePreview();
-  $("formStatus").textContent="Ma’lumotlar tayyor. Keyingi bosqichda sahna va yozuv rejimini ulaymiz.";
-  $("stepLabel").textContent="03 — KO‘RIB CHIQISH";
+  document.querySelectorAll(".wizard-page").forEach(page=>page.classList.remove("active"));
+  $("step-2").classList.add("active");
+  $("stepLabel").textContent="02 — SSENARIY";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+const previewBtn=$("previewBtn");
+if(previewBtn)previewBtn.addEventListener("click",()=>{
+  updatePreview();
+  const status=$("formStatus")||$("sourceStatus");
+  if(status)status.textContent="Ma’lumotlar tayyor.";
 });
 updatePreview();
