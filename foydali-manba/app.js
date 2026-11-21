@@ -389,9 +389,46 @@ function setupRecordRenderer(){
   }
 }
 function syncRecordText(){
-  [["reelCategory","recordCategory"],["reelHook","recordHook"],["reelTitle","recordTitle"],["reelReason","recordReason"],["reelBenefit","recordBenefit"],["reelCta","recordCta"]].forEach(([from,to])=>{
-    const a=$(from),b=$(to);if(a&&b)b.textContent=a.textContent;
-  });
+  const canvas=$("recordText"),ctx=canvas?.getContext("2d");
+  if(!ctx)return;
+  const value=id=>$(id)?.textContent?.trim()||"";
+  const wrap=(text,font,color,y,maxLines=5,lineHeight=94)=>{
+    if(!text)return;
+    ctx.font=font;ctx.fillStyle=color;ctx.textAlign="center";ctx.textBaseline="middle";
+    const words=text.split(/\s+/),lines=[];let line="";
+    for(const word of words){
+      const test=line?line+" "+word:word;
+      if(line&&ctx.measureText(test).width>880){lines.push(line);line=word;}
+      else line=test;
+    }
+    if(line)lines.push(line);
+    const shown=lines.slice(0,maxLines);
+    if(lines.length>maxLines)shown[maxLines-1]=shown[maxLines-1].replace(/[.,;:]?$/,"")+"…";
+    const start=y-(shown.length-1)*lineHeight/2;
+    shown.forEach((item,index)=>ctx.fillText(item,540,start+index*lineHeight,900));
+  };
+  ctx.clearRect(0,0,1080,1920);
+  ctx.save();
+  ctx.fillStyle="#d9f2ff";ctx.font="800 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(value("reelCategory"),540,142);
+  ctx.globalAlpha=.48;ctx.fillRect(390,190,300,3);ctx.globalAlpha=1;
+  const scene=state.sceneIndex;
+  if(scene===0){
+    wrap(value("reelHook"),"800 78px system-ui","#ffffff",930,6,102);
+  }else if(scene===1){
+    wrap(value("reelHook"),"650 36px system-ui","#b9c8d8",680,3,52);
+    wrap(value("reelTitle"),"850 82px system-ui","#ffffff",930,5,100);
+    wrap(value("reelReason"),"600 34px system-ui","#b9e8ff",1190,3,48);
+  }else if(scene===2){
+    wrap(value("reelReason"),"800 72px system-ui","#ffffff",940,6,96);
+  }else if(scene===3){
+    wrap(value("reelBenefit"),"800 72px system-ui","#ffffff",940,6,96);
+  }else{
+    wrap(value("reelCta"),"850 78px system-ui","#ffffff",930,6,102);
+  }
+  ctx.fillStyle="#d7e5f1";ctx.font="700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
+  ctx.textAlign="right";ctx.fillText("9:16",1002,1800);
+  ctx.restore();
 }
 function revealRecordControls(){
   const overlay=$("recordOverlay");overlay.classList.add("controls-visible");
