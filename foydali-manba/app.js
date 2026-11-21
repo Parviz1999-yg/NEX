@@ -6,7 +6,7 @@ const state = {
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
-  playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, sceneTexts:["","","","",""],
+  playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
 };
 const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
@@ -99,6 +99,13 @@ $("motionOptions").querySelectorAll("[data-value]").forEach(button=>button.addEv
 }));
 async function setupWebGL(){
   if(state.renderer)return true;
+  if(state.webglLoading){
+    return new Promise(resolve=>{
+      const wait=()=>{if(state.renderer)resolve(true);else if(!state.webglLoading)resolve(false);else setTimeout(wait,40);};
+      wait();
+    });
+  }
+  state.webglLoading=true;
   const canvas=$("webgl");
   try{
     if(!THREE)THREE=await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
@@ -117,9 +124,11 @@ async function setupWebGL(){
     canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
     canvas.addEventListener("webglcontextrestored",()=>{try{rebuildScene();resize();setStatus("studioStatus","3D sahna qayta tiklandi.");}catch(error){setStatus("studioStatus","3D sahnani tiklashda xatolik: "+error.message);}});
     document.addEventListener("visibilitychange",()=>{if(document.hidden)pausePlayback();});
+    state.webglLoading=false;
     setStatus("studioStatus","3D sahna tayyor. Ekran yozish uchun alohida rejim mavjud.");
     return true;
   }catch(error){
+    state.webglLoading=false;
     setStatus("studioStatus","3D sahna ishga tushmadi: "+error.message);
     return false;
   }
@@ -341,8 +350,11 @@ function revealRecordControls(){
   clearTimeout(state.recordControlsTimer);
   state.recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800);
 }
-function startRecordMode(){
-  if(!state.renderer){setStatus("studioStatus","3D sahna hali tayyor emas. Biroz kutib, qayta urinib ko‘ring.");return;}
+async function startRecordMode(){
+  if(!state.renderer){
+    const ready=await setupWebGL();
+    if(!ready){setStatus("studioStatus","WebGL ishga tushmadi. Internet yoki brauzer grafik imkoniyatini tekshiring.");return;}
+  }
   setupRecordRenderer();
   state.recording=true;$("recordOverlay").hidden=false;
   state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";
