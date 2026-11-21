@@ -85,7 +85,7 @@
 .record-overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:#000}
 .record-overlay[hidden]{display:none!important}
 .record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);aspect-ratio:9/16;overflow:hidden;background:#080e18;isolation:isolate}
-#recordWebgl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+
 
 
 
@@ -107,5 +107,13 @@
 #shuffleBackground{border-style:dashed}
 #shuffleBackground:active{transform:scale(.99)}
 
-#recordText{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none;background:transparent}
 
+
+
+/* TA bilan bir xil: ikki qatlamli 9:16 WebGL + Canvas kompozitsiyasi */
+.reel-frame{position:relative;isolation:isolate}
+#reel3D,#reelCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#reel3D,#record3D{z-index:0}
+#reelCanvas,#recordCanvas{z-index:1;background:transparent;pointer-events:none}
+.record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);overflow:hidden;isolation:isolate}
+#record3D,#recordCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
