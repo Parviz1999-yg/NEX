@@ -153,8 +153,15 @@
         <div class="studio-controls panel">
           <div class="summary" id="summary"></div>
           <label for="sceneText">Sahna matni</label>
-          <textarea id="sceneText" rows="4" maxlength="260" placeholder="Sahna matnini shu yerda tahrirlang..."></textarea>
-          <p class="hint">Matnni o‘zgartirsangiz, 9:16 ko‘rinish ham yangilanadi.</p>
+          <textarea id="sceneText" rows="4" maxlength="260" placeholder="Tanlangan sahna matnini shu yerda tahrirlang..."></textarea>
+          <div class="scene-duration-control">
+            <label for="sceneDuration">Sahna davomiyligi</label>
+            <div class="duration-row"><input id="sceneDuration" type="range" min="2.5" max="12" step="0.5" value="5"><output id="sceneDurationValue">5,0 soniya</output></div>
+            <p class="hint" id="durationSummary">Jami rolik: 25 soniya · 5 sahna</p>
+          </div>
+          <div class="scene-list" id="sceneList" aria-label="Reels sahnalari"></div>
+          <div class="studio-playback"><button class="primary-btn" id="startPreview" type="button">▶ Ko‘rishni boshlash</button><div class="studio-timeline"><span id="studioProgress"></span></div><p class="hint" id="sceneCounter">SAHNA 01 / 05</p></div>
+          <p class="hint">Matnni o‘zgartirsangiz, tanlangan sahna darhol yangilanadi.</p>
           <button class="secondary-btn full-btn" id="restartScene">↺ Sahnani qayta boshlash</button>
           <button class="secondary-btn full-btn" id="backSettings">← Sozlamalarga qaytish</button>
         </div>
