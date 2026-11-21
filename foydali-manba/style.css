@@ -64,7 +64,7 @@
 .studio-heading{margin-bottom:20px}
 .studio-heading h2{font-size:clamp(28px,5vw,42px);letter-spacing:-.045em;margin:0 0 8px}
 .studio-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px;align-items:start}
-.studio-controls{display:grid;gap:12px;min-width:0}
+.studio-controls{display:flex;flex-direction:column;gap:10px;min-width:0}
 .studio-controls .summary{padding:13px;border:1px solid #168cff;border-radius:10px;background:#061a38;color:#f4fbff;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
 .studio-controls textarea{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:#090e18;color:var(--text);line-height:1.5;resize:vertical}
 .studio-controls textarea:focus{border-color:var(--accent)}
@@ -123,3 +123,7 @@
   .record-controls{gap:6px;padding:8px}
   .record-controls button{padding:0 9px;font-size:11px}
 }
+
+.preview-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
+.live-dot{font-size:9px;color:#9be8c3;letter-spacing:.1em}
+.bottom-actions .primary-btn,.bottom-actions .secondary-btn{width:auto;flex:1}
