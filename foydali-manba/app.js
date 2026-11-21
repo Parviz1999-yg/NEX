@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, fluid:null, logoGroup:null, recordRenderer:null, raf:0, animationStarted:0,
+  camera:null, group:null, fluid:null, logoGroup:null, logoStrokes:[], recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
   playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, webglFailed:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
@@ -285,19 +285,40 @@ function rebuildScene(){
     for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(1.65+i*.32,.018,8,120),glow);ring.rotation.set(.4+i*.35,.2,.15*i);state.group.add(ring);}
     for(let i=0;i<8;i++){const ray=new THREE.Mesh(new THREE.BoxGeometry(.025,3.8,.025),glow);ray.rotation.z=i*Math.PI/4;ray.position.z=-.5;state.group.add(ray);}
   }
-  const logoMaterial=new THREE.MeshPhysicalMaterial({color:0xdce7f2,metalness:.98,roughness:.16,clearcoat:1,clearcoatRoughness:.06});
-  const logo=new THREE.Group();
-  const stroke=(a,b)=>{
-    const start=new THREE.Vector3(a[0],a[1],a[2]),end=new THREE.Vector3(b[0],b[1],b[2]);
-    const mesh=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(start,end),24,.055,8,false),logoMaterial);
-    logo.add(mesh);
-  };
-  stroke([-1.35,-.42,.1],[-1.35,.42,.1]);stroke([-1.35,.42,.1],[-.7,-.42,.1]);stroke([-.7,-.42,.1],[-.7,.42,.1]);
-  stroke([-.32,-.42,.1],[-.32,.42,.1]);stroke([-.32,.42,.1],[.28,.42,.1]);stroke([-.32,0,.1],[.2,0,.1]);stroke([-.32,-.42,.1],[.28,-.42,.1]);
-  stroke([.68,.42,.1],[1.38,-.42,.1]);stroke([.68,-.42,.1],[1.38,.42,.1]);
-  logo.position.set(0,-1.72,.72);logo.scale.setScalar(.48);logo.visible=false;
-  state.logoGroup=logo;state.group.add(logo);
+  buildNexLogo();
   for(let i=0;i<34;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);}
+}
+function buildNexLogo(){
+  if(!state.group)return;
+  state.logoGroup=new THREE.Group();state.logoStrokes=[];
+  const chrome=new THREE.MeshPhysicalMaterial({color:0xdfe4e8,metalness:1,roughness:.055,clearcoat:1,clearcoatRoughness:.012,envMapIntensity:7.5,emissive:0x171c22,emissiveIntensity:.12});
+  const paths=[
+    [[-1.72,-.62,0],[-1.72,.68,0]],[[-1.72,.68,0],[-.72,-.62,0]],[[-.72,-.62,0],[-.72,.68,0]],
+    [[-.42,-.62,0],[-.42,.68,0]],[[-.42,.68,0],[.38,.68,0]],[[-.42,.03,0],[.28,.03,0]],[[-.42,-.62,0],[.38,-.62,0]],
+    [[.62,.68,0],[1.62,-.62,0]],[[.62,-.62,0],[1.62,.68,0]]
+  ];
+  paths.forEach((points,index)=>{
+    const curve=new THREE.CatmullRomCurve3(points.map(point=>new THREE.Vector3(...point)),false,"centripetal");
+    const geometry=new THREE.TubeGeometry(curve,32,index===0||index===2||index===3||index>=7?.082:.068,12,false);
+    const count=geometry.index?geometry.index.count:geometry.attributes.position.count;
+    geometry.setDrawRange(0,0);
+    const mesh=new THREE.Mesh(geometry,chrome);mesh.userData.indexCount=count;
+    state.logoGroup.add(mesh);state.logoStrokes.push(mesh);
+  });
+  state.logoGroup.position.set(0,0,.35);state.logoGroup.scale.setScalar(.78);
+  state.logoGroup.visible=false;state.group.add(state.logoGroup);
+}
+function updateNexLogo(progress,visible,time){
+  if(!state.logoGroup)return;
+  state.logoGroup.visible=visible;if(!visible)return;
+  const reveal=Math.max(0,Math.min(1,progress));
+  state.logoGroup.rotation.y=Math.sin(reveal*Math.PI)*.16;
+  state.logoGroup.rotation.x=-.04+Math.sin(reveal*Math.PI*2)*.025;
+  state.logoStrokes.forEach((mesh,index)=>{
+    const local=Math.max(0,Math.min(1,(reveal-index*.045)/.48));
+    mesh.geometry.setDrawRange(0,Math.floor(mesh.userData.indexCount*local));
+  });
+  state.logoGroup.scale.setScalar(.78*(1+.025*Math.sin(reveal*Math.PI*2)));
 }
 function animate(){
   if(!state.renderer||!state.scene)return;
@@ -321,19 +342,13 @@ function animate(){
     const ease=blend*blend*(3-2*blend);
     const mix=(a,b)=>a+(b-a)*ease;
     updateFlowSurface(t,profile,energy);
-    const wipe=state.sceneIndex===4?Math.max(0,1-(now-state.sceneVisualStarted)/1500):0;
-    if(state.fluid)state.fluid.position.y=-1.65*wipe;
-    if(state.logoGroup){
-      const outro=state.sceneIndex===4;
-      state.logoGroup.visible=outro;
-      if(outro){
-        const p=Math.min(1,Math.max(0,(now-state.sceneVisualStarted)/1100));
-        const reveal=p*p*(3-2*p);
-        state.logoGroup.scale.setScalar(.48*reveal);
-        state.logoGroup.rotation.y=Math.sin(t*.4)*.08;
-        state.logoGroup.rotation.z=Math.sin(t*.55)*.02;
-      }
-    }
+    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    const elapsed=state.playbackElapsed;
+    const introEnd=2600,outroStart=total-2300;
+    let logoVisible=false,logoProgress=0;
+    if(elapsed<introEnd){logoVisible=true;logoProgress=Math.min(1,elapsed/2050);}
+    else if(elapsed>outroStart){logoVisible=true;logoProgress=Math.min(1,(total-elapsed)/2050);}
+    updateNexLogo(logoProgress,logoVisible,t);
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
     state.group.rotation.z=mix(from.tilt,to.tilt)+Math.sin(t*profile.speed*1.3)*.035;
