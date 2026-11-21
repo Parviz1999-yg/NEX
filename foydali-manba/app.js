@@ -6,7 +6,8 @@ const state = {
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, clock:new THREE.Clock(), raf:0,
   sceneIndex:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
-  playbackStarted:0, playbackRaf:0, sceneTexts:["","","","",""]
+  playbackStarted:0, playbackRaf:0, sceneTexts:["","","","",""],
+  sceneEdited:[false,false,false,false,false], studioOpened:false
 };
 const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
 const categoryHints={
@@ -85,6 +86,7 @@ $("toneOptions").querySelectorAll("[data-value]").forEach(button=>button.addEven
 }));
 $("visualOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
   state.visual=button.dataset.value;choose("visualOptions",state.visual);
+  if(state.renderer)rebuildScene();
 }));
 $("paletteOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
   state.palette=button.dataset.value;choose("paletteOptions",state.palette);
@@ -182,13 +184,16 @@ function animate(){
 }
 const sceneLabels=["HOOK","MANBA","SABAB","FOYDA","YAKUN"];
 function readSceneTexts(){
-  state.sceneTexts=[
+  const source=[
     read("hook"),
     read("sourceName"),
     read("reason")||read("sourceDescription"),
     read("benefit")||read("sourceBenefit"),
     read("cta")
   ];
+  source.forEach((value,index)=>{
+    if(!state.sceneEdited[index])state.sceneTexts[index]=value;
+  });
 }
 function renderSceneList(){
   const list=$("sceneList");if(!list)return;
@@ -245,18 +250,23 @@ function startPlayback(){
 function updatePreview(){
   readSceneTexts();
   const category=categoryNames[state.category]||"FOYDALI MANBA";
+  const summary=$("summary");
+  if(summary)summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+"<br><small>"+escapeHtml(state.tone)+" · "+escapeHtml(state.visual)+" · "+escapeHtml(state.palette)+" · "+escapeHtml(state.motion)+"</small>";
+  if(state.studioOpened){
+    showScene(state.sceneIndex);
+    return;
+  }
   $("reelCategory").textContent=category;
   $("reelTitle").textContent=read("sourceName")||"Manba nomi";
   $("reelHook").textContent=read("hook")||read("sourceDirection")||"Manba tanlang va ma’lumot kiriting.";
   $("reelReason").textContent=read("reason")||read("sourceDescription");
   $("reelBenefit").textContent=read("benefit")||read("sourceBenefit");
   $("reelCta").textContent=read("cta")||"Saqlab qo‘ying va foydalanib ko‘ring.";
-  const summary=$("summary");
-  if(summary)summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+"<br><small>"+escapeHtml(state.tone)+" · "+escapeHtml(state.visual)+" · "+escapeHtml(state.palette)+" · "+escapeHtml(state.motion)+"</small>";
-  if($("sceneText"))$("sceneText").value=[read("hook"),read("sourceName"),read("sourceBenefit")].filter(Boolean).join("\n");
 }
 function escapeHtml(value){return value.replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 $("openStudio").addEventListener("click",()=>{
+  readSceneTexts();
+  state.studioOpened=true;
   showStep(7);
   updatePreview();
   showScene(0);
@@ -269,24 +279,22 @@ $("sceneDuration").addEventListener("input",()=>{
   refreshDurationSummary();
 });
 $("sceneText").addEventListener("input",()=>{
-  const value=$("sceneText").value;
-  state.sceneTexts[state.sceneIndex]=value;
-  if(state.sceneIndex===0)$("reelHook").textContent=value;
-  if(state.sceneIndex===1)$("reelTitle").textContent=value;
-  if(state.sceneIndex===2)$("reelReason").textContent=value;
-  if(state.sceneIndex===3)$("reelBenefit").textContent=value;
-  if(state.sceneIndex===4)$("reelCta").textContent=value;
-});
-
-$("sceneText").addEventListener("input",()=>{
-  const lines=$("sceneText").value.split("\n");
-  $("reelHook").textContent=lines[0]||"";
-  $("reelTitle").textContent=lines[1]||read("sourceName")||"Manba nomi";
-  $("reelBenefit").textContent=lines.slice(2).join(" ");
+  const index=state.sceneIndex,value=$("sceneText").value;
+  state.sceneTexts[index]=value;
+  state.sceneEdited[index]=true;
+  if(index===0)$("reelHook").textContent=value;
+  if(index===1)$("reelTitle").textContent=value;
+  if(index===2)$("reelReason").textContent=value;
+  if(index===3)$("reelBenefit").textContent=value;
+  if(index===4)$("reelCta").textContent=value;
 });
 $("restartScene").addEventListener("click",()=>{
-  pausePlayback();state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
-  rebuildScene();state.clock.start();showScene(0);
+  pausePlayback();
+  state.sceneEdited=[false,false,false,false,false];
+  readSceneTexts();
+  state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
+  if(state.renderer)rebuildScene();
+  state.clock.start();showScene(0);
 });
 $("backSettings").addEventListener("click",()=>showStep(6));
 updatePreview();
