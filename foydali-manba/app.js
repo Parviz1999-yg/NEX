@@ -1,29 +1,103 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 const $ = id => document.getElementById(id);
-const state = { category:"", name:"", seed:1, renderer:null, scene:null, camera:null, group:null, clock:new THREE.Clock() };
-const categoryNames = {sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
-const categoryHints = {
-  sayt:"Sayt nomi va havolasi. Masalan: Khan Academy.",
-  youtube:"YouTube kanal yoki video nomi va havolasi.",
-  telegram:"Telegram kanal, guruh yoki bot nomi va havolasi.",
-  kitob:"Kitob nomi, muallifi va mavjud bo‘lsa elektron havolasi."
+const state = {
+  category:"", name:"", seed:1, tone:"Jiddiy", visual:"cinematic",
+  palette:"silver", motion:"Silliq", renderer:null, scene:null,
+  camera:null, group:null, clock:new THREE.Clock(), raf:0
 };
-const palettes = {
-  silver:{bg:0x080e18,accent:0x8ed8ff,light:0xdcecff},
-  blue:{bg:0x06142c,accent:0x168cff,light:0x9bdcff},
-  violet:{bg:0x160e30,accent:0x9876ff,light:0xd4c7ff},
-  emerald:{bg:0x061e20,accent:0x00d5b2,light:0xa6ffed},
-  solar:{bg:0x211706,accent:0xffb52e,light:0xffe6a5}
+const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
+const categoryHints={
+  sayt:"Sayt nomi, veb-platforma yo‘nalishi va foydalanuvchiga beradigan imkoniyatlarini yozing.",
+  youtube:"YouTube kanal yoki video nomi, muallifi va undagi foydali materiallarni yozing.",
+  telegram:"Telegram kanal, guruh yoki bot nomi, yurituvchisi va foydali imkoniyatlarini yozing.",
+  kitob:"Kitob nomi, muallifi, mavzusi va o‘quvchiga beradigan bilimini yozing."
 };
-
+const palettes={
+  silver:{bg:0x080e18,accent:0x8ed8ff},
+  blue:{bg:0x06142c,accent:0x168cff},
+  violet:{bg:0x160e30,accent:0x9876ff},
+  emerald:{bg:0x061e20,accent:0x00d5b2},
+  solar:{bg:0x211706,accent:0xffb52e}
+};
+const read=id=>$(id)?.value?.trim()||"";
 function hash(text){let h=2166136261;for(const ch of text)h=Math.imul(h^ch.charCodeAt(0),16777619);return h>>>0;}
-function randomFrom(seed){let x=seed||1;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return(x>>>0)/4294967296;};}
+function showStep(number){
+  document.querySelectorAll(".wizard-page").forEach(page=>page.classList.toggle("active",page.id==="step-"+number));
+  document.querySelectorAll("[data-progress]").forEach(item=>{
+    const n=Number(item.dataset.progress);
+    item.classList.toggle("current",n===number);
+    item.classList.toggle("done",n<number);
+  });
+  const fill=$("progressFill");if(fill)fill.style.width=((number-1)/6*100)+"%";
+  const labels=["01 — MANBA","02 — SSENARIY","03 — BAYON USLUBI","04 — VIZUAL TIL","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — REELS STUDIYASI"];
+  $("stepLabel").textContent=labels[number-1];
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(number===7){updatePreview();requestAnimationFrame(resize);}
+}
+function setStatus(id,message){const el=$(id);if(el)el.textContent=message;}
+function choose(groupId,key){
+  const group=$(groupId);if(!group)return;
+  group.querySelectorAll("[data-value]").forEach(button=>button.classList.toggle("selected",button.dataset.value===key));
+}
+function selectCategory(category){
+  state.category=category;
+  document.querySelectorAll(".category").forEach(button=>button.classList.toggle("selected",button.dataset.category===category));
+  $("sourceFields").hidden=false;
+  $("sourceHint").textContent=categoryHints[category]||"Manba haqida ma’lumot kiriting.";
+  state.seed=hash(category+"|"+read("sourceName"));
+  if(state.renderer)rebuildScene();
+}
+document.querySelectorAll(".category").forEach(button=>button.addEventListener("click",()=>selectCategory(button.dataset.category)));
+
+$("sourceName").addEventListener("input",()=>{
+  state.name=read("sourceName");
+  state.seed=hash(state.category+"|"+state.name);
+  if(state.renderer)rebuildScene();
+  updatePreview();
+});
+["sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink","hook","reason","benefit","cta"].forEach(id=>{
+  $(id)?.addEventListener("input",updatePreview);
+});
+$("nextSource").addEventListener("click",()=>{
+  const required=[["sourceName","manba nomi"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
+  const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
+  if(!state.category)missing.unshift("manba turi");
+  if(missing.length){setStatus("sourceStatus","Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".");return;}
+  setStatus("sourceStatus","Ma’lumotlar qabul qilindi.");
+  showStep(2);
+});
+$("nextScript").addEventListener("click",()=>{
+  const required=[["hook","Hook"],["reason","Sabab"],["benefit","Ustunlik"],["cta","Chorlov"]];
+  const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
+  if(missing.length){setStatus("scriptStatus","Iltimos, to‘ldiring: "+missing.join(", ")+".");return;}
+  setStatus("scriptStatus","");
+  showStep(3);
+});
+document.querySelectorAll("[data-prev]").forEach(button=>button.addEventListener("click",()=>showStep(Number(button.dataset.prev))));
+document.querySelectorAll("[data-next]").forEach(button=>button.addEventListener("click",()=>{
+  const n=Number(button.dataset.next);showStep(n);
+}));
+$("toneOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
+  state.tone=button.dataset.value;choose("toneOptions",state.tone);
+}));
+$("visualOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
+  state.visual=button.dataset.value;choose("visualOptions",state.visual);
+}));
+$("paletteOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
+  state.palette=button.dataset.value;choose("paletteOptions",state.palette);
+  state.seed=hash(state.category+"|"+state.name+"|"+state.palette);
+  if(state.renderer)rebuildScene();
+}));
+$("motionOptions").querySelectorAll("[data-value]").forEach(button=>button.addEventListener("click",()=>{
+  state.motion=button.dataset.value;choose("motionOptions",state.motion);
+}));
 function setupWebGL(){
+  if(state.renderer)return true;
   const canvas=$("webgl");
   try{
     state.renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:"high-performance"});
-    state.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7));
+    state.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
     state.renderer.outputColorSpace=THREE.SRGBColorSpace;
     state.renderer.toneMapping=THREE.ACESFilmicToneMapping;
     state.scene=new THREE.Scene();
@@ -32,46 +106,48 @@ function setupWebGL(){
     state.scene.add(new THREE.HemisphereLight(0xeaf5ff,0x142238,2.2));
     const key=new THREE.DirectionalLight(0xffffff,4.5);key.position.set(-3,5,6);state.scene.add(key);
     const rim=new THREE.PointLight(0x72caff,85,18);rim.position.set(3,1,4);state.scene.add(rim);
-    rebuildScene();
-    resize();
+    rebuildScene();resize();animate();
     window.addEventListener("resize",resize);
-    animate();
-  }catch(error){$("sourceHint").textContent="WebGL ishga tushmadi: "+error.message;}
+    return true;
+  }catch(error){
+    setStatus("studioStatus","3D sahna ishga tushmadi: "+error.message);
+    return false;
+  }
 }
 function resize(){
   if(!state.renderer)return;
-  const box=$("webgl").getBoundingClientRect();
-  const w=Math.max(1,Math.round(box.width* Math.min(devicePixelRatio||1,1.7)));
-  const h=Math.max(1,Math.round(box.height* Math.min(devicePixelRatio||1,1.7)));
+  const canvas=$("webgl"),box=canvas.getBoundingClientRect();
+  const w=Math.max(1,Math.round(box.width*Math.min(window.devicePixelRatio||1,1.7)));
+  const h=Math.max(1,Math.round(box.height*Math.min(window.devicePixelRatio||1,1.7)));
   state.renderer.setSize(w,h,false);
   state.camera.aspect=w/h;state.camera.updateProjectionMatrix();
 }
 function disposeGroup(){
   if(!state.group)return;
   state.scene.remove(state.group);
-  state.group.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});
+  state.group.traverse(o=>{
+    if(o.geometry)o.geometry.dispose();
+    if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}
+  });
 }
 function rebuildScene(){
   if(!state.scene)return;
   disposeGroup();
   state.group=new THREE.Group();state.scene.add(state.group);
-  const palette=palettes[$("palette").value]||palettes.silver;
+  const palette=palettes[state.palette]||palettes.silver;
   state.scene.background=new THREE.Color(palette.bg);
-  const rand=randomFrom(state.seed);
-  const metal=new THREE.MeshPhysicalMaterial({color:0xcbd5df,metalness:.96,roughness:.17,clearcoat:1,clearcoatRoughness:.06,envMapIntensity:1.5});
+  let seed=state.seed||1;
+  const rand=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};
+  const metal=new THREE.MeshPhysicalMaterial({color:0xcbd5df,metalness:.96,roughness:.17,clearcoat:1,clearcoatRoughness:.06});
   const glow=new THREE.MeshStandardMaterial({color:palette.accent,emissive:palette.accent,emissiveIntensity:1.1,metalness:.45,roughness:.3});
-  const type=state.category;
-  if(type==="kitob"){
-    for(let i=0;i<5;i++){
-      const page=new THREE.Mesh(new THREE.BoxGeometry(2.4,.055,1.55),i===4?glow:metal);
-      page.position.set((i-2)*.045,(i-2)*.075,0);page.rotation.z=-.16;page.rotation.y=-.16;state.group.add(page);
-    }
+  if(state.category==="kitob"){
+    for(let i=0;i<5;i++){const page=new THREE.Mesh(new THREE.BoxGeometry(2.4,.055,1.55),i===4?glow:metal);page.position.set((i-2)*.045,(i-2)*.075,0);page.rotation.z=-.16;page.rotation.y=-.16;state.group.add(page);}
     const cover=new THREE.Mesh(new THREE.BoxGeometry(2.5,.12,1.62),metal);cover.position.set(-.08,-.23,.08);cover.rotation.z=-.16;cover.rotation.y=-.16;state.group.add(cover);
-  }else if(type==="youtube"){
+  }else if(state.category==="youtube"){
     const ring=new THREE.Mesh(new THREE.TorusGeometry(1.22,.16,20,100),metal);state.group.add(ring);
     const play=new THREE.Mesh(new THREE.ConeGeometry(.72,1.05,3),glow);play.rotation.z=-Math.PI/2;play.position.z=.22;state.group.add(play);
     const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.75,.018,8,100),glow);orbit.rotation.set(.9,.2,.4);state.group.add(orbit);
-  }else if(type==="telegram"){
+  }else if(state.category==="telegram"){
     const sphere=new THREE.Mesh(new THREE.IcosahedronGeometry(1.28,2),metal);sphere.scale.set(1.05,.78,.42);sphere.rotation.z=-.24;state.group.add(sphere);
     const signal=new THREE.Mesh(new THREE.TorusGeometry(1.75,.025,8,120),glow);signal.rotation.set(.45,.2,.3);state.group.add(signal);
     for(let i=0;i<3;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.07,16,12),glow);dot.position.set((rand()-.5)*3,(rand()-.5)*3,.4);state.group.add(dot);}
@@ -79,70 +155,47 @@ function rebuildScene(){
     const globe=new THREE.Mesh(new THREE.TorusKnotGeometry(1.05,.23,160,18,2,5),metal);globe.rotation.set(.4,.2,0);state.group.add(globe);
     for(let i=0;i<3;i++){const orb=new THREE.Mesh(new THREE.SphereGeometry(.09,18,12),glow);const a=rand()*Math.PI*2;orb.position.set(Math.cos(a)*2,Math.sin(a)*2,(rand()-.5)*1.2);state.group.add(orb);}
   }
-  for(let i=0;i<34;i++){
-    const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);
-    dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);
-  }
-  state.group.userData.seed=state.seed;
+  for(let i=0;i<34;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);}
 }
 function animate(){
-  requestAnimationFrame(animate);
+  state.raf=requestAnimationFrame(animate);
   if(!state.renderer||!state.scene)return;
   const t=state.clock.getElapsedTime();
   if(state.group){
-    state.group.rotation.y=Math.sin(t*.24)*.28;
-    state.group.rotation.x=Math.cos(t*.19)*.12;
-    state.group.position.y=Math.sin(t*.55)*.12;
+    const speed=state.motion==="Dinamik"?.55:state.motion==="Kinematik"?.12:.24;
+    state.group.rotation.y=Math.sin(t*speed)*.28;
+    state.group.rotation.x=Math.cos(t*speed*.8)*.12;
+    state.group.position.y=Math.sin(t*speed*2)*.12;
   }
   state.renderer.render(state.scene,state.camera);
 }
 function updatePreview(){
-  $("reelCategory").textContent=categoryNames[state.category]||"FOYDALI MANBA";
-  $("reelTitle").textContent=state.name||"Manba nomi";
-  $("reelHook").textContent=$("hook").value||"Manba tanlang va Hook matnini kiriting.";
-  $("reelReason").textContent=$("reason").value;
-  $("reelBenefit").textContent=$("benefit").value;
-  $("reelCta").textContent=$("cta").value;
+  const category=categoryNames[state.category]||"FOYDALI MANBA";
+  $("reelCategory").textContent=category;
+  $("reelTitle").textContent=read("sourceName")||"Manba nomi";
+  $("reelHook").textContent=read("hook")||read("sourceDirection")||"Manba tanlang va ma’lumot kiriting.";
+  $("reelReason").textContent=read("reason")||read("sourceDescription");
+  $("reelBenefit").textContent=read("benefit")||read("sourceBenefit");
+  $("reelCta").textContent=read("cta")||"Saqlab qo‘ying va foydalanib ko‘ring.";
+  const summary=$("summary");
+  if(summary)summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+"<br><small>"+escapeHtml(state.tone)+" · "+escapeHtml(state.visual)+" · "+escapeHtml(state.palette)+" · "+escapeHtml(state.motion)+"</small>";
+  if($("sceneText"))$("sceneText").value=[read("hook"),read("sourceName"),read("sourceBenefit")].filter(Boolean).join("\n");
 }
-function selectCategory(category){
-  state.category=category;
-  document.querySelectorAll(".category").forEach(button=>button.classList.toggle("selected",button.dataset.category===category));
-  $("sourceFields").hidden=false;
-  $("sourceHint").textContent=categoryHints[category];
-  $("reelCategory").textContent=categoryNames[category];
-  state.seed=hash(category+"|"+(state.name||""));
-  if(!state.renderer)setupWebGL();else rebuildScene();
-  $("stepLabel").textContent="02 — MA’LUMOTLAR";
-}
-document.querySelectorAll(".category").forEach(button=>button.addEventListener("click",()=>selectCategory(button.dataset.category)));
-$("sourceName").addEventListener("input",()=>{
-  state.name=$("sourceName").value.trim();
-  $("reelTitle").textContent=state.name||"Manba nomi";
-  if(state.category){state.seed=hash(state.category+"|"+state.name);rebuildScene();}
-});
-["hook","reason","benefit","cta"].forEach(id=>$(id).addEventListener("input",updatePreview));
-const paletteSelect=$("palette");
-if(paletteSelect)paletteSelect.addEventListener("change",()=>{if(state.category){state.seed=hash(state.category+"|"+state.name+"|"+paletteSelect.value);rebuildScene();}});
-
-const sourceFieldIds=["sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink"];
-sourceFieldIds.forEach(id=>{const field=$(id);if(field)field.addEventListener("input",updatePreview);});
-const nextSource=$("nextSource");
-if(nextSource)nextSource.addEventListener("click",()=>{
-  const required=[["sourceName","manba nomi"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
-  const missing=required.filter(([id])=>!$(id).value.trim()).map(([,label])=>label);
-  if(!state.category)missing.unshift("manba turi");
-  if(missing.length){$("sourceStatus").textContent="Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".";
-    $("sourceStatus").scrollIntoView({behavior:"smooth",block:"center"});return;}
+function escapeHtml(value){return value.replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+$("openStudio").addEventListener("click",()=>{
+  showStep(7);
   updatePreview();
-  document.querySelectorAll(".wizard-page").forEach(page=>page.classList.remove("active"));
-  $("step-2").classList.add("active");
-  $("stepLabel").textContent="02 — SSENARIY";
-  window.scrollTo({top:0,behavior:"smooth"});
+  setupWebGL();
 });
-const previewBtn=$("previewBtn");
-if(previewBtn)previewBtn.addEventListener("click",()=>{
-  updatePreview();
-  const status=$("formStatus")||$("sourceStatus");
-  if(status)status.textContent="Ma’lumotlar tayyor.";
+$("sceneText").addEventListener("input",()=>{
+  const lines=$("sceneText").value.split("\n");
+  $("reelHook").textContent=lines[0]||"";
+  $("reelTitle").textContent=lines[1]||read("sourceName")||"Manba nomi";
+  $("reelBenefit").textContent=lines.slice(2).join(" ");
 });
+$("restartScene").addEventListener("click",()=>{
+  state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
+  rebuildScene();state.clock.start();
+});
+$("backSettings").addEventListener("click",()=>showStep(6));
 updatePreview();
