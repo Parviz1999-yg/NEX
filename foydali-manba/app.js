@@ -495,53 +495,78 @@ function setupRecordRenderer(){
 }
 function syncRecordText(recordToo=true){
   const value=id=>$(id)?.textContent?.trim()||"";
-  const render=(canvas)=>{
+  const accentMap={silver:"#8ed8ff",blue:"#168cff",violet:"#9876ff",emerald:"#00d5b2",solar:"#ffb52e"};
+  const accent=accentMap[state.palette]||accentMap.silver;
+  const render=canvas=>{
     if(!canvas)return;
-    const ctx=canvas.getContext("2d",{alpha:true});
-    if(!ctx)return;
-    const width=canvas.width,height=canvas.height;
-    ctx.setTransform(width/1080,0,0,height/1920,0,0);
-    const wrap=(text,font,color,y,maxLines=5,lineHeight=94)=>{
+    const ctx=canvas.getContext("2d",{alpha:true});if(!ctx)return;
+    ctx.setTransform(canvas.width/1080,0,0,canvas.height/1920,0,0);
+    const now=performance.now(),duration=({Silliq:820,Dinamik:300,Kinematik:1050,Ijodiy:520,Aralash:650})[state.motion]||820;
+    const p=Math.max(0,Math.min(1,(now-state.sceneVisualStarted)/duration));
+    const ease=p*p*(3-2*p),scene=state.sceneIndex,style=state.visual;
+    const wrap=(text,font,color,y,maxLines=5,lineHeight=94,align="center",x=540,maxWidth=880)=>{
       if(!text)return;
-      ctx.font=font;ctx.fillStyle=color;ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.font=font;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline="middle";
       const words=text.split(/\s+/),lines=[];let line="";
       for(const word of words){
         const test=line?line+" "+word:word;
-        if(line&&ctx.measureText(test).width>880){lines.push(line);line=word;}
-        else line=test;
+        if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=word;}else line=test;
       }
       if(line)lines.push(line);
       const shown=lines.slice(0,maxLines);
       if(lines.length>maxLines)shown[maxLines-1]=shown[maxLines-1].replace(/[.,;:]?$/,"")+"…";
       const first=y-(shown.length-1)*lineHeight/2;
-      shown.forEach((item,index)=>ctx.fillText(item,540,first+index*lineHeight,900));
+      shown.forEach((item,index)=>ctx.fillText(item,x,first+index*lineHeight,maxWidth));
     };
     ctx.clearRect(0,0,1080,1920);ctx.save();
-    const durations={Silliq:820,Dinamik:300,Kinematik:1050,Ijodiy:520,Aralash:650};
-    const progress=Math.max(0,Math.min(1,(performance.now()-state.sceneVisualStarted)/(durations[state.motion]||820)));
-    const ease=progress*progress*(3-2*progress);
-    const scale=state.visual==="kinetic"?.84+.16*ease:state.visual==="editorial"?.97+.03*ease:.92+.08*ease;
+    // Visual-language-specific frame and background graphics.
+    ctx.strokeStyle=accent;ctx.fillStyle=accent;ctx.lineWidth=2;
+    if(style==="editorial"){
+      ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(86,250);ctx.lineTo(994,250);ctx.moveTo(86,1665);ctx.lineTo(994,1665);ctx.stroke();
+      ctx.globalAlpha=.12;for(let x=120;x<1000;x+=220){ctx.beginPath();ctx.moveTo(x,290);ctx.lineTo(x,1620);ctx.stroke();}
+      ctx.globalAlpha=.75;ctx.font="700 22px Georgia";ctx.textAlign="left";ctx.fillText("RESOURCE / FIELD NOTES",88,218);
+    }else if(style==="kinetic"){
+      ctx.globalAlpha=.8;ctx.fillRect(86,330,12,1160);ctx.globalAlpha=.22;
+      for(let y=360;y<1500;y+=150)ctx.fillRect(118,y,850,2);
+      ctx.globalAlpha=.9;ctx.font="900 24px system-ui";ctx.textAlign="left";ctx.fillText("NEX / IMPACT SERIES",132,218);
+    }else if(style==="future"){
+      ctx.globalAlpha=.35;for(let x=90;x<=990;x+=90){ctx.beginPath();ctx.moveTo(x,280);ctx.lineTo(x,1640);ctx.stroke();}
+      for(let y=300;y<=1620;y+=90){ctx.beginPath();ctx.moveTo(90,y);ctx.lineTo(990,y);ctx.stroke();}
+      ctx.globalAlpha=.9;ctx.strokeRect(78,270,924,1370);
+      ctx.font="700 22px monospace";ctx.textAlign="left";ctx.fillText("NEX // RESOURCE_NODE",92,218);
+      ctx.textAlign="right";ctx.fillText("SYS 09:16",988,218);
+    }else{
+      ctx.globalAlpha=.22;ctx.beginPath();ctx.arc(540,960,360,0,Math.PI*2);ctx.arc(540,960,440,0,Math.PI*2);ctx.stroke();
+      ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(540,250);ctx.lineTo(540,1670);ctx.stroke();
+      ctx.font="800 24px system-ui";ctx.textAlign="center";ctx.fillText("NEX / RESOURCE",540,218);
+    }
+    ctx.globalAlpha=style==="future"?.35+.65*ease:ease;
+    const scale=style==="kinetic"?.84+.16*ease:style==="editorial"?.97+.03*ease:.92+.08*ease;
     ctx.translate(540,960);ctx.scale(scale,scale);ctx.translate(-540,-960);
-    ctx.globalAlpha=state.visual==="future"?.35+.65*ease:ease;
-    const slide=state.visual==="editorial"?(1-ease)*24:state.visual==="kinetic"?(1-ease)*-46:(1-ease)*18;
+    const slide=style==="editorial"?(1-ease)*24:style==="kinetic"?(1-ease)*-46:(1-ease)*18;
     ctx.translate(0,slide);
-    ctx.fillStyle="#d9f2ff";ctx.font="800 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillText(value("reelCategory"),540,142);
-    ctx.globalAlpha=.48;ctx.fillRect(390,190,300,3);ctx.globalAlpha=1;
-    const scene=state.sceneIndex;
-    if(scene===0)wrap(value("reelHook"),"800 78px system-ui","#ffffff",930,6,102);
-    else if(scene===1){
-      wrap(value("reelHook"),"650 36px system-ui","#b9c8d8",680,3,52);
-      wrap(value("reelTitle"),"850 82px system-ui","#ffffff",930,5,100);
-      wrap(value("reelReason"),"600 34px system-ui","#b9e8ff",1190,3,48);
-    }else if(scene===2)wrap(value("reelReason"),"800 72px system-ui","#ffffff",940,6,96);
-    else if(scene===3)wrap(value("reelBenefit"),"800 72px system-ui","#ffffff",940,6,96);
-    else wrap(value("reelCta"),"850 78px system-ui","#ffffff",930,6,102);
-    ctx.fillStyle="#d7e5f1";ctx.font="700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
+    const mainFont=style==="editorial"?"italic 76px Georgia":style==="future"?"800 70px monospace":style==="kinetic"?"900 88px system-ui":"800 78px system-ui";
+    const mainAlign=style==="kinetic"||style==="future"?"left":"center";
+    const mainX=mainAlign==="left"?132:540;
+    const mainColor=style==="future"?accent:"#ffffff";
+    if(scene===0){
+      wrap(value("reelHook"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,style==="kinetic"||style==="future"?820:900);
+    }else if(scene===1){
+      wrap(value("reelHook"),style==="editorial"?"italic 38px Georgia":"650 36px system-ui","#b9c8d8",690,3,52,mainAlign,mainX,820);
+      wrap(value("reelTitle"),mainFont,mainColor,960,5,style==="kinetic"?112:96,mainAlign,mainX,820);
+      wrap(value("reelReason"),"600 34px system-ui",accent,1240,3,48,mainAlign,mainX,820);
+    }else if(scene===2){
+      wrap(value("reelReason"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
+    }else if(scene===3){
+      wrap(value("reelBenefit"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
+    }else{
+      wrap(value("reelCta"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
+    }
+    ctx.globalAlpha=.8;ctx.fillStyle="#d7e5f1";ctx.font=style==="editorial"?"700 22px Georgia":"700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
     ctx.textAlign="right";ctx.fillText("9:16",1002,1800);
-    if(state.visual==="future"){
-      const scan=250+((performance.now()-state.sceneVisualStarted)%1400)/1400*1400;
-      ctx.globalAlpha=.32;ctx.fillStyle="#8ed8ff";ctx.fillRect(90,scan,900,3);
+    if(style==="future"){
+      const scan=280+((now-state.sceneVisualStarted)%1400)/1400*1360;
+      ctx.globalAlpha=.38;ctx.fillStyle=accent;ctx.fillRect(90,scan,900,3);
     }
     ctx.restore();
   };
