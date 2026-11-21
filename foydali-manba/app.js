@@ -2,7 +2,7 @@ let THREE=null;
 
 const $ = id => document.getElementById(id);
 const state = {
-  category:"", name:"", seed:1, tone:"Jiddiy", visual:"cinematic",
+  category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
@@ -48,14 +48,14 @@ function selectCategory(category){
   document.querySelectorAll(".category").forEach(button=>button.classList.toggle("selected",button.dataset.category===category));
   $("sourceFields").hidden=false;
   $("sourceHint").textContent=categoryHints[category]||"Manba haqida ma’lumot kiriting.";
-  state.seed=hash(category+"|"+read("sourceName"));
+  state.seed=hash(category+"|"+read("sourceName")+"|"+state.palette);
   if(state.renderer)rebuildScene();
 }
 document.querySelectorAll(".category").forEach(button=>button.addEventListener("click",()=>selectCategory(button.dataset.category)));
 
 $("sourceName").addEventListener("input",()=>{
   state.name=read("sourceName");
-  state.seed=hash(state.category+"|"+state.name);
+  state.seed=hash(state.category+"|"+state.name+"|"+state.palette);
   if(state.renderer)rebuildScene();
   updatePreview();
 });
@@ -267,10 +267,16 @@ function showScene(index){
 function refreshDurationSummary(){
   const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
   $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
+  if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
+}
+function updateSceneTime(){
+  const seconds=Math.floor(state.playbackElapsed/1000);
+  $("sceneTime").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");
 }
 function pausePlayback(){
   if(state.playing)state.playbackElapsed=Math.min(state.sceneDurations.reduce((sum,value)=>sum+value,0),performance.now()-state.playbackStarted);
   state.playing=false;
+  updateSceneTime();
   if(state.playbackRaf)cancelAnimationFrame(state.playbackRaf);
   state.playbackRaf=0;
   if($("startPreview"))$("startPreview").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺ Qayta ko‘rish":"▶ Davom etish";
@@ -283,6 +289,7 @@ function playbackFrame(now){
   if(state.playbackElapsed>=total){
     state.playing=false;state.playbackRaf=0;showScene(4);
     $("studioProgress").style.width="100%";
+    updateSceneTime();
     $("startPreview").textContent="↺ Qayta ko‘rish";
     if(state.recording)$("recordPause").textContent="↺";
     return;
@@ -291,6 +298,7 @@ function playbackFrame(now){
   while(scene<4&&cursor>=state.sceneDurations[scene]){cursor-=state.sceneDurations[scene];scene++;}
   if(scene!==state.sceneIndex)showScene(scene);
   $("studioProgress").style.width=(state.playbackElapsed/total*100)+"%";
+  updateSceneTime();
   state.playbackRaf=requestAnimationFrame(playbackFrame);
 }
 function startPlayback(){
