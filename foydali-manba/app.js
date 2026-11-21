@@ -157,6 +157,14 @@ function rebuildScene(){
     const globe=new THREE.Mesh(new THREE.TorusKnotGeometry(1.05,.23,160,18,2,5),metal);globe.rotation.set(.4,.2,0);state.group.add(globe);
     for(let i=0;i<3;i++){const orb=new THREE.Mesh(new THREE.SphereGeometry(.09,18,12),glow);const a=rand()*Math.PI*2;orb.position.set(Math.cos(a)*2,Math.sin(a)*2,(rand()-.5)*1.2);state.group.add(orb);}
   }
+  if(state.visual==="kinetic"){
+    for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(.12,1.1+rand()*1.5,.12),glow);bar.position.set(-2+i,((i%2)-.5)*1.2,-.5);bar.rotation.z=(rand()-.5)*.28;state.group.add(bar);}
+  }else if(state.visual==="editorial"){
+    for(let i=0;i<4;i++){const panel=new THREE.Mesh(new THREE.BoxGeometry(2.9,.035,1.8),i===0?glow:metal);panel.position.set(0,1.7-i*1.05,-.8-i*.08);panel.rotation.z=-.08;state.group.add(panel);}
+  }else if(state.visual==="future"){
+    for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(1.65+i*.32,.018,8,120),glow);ring.rotation.set(.4+i*.35,.2,.15*i);state.group.add(ring);}
+    for(let i=0;i<8;i++){const ray=new THREE.Mesh(new THREE.BoxGeometry(.025,3.8,.025),glow);ray.rotation.z=i*Math.PI/4;ray.position.z=-.5;state.group.add(ray);}
+  }
   for(let i=0;i<34;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);}
 }
 function animate(){
@@ -164,10 +172,11 @@ function animate(){
   if(!state.renderer||!state.scene)return;
   const t=state.clock.getElapsedTime();
   if(state.group){
-    const speed=state.motion==="Dinamik"?.55:state.motion==="Kinematik"?.12:.24;
-    state.group.rotation.y=Math.sin(t*speed)*.28;
-    state.group.rotation.x=Math.cos(t*speed*.8)*.12;
-    state.group.position.y=Math.sin(t*speed*2)*.12;
+    const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07},Dinamik:{speed:.58,turn:.42,bob:.18},Kinematik:{speed:.1,turn:.12,bob:.045},Ijodiy:{speed:.36,turn:.55,bob:.2},Aralash:{speed:.28,turn:.3,bob:.12}};
+    const profile=motionProfiles[state.motion]||motionProfiles.Silliq;
+    state.group.rotation.y=Math.sin(t*profile.speed)*profile.turn;
+    state.group.rotation.x=Math.cos(t*profile.speed*.8)*profile.turn*.45;
+    state.group.position.y=Math.sin(t*profile.speed*2)*profile.bob;
   }
   state.renderer.render(state.scene,state.camera);
 }
