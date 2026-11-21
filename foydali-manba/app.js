@@ -153,8 +153,8 @@ async function setupWebGL(){
 function resize(){
   if(!state.renderer)return;
   const canvas=$("webgl"),box=canvas.getBoundingClientRect();
-  const w=Math.max(1,Math.round(box.width*Math.min(window.devicePixelRatio||1,1.7)));
-  const h=Math.max(1,Math.round(box.height*Math.min(window.devicePixelRatio||1,1.7)));
+  const w=Math.max(1,Math.round(box.width));
+  const h=Math.max(1,Math.round(box.height));
   state.renderer.setSize(w,h,false);
   state.camera.aspect=w/h;state.camera.updateProjectionMatrix();
 }
