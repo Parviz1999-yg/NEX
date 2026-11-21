@@ -213,7 +213,7 @@ function showScene(index){
   $("reelCategory").textContent=String(state.sceneIndex+1).padStart(2,"0")+" / "+sceneLabels[state.sceneIndex];
   $("reelHook").textContent=state.sceneIndex===0?text:(state.sceneIndex===1?read("sourceDirection"):"");
   $("reelTitle").textContent=state.sceneIndex===1?read("sourceName"):"";
-  $("reelReason").textContent=state.sceneIndex===2?text:"";
+  $("reelReason").textContent=state.sceneIndex===1&&read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):(state.sceneIndex===2?text:"");
   $("reelBenefit").textContent=state.sceneIndex===3?text:"";
   $("reelCta").textContent=state.sceneIndex===4?text:"";
   $("sceneCounter").textContent="SAHNA "+String(state.sceneIndex+1).padStart(2,"0")+" / 05";
@@ -251,7 +251,18 @@ function updatePreview(){
   readSceneTexts();
   const category=categoryNames[state.category]||"FOYDALI MANBA";
   const summary=$("summary");
-  if(summary)summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+"<br><small>"+escapeHtml(state.tone)+" · "+escapeHtml(state.visual)+" · "+escapeHtml(state.palette)+" · "+escapeHtml(state.motion)+"</small>";
+  if(summary){
+    const details=[
+      read("sourceDirection"),
+      read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):"",
+      read("sourceAudience")?"Auditoriya: "+read("sourceAudience"):"",
+      read("sourceProof")?"Ishonchlilik: "+read("sourceProof"):"",
+      read("sourceLink")?"Havola: "+read("sourceLink"):""
+    ].filter(Boolean).map(escapeHtml);
+    summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+
+      (details.length?"<br>"+details.join("<br>"):"")+
+      "<br><small>"+escapeHtml(state.tone)+" · "+escapeHtml(state.visual)+" · "+escapeHtml(state.palette)+" · "+escapeHtml(state.motion)+"</small>";
+  }
   if(state.studioOpened){
     showScene(state.sceneIndex);
     return;
