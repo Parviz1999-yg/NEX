@@ -23,6 +23,7 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 - FM matn qatlami barcha to‘rtta vizual til uchun alohida tipografik kompozitsiya, kirish animatsiyasi va rang palitrasiga bog‘landi.
 - FM studiya qobig‘i: header ierarxiyasi, asosiy kenglik, panel, preview va mobil tartib TA o‘lchamlariga moslashtirildi.
 - FM `style.css` endi TA’ning himoyalangan `assets/css/style.css` faylini umumiy vizual asos sifatida import qiladi; FM CSS faqat modulga xos bosqich va boshqaruvlarni belgilaydi.
+- FM Reels studiyasining preview sarlavhasi, REAL-TIME belgisi, timeline, sahna hisoblagichi va pastki loyiha boshqaruvlari TA tartibiga moslashtirildi.
 - FM sahna tanlash, davomiylikni tahrirlash va ekran yozishga o‘tishda joriy playback vaqtini saqlaydi.
 - FM statik tekshiruv: JavaScript sintaksisi, HTML ID takrorlanishi, JS–DOM ID mosligi, label maqsadlari va boshqaruv tugmalari tekshirildi.
 - FM haqiqiy Android/WebGL va ekran yozish sinovi hali qurilmada bajarilmagan; buni bajarilgan deb hisoblamaslik kerak.
