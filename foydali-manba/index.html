@@ -160,11 +160,9 @@
           </div>
           <div class="scene-list" id="sceneList" aria-label="Reels sahnalari"></div>
           <button class="secondary-btn full-btn" id="shuffleBackground" type="button">✧ Yangi kreativ variant</button>
-          <div class="studio-playback"><button class="primary-btn" id="startPreview" type="button">▶ Ko‘rishni boshlash</button><button class="secondary-btn full-btn" id="recordMode" type="button">⛶ Ekran yozish rejimi</button><div class="studio-timeline"><span id="studioProgress"></span></div><div class="scene-meta"><span class="hint" id="sceneCounter">SAHNA 01 / 05</span><span class="hint" id="sceneTime">00:00</span></div></div>
+          <div class="studio-playback"><button class="primary-btn" id="startPreview" type="button">▶ Ko‘rishni boshlash</button><button class="secondary-btn full-btn" id="recordMode" type="button">⛶ Ekran yozish rejimi</button></div>
           <p class="hint">Matnni o‘zgartirsangiz, tanlangan sahna darhol yangilanadi.</p>
           <button class="secondary-btn full-btn" id="restartScene">↺ Rolikni boshidan ko‘rish</button>
-          <button class="secondary-btn full-btn" id="backSettings">← Sozlamalarga qaytish</button>
-          <button class="secondary-btn full-btn" id="newProject">＋ Yangi loyiha</button>
         </div>
         <aside class="preview-column">
           <div class="preview-heading"><span class="eyebrow">LIVE WEBGL · 9:16</span><span class="live-dot">● REAL-TIME</span></div>
@@ -172,7 +170,13 @@
             <canvas id="reel3D" width="360" height="640" aria-label="Haqiqiy 3D sahna"></canvas>
             <canvas id="reelCanvas" width="360" height="640" aria-label="Reels matn qatlami"></canvas>
           </div>
+          <div class="timeline"><div id="studioProgress"></div></div>
+          <div class="scene-caption"><span id="sceneCounter">SAHNA 01 / 05</span><span id="sceneTime">00:00</span></div>
         </aside>
+      </div>
+      <div class="actions bottom-actions">
+        <button class="secondary-btn" id="backSettings" type="button">Sozlamalarni o‘zgartirish</button>
+        <button class="primary-btn" id="newProject" type="button">＋ Yangi loyiha</button>
       </div>
       <div hidden aria-hidden="true">
         <span id="reelCategory"></span><span id="reelHook"></span><span id="reelTitle"></span>
