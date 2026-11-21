@@ -8,3 +8,59 @@
 .source-fields small.form-note{color:var(--muted);font-size:11px;line-height:1.5;margin-top:3px}
 .source-fields label{margin-top:5px}
 .source-fields[hidden]{display:none}
+
+
+/* FM — TA arxitekturasiga mos 7 bosqichli boshqaruv */
+[hidden]{display:none!important}
+.wizard-page{display:none;animation:fmAppear .32s ease}
+.wizard-page.active{display:block}
+@keyframes fmAppear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.progress-track{height:4px;position:relative;margin:0 0 30px;background:#202b3d;border-radius:99px}
+.progress-fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#8ed8ff,#d9e8f5);border-radius:99px;transition:width .3s ease}
+.progress-steps{position:absolute;inset:-11px 0 auto;display:flex;justify-content:space-between}
+.progress-steps span{width:26px;height:26px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:#0b111d;color:var(--muted);font-size:9px;font-weight:800;transition:.2s}
+.progress-steps span.current,.progress-steps span.done{background:#d9e8f5;border-color:#d9e8f5;color:#08111d}
+.wizard-page>.panel{max-width:900px}
+.wizard-page h2{font-size:clamp(23px,4vw,32px);letter-spacing:-.04em;margin:0 0 12px}
+.wizard-actions{display:flex;align-items:center;gap:10px;margin-top:22px}
+.wizard-actions>*{flex:1}
+.secondary-btn,.primary-btn{min-height:46px;padding:12px 15px;border-radius:10px;font-weight:800;cursor:pointer}
+.secondary-btn{border:1px solid var(--line);background:#111a29;color:var(--text)}
+.secondary-btn:hover{border-color:var(--accent)}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:18px}
+.choice{min-height:90px;padding:16px;text-align:left;border:1px solid var(--line);border-radius:12px;background:#0a111d;color:var(--text);cursor:pointer;transition:.2s}
+.choice:hover{border-color:var(--accent);transform:translateY(-1px)}
+.choice.selected{border-color:var(--accent);background:#132338;box-shadow:inset 0 0 0 1px #8ed8ff55}
+.choice b,.choice small{display:block}
+.choice b{font-size:14px;margin-bottom:6px}
+.choice small{font-size:11px;line-height:1.5;color:var(--muted)}
+.palette-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.swatch{display:block;width:30px;height:8px;margin:0 0 12px;border-radius:20px;background:#8ed8ff}
+.swatch.silver{background:linear-gradient(90deg,#0b1a2b,#f8fcff,#73c8ff)}
+.swatch.blue{background:linear-gradient(90deg,#06142c,#f4faff,#168cff)}
+.swatch.violet{background:linear-gradient(90deg,#160e30,#faf7ff,#9876ff)}
+.swatch.emerald{background:linear-gradient(90deg,#061e20,#f2fffc,#00d5b2)}
+.swatch.solar{background:linear-gradient(90deg,#211706,#fffcf2,#ffb52e)}
+.studio-heading{margin-bottom:20px}
+.studio-heading h2{font-size:clamp(28px,5vw,42px);letter-spacing:-.045em;margin:0 0 8px}
+.studio-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px;align-items:start}
+.studio-controls{display:grid;gap:12px}
+.studio-controls .summary{padding:13px;border:1px solid var(--line);border-radius:10px;background:#0a111d;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.preview-column{width:100%;position:sticky;top:82px}
+.reel-frame{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;margin-inline:auto;isolation:isolate;overflow:hidden}
+.reel-frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.reel-shade{z-index:1}
+.reel-content{z-index:2;pointer-events:none}
+.form-status{min-height:16px;margin:8px 0 0;color:var(--accent);font-size:11px;line-height:1.5}
+@media(max-width:700px){
+ .studio-layout{display:flex;flex-direction:column;gap:18px}
+ .preview-column{position:static;order:-1;width:min(100%,340px);margin:0 auto}
+ .studio-controls{width:100%}
+}
+@media(max-width:520px){
+ .progress-steps span{width:23px;height:23px;font-size:8px}
+ .choice-grid{grid-template-columns:1fr}
+ .palette-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .wizard-actions{gap:8px}
+ .wizard-actions button{font-size:12px;padding:11px 8px}
+}
