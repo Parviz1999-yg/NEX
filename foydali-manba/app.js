@@ -242,7 +242,7 @@ function renderSceneList(){
     const button=document.createElement("button");
     button.type="button";button.className="scene-chip"+(index===state.sceneIndex?" active":"");
     button.textContent=String(index+1).padStart(2,"0");button.title=label;
-    button.addEventListener("click",()=>{pausePlayback();state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);showScene(index);$("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";});
+    button.addEventListener("click",()=>{pausePlayback();state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);showScene(index);$("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";updateSceneTime();});
     list.appendChild(button);
   });
 }
