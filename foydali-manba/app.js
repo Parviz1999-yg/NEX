@@ -36,7 +36,7 @@ function showStep(number){
   const labels=["01 — MANBA","02 — SSENARIY","03 — BAYON USLUBI","04 — VIZUAL TIL","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — REELS STUDIYASI"];
   $("stepLabel").textContent=labels[number-1];
   window.scrollTo({top:0,behavior:"smooth"});
-  if(number===7){updatePreview();requestAnimationFrame(resize);}
+  if(number===7){updatePreview();requestAnimationFrame(()=>{resize();if(state.renderer&&!state.raf)animate();});}
 }
 function setStatus(id,message){const el=$(id);if(el)el.textContent=message;}
 function choose(groupId,key){
@@ -123,7 +123,10 @@ async function setupWebGL(){
     window.addEventListener("resize",resize);
     canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
     canvas.addEventListener("webglcontextrestored",()=>{try{rebuildScene();resize();setStatus("studioStatus","3D sahna qayta tiklandi.");}catch(error){setStatus("studioStatus","3D sahnani tiklashda xatolik: "+error.message);}});
-    document.addEventListener("visibilitychange",()=>{if(document.hidden)pausePlayback();});
+    document.addEventListener("visibilitychange",()=>{
+      if(document.hidden){pausePlayback();if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;}
+      else if($("step-7")?.classList.contains("active")&&!state.raf)animate();
+    });
     state.webglLoading=false;
     setStatus("studioStatus","3D sahna tayyor. Ekran yozish uchun alohida rejim mavjud.");
     return true;
@@ -185,8 +188,9 @@ function rebuildScene(){
   for(let i=0;i<34;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.018+rand()*.028,8,8),glow);dot.position.set((rand()-.5)*6,(rand()-.5)*9,-1-rand()*2);state.group.add(dot);}
 }
 function animate(){
-  state.raf=requestAnimationFrame(animate);
   if(!state.renderer||!state.scene)return;
+  if(document.hidden||!$("step-7")?.classList.contains("active")){state.raf=0;return;}
+  state.raf=requestAnimationFrame(animate);
   const now=performance.now(),t=(now-state.animationStarted)/1000;
   if(state.group){
     const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15}};
@@ -355,7 +359,8 @@ async function startRecordMode(){
     const ready=await setupWebGL();
     if(!ready){setStatus("studioStatus","WebGL ishga tushmadi. Internet yoki brauzer grafik imkoniyatini tekshiring.");return;}
   }
-  setupRecordRenderer();
+  const recordReady=setupRecordRenderer();
+  if(!recordReady)setStatus("studioStatus","Yozuv oynasining 3D qatlami ishga tushmadi; matn qatlami saqlanadi.");
   state.recording=true;$("recordOverlay").hidden=false;
   state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";
   state.playing=true;state.playbackStarted=performance.now();
@@ -399,7 +404,10 @@ $("openStudio").addEventListener("click",()=>{
 $("startPreview").addEventListener("click",startPlayback);
 $("sceneDuration").addEventListener("input",()=>{
   pausePlayback();
+  const before=state.sceneDurations.slice(0,state.sceneIndex).reduce((sum,value)=>sum+value,0);
+  const offset=Math.max(0,state.playbackElapsed-before);
   state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
+  state.playbackElapsed=before+Math.min(offset,state.sceneDurations[state.sceneIndex]);
   refreshDurationSummary();
   $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
   refreshDurationSummary();
