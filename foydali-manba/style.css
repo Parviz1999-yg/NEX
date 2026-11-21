@@ -86,13 +86,13 @@
 .record-overlay[hidden]{display:none!important}
 .record-frame{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);aspect-ratio:9/16;overflow:hidden;background:#080e18;isolation:isolate}
 #recordWebgl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.record-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:space-between;padding:8% 7% 6%;pointer-events:none;background:linear-gradient(180deg,#05091455 0%,transparent 26%,transparent 70%,#05091466 100%)}
-.record-kicker{font-size:clamp(8px,2.2vw,13px);font-weight:900;letter-spacing:.18em;color:#d9f2ff}
-.record-copy{display:flex;flex-direction:column;justify-content:center;gap:2.2%;flex:1;overflow:hidden;padding:8% 0}
-.record-copy p{margin:0;color:#e4edf7;font-size:clamp(12px,3.2vw,19px);line-height:1.42;overflow-wrap:anywhere;text-shadow:0 2px 12px #000}
-.record-copy h3{margin:0;color:#fff;font-size:clamp(24px,6.5vw,39px);line-height:1.05;letter-spacing:-.045em;overflow-wrap:anywhere;text-shadow:0 2px 16px #000}
-.record-copy strong{font-size:clamp(12px,3.2vw,19px);line-height:1.4;color:#b8e8ff;text-shadow:0 2px 12px #000}
-.record-footer{display:flex;justify-content:space-between;font-size:clamp(7px,1.8vw,11px);letter-spacing:.17em;color:#d7e5f1}
+
+
+
+
+
+
+
 .record-controls{position:fixed;z-index:2;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #ffffff30;border-radius:12px;background:#080b13e8;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
 .record-overlay.controls-visible .record-controls{opacity:1;visibility:visible;pointer-events:auto}
 .record-controls span{font-size:10px;letter-spacing:.08em;color:#c5cedd}
@@ -108,4 +108,4 @@
 #shuffleBackground:active{transform:scale(.99)}
 
 #recordText{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none;background:transparent}
-.record-content{display:none}
+
