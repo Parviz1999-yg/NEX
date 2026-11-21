@@ -195,7 +195,7 @@ function updateFlowSurface(time,profile,energy){
   const attr=state.fluid.geometry.attributes.position,base=state.fluid.userData.flowBase;
   const phase=time*profile.speed*energy+state.fluid.userData.flowSeed;
   const scene=state.sceneIndex,style=state.visual;
-  const local=Math.max(0,Math.min(1,(time-state.sceneVisualStarted)/Math.max(700,state.sceneDurations[scene])));
+  const local=Math.max(0,Math.min(1,(performance.now()-state.sceneVisualStarted)/Math.max(700,state.sceneDurations[scene])));
   const reveal=1-Math.pow(1-Math.min(1,local/.34),3);
   for(let i=0;i<attr.count;i++){
     const k=i*3,x=base[k],v=base[k+1],u=base[k+2],edge=Math.pow(Math.sin(Math.PI*u),.55);
