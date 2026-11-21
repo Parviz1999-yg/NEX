@@ -345,6 +345,7 @@ function animate(){
     state.camera.position.z=8-mix(from.zoom,to.zoom);
     state.camera.lookAt(0,0,0);
   }
+  syncRecordText(state.recording);
   state.renderer.render(state.scene,state.camera);
   if(state.recording&&state.recordRenderer)state.recordRenderer.render(state.scene,state.camera);
 }
@@ -485,7 +486,7 @@ function setupRecordRenderer(){
     return false;
   }
 }
-function syncRecordText(){
+function syncRecordText(recordToo=true){
   const value=id=>$(id)?.textContent?.trim()||"";
   const render=(canvas)=>{
     if(!canvas)return;
@@ -509,6 +510,14 @@ function syncRecordText(){
       shown.forEach((item,index)=>ctx.fillText(item,540,first+index*lineHeight,900));
     };
     ctx.clearRect(0,0,1080,1920);ctx.save();
+    const durations={Silliq:820,Dinamik:300,Kinematik:1050,Ijodiy:520,Aralash:650};
+    const progress=Math.max(0,Math.min(1,(performance.now()-state.sceneVisualStarted)/(durations[state.motion]||820)));
+    const ease=progress*progress*(3-2*progress);
+    const scale=state.visual==="kinetic"?.84+.16*ease:state.visual==="editorial"?.97+.03*ease:.92+.08*ease;
+    ctx.translate(540,960);ctx.scale(scale,scale);ctx.translate(-540,-960);
+    ctx.globalAlpha=state.visual==="future"?.35+.65*ease:ease;
+    const slide=state.visual==="editorial"?(1-ease)*24:state.visual==="kinetic"?(1-ease)*-46:(1-ease)*18;
+    ctx.translate(0,slide);
     ctx.fillStyle="#d9f2ff";ctx.font="800 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillText(value("reelCategory"),540,142);
     ctx.globalAlpha=.48;ctx.fillRect(390,190,300,3);ctx.globalAlpha=1;
@@ -522,10 +531,15 @@ function syncRecordText(){
     else if(scene===3)wrap(value("reelBenefit"),"800 72px system-ui","#ffffff",940,6,96);
     else wrap(value("reelCta"),"850 78px system-ui","#ffffff",930,6,102);
     ctx.fillStyle="#d7e5f1";ctx.font="700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
-    ctx.textAlign="right";ctx.fillText("9:16",1002,1800);ctx.restore();
+    ctx.textAlign="right";ctx.fillText("9:16",1002,1800);
+    if(state.visual==="future"){
+      const scan=250+((performance.now()-state.sceneVisualStarted)%1400)/1400*1400;
+      ctx.globalAlpha=.32;ctx.fillStyle="#8ed8ff";ctx.fillRect(90,scan,900,3);
+    }
+    ctx.restore();
   };
   render($("reelCanvas"));
-  render($("recordCanvas"));
+  if(recordToo)render($("recordCanvas"));
 }
 function revealRecordControls(){
   const overlay=$("recordOverlay");overlay.classList.add("controls-visible");
