@@ -59,11 +59,11 @@ $("sourceName").addEventListener("input",()=>{
   if(state.renderer)rebuildScene();
   updatePreview();
 });
-["sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink","hook","reason","benefit","cta"].forEach(id=>{
+["sourceSearchQuery","sourceSearchPlace","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink","hook","reason","benefit","cta"].forEach(id=>{
   $(id)?.addEventListener("input",updatePreview);
 });
 $("nextSource").addEventListener("click",()=>{
-  const required=[["sourceName","manba nomi"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
+  const required=[["sourceName","manba nomi"],["sourceSearchQuery","qidiruv so‘rovi"],["sourceSearchPlace","qidiruv manzili"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
   const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
   if(!state.category)missing.unshift("manba turi");
   if(read("sourceLink")){try{const url=new URL(read("sourceLink"));if(!["http:","https:"].includes(url.protocol))throw new Error("protocol");}catch{setStatus("sourceStatus","Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}}
@@ -465,6 +465,8 @@ function updatePreview(){
   if(summary){
     const details=[
       read("sourceDirection"),
+      read("sourceSearchQuery")?"Qidiruv so‘rovi: "+read("sourceSearchQuery"):"",
+      read("sourceSearchPlace")?"Qidiruv joyi: "+read("sourceSearchPlace"):"",
       read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):"",
       read("sourceAudience")?"Auditoriya: "+read("sourceAudience"):"",
       read("sourceProof")?"Ishonchlilik: "+read("sourceProof"):"",
