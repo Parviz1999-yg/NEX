@@ -18,7 +18,7 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - [x] TA andozasidagi alohida 9:16 ekran yozish oynasi; 1080×1920 WebGL va Canvas matn qatlamlari, qo‘llab-quvvatlansa fullscreen, yashirin/ko‘rinadigan boshqaruvlar, pauza va studiyaga qaytish.
 - [x] Rolik yakunida to‘xtash, davom ettirish, vaqt hisoblagichi, sahna progressi, kreativ variant va yangi loyiha boshqaruvlari.
 - [x] WebGL import xatolari, kontekst yo‘qolishi/tiklanishi va brauzer tabining yashirilishiga munosabat.
-- [x] Statik tekshiruv: JavaScript parse, 68 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
+- [x] Statik tekshiruv: JavaScript parse, 63 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
 - [ ] Haqiqiy Android brauzerida 4 manba turi × 4 vizual til × 5 animatsiya × 5 sahna kombinatsiyalarini ko‘z bilan tekshirish.
 - [ ] 1080×1920 ekran yozish rejimida real qurilma sinovi, FPS, qizish va xotira sarfini o‘lchash.
 - [ ] WebGL kontekstini yo‘qotish/tiklash va CDN ishlamagan holatlarni real brauzerda tekshirish.
