@@ -685,7 +685,7 @@ $("shuffleBackground").addEventListener("click",()=>{
 });
 $("newProject").addEventListener("click",()=>{
   exitRecordMode();
-  ["sourceName","sourceLink","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta"].forEach(id=>$(id).value="");
+  ["sourceName","sourceSearchQuery","sourceSearchPlace","sourceLink","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta","sceneText"].forEach(id=>{const field=$(id);if(field)field.value="";});
   state.category="";state.name="";state.seed=1;state.variantIndex=0;state.tone="Jiddiy";state.visual="cinematic";state.palette="silver";state.motion="Silliq";
   state.sceneIndex=0;state.sceneVisualFrom=0;state.sceneDurations=[5000,5000,5000,5000,5000];state.sceneTexts=["","","","",""];state.sceneEdited=[false,false,false,false,false];
   state.playbackElapsed=0;state.studioOpened=false;
