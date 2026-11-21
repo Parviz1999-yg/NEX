@@ -171,13 +171,8 @@
         <aside class="preview-column">
           <div class="preview-heading"><span class="eyebrow">LIVE WEBGL · 9:16</span><span class="live-dot">● REAL-TIME</span></div>
           <div class="reel-frame">
-            <canvas id="webgl" aria-label="Manba turiga mos 3D Reels sahnasi"></canvas>
-            <div class="reel-shade"></div>
-            <div class="reel-content">
-              <span class="reel-kicker" id="reelCategory">FOYDALI MANBA</span>
-              <div class="reel-copy"><p id="reelHook"></p><h3 id="reelTitle"></h3><p id="reelReason"></p><p id="reelBenefit"></p><strong id="reelCta"></strong></div>
-              <div class="reel-footer"><span>NEX / RESOURCE</span><span>9:16</span></div>
-            </div>
+            <canvas id="reel3D" width="360" height="640" aria-label="Haqiqiy 3D sahna"></canvas>
+            <canvas id="reelCanvas" width="360" height="640" aria-label="Reels matn qatlami"></canvas>
           </div>
         </aside>
       </div>
@@ -185,8 +180,8 @@
   </main>
   <div class="record-overlay" id="recordOverlay" hidden>
     <div class="record-frame">
-      <canvas id="recordWebgl" width="1080" height="1920" aria-label="Ekran yozish uchun yuqori aniqlikdagi 3D sahna"></canvas>
-      <canvas id="recordText" width="1080" height="1920" aria-label="Yozuv uchun yuqori aniqlikdagi matn qatlami"></canvas>
+      <canvas id="record3D" width="1080" height="1920" aria-label="Ekran yozish uchun yuqori aniqlikdagi 3D sahna"></canvas>
+      <canvas id="recordCanvas" width="1080" height="1920" aria-label="Yozuv uchun yuqori aniqlikdagi matn qatlami"></canvas>
     </div>
     <div class="record-controls">
       <span id="recordDuration">25,0 soniya</span>
