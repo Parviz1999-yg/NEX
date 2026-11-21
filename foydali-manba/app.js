@@ -488,6 +488,7 @@ $("newProject").addEventListener("click",()=>{
   choose("toneOptions","Jiddiy");choose("visualOptions","cinematic");choose("paletteOptions","silver");choose("motionOptions","Silliq");
   ["sourceStatus","scriptStatus","studioStatus"].forEach(id=>setStatus(id,""));
   $("studioProgress").style.width="0%";$("sceneTime").textContent="00:00";
+  $("startPreview").textContent="▶ Ko‘rishni boshlash";$("recordPause").textContent="Ⅱ";
   if(state.renderer)rebuildScene();
   updatePreview();showStep(1);
 });
