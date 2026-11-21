@@ -6,7 +6,7 @@ const state = {
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, fluid:null, recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
-  playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, sceneTexts:["","","","",""],
+  playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, webglFailed:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
 };
 const categoryNames={sayt:"SAYT",youtube:"YOUTUBE",telegram:"TELEGRAM",kitob:"KITOB"};
@@ -98,7 +98,8 @@ $("motionOptions").querySelectorAll("[data-value]").forEach(button=>button.addEv
   state.motion=button.dataset.value;choose("motionOptions",state.motion);
 }));
 async function setupWebGL(){
-  if(state.renderer)return true;
+  if(state.renderer&&!state.webglFailed)return true;
+  if(state.webglFailed)return false;
   if(state.webglLoading){
     return new Promise(resolve=>{
       const wait=()=>{if(state.renderer)resolve(true);else if(!state.webglLoading)resolve(false);else setTimeout(wait,40);};
@@ -135,17 +136,17 @@ async function setupWebGL(){
     const rim=new THREE.PointLight(0x72caff,85,18);rim.position.set(3,1,4);state.scene.add(rim);
     rebuildScene();resize();state.animationStarted=performance.now();animate();
     window.addEventListener("resize",resize);
-    canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
-    canvas.addEventListener("webglcontextrestored",()=>{try{rebuildScene();resize();setStatus("studioStatus","3D sahna qayta tiklandi.");}catch(error){setStatus("studioStatus","3D sahnani tiklashda xatolik: "+error.message);}});
+    canvas.addEventListener("webglcontextlost",event=>{event.preventDefault();state.webglFailed=true;pausePlayback();setStatus("studioStatus","WebGL konteksti uzildi. Brauzer grafikani tiklayotganida kuting.");});
+    canvas.addEventListener("webglcontextrestored",()=>{try{state.webglFailed=false;rebuildScene();resize();setStatus("studioStatus","3D sahna qayta tiklandi.");}catch(error){setStatus("studioStatus","3D sahnani tiklashda xatolik: "+error.message);}});
     document.addEventListener("visibilitychange",()=>{
       if(document.hidden){pausePlayback();if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;}
       else if($("step-7")?.classList.contains("active")&&!state.raf)animate();
     });
-    state.webglLoading=false;
+    state.webglLoading=false;state.webglFailed=false;
     setStatus("studioStatus","3D sahna tayyor. Ekran yozish uchun alohida rejim mavjud.");
     return true;
   }catch(error){
-    state.webglLoading=false;
+    state.webglLoading=false;state.webglFailed=true;
     setStatus("studioStatus","3D sahna ishga tushmadi: "+error.message);
     return false;
   }
@@ -398,7 +399,7 @@ function revealRecordControls(){
   state.recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800);
 }
 async function startRecordMode(){
-  if(!state.renderer){
+  if(!state.renderer||state.webglFailed){
     const ready=await setupWebGL();
     if(!ready){setStatus("studioStatus","WebGL ishga tushmadi. Internet yoki brauzer grafik imkoniyatini tekshiring.");return;}
   }
