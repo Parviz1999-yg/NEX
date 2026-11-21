@@ -4,6 +4,7 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 
 ## [0.9.7] — 2026-11-21
 
+- FM’da “Yangi loyiha” bosilganda qidiruv so‘rovi, qidiruv joyi, havola, manba tafsilotlari va ssenariy maydonlari ham tozalanadi; oldingi loyiha ma’lumotlari yangi loyihaga o‘tib qolmaydi.
 - FM’da manba havolasi majburiyligi olib tashlandi; uning o‘rniga majburiy “Nima deb qidirish kerak?” va “Qayerdan qidirish kerak?” maydonlari qo‘shildi. Qidiruv ma’lumotlari studiya xulosasida ham ko‘rsatiladi.
 
 - FM 3D suyuq metall geometriyasidagi yetishmayotgan `flow` animatsiya koeffitsiyenti tiklandi; NEX logotipi TA dagi yuqori kompozitsion joylashuvga moslandi va preview o‘lchamlari umumiy studiya andozasiga yaqinlashtirildi.
