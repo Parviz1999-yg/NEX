@@ -64,3 +64,18 @@
  .wizard-actions{gap:8px}
  .wizard-actions button{font-size:12px;padding:11px 8px}
 }
+
+
+/* FM studio — sahna boshqaruvi */
+.scene-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:4px}
+.scene-chip{min-height:38px;border:1px solid var(--line);border-radius:8px;background:#0a111d;color:var(--muted);font-size:11px;font-weight:850;cursor:pointer}
+.scene-chip.active{border-color:var(--accent);background:#132338;color:#eaf8ff}
+.scene-duration-control{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0a111d}
+.duration-row{display:flex;align-items:center;gap:12px}
+.duration-row input{flex:1;min-width:0;padding:0;accent-color:#8ed8ff}
+.duration-row output{min-width:76px;text-align:right;color:var(--accent);font-size:11px;font-weight:800}
+.studio-playback{display:grid;gap:8px}
+.studio-playback .primary-btn{margin:0}
+.studio-timeline{height:4px;overflow:hidden;border-radius:10px;background:#253247}
+.studio-timeline span{display:block;width:0;height:100%;background:#8ed8ff;transition:width .08s linear}
+.studio-playback .hint{margin:0}
