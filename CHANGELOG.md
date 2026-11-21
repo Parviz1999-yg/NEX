@@ -15,6 +15,14 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 - FM yakuniy sahnasiga animatsion 3D NEX xrom logotipi va pastdan yuqoriga ko‘tariluvchi metall wipe/outro harakati qo‘shildi.
 - FM rolik ijrosi endi yakuniy sahnada to‘xtaydi; pauza/davom ettirish, vaqt hisoblagichi, davomiylikni qayta hisoblash, kreativ variant va yangi loyiha boshqaruvlari mavjud.
 - FM kodida CDN import xatolari, WebGL kontekst yo‘qolishi va sahifa ko‘rinmasligi uchun alohida boshqaruvlar qo‘shildi.
+- FM va TA preview/yozuv kompozitsiyasi bir xil to‘rt canvas arxitekturasiga keltirildi: preview 360×640 WebGL+Canvas, yozuv 1080×1920 WebGL+Canvas.
+- FM preview’dagi HTML matn qatlami olib tashlanib, TA singari Canvas orqali chiziladigan tipografik qatlamga o‘tkazildi.
+- FM metall suyuqlik geometriyasi TA’dagi 112×28 segmentli dinamik xrom lenta algoritmiga moslashtirildi; har besh sahnada alohida geometriya harakati mavjud.
+- FM yoritish, kamera burchagi, piksel nisbati va xrom material parametrlari TA etaloniga yaqinlashtirildi.
+- FM NEX logotipi TA’dagi Catmull-Rom/Tubular stroke draw-range animatsiyasi bilan intro va outroda chizilib ochiladi.
+- FM matn qatlami barcha to‘rtta vizual til uchun alohida tipografik kompozitsiya, kirish animatsiyasi va rang palitrasiga bog‘landi.
+- FM studiya qobig‘i: header ierarxiyasi, asosiy kenglik, panel, preview va mobil tartib TA o‘lchamlariga moslashtirildi.
+- FM sahna tanlash, davomiylikni tahrirlash va ekran yozishga o‘tishda joriy playback vaqtini saqlaydi.
 - FM statik tekshiruv: JavaScript sintaksisi, HTML ID takrorlanishi, JS–DOM ID mosligi, label maqsadlari va boshqaruv tugmalari tekshirildi.
 - FM haqiqiy Android/WebGL va ekran yozish sinovi hali qurilmada bajarilmagan; buni bajarilgan deb hisoblamaslik kerak.
 
