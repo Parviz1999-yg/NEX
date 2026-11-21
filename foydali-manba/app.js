@@ -254,7 +254,7 @@ function showScene(index){
   $("sceneText").value=text;
   $("reelCategory").textContent=String(state.sceneIndex+1).padStart(2,"0")+" / "+sceneLabels[state.sceneIndex];
   $("reelHook").textContent=state.sceneIndex===0?text:(state.sceneIndex===1?read("sourceDirection"):"");
-  $("reelTitle").textContent=state.sceneIndex===1?read("sourceName"):"";
+  $("reelTitle").textContent=state.sceneIndex===1?text:"";
   $("reelReason").textContent=state.sceneIndex===1&&read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):(state.sceneIndex===2?text:"");
   $("reelBenefit").textContent=state.sceneIndex===3?text:"";
   $("reelCta").textContent=state.sceneIndex===4?text:"";
@@ -274,6 +274,7 @@ function pausePlayback(){
   if(state.playbackRaf)cancelAnimationFrame(state.playbackRaf);
   state.playbackRaf=0;
   if($("startPreview"))$("startPreview").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺ Qayta ko‘rish":"▶ Davom etish";
+  if(state.recording&&$("recordPause"))$("recordPause").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺":"▶";
 }
 function playbackFrame(now){
   if(!state.playing)return;
@@ -283,6 +284,7 @@ function playbackFrame(now){
     state.playing=false;state.playbackRaf=0;showScene(4);
     $("studioProgress").style.width="100%";
     $("startPreview").textContent="↺ Qayta ko‘rish";
+    if(state.recording)$("recordPause").textContent="↺";
     return;
   }
   let cursor=state.playbackElapsed,scene=0;
@@ -408,7 +410,6 @@ $("sceneDuration").addEventListener("input",()=>{
   const offset=Math.max(0,state.playbackElapsed-before);
   state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
   state.playbackElapsed=before+Math.min(offset,state.sceneDurations[state.sceneIndex]);
-  refreshDurationSummary();
   $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
   refreshDurationSummary();
 });
@@ -421,6 +422,7 @@ $("sceneText").addEventListener("input",()=>{
   if(index===2)$("reelReason").textContent=value;
   if(index===3)$("reelBenefit").textContent=value;
   if(index===4)$("reelCta").textContent=value;
+  syncRecordText();
 });
 $("restartScene").addEventListener("click",()=>{
   pausePlayback();
