@@ -369,7 +369,14 @@ function renderSceneList(){
     const button=document.createElement("button");
     button.type="button";button.className="scene-chip"+(index===state.sceneIndex?" active":"");
     button.textContent=String(index+1).padStart(2,"0");button.title=label;
-    button.addEventListener("click",()=>{pausePlayback();state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);showScene(index);$("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";updateSceneTime();});
+    button.addEventListener("click",()=>{
+       const wasPlaying=state.playing;
+       state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);
+       if(wasPlaying)state.playbackStarted=performance.now()-state.playbackElapsed;
+       showScene(index);
+       $("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";
+       updateSceneTime();
+     });
     list.appendChild(button);
   });
 }
@@ -560,8 +567,8 @@ async function startRecordMode(){
   const recordReady=setupRecordRenderer();
   if(!recordReady)setStatus("studioStatus","Yozuv oynasining 3D qatlami ishga tushmadi; matn qatlami saqlanadi.");
   state.recording=true;$("recordOverlay").hidden=false;
-  state.playbackElapsed=0;state.sceneVisualFrom=state.sceneIndex;state.sceneVisualStarted=performance.now();showScene(0);$("studioProgress").style.width="0%";updateSceneTime();
-  state.playing=true;state.playbackStarted=performance.now();
+  state.sceneVisualFrom=state.sceneIndex;state.sceneVisualStarted=performance.now();
+  state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
   $("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";
   revealRecordControls();syncRecordText();
   if(!state.playbackRaf)state.playbackRaf=requestAnimationFrame(playbackFrame);
@@ -603,11 +610,12 @@ $("openStudio").addEventListener("click",()=>{
 });
 $("startPreview").addEventListener("click",startPlayback);
 $("sceneDuration").addEventListener("input",()=>{
-  pausePlayback();
+  const wasPlaying=state.playing;
   const before=state.sceneDurations.slice(0,state.sceneIndex).reduce((sum,value)=>sum+value,0);
   const offset=Math.max(0,state.playbackElapsed-before);
   state.sceneDurations[state.sceneIndex]=Number($("sceneDuration").value)*1000;
   state.playbackElapsed=before+Math.min(offset,state.sceneDurations[state.sceneIndex]);
+  if(wasPlaying)state.playbackStarted=performance.now()-state.playbackElapsed;
   updateSceneTime();
   $("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";
   refreshDurationSummary();
