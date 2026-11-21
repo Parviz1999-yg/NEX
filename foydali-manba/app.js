@@ -168,15 +168,91 @@ function disposeGroup(){
   });
   state.fluid=null;state.logoGroup=null;
 }
+function createFlowSurface(segments,widthSegments,material,seed){
+  const positions=[],indices=[],base=[];
+  for(let iy=0;iy<=widthSegments;iy++){
+    const v=iy/widthSegments*2-1;
+    for(let ix=0;ix<=segments;ix++){
+      const u=ix/segments,x=(u-.5)*8.4;
+      positions.push(x,v*.55,0);base.push(x,v,u);
+    }
+  }
+  for(let iy=0;iy<widthSegments;iy++)for(let ix=0;ix<segments;ix++){
+    const a=iy*(segments+1)+ix,b=a+1,c=a+segments+1,d=c+1;
+    indices.push(a,b,c,b,d,c);
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,material);
+  mesh.userData.flowBase=new Float32Array(base);mesh.userData.flowSeed=seed;
+  return mesh;
+}
+function updateFlowSurface(time,profile,energy){
+  if(!state.fluid)return;
+  const attr=state.fluid.geometry.attributes.position,base=state.fluid.userData.flowBase;
+  const phase=time*profile.speed*energy+state.fluid.userData.flowSeed;
+  const scene=state.sceneIndex,style=state.visual;
+  const local=Math.max(0,Math.min(1,(time-state.sceneVisualStarted)/Math.max(700,state.sceneDurations[scene])));
+  const reveal=1-Math.pow(1-Math.min(1,local/.34),3);
+  for(let i=0;i<attr.count;i++){
+    const k=i*3,x=base[k],v=base[k+1],u=base[k+2],edge=Math.pow(Math.sin(Math.PI*u),.55);
+    let px=x,py=0,pz=0;
+    if(scene===0){
+      const wave=Math.sin(u*Math.PI*2.15-phase*.72),curl=Math.cos(u*Math.PI*3.1-phase);
+      px=x+Math.sin(u*6.283+phase*.35)*.28+v*.12;
+      py=wave*(.62+.18*Math.sin(phase))+v*(.22+edge*.32);
+      pz=curl*.72+Math.sin(u*12+phase)*.16+v*.22;
+    }else if(scene===1){
+      const a=u*Math.PI*2+phase*.34;
+      px=Math.cos(a)*2.35+v*.24;py=Math.sin(a)*1.52+v*.2;pz=Math.sin(a*2+phase*.28)*.52+v*.38;
+    }else if(scene===2){
+      const fan=(u-.5)*8.1,spread=(.16+u*.92)*(1+.22*Math.sin(phase));
+      px=fan+Math.sin(u*17-phase)*.16;py=v*spread+Math.sin(u*10-phase*1.3)*.32;
+      pz=Math.sin(u*14-phase)*(.38+Math.abs(v)*.38)+v*.26;
+    }else if(scene===3){
+      const dx=(u-.5)*8.1,impact=Math.exp(-Math.pow(dx*.92,2));
+      px=dx+Math.sin(phase+v*3)*.12;
+      py=v*(.28+impact*1.08)+Math.sin(dx*1.8-phase)*.22+impact*Math.sin(phase*1.8)*.65;
+      pz=impact*(.8+Math.cos(phase*1.7+v*4)*.52)+Math.sin(dx*1.25+phase)*.3+v*.22;
+    }else{
+      const a=u*Math.PI*3.1+phase*.48;
+      px=Math.cos(a)*(1.15+v*.35)+Math.sin(phase*.4)*.3;
+      py=(u-.5)*5.1+v*.28;pz=Math.sin(a)*(1.05+v*.24)+Math.cos(u*8-phase)*.2;
+    }
+    if(style==="kinetic"){
+      const snap=Math.sin(u*Math.PI*7.5-phase*1.35);
+      px+=Math.sin(u*Math.PI*4.2+phase)*.16*edge;py+=snap*.19*edge;pz+=Math.cos(u*Math.PI*9-phase*1.1)*.22*edge;
+    }else if(style==="editorial"){
+      py=py*.82+Math.sin(u*Math.PI*1.65+phase*.42)*.13*edge;pz*=.68;
+      px+=Math.sin(u*Math.PI*2.1-phase*.25)*.075*edge;
+    }else if(style==="future"){
+      const pulse=Math.sin(u*Math.PI*11-phase*1.6);
+      py+=pulse*.24*edge;pz+=Math.cos(u*Math.PI*8+phase*1.25)*.28*edge;
+      px+=Math.sin(u*Math.PI*6+phase*.7)*.12*edge;
+    }
+    if(state.category==="youtube")py+=Math.sin(u*Math.PI*4+phase*.7)*.18*edge;
+    else if(state.category==="telegram")pz+=Math.cos(u*Math.PI*3-phase*.55)*.2*edge;
+    else if(state.category==="kitob")py*=.82;
+    else px+=Math.sin(u*Math.PI*2+phase)*.08*edge;
+    const styleBoost=style==="kinetic"?1.18:style==="editorial"?.82:style==="future"?1.34:1;
+    px*=.49;
+    const flatY=v*.13;
+    py=flatY+(py-flatY)*reveal;
+    pz*=reveal;
+    px*=.58+.42*reveal;
+    attr.setXYZ(i,px,py*profile.flow*styleBoost,pz*profile.flow*styleBoost);
+  }
+  attr.needsUpdate=true;state.fluid.geometry.computeVertexNormals();
+}
 function rebuildScene(){
   if(!state.scene)return;
   disposeGroup();
   state.group=new THREE.Group();state.scene.add(state.group);
-  const fluidGeometry=new THREE.PlaneGeometry(5.6,4.4,42,30);
   const paletteForFluid=palettes[state.palette]||palettes.silver;
-  const fluidMaterial=new THREE.MeshPhysicalMaterial({color:0x9ba9b7,metalness:.94,roughness:.16,clearcoat:1,clearcoatRoughness:.08,emissive:paletteForFluid.accent,emissiveIntensity:.035,side:THREE.DoubleSide});
-  state.fluid=new THREE.Mesh(fluidGeometry,fluidMaterial);
-  state.fluid.position.set(0,0,-1.35);
+  const fluidMaterial=new THREE.MeshPhysicalMaterial({color:0xd9dde3,metalness:.985,roughness:.115,clearcoat:1,clearcoatRoughness:.022,envMapIntensity:4.8,emissive:0x171b20,emissiveIntensity:.035,side:THREE.DoubleSide});
+  state.fluid=createFlowSurface(112,28,fluidMaterial,(state.seed||1)*.0001);
+  state.fluid.position.set(0,0,.42);
   state.group.add(state.fluid);
   const palette=palettes[state.palette]||palettes.silver;
   state.scene.background=new THREE.Color(palette.bg);
@@ -242,19 +318,9 @@ function animate(){
     const blend=Math.min(1,Math.max(0,(now-state.sceneVisualStarted)/650));
     const ease=blend*blend*(3-2*blend);
     const mix=(a,b)=>a+(b-a)*ease;
-    if(state.fluid){
-      const positions=state.fluid.geometry.attributes.position;
-      const wave=t*profile.speed*energy;
-      for(let i=0;i<positions.count;i++){
-        const x=positions.getX(i),y=positions.getY(i);
-        const z=Math.sin(x*1.65+wave*1.2)*.13+Math.cos(y*1.8-wave*.82)*.095+Math.sin((x+y)*1.1-wave*.55)*.045;
-        positions.setZ(i,z);
-      }
-      positions.needsUpdate=true;
-      state.fluid.geometry.computeVertexNormals();
-      const wipe=state.sceneIndex===4?Math.max(0,1-(now-state.sceneVisualStarted)/1500):0;
-      state.fluid.position.y=-1.65*wipe;
-    }
+    updateFlowSurface(t,profile,energy);
+    const wipe=state.sceneIndex===4?Math.max(0,1-(now-state.sceneVisualStarted)/1500):0;
+    if(state.fluid)state.fluid.position.y=-1.65*wipe;
     if(state.logoGroup){
       const outro=state.sceneIndex===4;
       state.logoGroup.visible=outro;
