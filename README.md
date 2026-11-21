@@ -102,7 +102,7 @@ https://parviz1999-yg.github.io/NEX/
 
 NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, FM, QF va MI uchun alohida versiya raqamlari yoki mustaqil versiya tarixlari ochilmaydi.
 
-- Joriy umumiy versiya `0.1.0`.
+- Joriy umumiy versiya `0.9.7`.
 - Versiya raqami loyiha ildizidagi `VERSION` faylida saqlanadi.
 - Barcha modullardagi o‘zgarishlar yagona `CHANGELOG.md` tarixiga yoziladi.
 - Qaysi modul yangilanishidan qat’i nazar, yangi loyiha relizi chiqarilganda faqat bitta umumiy versiya oshiriladi.
