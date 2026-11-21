@@ -147,7 +147,7 @@
       <div class="studio-heading">
         <p class="eyebrow">07 — NEX REELS STUDIO</p>
         <h2>Asosiy sahna.</h2>
-        <p>Bu yerda barcha tanlovlaringiz birlashtiriladi. Telefoningizdagi ekran yozish funksiyasidan foydalanishingiz mumkin.</p>
+        <p>Bu yerda barcha tanlovlaringiz birlashtiriladi. Yuqori sifatli 9:16 yozuv oynasini ochib, telefoningiz ekran yozish funksiyasida saqlashingiz mumkin.</p>
       </div>
       <div class="studio-layout">
         <div class="studio-controls panel">
@@ -161,7 +161,7 @@
             <p class="hint" id="durationSummary">Jami rolik: 25 soniya · 5 sahna</p>
           </div>
           <div class="scene-list" id="sceneList" aria-label="Reels sahnalari"></div>
-          <div class="studio-playback"><button class="primary-btn" id="startPreview" type="button">▶ Ko‘rishni boshlash</button><div class="studio-timeline"><span id="studioProgress"></span></div><p class="hint" id="sceneCounter">SAHNA 01 / 05</p></div>
+          <div class="studio-playback"><button class="primary-btn" id="startPreview" type="button">▶ Ko‘rishni boshlash</button><button class="secondary-btn full-btn" id="recordMode" type="button">⛶ Ekran yozish rejimi</button><div class="studio-timeline"><span id="studioProgress"></span></div><p class="hint" id="sceneCounter">SAHNA 01 / 05</p></div>
           <p class="hint">Matnni o‘zgartirsangiz, tanlangan sahna darhol yangilanadi.</p>
           <button class="secondary-btn full-btn" id="restartScene">↺ Sahnani qayta boshlash</button>
           <button class="secondary-btn full-btn" id="backSettings">← Sozlamalarga qaytish</button>
@@ -181,6 +181,23 @@
       </div>
     </section>
   </main>
+  <div class="record-overlay" id="recordOverlay" hidden>
+    <div class="record-frame">
+      <canvas id="recordWebgl" width="1080" height="1920" aria-label="Ekran yozish uchun yuqori aniqlikdagi 3D sahna"></canvas>
+      <div class="record-content">
+        <span class="record-kicker" id="recordCategory">FOYDALI MANBA</span>
+        <div class="record-copy">
+          <p id="recordHook"></p><h3 id="recordTitle"></h3><p id="recordReason"></p><p id="recordBenefit"></p><strong id="recordCta"></strong>
+        </div>
+        <div class="record-footer"><span>NEX / RESOURCE</span><span>9:16</span></div>
+      </div>
+    </div>
+    <div class="record-controls">
+      <span id="recordDuration">25,0 soniya</span>
+      <button id="recordPause" type="button" aria-label="Pauza yoki davom ettirish">Ⅱ</button>
+      <button id="recordExit" type="button">← Studiyaga qaytish</button>
+    </div>
+  </div>
   <script type="module" src="app.js?v=0.9.7"></script>
 </body>
 </html>
