@@ -1,9 +1,29 @@
 # NEX — ishlar holati
 
-Amaldagi versiya: **v0.8.9**  
+Amaldagi versiya: **v0.9.7**  
 Brend yo‘nalishi: **Liquid Metal / Mercury WebGL**  
 Asosiy yo‘nalish: **Tavsiya akkaunt studiyasi**  
 Sayt: https://parviz1999-yg.github.io/NEX/
+
+## FM — 2026-11-21: TA andozasiga mos audit va qayta ishlash
+
+- [x] FM mustaqil modul sifatida saqlandi; TA fayllariga o‘zgartirish kiritilmadi.
+- [x] TA’dagi bosqichma-bosqich sahifa oqimi asosida 7 ichki bosqich: manba, ssenariy, bayon uslubi, vizual til, rang, animatsiya va Reels studiyasi.
+- [x] Manba turlari cheklangan: Sayt, YouTube, Telegram va Kitob.
+- [x] Manba metama’lumotlari, majburiy maydonlar va http/https havola tekshiruvi.
+- [x] Besh sahna: HOOK, MANBA, SABAB, FOYDA va YAKUN; har birining matni va 2,5–12 soniya davomiyligi mustaqil tahrirlanadi.
+- [x] 3D WebGL, RoomEnvironment/PMREM aks ettirishi, manba turiga mos geometriya va animatsiyalanuvchi metall to‘lqin.
+- [x] Harakat profili, bayon energiyasi va sahna indeksiga bog‘langan kamera/obyekt o‘tishlari.
+- [x] TA andozasidagi alohida 9:16 ekran yozish oynasi; 1080×1920 WebGL yozuv qatlami, yashirin/ko‘rinadigan boshqaruvlar, pauza va studiyaga qaytish.
+- [x] Rolik yakunida to‘xtash, davom ettirish, vaqt hisoblagichi, sahna progressi, kreativ variant va yangi loyiha boshqaruvlari.
+- [x] WebGL import xatolari, kontekst yo‘qolishi/tiklanishi va brauzer tabining yashirilishiga munosabat.
+- [x] Statik tekshiruv: JavaScript parse, 68 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
+- [ ] Haqiqiy Android brauzerida 4 manba turi × 4 vizual til × 5 animatsiya × 5 sahna kombinatsiyalarini ko‘z bilan tekshirish.
+- [ ] 1080×1920 ekran yozish rejimida real qurilma sinovi, FPS, qizish va xotira sarfini o‘lchash.
+- [ ] WebGL kontekstini yo‘qotish/tiklash va CDN ishlamagan holatlarni real brauzerda tekshirish.
+
+### FM tekshiruv chegarasi
+Kod va DOM strukturasi statik tekshirildi. GitHub Pages sahifasini ushbu muhitdagi brauzer vositasi orqali ochib bo‘lmadi; haqiqiy Android qurilmada vizual va ekran yozish sinovi hali tasdiqlanmagan. Telefonning ichki ekran yozish funksiyasi talab qilinadi; FM o‘zidan MP4 eksport qilmaydi.
 
 ## Bajarildi — v0.4.2
 - [x] NEX brendining asosiy vizual tili Liquid Metal / Mercury sifatida belgilandi.
