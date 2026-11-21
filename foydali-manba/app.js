@@ -5,7 +5,7 @@ const state = {
   category:"", name:"", seed:1, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, recordRenderer:null, raf:0, animationStarted:0,
-  sceneIndex:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
+  sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
   playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
 };
@@ -178,15 +178,32 @@ function rebuildScene(){
 function animate(){
   state.raf=requestAnimationFrame(animate);
   if(!state.renderer||!state.scene)return;
-  const t=(performance.now()-state.animationStarted)/1000;
+  const now=performance.now(),t=(now-state.animationStarted)/1000;
   if(state.group){
     const motionProfiles={Silliq:{speed:.18,turn:.18,bob:.07,camera:.08},Dinamik:{speed:.58,turn:.42,bob:.18,camera:.22},Kinematik:{speed:.1,turn:.12,bob:.045,camera:.3},Ijodiy:{speed:.36,turn:.55,bob:.2,camera:.18},Aralash:{speed:.28,turn:.3,bob:.12,camera:.15}};
+    const toneEnergy={"Jiddiy":.86,"Ilmiy":.76,"Sodda va tushunarli":.96,"Yumor":1.2,"Tahliliy":.84,"Motivatsion":1.12,"Sirli va qiziqarli":.94,"Falsafiy":.72};
     const profile=motionProfiles[state.motion]||motionProfiles.Silliq;
-    state.group.rotation.y=Math.sin(t*profile.speed)*profile.turn;
-    state.group.rotation.x=Math.cos(t*profile.speed*.8)*profile.turn*.45;
-    state.group.position.y=Math.sin(t*profile.speed*2)*profile.bob;
-    state.camera.position.x=Math.sin(t*profile.speed*.42)*profile.camera;
-    state.camera.position.y=Math.cos(t*profile.speed*.36)*profile.camera*.42;
+    const energy=toneEnergy[state.tone]||1;
+    const stages=[
+      {x:0,y:0,z:0,scale:1.08,zoom:.3,tilt:-.08},
+      {x:0,y:.05,z:-.1,scale:.92,zoom:0,tilt:.12},
+      {x:-.34,y:0,z:0,scale:1,zoom:.1,tilt:-.18},
+      {x:.28,y:.12,z:0,scale:1.04,zoom:.18,tilt:.16},
+      {x:0,y:-.08,z:.12,scale:1.12,zoom:.42,tilt:0}
+    ];
+    const to=stages[state.sceneIndex]||stages[0],from=stages[state.sceneVisualFrom]||to;
+    const blend=Math.min(1,Math.max(0,(now-state.sceneVisualStarted)/650));
+    const ease=blend*blend*(3-2*blend);
+    const mix=(a,b)=>a+(b-a)*ease;
+    state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
+    state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
+    state.group.rotation.z=mix(from.tilt,to.tilt)+Math.sin(t*profile.speed*1.3)*.035;
+    state.group.position.set(mix(from.x,to.x)+Math.sin(t*profile.speed*.7)*profile.bob*.35,mix(from.y,to.y)+Math.sin(t*profile.speed*2)*profile.bob,mix(from.z,to.z));
+    const scale=mix(from.scale,to.scale)+Math.sin(t*profile.speed*1.6)*.012;
+    state.group.scale.setScalar(scale);
+    state.camera.position.x=Math.sin(t*profile.speed*.42)*profile.camera+mix(from.x,to.x)*.12;
+    state.camera.position.y=Math.cos(t*profile.speed*.36)*profile.camera*.42+mix(from.y,to.y)*.1;
+    state.camera.position.z=8-mix(from.zoom,to.zoom);
     state.camera.lookAt(0,0,0);
   }
   state.renderer.render(state.scene,state.camera);
@@ -217,7 +234,9 @@ function renderSceneList(){
   });
 }
 function showScene(index){
-  state.sceneIndex=Math.max(0,Math.min(4,index));
+  const nextIndex=Math.max(0,Math.min(4,index));
+  if(nextIndex!==state.sceneIndex){state.sceneVisualFrom=state.sceneIndex;state.sceneVisualStarted=performance.now();}
+  state.sceneIndex=nextIndex;
   const text=state.sceneTexts[state.sceneIndex]||"";
   $("sceneText").value=text;
   $("reelCategory").textContent=String(state.sceneIndex+1).padStart(2,"0")+" / "+sceneLabels[state.sceneIndex];
@@ -391,7 +410,7 @@ $("restartScene").addEventListener("click",()=>{
   readSceneTexts();
   state.seed=hash(state.category+"|"+state.name+"|"+state.palette+"|"+Date.now());
   if(state.renderer)rebuildScene();
-  state.clock.start();showScene(0);
+  state.animationStarted=performance.now();showScene(0);
 });
 $("backSettings").addEventListener("click",()=>{pausePlayback();exitRecordMode();showStep(6);});
 updatePreview();
