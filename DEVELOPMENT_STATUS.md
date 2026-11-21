@@ -14,7 +14,7 @@ Sayt: https://parviz1999-yg.github.io/NEX/
 - [x] Besh sahna: HOOK, MANBA, SABAB, FOYDA va YAKUN; har birining matni va 2,5–12 soniya davomiyligi mustaqil tahrirlanadi.
 - [x] 3D WebGL, RoomEnvironment/PMREM aks ettirishi, manba turiga mos geometriya va animatsiyalanuvchi metall to‘lqin.
 - [x] Harakat profili, bayon energiyasi va sahna indeksiga bog‘langan kamera/obyekt o‘tishlari.
-- [x] TA andozasidagi alohida 9:16 ekran yozish oynasi; 1080×1920 WebGL yozuv qatlami, yashirin/ko‘rinadigan boshqaruvlar, pauza va studiyaga qaytish.
+- [x] TA andozasidagi alohida 9:16 ekran yozish oynasi; 1080×1920 WebGL va Canvas matn qatlamlari, qo‘llab-quvvatlansa fullscreen, yashirin/ko‘rinadigan boshqaruvlar, pauza va studiyaga qaytish.
 - [x] Rolik yakunida to‘xtash, davom ettirish, vaqt hisoblagichi, sahna progressi, kreativ variant va yangi loyiha boshqaruvlari.
 - [x] WebGL import xatolari, kontekst yo‘qolishi/tiklanishi va brauzer tabining yashirilishiga munosabat.
 - [x] Statik tekshiruv: JavaScript parse, 68 HTML ID ichida takror yo‘q, JS murojaat qilgan ID’lar va label maqsadlari mavjud, tugmalarning handlerlari bor.
