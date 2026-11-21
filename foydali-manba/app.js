@@ -175,7 +175,7 @@ const sceneLabels=["HOOK","MANBA","SABAB","FOYDA","YAKUN"];
 function readSceneTexts(){
   state.sceneTexts=[
     read("hook"),
-    [read("sourceDirection"),read("sourceName")].filter(Boolean).join(" — "),
+    read("sourceName"),
     read("reason")||read("sourceDescription"),
     read("benefit")||read("sourceBenefit"),
     read("cta")
@@ -194,7 +194,6 @@ function renderSceneList(){
 }
 function showScene(index){
   state.sceneIndex=Math.max(0,Math.min(4,index));
-  readSceneTexts();
   const text=state.sceneTexts[state.sceneIndex]||"";
   $("sceneText").value=text;
   $("reelCategory").textContent=String(state.sceneIndex+1).padStart(2,"0")+" / "+sceneLabels[state.sceneIndex];
@@ -235,6 +234,7 @@ function startPlayback(){
   state.playbackRaf=requestAnimationFrame(playbackFrame);
 }
 function updatePreview(){
+  readSceneTexts();
   const category=categoryNames[state.category]||"FOYDALI MANBA";
   $("reelCategory").textContent=category;
   $("reelTitle").textContent=read("sourceName")||"Manba nomi";
@@ -263,7 +263,7 @@ $("sceneText").addEventListener("input",()=>{
   const value=$("sceneText").value;
   state.sceneTexts[state.sceneIndex]=value;
   if(state.sceneIndex===0)$("reelHook").textContent=value;
-  if(state.sceneIndex===1)$("reelTitle").textContent=read("sourceName")||value;
+  if(state.sceneIndex===1)$("reelTitle").textContent=value;
   if(state.sceneIndex===2)$("reelReason").textContent=value;
   if(state.sceneIndex===3)$("reelBenefit").textContent=value;
   if(state.sceneIndex===4)$("reelCta").textContent=value;
