@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.14.1 — FM DIZAYN ETALONIGA MOSLASHTIRILDI** |
+| **QF** | Qiziqarli fakt | **0.15.0 — FAKT E’LONI NURLI EKRAN EFFEKTI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -61,7 +61,7 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 
 ## 5. QF — Qiziqarli fakt
 
-QF mustaqil modul sifatida rivojlantirilmoqda. 0.12.0 da Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i mavjud. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz yozish va musiqa yaratish/tanlash hozircha tashqi ilovalarda bajariladi; yakuniy audio-video yig‘ish ham tashqi montaj ilovasida amalga oshiriladi. QF ichida audio yozish, musiqa yaratish yoki audio montaj funksiyasi yo‘q.
+QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sahnasiga markazdan kengayadigan ikki nurli chiziq, ular orasida ochiladigan yorqin ekran va keyin namoyon bo‘ladigan fakt matni animatsiyasi qo‘shildi. Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i saqlangan. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz yozish va musiqa yaratish/tanlash hozircha tashqi ilovalarda bajariladi; yakuniy audio-video yig‘ish ham tashqi montaj ilovasida amalga oshiriladi. QF ichida audio yozish, musiqa yaratish yoki audio montaj funksiyasi yo‘q.
 
 ## 6. MI — Maxsus iboralar
 
