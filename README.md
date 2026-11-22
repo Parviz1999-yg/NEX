@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.11.0 — 3D DVIGATELI ISHCHI PROTOTIP** |
+| **QF** | Qiziqarli fakt | **0.12.0 — FAKTGA MOS 3D SAHNA VA BOSHQARUVLAR** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -760,7 +760,7 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
 
 ### 13.5. Amalga oshirish chegarasi
-- 0.10.0 umumiy arxitektura relizi bo‘lib qoladi. QF studiyasi 0.12.0 da 3D renderer, ayrim faktga mos sahna profillari, kamera/animatsiya boshqaruvi va ssenariy vaqt chizig‘iga ega. Real mobil/desktop WebGL sinovi hali qurilmalarda tasdiqlanishi kerak. Video eksporti keyingi bosqich; audio va musiqa esa hozircha tashqi ilovalarda tayyorlanadi. MI kengaytirilgan Reels renderi alohida ishlab chiqiladi.
+- 0.10.0 umumiy arxitektura relizi bo‘lib qoladi. QF studiyasi 0.12.0 da 3D renderer, ayrim faktga mos sahna profillari, kamera/animatsiya boshqaruvi va ssenariy vaqt chizig‘iga ega. Real mobil/desktop WebGL sinovi hali qurilmalarda tasdiqlanishi kerak. QF ichida ovoz yozish, musiqa yaratish, audio montaj yoki yakuniy Reels eksporti qilinmaydi; ovoz, musiqa va yakuniy video tashqi ilovalarda tayyorlanadi. MI kengaytirilgan Reels renderi alohida ishlab chiqiladi.
 - TA va FM ichki fayllariga o‘zgartirish kiritish uchun alohida ruxsat talab qilinadi.
 
 
