@@ -105,17 +105,18 @@ https://parviz1999-yg.github.io/NEX/
 
 NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, FM, QF va MI uchun alohida versiya raqamlari yoki mustaqil versiya tarixlari ochilmaydi.
 
-- Joriy umumiy versiya `0.9.7`.
-- Versiya raqami loyiha ildizidagi `VERSION` faylida saqlanadi.
-- Barcha modullardagi o‘zgarishlar yagona `CHANGELOG.md` tarixiga yoziladi.
-- Qaysi modul yangilanishidan qat’i nazar, yangi loyiha relizi chiqarilganda faqat bitta umumiy versiya oshiriladi.
-- Versiyalash SemVer tamoyiliga amal qiladi: `MAJOR.MINOR.PATCH`. PATCH — moslikni buzmaydigan tuzatish; MINOR — moslikni saqlagan yangi imkoniyat; MAJOR — moslikni buzuvchi katta o‘zgarish.
-- Ichki ishchi commitlar avtomatik ravishda yangi reliz yoki versiya hisoblanmaydi. Versiya faqat umumiy reliz tayyorlanganda yangilanadi.
+- Joriy umumiy versiyaning yagona manbasi loyiha ildizidagi `VERSION` faylidir.
+- Har bir tasdiqlangan funksional o‘zgarishdan so‘ng umumiy versiya o‘zgarish ko‘lamiga qarab yangilanadi; versiyani oshirish faqat katta relizlar bilan cheklanmaydi.
+- **PATCH** (`0.9.7 → 0.9.8`): xato tuzatish, kichik texnik yaxshilash yoki mavjud funksiyaning xatti-harakatini moslikni buzmasdan to‘g‘rilash.
+- **MINOR** (`0.9.7 → 0.10.0`): mavjud moslikni saqlagan yangi funksiya, modul yoki sezilarli imkoniyat qo‘shish.
+- **MAJOR** (`0.9.7 → 1.0.0`): oldingi foydalanish tartibi yoki moslikni buzadigan katta arxitektura/API o‘zgarishi.
+- Faqat hujjat, izoh yoki README matnini tahrirlash mahsulot funksiyasini o‘zgartirmasa, versiya oshirilmaydi. Bunday hujjat o‘zgarishi ham tegishli tarixda qayd etiladi.
+- Har bir versiya oshirilganda `VERSION`, `CHANGELOG.md`, interfeysda ko‘rsatiladigan versiya yozuvlari va tegishli CSS/JavaScript cache-buster qiymatlari o‘zaro moslashtiriladi.
+- Har bir CHANGELOG yozuvida sana, yangi versiya, o‘zgarish sababi, tegilgan modul/fayllar va tekshiruv holati ko‘rsatiladi.
+- Ishchi, tasdiqlanmagan yoki bekor qilingan urinishlar avtomatik ravishda versiya oshirmaydi. O‘zgarish yakunlanib, foydalanuvchi tomonidan qabul qilingach, tegishli versiya belgilanadi.
 - Modul nomi CHANGELOG yozuvida ko‘rsatilishi mumkin, ammo modulning alohida versiyasi bo‘lmaydi.
 
-**Asosiy qoida:** NEX — bitta mahsulot, bitta versiya raqami va bitta o‘zgarishlar tarixi.
-
-
+**Asosiy qoida:** NEX — bitta mahsulot, bitta umumiy versiya raqami va bitta o‘zgarishlar tarixi.
 ## 12. NEX musiqa kutubxonasi — Gemini MP4 promptlari
 
 **Maqsad:** TA, FM, QF va MI videolari uchun jiddiy, professional, har bir bo‘limning mazmuniga mos original instrumental musiqalar yaratish. Musiqa Gemini orqali MP4 ko‘rinishida generatsiya qilinadi; keyin tashqi video ilovada MP4 dan audio ajratib olinadi.
