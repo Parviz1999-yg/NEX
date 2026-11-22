@@ -1,5 +1,11 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.15.3 — 2026-11-22
+
+- Reels kadrlaridan sahna nomlari va 01/05 texnik indekslari olib tashlandi; 3D obyektlar jonli harakatga keltirildi.
+- Fakt e’loni sahnasi metall romli smart LED displey, emissiv chetlar, grid va animatsion skan bilan yangilandi.
+- QF HTML/JS cache va versiyasi 0.15.3 ga ko‘tarildi; TA/FM fayllari o‘zgarmadi.
+
 ## QF 0.15.2 — 2026-11-22
 
 - QF 01 — Fakt ma’lumotlari sahifasidagi forma maydonlari tartibli konteynerga yig‘ildi; select/input/textarea uslublari birxillashtirildi.
