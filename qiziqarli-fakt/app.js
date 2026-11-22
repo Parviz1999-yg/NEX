@@ -82,14 +82,14 @@ function addFactSpecificObject(subject){
 function addSmartLedDisplay(){
  const group=new THREE.Group();group.position.set(0,0,1.05);root.add(group);
  const frameMat=new THREE.MeshStandardMaterial({color:0x172b43,metalness:.92,roughness:.2,emissive:0x102d4b,emissiveIntensity:.65});
- const bezel=new THREE.Mesh(new THREE.BoxGeometry(3.35,2.18,.16),frameMat);group.add(bezel);
+ const bezel=new THREE.Mesh(new THREE.BoxGeometry(1.92,2.82,.16),frameMat);group.add(bezel);
  const screenMat=new THREE.MeshBasicMaterial({color:0x061a31});
- const screen=new THREE.Mesh(new THREE.PlaneGeometry(3.17,2.0),screenMat);screen.position.z=.09;group.add(screen);
- const glow=new THREE.Mesh(new THREE.PlaneGeometry(3.05,1.88),new THREE.MeshBasicMaterial({color:0x0b4b76,transparent:true,opacity:.28}));glow.position.z=.095;group.add(glow);
+ const screen=new THREE.Mesh(new THREE.PlaneGeometry(1.74,2.64),screenMat);screen.position.z=.09;group.add(screen);
+ const glow=new THREE.Mesh(new THREE.PlaneGeometry(1.62,2.5),new THREE.MeshBasicMaterial({color:0x0b4b76,transparent:true,opacity:.28}));glow.position.z=.095;group.add(glow);
  const edgeMat=new THREE.MeshBasicMaterial({color:0x8ed8ff});
- const edge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3.38,2.21,.18)),edgeMat);group.add(edge);
- for(let i=0;i<9;i++){const scan=new THREE.Mesh(new THREE.PlaneGeometry(3.08,.009),new THREE.MeshBasicMaterial({color:0x55caff,transparent:true,opacity:.28}));scan.position.set(0,-.82+i*.2,.105);group.add(scan);}
- const corners=[[-1.48,.83],[1.48,.83],[-1.48,-.83],[1.48,-.83]];
+ const edge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.95,2.85,.18)),edgeMat);group.add(edge);
+ for(let i=0;i<9;i++){const scan=new THREE.Mesh(new THREE.PlaneGeometry(1.66,.009),new THREE.MeshBasicMaterial({color:0x55caff,transparent:true,opacity:.28}));scan.position.set(0,-1.05+i*.26,.105);group.add(scan);}
+ const corners=[[-.82,1.18],[.82,1.18],[-.82,-1.18],[.82,-1.18]];
  corners.forEach(([x,y])=>{const dot=new THREE.Mesh(new THREE.SphereGeometry(.035,12,12),new THREE.MeshBasicMaterial({color:0xdaf7ff,emissive:0x55baff,emissiveIntensity:2}));dot.position.set(x,y,.13);group.add(dot);});
  group.userData.qfFloat=true;group.userData.qfBaseY=0;group.userData.qfBaseRot=0;group.userData.qfPhase=.6;
  root.userData.ledDisplay=group;
