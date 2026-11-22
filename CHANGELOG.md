@@ -1,3 +1,11 @@
+## Audit va xavfsiz kod tozalash — 2026-11-22
+
+- TA 0.10.2: foydalanilmaydigan `getToneVisual()` funksiyasi olib tashlandi; boshqa TA ishlash oqimi o‘zgartirilmadi.
+- FM 0.9.7: o‘zgartirish kiritilmadi; himoya holati saqlandi.
+- QF 0.15.6: foydalanilmaydigan yordamchi funksiyalar, doimiy/ishlatilmaydigan holat o‘zgaruvchilari va o‘qilmaydigan yashirin DOM elementlari tozalandi.
+- Auditdan oldingi holat `backup/nex-before-dead-code-cleanup-2026-11-22` tarmog‘ida saqlandi.
+- Global NEX versiyasi o‘zgarmadi; faqat TA va QF studiya PATCH versiyalari oshirildi.
+
 # NEX — O‘zgarishlar tarixi
 
 ## QF 0.15.4 — 2026-11-22
