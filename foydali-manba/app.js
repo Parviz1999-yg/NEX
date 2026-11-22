@@ -268,12 +268,14 @@ function createSourceIcon(material,glow){
     icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(left,extrude),material));
     icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(right,extrude),glow));
     const spine=new THREE.Mesh(new THREE.BoxGeometry(.055,1.12,.2),material);spine.position.set(0,-.02,.12);icon.add(spine);
-  }else{
+  }else if(state.category==="sayt"){
     const globe=new THREE.Mesh(new THREE.SphereGeometry(.76,32,24),material);icon.add(globe);
     for(const rotation of [[0,0,0],[Math.PI/2,0,0],[0,Math.PI/2,0]]){
       const ring=new THREE.Mesh(new THREE.TorusGeometry(.78,.035,10,80),glow);ring.rotation.set(...rotation);icon.add(ring);
     }
     const equator=new THREE.Mesh(new THREE.TorusGeometry(.77,.018,8,80),material);icon.add(equator);
+  }else{
+    const fallback=new THREE.Mesh(new THREE.OctahedronGeometry(.72,1),material);icon.add(fallback);
   }
   icon.scale.setScalar(.58);
   icon.position.set(0,0,1.28);
