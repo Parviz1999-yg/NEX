@@ -763,7 +763,9 @@ STABLE AUDIO OUTPUT: Generate audio only, not video. Use FULL MIX to create one 
 **BPM:** 90
 
 ```text
-Create a 30-second professional instrumental music cue for a serious Instagram Reels video in the Foydali manba category.\n\nMusical style: Ilmiy minimal elektron. Tempo: 90 BPM. Mood: Analytical, modern, clear-minded, reliable and serious.
+Create a 30-second professional instrumental music cue for a serious Instagram Reels video in the Foydali manba category.
+
+Musical style: Ilmiy minimal elektron. Tempo: 90 BPM. Mood: Analytical, modern, clear-minded, reliable and serious.
 Instrumentation: minimal electronic pulses, soft synth layers, delicate piano, restrained rhythm.
 Composition: Elegant knowledge-focused atmosphere; no science-fiction clichés, computer beeps or exaggerated futurism. Keep the same defined genre and mood. Use a slightly fuller arrangement with a measured increase in rhythmic detail, while preserving clarity, seriousness and the exact musical identity. Start with music immediately, maintain a coherent musical phrase, and develop the musical idea coherently across the full 30 seconds and finish with a musically resolved, clean ending.
 
@@ -984,7 +986,8 @@ STABLE AUDIO OUTPUT: Generate audio only, not video. Use FULL MIX to create one 
 ```text
 Create a 30-second professional instrumental music cue for a serious Instagram Reels video in the Foydali manba category.
 
-Musical style: Professional lo-fi. Tempo: 84 BPM. Mood: Focused, calm, mature, thoughtful and professional.\nInstrumentation: mellow electric piano, muted drums, warm bass, subtle atmospheric texture.
+Musical style: Professional lo-fi. Tempo: 84 BPM. Mood: Focused, calm, mature, thoughtful and professional.
+Instrumentation: mellow electric piano, muted drums, warm bass, subtle atmospheric texture.
 Composition: Clean premium lo-fi groove; understated and steady, without vinyl crackle, excessive nostalgia or sleepy feel. Keep the same defined genre and mood. Use a different short melodic phrase and a distinct but compatible rhythmic pattern; do not copy the previous variation and do not change the genre. Start with music immediately, maintain a coherent musical phrase, and develop the musical idea coherently across the full 30 seconds and finish with a musically resolved, clean ending.
 
 STRICT AUDIO RULES: instrumental music only. Absolutely no singing, vocals, spoken words, lyrics, humming, choir, sound effects, impacts, transitions, environmental sounds or background noise. Do not add any unrelated instruments or change the specified genre, tempo, mood or arrangement. No sudden loudness spikes, clipping or distorted audio. Keep the arrangement clear and controlled, with no abrupt change of genre. Music must remain the only meaningful audio.
@@ -1000,7 +1003,8 @@ STABLE AUDIO OUTPUT: Generate audio only, not video. Use FULL MIX to create one 
 ```text
 Create a 30-second professional instrumental music cue for a serious Instagram Reels video in the Qiziqarli fakt category.
 
-Musical style: Dramatik fakt. Tempo: 100 BPM. Mood: Impactful, intense, authoritative, intriguing and serious.\nInstrumentation: deep orchestral bass, restrained brass accents, dark strings, controlled cinematic percussion.
+Musical style: Dramatik fakt. Tempo: 100 BPM. Mood: Impactful, intense, authoritative, intriguing and serious.
+Instrumentation: deep orchestral bass, restrained brass accents, dark strings, controlled cinematic percussion.
 Composition: Communicate significance and tension without fear, aggression, explosive trailer hits or excessive epic scale. Keep the same defined genre and mood. Use a slightly more restrained arrangement, fewer simultaneous layers, and a clearly audible central motif. Do not introduce any new genre. Start with music immediately, maintain a coherent musical phrase, and develop the musical idea coherently across the full 30 seconds and finish with a musically resolved, clean ending.
 
 STRICT AUDIO RULES: instrumental music only. Absolutely no singing, vocals, spoken words, lyrics, humming, choir, sound effects, impacts, transitions, environmental sounds or background noise. Do not add any unrelated instruments or change the specified genre, tempo, mood or arrangement. No sudden loudness spikes, clipping or distorted audio. Keep the arrangement clear and controlled, with no abrupt change of genre. Music must remain the only meaningful audio.
