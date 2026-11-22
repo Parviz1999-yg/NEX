@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.15.6 — AUDIT VA XAVFSIZ KOD TOZALASH** |
+| **QF** | Qiziqarli fakt | **0.16.0 — 5 SAHNA 3D VA MUSTAQIL OUTRO** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -780,3 +780,15 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - QF v0.15.5: yakuniy 5,2 soniyalik outro FM bilan bir xil qilindi — suyuq xrom to‘lqini, NEX logotipi, orbital chiziq va slogan. FM manba fayllari o‘zgartirilmagan.
 - QF v0.15.6: ishlatilmaydigan yordamchi funksiyalar, o‘lik holat o‘zgaruvchilari va eski yashirin DOM maydonlari olib tashlandi; faol vizual va Reels oqimi o‘zgartirilmadi.
 - TA v0.10.2: chaqirilmaydigan `getToneVisual()` yordamchi funksiyasi olib tashlandi; qolgan TA interfeysi va funksional oqimi o‘zgartirilmadi. Bu faqat 2026-11-22 dagi aniq audit topshirig‘i doirasidagi istisno; keyingi o‘zgarishlar uchun alohida ruxsat talabi saqlanadi.
+
+
+### QF 0.16.0 — to‘liq Reels sahna takomillashtirishi (2026-11-22)
+
+- Asosiy besh sahna va 5,2 soniyalik NEX outro endi alohida vaqt bloklari. Outro asosiy sahnalarning oxirini yopmaydi; jami davomiylikka alohida qo‘shiladi.
+- Har bir sahnada mustaqil 3D kompozitsiya, mavzuga mos model, sahna dekorlari va silliq almashish mavjud.
+- To‘rtta vizual til 2D/3D kompozitsiyada farqlanadi; sakkizta bayon uslubi matn tipografikasi va reveal animatsiyasini boshqaradi.
+- Beshta rang palitrasi 3D material, emissiv rang va yoritishlarga ham ta’sir qiladi. Kamera sahnaga mos yuradi va pointer parallax qo‘llaydi.
+- `qfSceneCue` vizual yorliqqa aylandi. HOLAT sahnasi fakt tasnifi, manba, dalil va tekshiruv qaydini ko‘rsatadi.
+- Kalit iboralar normalizatsiyasi va sinonimlar orqali mavzuga mos model aniqlanadi. Bu deterministik qoidalar; AI tomonidan faktni tekshirish emas.
+- Telefonning native ekran yozuvi saqlanadi; ichki MP4 eksporti va audio/musiqa montaji qo‘shilmadi.
+- QF 0.16.0 o‘zgarishlari faqat QF fayllariga tegishli. TA va FM manba fayllari o‘zgartirilmadi.
