@@ -154,7 +154,7 @@ NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, 
 - Tugallangan: **0**
 - Jarayonda: **0**
 - Qayta ishlash: **0**
-- Navbatdagi prompt: **TA-01-A**
+- Navbatdagi prompt: **NEX-OUTRO-01** (birinchi bo‘lib yaratiladi)
 - Brend outro: **alohida, umumiy va barcha bo‘limlarda bir xil**
 
 ### 12.4. Promptlar va holat nazorati
@@ -648,7 +648,7 @@ Create an exactly 8-second professional instrumental music clip for a serious In
 ### 12.5. Yagona NEX brend outro — barcha bo‘limlar uchun
 
 **Asset ID:** `NEX-OUTRO-01`  
-**Holat:** TAYYOR  
+**Holat:** JARAYONDA  
 **Davomiylik:** aniq 5,2 soniya  
 **Shior:** “NEX — Fikr va imkoniyatlar makoni.”  
 **Qo‘llanishi:** TA, FM, QF va MI videolarining barchasida aynan shu bitta audio ishlatiladi.
@@ -684,7 +684,7 @@ This is the single permanent NEX brand outro. It must be reusable without change
 
 Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 
-1. **«Keyingi»** — birinchi TAYYOR asosiy musiqa promptini chiqarish va uni JARAYONDA deb belgilash. 48 ta asosiy trek yakunlangach, alohida `NEX-OUTRO-01` prompti navbatga qo‘yiladi.
+1. **«Keyingi»** — avval `NEX-OUTRO-01` yagona brend outro promptini chiqarish. U foydalanuvchi tomonidan qabul qilingach, 48 ta asosiy musiqa prompti navbatma-navbat boshlanadi.
 2. **«Qabul qilindi»** — faqat faol promptni TUGALLANDI deb belgilash; so‘ng navbat keyingi TAYYOR promptga tayyor bo‘ladi.
 3. **«Mos kelmadi»** yoki **«Qayta ishlaymiz»** — faol promptni QAYTA ISHLASH holatiga o‘tkazish va shu prompt ustida qolish.
 4. **«Qayta urinish»** — shu promptning ayni spetsifikatsiyasi bilan yangi MP4 generatsiya qilish uchun promptni qayta berish.
