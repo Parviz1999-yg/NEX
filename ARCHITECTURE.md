@@ -142,6 +142,6 @@ MI mustaqil sahifada ibora xarakteri, iboraning o‘zi, muallif/manba, mazmun, k
 - Bayon profili: sakkiz ohang uchun tipografika, satr oralig‘i, stagger, reveal va yo‘nalish parametrlari.
 - Palitra: sahna fonidan tashqari material ranglari, emissive va uchta yoritish manbasiga tatbiq etiladi.
 - Kamera: sahna bo‘yicha masofa va pozitsiya profillari, silliq interpolatsiya va pointer parallax.
-- Fakt yorlig‘i `window.qfSceneCue` dan olinadi; HOLAT sahnasida manba, dalil, tasnif va tekshiruv holati ko‘rsatiladi.
+- Fakt yorlig‘i `window.qfSceneCue` dan olinadi; Beshinchi asosiy YAKUN sahnasida manba, dalil, tasnif va tekshiruv holati ko‘rsatiladi; undan keyin NEX outro boshlanadi.
 - Semantik moslashtirish so‘z/ibora normalizatsiyasi va oldindan belgilangan sinonimlar bilan ishlaydi; bu deterministik qoidaviy tizim, AI yoki mustaqil ilmiy tekshiruv emas.
 - Audio va musiqa tashqi ilovada; telefon native screen recorder ishlatiladi, ichki MP4 eksporti yo‘q.
