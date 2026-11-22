@@ -1,5 +1,13 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.4] — 2026-11-22
+
+- NEX outro brend yakuni qaytarildi: 5,2 soniyalik suyuq metall oqimidan keyin NEX yozuvi, orbital halqa va brend shiori animatsion ko‘rinadi.
+- Manba/tekshiruv paneli video birinchi kadridan boshlab barcha asosiy sahnalarda ixcham yuqori qatlam sifatida ko‘rsatiladi.
+- Har bir sahnaning oxirgi qismida tegishli ma’lumot shtamp/muhr uslubida chiqadi: tasnif, manba, dalil, tekshiruv holati va yakuniy holat.
+- Shtamp matnlari foydalanuvchi kiritgan qiymatlardan olinadi; bo‘sh maydonlar uchun uydirma manba yoki dalil yaratilmaydi.
+- JavaScript sintaksisi tekshirildi; Android/WebGL vizual sinovi alohida bajarilishi kerak.
+
 ## [0.16.3] — 2026-11-22
 
 - Video qatlamidan ssenariydan tashqari barcha yozuvlar olib tashlandi: 3D obyekt yorliqlari, sahna teglari, sahna raqamlari, manba/tekshiruv kartasi va outro brend/slogan matnlari.
