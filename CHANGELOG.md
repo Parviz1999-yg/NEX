@@ -1,5 +1,10 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.15.1 — 2026-11-22
+
+- QF sahifalararo progress ko‘rsatkichidagi faol 01 nuqtasi kattaroq, yorqinroq va yumshoq nurli halqa bilan ajratildi; kichik ekranlarda o‘lchami moslashtirildi.
+- Faqat QF CSS/HTML va tegishli hujjatlar yangilandi. FM hamda TA manba fayllari o‘zgartirilmadi.
+
 ## QF 0.15.0 — 2026-11-22
 
 - “Fakt e’loni” sahnasiga maxsus reveal animatsiyasi qo‘shildi: markazdan ikki tomonga kengayadigan nurli chiziqlar, o‘rtada yorqin ekran ochilishi va fakt matnining undan keyin chiqishi.
