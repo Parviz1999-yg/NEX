@@ -1,3 +1,9 @@
+## QF 0.16.2 — 2026-11-22
+- [x] Yozuv oynasi boshqaruvlari TA bilan bir xil tamoyilga o‘tkazildi: boshlanganda va ekranga tegilganda 1,8 soniya ko‘rinadi, keyin yashirinadi.
+- [x] Mobil layout 700/520/380 px breakpointlarda qayta moslandi: vertikal oqim, ixcham 9:16 preview, to‘liq kenglikdagi sozlamalar, yirik tugmalar va mobil forma shriftlari.
+- [x] README, QF VERSION va CHANGELOG yangilandi.
+- [ ] Android qurilmada touch/tap timer, yozuvdan chiqish va turli ekran o‘lchamlaridagi haqiqiy vizual sinov talab etiladi.
+
 ## QF 0.16.1 — 2026-11-22
 - [x] To‘liq ekran yozish oynasida «Studiyaga qaytish» va pauza boshqaruvlari doim ko‘rinadi; `Escape` orqali chiqish ham qo‘shildi.
 - [x] Anketa avtomatik saqlanishi va qayta tiklanishi olib tashlandi; eski `sessionStorage` kaliti bir martalik tozalanadi.
