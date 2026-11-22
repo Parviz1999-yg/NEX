@@ -59,11 +59,11 @@ $("sourceName").addEventListener("input",()=>{
   if(state.renderer)rebuildScene();
   updatePreview();
 });
-["sourceSearchQuery","sourceSearchPlace","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","sourceLink","hook","reason","benefit","cta"].forEach(id=>{
+["sourceSearchQuery","sourceSearchPlace","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta"].forEach(id=>{
   $(id)?.addEventListener("input",updatePreview);
 });
 $("nextSource").addEventListener("click",()=>{
-  const required=[["sourceName","manba nomi"],["sourceSearchQuery","qidiruv so‘rovi"],["sourceSearchPlace","qidiruv manzili"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
+  const required=[["sourceName","manba nomi"],["sourceSearchQuery","qidiruv so‘rovi"],["sourceSearchPlace","qidiruv joyi"],["sourceDirection","manba yo‘nalishi"]];
   const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
   if(!state.category)missing.unshift("manba turi");
   if(missing.length){setStatus("sourceStatus","Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".");return;}
@@ -71,9 +71,12 @@ $("nextSource").addEventListener("click",()=>{
   showStep(2);
 });
 $("nextScript").addEventListener("click",()=>{
-  const required=[["hook","Hook"],["reason","Sabab"],["benefit","Ustunlik"],["cta","Chorlov"]];
-  const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
+  const reason=read("reason")||read("sourceDescription");
+  const benefit=read("benefit")||read("sourceBenefit");
+  const missing=[["hook","Hook",read("hook")],["reason","Sabab",reason],["benefit","Ustunlik",benefit],["cta","Chorlov",read("cta")]].filter(([, ,value])=>!value).map(([,label])=>label);
   if(missing.length){setStatus("scriptStatus","Iltimos, to‘ldiring: "+missing.join(", ")+".");return;}
+  if(!read("reason")&&reason)$("reason").value=reason;
+  if(!read("benefit")&&benefit)$("benefit").value=benefit;
   setStatus("scriptStatus","");
   showStep(3);
 });
@@ -494,8 +497,7 @@ function updatePreview(){
       read("sourceSearchPlace")?"Qidiruv joyi: "+read("sourceSearchPlace"):"",
       read("sourceAuthor")?"Muallif: "+read("sourceAuthor"):"",
       read("sourceAudience")?"Auditoriya: "+read("sourceAudience"):"",
-      read("sourceProof")?"Ishonchlilik: "+read("sourceProof"):"",
-      read("sourceLink")?"Havola: "+read("sourceLink"):""
+      read("sourceProof")?"Ishonchlilik: "+read("sourceProof"):""
     ].filter(Boolean).map(escapeHtml);
     summary.innerHTML="<b>"+category+"</b><br>"+escapeHtml(read("sourceName"))+
       (details.length?"<br>"+details.join("<br>"):"")+
@@ -767,7 +769,7 @@ $("shuffleBackground").addEventListener("click",()=>{
 $("sourcePhoto").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.type.startsWith("image/")){setStatus("sourceStatus","Faqat rasm faylini tanlang.");return;}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{state.sourcePhoto=reader.result;state.sourcePhotoImage=img;syncRecordText();setStatus("sourceStatus","Manba rasmi yuklandi. U MANBA sahnasida ko‘rinadi.");};img.onerror=()=>setStatus("sourceStatus","Rasmni ochib bo‘lmadi.");img.src=reader.result;};reader.readAsDataURL(file);});
 $("newProject").addEventListener("click",()=>{
   exitRecordMode();
-  ["sourceName","sourceSearchQuery","sourceSearchPlace","sourceLink","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta","sceneText"].forEach(id=>{const field=$(id);if(field)field.value="";});
+  ["sourceName","sourceSearchQuery","sourceSearchPlace","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta","sceneText"].forEach(id=>{const field=$(id);if(field)field.value="";});
   state.category="";state.name="";state.sourcePhoto=null;state.sourcePhotoImage=null;const photoInput=$("sourcePhoto");if(photoInput)photoInput.value="";state.seed=1;state.variantIndex=0;state.tone="Jiddiy";state.visual="cinematic";state.palette="silver";state.motion="Silliq";
   state.sceneIndex=0;state.sceneVisualFrom=0;state.sceneDurations=[5000,5000,5000,5000,5000];state.sceneTexts=["","","","",""];state.sceneEdited=[false,false,false,false,false];
   state.playbackElapsed=0;state.studioOpened=false;

@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#080b13">
   <title>NEX — Foydali manba</title>
-  <link rel="stylesheet" href="style.css?v=0.9.8">
+  <link rel="stylesheet" href="style.css?v=0.9.9">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="../">NEX<span> / FOYDALI MANBA</span></a>
-    <span class="topbar-meta"><span id="stepLabel">01 — MANBA</span><span class="app-version">v0.9.8</span></span>
+    <span class="topbar-meta"><span id="stepLabel">01 — MANBA</span><span class="app-version">v0.9.9</span></span>
   </header>
   <main>
     <div class="progress-track" aria-label="Bosqichlar">
@@ -45,9 +45,9 @@
           <input id="sourceSearchPlace" maxlength="120" placeholder="Masalan: Google, YouTube, Telegram qidiruvi yoki elektron kutubxona">
           <label for="sourceDirection">Manbaning yo‘nalishi *</label>
           <input id="sourceDirection" maxlength="100" placeholder="Masalan: ta’lim, dasturlash, ilm-fan">
-          <label for="sourceDescription">Manba haqida qisqa tavsif *</label>
+          <label for="sourceDescription">Manba haqida qisqa tavsif <span class="optional">— ixtiyoriy, 02-bosqichdagi SABAB uchun zaxira matn</span></label>
           <textarea id="sourceDescription" rows="3" maxlength="260" placeholder="Bu manbada qanday materiallar yoki imkoniyatlar mavjud?"></textarea>
-          <label for="sourceBenefit">Tomoshabinga asosiy foydasi *</label>
+          <label for="sourceBenefit">Tomoshabinga asosiy foydasi <span class="optional">— ixtiyoriy, 02-bosqichdagi USTUNLIK uchun zaxira matn</span></label>
           <textarea id="sourceBenefit" rows="3" maxlength="240" placeholder="Foydalanuvchi bu manbadan qanday naf oladi?"></textarea>
           <label for="sourceAudience">Kimlar uchun?</label>
           <input id="sourceAudience" maxlength="120" placeholder="Masalan: talabalar, o‘qituvchilar, yangi boshlovchilar">
@@ -59,6 +59,7 @@
           <input id="sourcePhoto" type="file" accept="image/*">
           <small class="form-note">Tanlangan rasm Reels’ning MANBA sahnasida metall ramka bilan ko‘rsatiladi.</small>
           <p class="hint" id="sourceHint">Manba turini tanlang.</p>
+          <small class="form-note">Qidiruv so‘rovi va qidiruv joyi studiya xulosasida izlanish yo‘riqnomasi sifatida saqlanadi. NEX hozircha internetda avtomatik qidiruv bajarmaydi.</small>
           <small class="form-note">* Majburiy maydonlar. Faqat o‘zingiz tekshirgan ma’lumotlarni kiriting.</small>
         </div>
         <p class="form-status" id="sourceStatus" role="status"></p>
@@ -70,10 +71,10 @@
       <div class="panel script-panel">
         <p class="eyebrow">02 — SSENARIY</p>
         <h2>Hook’dan yakungacha.</h2>
-        <p class="section-copy">Manbaning qiymatini qisqa, aniq va ishonarli tarzda ochib bering.</p>
+        <p class="section-copy">Manbaning qiymatini qisqa, aniq va ishonarli tarzda ochib bering. 01-bosqichda tavsif yoki foyda yozilgan bo‘lsa, mos maydon avtomatik to‘ldiriladi.</p>
         <div class="script-field"><div class="field-head"><label for="hook">01 · HOOK — e’tiborni tortish</label><span>Majburiy</span></div><textarea id="hook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea></div>
-        <div class="script-field"><div class="field-head"><label for="reason">02 · SABAB — nima uchun kerak?</label><span>Majburiy</span></div><textarea id="reason" rows="3" maxlength="240" placeholder="Bu manba qanday ehtiyojni qondiradi yoki muammoni hal qiladi?"></textarea></div>
-        <div class="script-field"><div class="field-head"><label for="benefit">03 · USTUNLIK — asosiy foyda</label><span>Majburiy</span></div><textarea id="benefit" rows="3" maxlength="260" placeholder="Manbaning eng muhim imkoniyati yoki foydasini yozing..."></textarea></div>
+        <div class="script-field"><div class="field-head"><label for="reason">02 · SABAB — nima uchun kerak?</label><span>01-bosqichdagi tavsif bo‘sh bo‘lsa — majburiy</span></div><textarea id="reason" rows="3" maxlength="240" placeholder="Bu manba qanday ehtiyojni qondiradi yoki muammoni hal qiladi?"></textarea></div>
+        <div class="script-field"><div class="field-head"><label for="benefit">03 · USTUNLIK — asosiy foyda</label><span>01-bosqichdagi foyda bo‘sh bo‘lsa — majburiy</span></div><textarea id="benefit" rows="3" maxlength="260" placeholder="Manbaning eng muhim imkoniyati yoki foydasini yozing..."></textarea></div>
         <div class="script-field"><div class="field-head"><label for="cta">04 · CHORLOV — yakun</label><span>Majburiy</span></div><textarea id="cta" rows="3" maxlength="180" placeholder="Tomoshabinga keyingi qadamni ayting..."></textarea></div>
         <p class="form-status" id="scriptStatus" role="status"></p>
         <div class="wizard-actions"><button class="secondary-btn" data-prev="1">← Orqaga</button><button class="primary-btn" id="nextScript">Davom etish →</button></div>

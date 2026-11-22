@@ -43,8 +43,8 @@
       <div class="panel form-panel script-panel">
         <div class="script-step"><span>01</span><div><label for="scriptHook">HOOK — e’tiborni tortish</label><textarea id="scriptHook" rows="3" maxlength="180" placeholder="Tomoshabinni to‘xtatib, qiziqtiradigan boshlanish..."></textarea><small>3 qatorgacha · qisqa va kuchli</small></div></div>
         <div class="script-step"><span>02</span><div><label for="scriptIntro" id="introLabel">E’LON — mavzuni ochish</label><textarea id="scriptIntro" rows="3" placeholder="Nima haqida gap ketishini aniq ayting..."></textarea></div></div>
-        <div class="script-step"><span>03</span><div><label for="scriptWhy" id="whyLabel">NIMA UCHUN? — foyda yoki ahamiyat</label><textarea id="scriptWhy" rows="3" maxlength="240" placeholder="Nima uchun bu mavzu muhim? (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
-        <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot (ixtiyoriy)"></textarea><small>3 qatorgacha · ixtiyoriy</small></div></div>
+        <div class="script-step"><span>03</span><div><label for="scriptWhy" id="whyLabel">NIMA UCHUN? — foyda yoki ahamiyat</label><textarea id="scriptWhy" rows="3" maxlength="240" placeholder="Nima uchun bu mavzu muhim? Tavsiya akkaunt rejimida majburiy."></textarea><small>3 qatorgacha · tavsiya akkaunt rejimida majburiy, boshqa yo‘nalishlarda ixtiyoriy</small></div></div>
+        <div class="script-step"><span>04</span><div><label for="scriptDiff" id="diffLabel">FARQI — asosiy jihat</label><textarea id="scriptDiff" rows="3" maxlength="240" placeholder="O‘ziga xos jihat, dalil yoki qiziqarli tafsilot. Tavsiya akkaunt rejimida majburiy."></textarea><small>3 qatorgacha · tavsiya akkaunt rejimida majburiy, boshqa yo‘nalishlarda ixtiyoriy</small></div></div>
         <div class="script-step"><span>05</span><div><label for="scriptCta" id="ctaLabel">CHORLOV — yakun</label><textarea id="scriptCta" rows="3" placeholder="Tomoshabin nima qilsin yoki nimani eslab qolsin?"></textarea></div></div>
         <div id="accountFields" class="account-fields" hidden>
           <p class="eyebrow">TAVSIYA QILINAYOTGAN AKKAUNT</p>
@@ -55,7 +55,6 @@
           <label for="accountAudience">Kimlar uchun?</label><input id="accountAudience" maxlength="100" placeholder="Masalan: yangi boshlovchilar, talabalar">
           <label for="accountProof">Tavsiya sababi yoki ishonchli dalil</label><textarea id="accountProof" rows="2" maxlength="180" placeholder="Nimasi bilan ajralib turadi? Aniq misol yoki dalil yozing."></textarea>
           <label for="accountFollowers">Obunachilar soni (ixtiyoriy)</label><input id="accountFollowers" inputmode="numeric" maxlength="24" placeholder="Masalan: 1200 → 1,2K">
-          <label for="accountLink">Akkaunt havolasi (ixtiyoriy)</label><input id="accountLink" type="url" placeholder="https://instagram.com/username">
           <label for="accountImage">Profil rasmi</label><input id="accountImage" type="file" accept="image/*">
           <small>* Majburiy maydonlar. Faqat tekshirilgan ma’lumotlarni kiriting.</small>
           <button class="btn ghost script-generate" id="generateAccountScript" type="button">✦ Akkaunt kartochkasini yangilash</button>

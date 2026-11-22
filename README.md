@@ -6,7 +6,12 @@
 
 ### 2026-11-22 — Outro bo‘yicha cheklangan ruxsat
 
-Foydalanuvchi TA, FM va QF modullarida faqat NEX outro vaqtini asosiy sahnalardan ajratish hamda FM/QF outro logotipini TA etaloniga moslashtirishga aniq ruxsat berdi. Bu istisno asosiy modul funksiyalarini o‘zgartirishga umumiy ruxsat bermaydi. TA va FM asosiy kontent oqimi, shakllari, sahna matnlari va asosiy vizual mexanizmlari keyingi alohida ruxsatsiz o‘zgartirilmaydi. Joriy ish zaxira tarmog‘ida bajarildi: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
+Foydalanuvchi TA, FM va QF modullarida faqat NEX outro vaqtini asosiy sahnalardan ajratish hamda FM/QF outro logotipini TA etaloniga moslashtirishga dastlabki cheklangan ruxsat berdi. Keyinchalik anketa maydonlarini tartibga solish uchun alohida ruxsat berildi; bu faqat README’da qayd etilgan TA/FM anketa o‘zgarishlari bilan cheklanadi. Boshqa asosiy kontent oqimi, dizayn, sahna matnlari va vizual mexanizmlar muhofazada qoladi. Joriy ish zaxira tarmog‘ida bajarildi: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
+
+
+### 2026-11-22 — Anketa maydonlarini tartibga solish bo‘yicha alohida ruxsat
+
+Foydalanuvchi TA va FM anketalarida amalda ishlatilmayotgan maydonlarni olib tashlash, majburiylik matnlarini haqiqiy tekshiruvga moslashtirish va kerakli qiymatlarni mavjud Reels oqimida ishlatishga aniq ruxsat berdi. FM’dagi “Nima deb qidirish kerak?” va “Qayerdan qidirish kerak?” maydonlari muhim deb tasdiqlandi va saqlandi. Bu maydonlar studiya xulosasida izlanish yo‘riqnomasi sifatida ko‘rsatiladi; avtomatik internet qidiruvi mavjud deb da’vo qilinmaydi. QF formasi o‘zgartirilmadi, chunki undagi qiymatlar amalda ishlatiladi.
 
 ## Loyiha modullari
 
@@ -14,14 +19,14 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 
 | Qisqartma | Modul nomi | Holati |
 |---|---|---|
-| **TA** | Tavsiya akkaunt | **0.10.3 — OUTRO ALOHIDA VAQTLANGAN** |
-| **FM** | Foydali manba | **0.9.8 — OUTRO ALOHIDA VAQTLANGAN** |
+| **TA** | Tavsiya akkaunt | **0.10.4 — ANKETA MAYDONLARI TOZALANGAN** |
+| **FM** | Foydali manba | **0.9.9 — QIDIRUV YO‘RIQNOMASI SAQLANGAN** |
 | **QF** | Qiziqarli fakt | **0.16.7 — MUHRLANMAGUNCHA QIYMAT YASHIRILADI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
 
-TA hozirgi tasdiqlangan holatida tayyor deb hisoblanadi. Uning dizayni, animatsiyalari, funksiyalari, shablonlari, matn tuzilishi, axborot yig‘ish va ma’lumotni qayta ishlash mexanizmlari foydalanuvchining alohida, aniq ruxsatisiz o‘zgartirilmaydi.
+TA hozirgi tasdiqlangan holatida tayyor deb hisoblanadi. Uning dizayni, animatsiyalari, funksiyalari, shablonlari, matn tuzilishi, axborot yig‘ish va ma’lumotni qayta ishlash mexanizmlari muhofazada. 2026-11-22 dagi alohida ruxsat doirasida faqat anketa maydonidagi foydalanilmayotgan havola va majburiylik izohlari tartibga solindi.
 
 ### Himoya va zaxira
 
@@ -51,7 +56,7 @@ TA — NEX uchun etalon modul. Quyidagi uchta yo‘nalishdagi yondashuv uning ta
 
 ## 4. FM — Foydali manba: tayyor va muhofazalangan
 
-FM foydalanuvchi tomonidan tayyor deb tasdiqlangan. Shu sababli FM moduli hozir **MUHOFAZALANGAN** holatda.
+FM foydalanuvchi tomonidan tayyor deb tasdiqlangan. Shu sababli FM moduli hozir **MUHOFAZALANGAN** holatda. 2026-11-22 dagi alohida ruxsat faqat anketa maydonlari va ulardan foydalanish mantiqiga tegishli; boshqa dizayn va Reels mexanizmlari o‘zgartirilmaydi.
 
 - Foydalanuvchi alohida va aniq ruxsat bermaguncha FM’ning birorta fayli, kodi, dizayni, matni, animatsiyasi, funksiyasi yoki sozlamasi o‘zgartirilmaydi.
 - Bu taqiq xatolarni tuzatish, optimallashtirish, refaktor qilish, yangilash, cache-buster almashtirish, fayl ko‘chirish yoki kodni tozalash kabi barcha o‘zgarishlarni ham qamrab oladi.
