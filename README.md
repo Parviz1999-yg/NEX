@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.16.4 — NEX OUTRO + MANBA/TEKSHIRUV SHTAMPLARI** |
+| **QF** | Qiziqarli fakt | **0.16.5 — KUCHAYTIRILGAN WEBGL + YAGONA MA’LUMOT KARTASI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -70,6 +70,10 @@ QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sah
 ### QF Reels sahnalari va LED fakt displeyi (0.15.3)
 
 Reels tasvir qatlamida HOOK, FAKT E’LONI, MAZMUN, HOLAT, YAKUN kabi texnik sahna nomlari va 01/05 tartib raqamlari chiqarilmaydi; videoda faqat mazmuniy matn va yakuniy NEX brend outro ko‘rinadi. 3D obyektlar sahna davomida ritmik suzish, aylanish va yengil masshtab o‘zgarishi bilan jonlanadi. Ikkinchi — fakt e’loni sahnasida metall romli, emissiv konturli, skan-chiziqli 3D smart LED ekran paydo bo‘ladi; uning matn panelida yorug‘lik gradienti va harakatlanuvchi skan aks etadi.
+
+### QF 0.16.5 — kuchaytirilgan WebGL va yagona ma’lumot kartasi
+
+WebGL ko‘rinishidagi muammo qatlamlar ustma-ustligi sababli yuzaga kelgan: to‘liq ekranli 2D fon WebGL obyektlarini berkitgan. Endi fon, shaffof WebGL va matn uchta mustaqil qatlamda ishlaydi. 3D obyektlar kattalashtirildi, kamera yaqinlashtirildi va harakat amplitudasi kuchaytirildi. Ma’lumotlar uchun bitta karta ishlatiladi: Tasnif, Manba, Dalil va Tekshiruv qiymatlari tegishli sahna boshlanganda kartaning ichida shtamp uslubida ochiladi. NEX brend outro 5,2 soniyalik alohida yakun bo‘lib qoladi. Haqiqiy Android/WebGL ko‘rinishi hali qurilmada sinovdan o‘tkazilishi kerak.
 
 ### QF 0.16.4 — NEX outro va manba/tekshiruv shtamplari
 
