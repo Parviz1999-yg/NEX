@@ -16,8 +16,7 @@ $("build").addEventListener("click",()=>{
  if(required.some(id=>!val(id))||!field){alert("Fakt tasnifi, fan sohasi, sarlavha va besh ssenariy bosqichini to‘ldiring.");return;}
  if(val("sourceUrl")&&!/^https?:\/\//i.test(val("sourceUrl"))){alert("Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}
  const lines=["NEX — QIZIQARLI FAKT","Tasnif: "+val("kind"),"Fan sohasi: "+field,"Fakt: "+val("title"),"Manba: "+(val("source")||"Kiritilmagan"),"Havola: "+(val("sourceUrl")||"Kiritilmagan"),"Dalil: "+(val("evidence")||"Kiritilmagan"),"Tekshiruv qaydi: "+val("review"),"","HOOK: "+val("hook"),"FAKT E’LONI: "+val("announce"),"MAZMUNI: "+val("bodyText"),"HOLATI: "+val("statusText"),"FIKR SO‘RASH / CHORLOV: "+val("ending")];
- $("result").textContent=lines.join("
-");
+ $("result").textContent=lines.join("\n");
 });
 $("clear").addEventListener("click",()=>{
  document.querySelectorAll("input,textarea").forEach(x=>x.value="");
