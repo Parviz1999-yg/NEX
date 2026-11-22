@@ -1,5 +1,14 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.1] — 2026-11-22
+
+- To‘liq ekran yozish rejimidagi boshqaruv paneli doim ko‘rinadigan qilindi; «Studiyaga qaytish» tugmasi endi yashirin qolmaydi. `Escape` tugmasi ham yozish oynasidan chiqadi.
+- Anketa maydonlari endi `sessionStorage` orqali avtomatik saqlanmaydi va sahifa qayta ochilganda tiklanmaydi. Eski avtomatik saqlangan nusxa bir martalik tozalanadi.
+- Birinchi bosqichga «Anketani tozalash» tugmasi qo‘shildi; barcha maydonlar va sozlamalar tasdiqdan keyin boshlang‘ich holatga qaytadi. «Yangi loyiha» ham tasdiqlash bilan ishlaydi.
+- Har bir sahna davomiyligi 2,5–12 soniya oralig‘ida alohida sozlanadi; umumiy vaqt va 5,2 soniyalik outro avtomatik qayta hisoblanadi.
+- Statik kod tekshiruvlari bajarildi; Android qurilmadagi haqiqiy ekran yozish sinovi alohida talab etiladi.
+
+
 ## [0.16.0] — 2026-11-22
 
 - Outro endi beshta asosiy sahna davomiyligiga qo‘shilmaydi: asosiy sahnalar tugagach, qo‘shimcha 5,2 soniyalik mustaqil NEX outro ishlaydi. Timeline, umumiy davomiylik, pauza/davom ettirish va telefon ekran yozish hisoblari shu vaqtga moslashtirildi.
