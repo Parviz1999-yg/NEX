@@ -1,5 +1,12 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.14.1] — 2026-11-22
+
+- QF vizual interfeysi FM etalon CSS fayliga tenglashtirildi: umumiy panel, sarlavha, forma, tugma, progress, timeline, preview ramkasi, yozuv oynasi va mobil breakpointlar bir xil.
+- QF’ga xos vizual override’lar olib tashlandi; 3D canvas qatlamlari FM bilan bir xil umumiy selektorlar orqali joylashtiriladi.
+- Fakt formasi, besh sahnali ssenariy va QF 3D renderer funksiyalari o‘zgartirilmadi.
+
+
 ## [0.14.0] — 2026-11-22
 
 - FM Reels Studio arxitekturasidagi yetti bosqich QF’ga moslashtirildi: fakt, ssenariy, bayon uslubi, vizual til, rang palitrasi, animatsiya va NEX Reels Studio.
