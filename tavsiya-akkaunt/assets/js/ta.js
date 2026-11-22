@@ -40,6 +40,18 @@ function configureScript(){
  });
 }
 
+function formatFollowerCount(value){
+ const digits=String(value||"").replace(/\\D/g,"");
+ if(!digits)return "";
+ const count=Number(digits);
+ if(!Number.isFinite(count))return "";
+ if(count<1000)return new Intl.NumberFormat("uz-UZ").format(count);
+ const unit=count>=1000000000?"B":count>=1000000?"M":"K";
+ const divisor=unit==="B"?1000000000:unit==="M"?1000000:1000;
+ const scaled=count/divisor;
+ const compact=scaled<10?Math.floor(scaled*10)/10:Math.floor(scaled);
+ return String(compact).replace(".",",")+unit;
+}
 function readAccountForm(){
  state.account={name:$("accountName").value.trim(),niche:$("accountNiche").value.trim(),bio:$("accountBio").value.trim(),benefit:$("accountBenefit").value.trim(),audience:$("accountAudience").value.trim(),proof:$("accountProof").value.trim(),followers:$("accountFollowers").value.trim(),link:$("accountLink").value.trim(),image:state.account.image};
  return state.account;
@@ -501,7 +513,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
   c.globalAlpha=.28;c.fillStyle=ac;c.beginPath();c.moveTo(0,-rr);c.lineTo(rr*.72,-rr*.18);c.lineTo(rr*.5,rr*.8);c.lineTo(-rr*.58,rr*.64);c.lineTo(-rr*.8,-rr*.2);c.closePath();c.fill();c.restore();
   c.save();c.globalAlpha=.18;c.strokeStyle=fg;for(let i=0;i<12;i++){const yy=h*(.12+i*.065);c.beginPath();c.moveTo(w*.07,yy);c.lineTo(w*.93,yy);c.stroke()}c.restore();
   const y=idx===1?h*.24:idx===2?h*.35:idx===3?h*.36:h*.39;
-  if(idx===1){profile(w*.5,h*.25,w*.105);pill("PROFILE REVEAL",w*.12,h*.12);text(title,w*.5,h*.45,w*.76,w*.062,fg,"900","center",2);text(detail,w*.5,h*.58,w*.72,w*.029,sub,"600","center",3);if(state.account.followers)text(state.account.followers+" obunachi",w*.5,h*.73,w*.7,w*.03,ac,"800","center",1)}
+  if(idx===1){profile(w*.5,h*.25,w*.105);pill("PROFILE REVEAL",w*.12,h*.12);text(title,w*.5,h*.45,w*.76,w*.062,fg,"900","center",2);text(detail,w*.5,h*.58,w*.72,w*.029,sub,"600","center",3);if(state.account.followers)text(formatFollowerCount(state.account.followers)+" obunachi",w*.5,h*.73,w*.7,w*.03,ac,"800","center",1)}
   else{pill(["THE DISCOVERY","THE PROFILE","THE VALUE","THE DIFFERENCE","THE NEXT MOVE"][idx],w*.12,h*.2);text(title,x,y,w*.75,w*(idx===0?.095:.078),fg,"900",ta,5);text(detail,x,h*.76,w*.72,w*.031,sub,"650",ta,3)}
   c.save();c.globalAlpha=.45;c.strokeStyle=ac;c.lineWidth=w*.003;c.beginPath();c.arc(w*.5,h*.52,w*(.34+.012*Math.sin(t)),t*.25,t*.25+Math.PI*1.55);c.stroke();c.restore();
  }else if(style==="Kinetic Typography"){
@@ -518,7 +530,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
   c.font="700 "+(w*.022)+"px system-ui";c.textAlign="right";c.fillText("VOL. 0"+(idx+1)+"   —   2026",w*.89,h*.125);
   c.strokeStyle=bg+"55";c.beginPath();c.moveTo(w*.11,h*.16);c.lineTo(w*.89,h*.16);c.stroke();
   const ink=bg,accentInk=ac;const left=w*.12,right=w*.88;
-  if(idx===1){profile(w*.5,h*.35,w*.105);c.fillStyle=ink;text(title,w*.5,h*.52,w*.7,w*.06,ink,"900","center",2,"Georgia, serif");text(detail,w*.5,h*.66,w*.68,w*.028,ink,"500","center",4,"Georgia, serif");if(state.account.followers)text(state.account.followers+" FOLLOWERS",w*.5,h*.8,w*.7,w*.023,accentInk,"800","center",1)}
+  if(idx===1){profile(w*.5,h*.35,w*.105);c.fillStyle=ink;text(title,w*.5,h*.52,w*.7,w*.06,ink,"900","center",2,"Georgia, serif");text(detail,w*.5,h*.66,w*.68,w*.028,ink,"500","center",4,"Georgia, serif");if(state.account.followers)text(formatFollowerCount(state.account.followers)+" FOLLOWERS",w*.5,h*.8,w*.7,w*.023,accentInk,"800","center",1)}
   else{
    c.fillStyle=accentInk;c.fillRect(left,h*.21,w*.11,h*.009);c.fillStyle=ink;c.font="900 "+(w*.026)+"px system-ui";c.textAlign="left";c.fillText(["THE FIND","PROFILE NOTE","THE VALUE","THE EDITOR'S PICK","TAKE ACTION"][idx],left,h*.25);
    text(title,align==="right"?right:left,h*.38,w*.7,w*(idx===0?.082:.069),ink,"900",ta,6,"Georgia, serif");
@@ -534,7 +546,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
   c.save();c.translate(w*.78,h*.3);c.rotate(t*.24);c.strokeStyle=ac;c.lineWidth=w*.004;c.globalAlpha=.55;c.beginPath();c.arc(0,0,w*.13,t*.2,t*.2+Math.PI*1.6);c.stroke();c.strokeStyle=sub;c.beginPath();c.arc(0,0,w*.18,-t*.16,-t*.16+Math.PI*1.2);c.stroke();c.restore();
   const py=idx===1?h*.18:h*.27;c.save();c.strokeStyle=ac;c.fillStyle=ac+"12";c.lineWidth=w*.003;c.beginPath();c.roundRect(w*.08,py,w*.84,h*(idx===1?.62:.48),w*.018);c.fill();c.stroke();c.restore();
   pill("NEX // "+["SIGNAL","IDENTITY","BENEFIT","ANALYSIS","ACTION"][idx],w*.12,h*.16);
-  if(idx===1){profile(w*.5,h*.36,w*.09);text(title,w*.5,h*.51,w*.7,w*.055,fg,"850","center",2);text(detail,w*.5,h*.64,w*.7,w*.027,sub,"600","center",4);if(state.account.followers)text("FOLLOWERS  "+state.account.followers,w*.5,h*.76,w*.7,w*.023,ac,"800","center",1)}
+  if(idx===1){profile(w*.5,h*.36,w*.09);text(title,w*.5,h*.51,w*.7,w*.055,fg,"850","center",2);text(detail,w*.5,h*.64,w*.7,w*.027,sub,"600","center",4);if(state.account.followers)text("FOLLOWERS  "+formatFollowerCount(state.account.followers),w*.5,h*.76,w*.7,w*.023,ac,"800","center",1)}
   else{text(title,w*.14,h*.43,w*.72,w*.07,fg,"850","left",5);text(detail,w*.14,h*.68,w*.7,w*.027,sub,"600","left",3)}
   c.save();c.globalAlpha=.75;c.fillStyle=ac;c.fillRect(w*.14,h*.84,w*.22,h*.006);c.fillRect(w*.14,h*.86,w*.12,h*.006);c.restore();
   c.fillStyle=ac;c.font="700 "+(w*.02)+"px monospace";c.textAlign="right";c.fillText("SYS.ONLINE  /  0"+(idx+1),w*.88,h*.9);
@@ -662,7 +674,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  const local=Math.max(0,Math.min(1,rawLocal*motion.wipe));
  const t=now/1000*motion.speed;
  const convert=s=>String(s||"").replace(/(sh|ch|o[ʻʼ‘’']|g[ʻʼ‘’'])/gi,m=>{const l=m.toLowerCase(),v=l.startsWith("sh")?"ş":l.startsWith("ch")?"ç":l[0]==="o"?"ö":"ğ";return m[0]===m[0].toUpperCase()?v.toUpperCase():v});
- const name=convert(a.name||"Akkaunt nomi"),niche=convert(a.niche),bio=convert(a.bio),benefit=convert(a.benefit),audience=convert(a.audience),proof=convert(a.proof),followers=convert(a.followers);
+ const name=convert(a.name||"Akkaunt nomi"),niche=convert(a.niche),bio=convert(a.bio),benefit=convert(a.benefit),audience=convert(a.audience),proof=convert(a.proof),followers=convert(formatFollowerCount(a.followers));
  const details=[
   {lead:convert(state.script[0]),body:"",extra:""},
   {lead:name,body:[bio,benefit].filter(Boolean).join(" "),extra:[niche,audience,proof,followers].filter(Boolean).join("  ·  ")},
@@ -824,7 +836,7 @@ function drawScene(c,w,h,now){
   if(accountPhoto&&accountPhoto.complete){c.save();c.beginPath();c.arc(-w*.27,0,w*.065,0,Math.PI*2);c.clip();c.drawImage(accountPhoto,-w*.335,-w*.065,w*.13,w*.13);c.restore()}
   c.textAlign="left";c.textBaseline="middle";c.fillStyle=fg;c.font="800 "+w*.036+"px system-ui";c.fillText(state.account.name||"Tavsiya etilgan akkaunt",-w*.16,-h*.025);
   c.font="500 "+w*.025+"px system-ui";c.fillStyle=fg+"cc";c.fillText(state.account.bio||"Foydali sahifa bilan tanishing",-w*.16,h*.025);
-  if(state.account.followers)c.fillText(state.account.followers+" obunachi",-w*.16,h*.065);
+  if(state.account.followers)c.fillText(formatFollowerCount(state.account.followers)+" obunachi",-w*.16,h*.065);
   c.restore();
  }
  if(local<.22){const q=1-local/.22;c.save();c.globalAlpha=q*.9;c.fillStyle=ac;c.beginPath();c.moveTo(w*(1-q*1.8),0);c.lineTo(w*(1.15-q*1.8),0);c.lineTo(w*(.15-q*1.8),h);c.lineTo(w*(-.0-q*1.8),h);c.closePath();c.fill();c.globalAlpha=q*.45;c.fillStyle=fg;c.fillRect(w*(.92-q*1.8),0,w*.012,h);c.restore()}
