@@ -26,3 +26,15 @@ input.scene-control{accent-color:#70d6ff;padding:0}
 .stage-step:focus-visible,.scene-control:focus-visible{outline:2px solid #8fe4ff;outline-offset:3px}
 .timeline-note{line-height:1.5;margin-bottom:0}
 @media(max-width:600px){.timeline-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-step:last-child{grid-column:1/-1}.timeline-head{align-items:flex-start;flex-direction:column;gap:5px}}
+
+/* QF 0.13.0 — sahifalararo studiya */
+.studio-shell{background:linear-gradient(145deg,#0d2039,#09172b);border:1px solid #294d75;border-radius:18px;padding:18px}
+.studio-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;color:#9dc9e8;font-size:11px}
+.progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;flex:1}
+.progress-step{padding:10px 6px;text-align:center;border:1px solid #294d75;border-radius:8px;color:#7898b8;font-size:9px;font-weight:850}
+.progress-step.active{background:#123c5c;border-color:#6edaff;color:#9ceaff}.progress-step.done{border-color:#3b8c9d;color:#79d7da}
+.wizard-page[hidden]{display:none!important}.wizard-page{min-height:360px}.wizard-page h2{font-size:22px;margin:4px 0 8px}
+.step-desc{color:#a9c0db;font-size:13px;line-height:1.6;margin:0 0 20px}
+.page-nav{display:flex;align-items:center;gap:10px;margin-top:14px}.page-nav span{flex:1}.page-nav button[hidden]{display:none}.page-nav button{min-width:145px}
+.studio-shell .visual{margin-top:0}.studio-shell .timeline{margin-top:10px}
+@media(max-width:600px){.studio-shell{padding:12px}.progress{grid-template-columns:repeat(2,minmax(0,1fr))}.progress-step{font-size:8px;padding:8px 4px}.studio-top{align-items:flex-start}.page-nav button{min-width:0;flex:1;padding:11px 8px;font-size:11px}.wizard-page{padding:17px}}
