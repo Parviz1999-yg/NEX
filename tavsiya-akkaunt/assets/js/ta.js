@@ -6,7 +6,7 @@ const modes={tavsiya:"Tavsiya akkaunt",manba:"Foydali manba",fakt:"Qiziqarli fak
 const scenes=["Kirish","Asosiy fikr","Izoh","Urg‘u","Yakun"];
 const paletteMap={"Electric Blue":["#06142F","#F4FAFF","#168CFF","#76D9FF"],"Cobalt Chrome":["#071A3B","#F5FAFF","#287BFF","#A8D9FF"],"Arctic Silver":["#0B1A2B","#F8FCFF","#73C8FF","#C8E8FF"],"Azure Pulse":["#061B35","#F2FAFF","#00A7FF","#59E0FF"],"Royal Violet":["#130E36","#FAF7FF","#8B5CFF","#C1A7FF"],"Crimson Chrome":["#260D24","#FFF7FC","#FF3F78","#FFB4D1"],"Emerald Laser":["#061F24","#F2FFFC","#00D5B2","#8CFFE8"],"Solar Chrome":["#241A08","#FFFCF2","#FFB52E","#FFE49A"]};
 let total=25000;
-function page(name){pages.forEach((p,i)=>$("page-"+p).classList.toggle("active",p===name));$("stepLabel").textContent=labels[pages.indexOf(name)];window.scrollTo(0,0)}
+function page(name){if(name==="home"){window.location.href="../";return;}pages.forEach((p,i)=>$("page-"+p).classList.toggle("active",p===name));$("stepLabel").textContent=labels[pages.indexOf(name)];window.scrollTo(0,0)}
 function selectGroup(id,key){$(id).querySelectorAll("button").forEach(b=>{b.classList.toggle("selected",b.dataset.value===key)});}
 function bindOptions(id,prop){$(id).querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state[prop]=b.dataset.value;selectGroup(id,state[prop]);}));}
 function configureTopicType(){
