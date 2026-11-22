@@ -1,5 +1,14 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.5] — 2026-11-22
+
+- WebGL ko‘rinmasligiga sabab bo‘lgan qatlam ustma-ustligi tuzatildi: alohida 2D fon, shaffof 3D WebGL va matn qatlamlari joriy etildi.
+- 3D obyektlar kattalashtirildi; kamera yaqinlashtirildi, aylanish, tebranish va obyekt harakati kuchaytirildi.
+- Ikki alohida katta izoh kartasi o‘rniga bitta boshlang‘ich ma’lumot kartasi qoldirildi: Tasnif, Manba, Dalil va Tekshiruv.
+- Har bir qiymat tegishli sahna boshlanganda shu yagona kartaning ichida shtamp/muhr animatsiyasi bilan ochiladi.
+- 3D sahna NEX outro vaqtida yashiriladi; outro suyuq metall fon va NEX brend yakuni bilan saqlanadi.
+- JavaScript sintaksisi, HTML canvas ID va qatlam tartibi statik tekshirildi; haqiqiy Android/WebGL sinovi hali bajarilmagan.
+
 ## [0.16.4] — 2026-11-22
 
 - NEX outro brend yakuni qaytarildi: 5,2 soniyalik suyuq metall oqimidan keyin NEX yozuvi, orbital halqa va brend shiori animatsion ko‘rinadi.
