@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.15.6  
+**QF moduli:** 0.16.0  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -131,3 +131,17 @@ MI mustaqil sahifada ibora xarakteri, iboraning o‘zi, muallif/manba, mazmun, k
 - FM 0.9.7: kodga o‘zgartirish kiritilmadi. Statik tekshiruvda aniq chaqirilmaydigan funksiya topilmadi; FM muhofazasi saqlandi.
 - QF 0.15.6: chaqirilmaydigan `showNext()`/`sceneControls()`, foydalanilmaydigan holat o‘zgaruvchilari va o‘qilmaydigan yashirin DOM maydonlari olib tashlandi. `motionSpeed` doim 1 bo‘lgani sababli ko‘paytuvchini olib tashlash animatsiya tezligini o‘zgartirmaydi.
 - Statik tekshiruvlar real brauzer, WebGL, Android qurilma va ekran yozish sinovining o‘rnini bosmaydi.
+
+
+## 9. QF 0.16.0 — sahna renderi va vaqt arxitekturasi
+
+- Asosiy davomiylik `mainDuration()` bilan besh sahnaning yig‘indisi sifatida hisoblanadi. Yakuniy davomiylik `fullDuration()` = asosiy davomiylik + 5200 ms. Outro faqat asosiy besh sahna tugagandan keyin chiziladi.
+- Timeline, preview playback, pause/resume, recording overlay va yozuv davomiyligi to‘liq davomiylikni ishlatadi.
+- 3D renderer beshta alohida sahna guruhini yaratadi. Har bir guruhda mavzu modeli va o‘ziga xos sahna dekorlari mavjud; faol guruh sahna indeksiga qarab ko‘rsatiladi.
+- Vizual til: cinematic, kinetic, editorial va future rejimlari alohida 2D frame va 3D dekor/camera profillariga ega.
+- Bayon profili: sakkiz ohang uchun tipografika, satr oralig‘i, stagger, reveal va yo‘nalish parametrlari.
+- Palitra: sahna fonidan tashqari material ranglari, emissive va uchta yoritish manbasiga tatbiq etiladi.
+- Kamera: sahna bo‘yicha masofa va pozitsiya profillari, silliq interpolatsiya va pointer parallax.
+- Fakt yorlig‘i `window.qfSceneCue` dan olinadi; HOLAT sahnasida manba, dalil, tasnif va tekshiruv holati ko‘rsatiladi.
+- Semantik moslashtirish so‘z/ibora normalizatsiyasi va oldindan belgilangan sinonimlar bilan ishlaydi; bu deterministik qoidaviy tizim, AI yoki mustaqil ilmiy tekshiruv emas.
+- Audio va musiqa tashqi ilovada; telefon native screen recorder ishlatiladi, ichki MP4 eksporti yo‘q.
