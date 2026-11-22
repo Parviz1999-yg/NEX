@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.16.0  
+**QF moduli:** 0.16.3  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
