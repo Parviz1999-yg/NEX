@@ -1,3 +1,10 @@
+## QF 0.16.1 — 2026-11-22
+- [x] To‘liq ekran yozish oynasida «Studiyaga qaytish» va pauza boshqaruvlari doim ko‘rinadi; `Escape` orqali chiqish ham qo‘shildi.
+- [x] Anketa avtomatik saqlanishi va qayta tiklanishi olib tashlandi; eski `sessionStorage` kaliti bir martalik tozalanadi.
+- [x] «Anketani tozalash» tugmasi va yangi loyiha uchun tasdiqlash qo‘shildi.
+- [x] Har bir sahna uchun 2,5–12 soniya davomiylik sozlamasi saqlanadi; umumiy vaqt 5,2 soniyalik outro bilan qayta hisoblanadi.
+- [ ] Android qurilmada yozish oynasidagi tugmalar, sahna vaqti hamda anketani tozalash foydalanuvchi tomonidan amalda sinovdan o‘tkazilishi kerak.
+
 # NEX — rivojlantirish holati (2026-11-22)
 
 - TA v0.10.2 — foydalanuvchi tasdiqlagan, o‘zgartirishlar to‘xtatilgan.
