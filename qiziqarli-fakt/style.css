@@ -13,3 +13,16 @@ pre{white-space:pre-wrap;word-break:break-word;min-height:110px;padding:15px;bor
 .stage{position:relative;min-height:300px;border:1px solid #3979a6;border-radius:14px;background:radial-gradient(circle at 50% 45%,#174b71,#07162a 68%);overflow:hidden;isolation:isolate}.stage canvas{display:block;width:100%;height:300px;outline:none}.stage-overlay{position:absolute;left:14px;right:14px;bottom:12px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;text-shadow:0 2px 8px #000}.stage-overlay span{font-size:9px;letter-spacing:.2em;color:#8fe4ff;font-weight:900}.stage-overlay small{font-size:9px;color:#b6d9f2;letter-spacing:.1em}
 @media(max-width:760px){.layout{grid-template-columns:1fr}.visual{grid-template-columns:1fr}.stage{min-height:260px}.stage canvas{height:260px}.panel{padding:18px}.actions button,.visual-actions button{flex:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+/* QF 0.12.0 — 3D controls and script timeline */
+.control-label{display:flex!important;justify-content:space-between;align-items:center;margin:12px 0 6px!important;color:#bcd7ee}
+.scene-control{width:100%;border:1px solid #2d527d;border-radius:9px;padding:10px;background:#07162b;color:#f5f9ff;font:inherit;font-size:12px}
+input.scene-control{accent-color:#70d6ff;padding:0}
+.timeline{grid-column:1/-1;border-top:1px solid #294d75;padding-top:17px}
+.timeline-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:10px;letter-spacing:.12em;color:#bcd7ee}
+.timeline-head span,.timeline-note{color:#8daecc;font-size:10px;letter-spacing:0}
+.timeline-buttons{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+.stage-step{border:1px solid #31577d;border-radius:8px;padding:11px 7px;background:#08182d;color:#b9d7ef;font-size:10px;font-weight:800;cursor:pointer}
+.stage-step.active{background:linear-gradient(110deg,#dff8ff,#70d7ff);color:#06162a;border-color:#70d7ff}
+.stage-step:focus-visible,.scene-control:focus-visible{outline:2px solid #8fe4ff;outline-offset:3px}
+.timeline-note{line-height:1.5;margin-bottom:0}
+@media(max-width:600px){.timeline-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-step:last-child{grid-column:1/-1}.timeline-head{align-items:flex-start;flex-direction:column;gap:5px}}
