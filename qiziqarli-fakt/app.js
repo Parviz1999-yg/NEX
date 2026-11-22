@@ -1,182 +1,62 @@
 (()=>{
 "use strict";
-const $=id=>document.getElementById(id);
-const notes={"Ilmiy fakt":"Ilmiy dalil va tekshiriladigan manbaga tayangan da’vo. Manbani ko‘rsatish zarur.","Postulat (isbotsiz qabul qilinadigan)":"Muayyan nazariya yoki tizim doirasida boshlang‘ich asos sifatida qabul qilinadi; uni empirik isbotlangan fakt sifatida ko‘rsatmaslik kerak.","100 foiz ishonchli":"Bu belgi mutlaq aniqlik kafolati emas. Da’vo dalil va manbalar bilan ehtiyotkorlik bilan asoslanishi kerak.","Tekshiruvda":"Hali tasdiqlanmagan ma’lumot. Videoda tekshiruv jarayonida ekani ochiq aytilishi shart."};
-const fields=["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending"];
-const val=id=>$(id).value.trim();let currentPage=1;
-function showPage(n){currentPage=Math.max(1,Math.min(4,n));document.querySelectorAll(".wizard-page").forEach(p=>p.hidden=Number(p.dataset.page)!==currentPage);document.querySelectorAll(".progress-step").forEach((p,i)=>{p.classList.toggle("active",i+1===currentPage);p.classList.toggle("done",i+1<currentPage);});$("pageCounter").textContent="0"+currentPage+" / 04";$("prevPage").hidden=currentPage===1;$("nextPage").hidden=currentPage===4;$("generateScript").hidden=currentPage!==2;$("finishPage").hidden=currentPage!==3;window.scrollTo({top:0,behavior:"smooth"});}
-function saveDraft(){const d={};fields.forEach(id=>{if($(id))d[id]=$(id).value;});try{sessionStorage.setItem("nex-qf-draft",JSON.stringify(d));}catch(e){}}
-function restoreDraft(){try{const d=JSON.parse(sessionStorage.getItem("nex-qf-draft")||"{}");fields.forEach(id=>{if($(id)&&typeof d[id]==="string")$(id).value=d[id];});}catch(e){}$("customField").hidden=$("field").value!=="Boshqa";$("kindHint").textContent=notes[$("kind").value]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";}
-fields.forEach(id=>$(id)?.addEventListener("input",saveDraft));
-$("kind").addEventListener("change",()=>{$("kindHint").textContent=notes[$("kind").value]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";saveDraft();});
-$("field").addEventListener("change",()=>{$("customField").hidden=$("field").value!=="Boshqa";saveDraft();});
-function validatePage(p){if(p===1){const f=$("field").value==="Boshqa"?val("customField"):val("field");if(!val("kind")||!f||!val("title")){alert("Fakt tasnifi, fan sohasi va fakt sarlavhasini to‘ldiring.");return false;}}if(p===2&&["hook","announce","bodyText","statusText","ending"].some(id=>!val(id))){alert("Ssenariyning besh bosqichini ham to‘ldiring.");return false;}return true;}
-function buildScript(){const f=$("field").value==="Boshqa"?val("customField"):$("field").value;const lines=["NEX — QIZIQARLI FAKT","Tasnif: "+val("kind"),"Fan sohasi: "+f,"Fakt: "+val("title"),"Manba: "+(val("source")||"Kiritilmagan"),"Dalil: "+(val("evidence")||"Kiritilmagan"),"Tekshiruv qaydi: "+val("review"),"","HOOK: "+val("hook"),"FAKT E’LONI: "+val("announce"),"MAZMUNI: "+val("bodyText"),"HOLATI: "+val("statusText"),"FIKR SO‘RASH / CHORLOV: "+val("ending")];$("result").textContent=lines.join("\n");}
-$("prevPage").addEventListener("click",()=>showPage(currentPage-1));
-$("nextPage").addEventListener("click",()=>{if(validatePage(currentPage))showPage(currentPage+1);});
-$("generateScript").addEventListener("click",()=>{if(validatePage(2)){buildScript();showPage(3);}});
-$("finishPage").addEventListener("click",()=>{buildScript();showPage(4);});
-$("clear").addEventListener("click",()=>{if(!confirm("Barcha kiritilgan ma’lumotlarni tozalaysizmi?"))return;fields.forEach(id=>{if($(id))$(id).value="";});$("customField").hidden=true;$("kindHint").textContent="Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";$("result").textContent="Ssenariy hali tayyorlanmagan.";try{sessionStorage.removeItem("nex-qf-draft");}catch(e){}window.qfSceneCue="UMUMIY SAHNA";showPage(1);});
-let THREE=null,renderer=null,scene=null,camera=null,root=null,raf=0,resizeObserver=null,paused=false,motionSpeed=1,activeStage=0,currentSubject="";
-const colors={Fizika:0x62d8ff,Biologiya:0x70e0b2,Tarix:0xd9b27a,Matematika:0xb9a1ff,Astronomiya:0x7c9cff,Kimyo:0x74e5ef,Geografiya:0x78c6a3,Texnologiya:0x5edbff,Psixologiya:0xe39bc8,Boshqa:0x78cfff};
-function material(color,roughness=.48,metalness=.12){return new THREE.MeshStandardMaterial({color,roughness,metalness});}
-function mesh(geometry,mat,x=0,y=0,z=0){const m=new THREE.Mesh(geometry,mat);m.position.set(x,y,z);root.add(m);return m;}
-function clearRootContents(){if(!root)return;root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}});root.clear();}
-function lineBetween(a,b,radius,mat){const start=new THREE.Vector3(...a),end=new THREE.Vector3(...b),d=new THREE.Vector3().subVectors(end,start);const obj=mesh(new THREE.CylinderGeometry(radius,radius,d.length(),10),mat);obj.position.copy(start).add(end).multiplyScalar(.5);obj.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return obj;}
-function sphere(x,y,z,r,color,detail=32){return mesh(new THREE.SphereGeometry(r,detail,detail),material(color),x,y,z);}
-function makeOrbit(radius,tilt,color){const o=mesh(new THREE.TorusGeometry(radius,.012,8,100),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.7}));o.rotation.x=tilt;return o;}
-function makeScene(subject){
- root=new THREE.Group();scene.add(root);
- const accent=colors[subject]||colors.Boshqa;
- if(subject==="Astronomiya"){
-  sphere(0,0,0,.72,0x2674c9,48);sphere(-.2,.3,.56,.16,0x62bfff);sphere(.35,-.22,.53,.11,0x1b4c91);
-  const ring=makeOrbit(1.12,.28,0x8bcfff);root.userData.spin=ring;
-  const moon=sphere(1.48,0,0,.13,0xd8e8ff,20);moon.userData.orbit=true;
-  makeOrbit(1.5,.28,0x527fbb);
- }else if(subject==="Biologiya"){
-  sphere(0,0,0,.95,0x3a9f91,40);
-  const membrane=mesh(new THREE.SphereGeometry(1.02,40,40),new THREE.MeshPhysicalMaterial({color:0x8af0d1,transparent:true,opacity:.16,roughness:.2,side:THREE.DoubleSide}));
-  sphere(.12,.05,.48,.34,0x9d83ed);sphere(-.48,.35,.2,.13,0xf0b66e);sphere(.48,-.38,.18,.16,0xf0b66e);sphere(-.42,-.35,.28,.1,0x75d6ef);
-  for(let i=0;i<18;i++){const a=i*2.399; sphere(Math.cos(a)*.72,Math.sin(a)*.72,.1,.035,0xc5fff0,10);}
- }else if(subject==="Kimyo"){
-  const pts=[[0,0,0],[.75,.15,0],[-.65,.55,.1],[-.45,-.65,.25],[.25,-.55,-.25],[.1,.65,-.55]];
-  for(let i=1;i<pts.length;i++)lineBetween(pts[0],pts[i],.045,material(0x8bbbd8,.35,.5));
-  pts.forEach((p,i)=>sphere(...p,i===0?.23:.16,[0x6bd5ff,0xf3f6ff,0xf3f6ff,0xff8c7a,0xff8c7a,0xf3f6ff][i],24));
- }else if(subject==="Fizika"){
-  sphere(0,0,0,.28,0xff9b69,28);
-  [0,.75,1.5].forEach((rot,i)=>{const o=makeOrbit(.8,rot,0x7acfff);o.rotation.y=rot;});
-  for(let i=0;i<3;i++){const a=i*2.1;sphere(Math.cos(a)*.8,Math.sin(a)*.8,0,.085,0x7be2ff,18);}
- }else if(subject==="Geografiya"){
-  sphere(0,0,0,1,0x2476c7,48);
-  for(let i=0;i<5;i++){const lat=(-.65+i*.32);const r=Math.cos(lat);const y=Math.sin(lat);const band=mesh(new THREE.TorusGeometry(r,.025,6,80),new THREE.MeshBasicMaterial({color:0x79d6a5}));band.position.y=y;band.rotation.x=Math.PI/2;}
-  const mer=mesh(new THREE.TorusGeometry(1.015,.012,6,80),new THREE.MeshBasicMaterial({color:0xb2e7ff,transparent:true,opacity:.7}));mer.rotation.y=.7;
- }else if(subject==="Texnologiya"){
-  const board=mesh(new THREE.BoxGeometry(1.65,.16,1.35),material(0x164d60,.35,.65));board.position.y=-.18;
-  const chip=mesh(new THREE.BoxGeometry(.7,.25,.7),material(0x25384e,.25,.8));chip.position.y=.08;
-  for(let i=-2;i<=2;i++){lineBetween([i*.2,.08,-.55],[i*.2,.08,-.9],.018,material(accent));lineBetween([i*.2,.08,.55],[i*.2,.08,.9],.018,material(accent));}
-  for(let i=0;i<4;i++){const led=sphere(-.58+i*.38,.16,.48,.055,0x73e9ff,12);}
- }else if(subject==="Tarix"){
-  const stone=material(0xd6b989,.82,0);
-  mesh(new THREE.BoxGeometry(1.9,.18,.9),stone,0,-.62,0);
-  for(let i=-2;i<=2;i++)mesh(new THREE.CylinderGeometry(.105,.13,.95,20),stone,i*.34,-.05,0);
-  mesh(new THREE.ConeGeometry(1.2,.48,4),stone,0,.68,0).rotation.y=Math.PI/4;
-  mesh(new THREE.BoxGeometry(2.1,.12,1.05),stone,0,.4,0);
- }else if(subject==="Matematika"){
-  const tor=mesh(new THREE.TorusKnotGeometry(.62,.18,120,16,2,3),new THREE.MeshStandardMaterial({color:accent,metalness:.55,roughness:.25}));
-  root.userData.spin=tor;
-  sphere(0,0,0,.08,0xffffff,16);
- }else if(subject==="Psixologiya"){
-  const left=sphere(-.28,0,0,.58,0xd77db8,32);left.scale.set(.72,1,.72);
-  const right=sphere(.28,0,0,.58,0x8c8ce5,32);right.scale.set(.72,1,.72);
-  for(let i=0;i<7;i++){const y=-.42+i*.14;const ridge=mesh(new THREE.TorusGeometry(.28,.018,6,40),new THREE.MeshBasicMaterial({color:0xffd4ed}));ridge.position.set(-.3,y,.25);ridge.scale.set(.75,.55,1);}
- }else{
-  sphere(0,0,0,.72,accent,40);makeOrbit(1.08,.7,0x9bdfff);
-  for(let i=0;i<6;i++){const a=i*Math.PI/3;sphere(Math.cos(a)*1.05,Math.sin(a)*.72,.1,.09,0xd9f4ff,16);}
- }
-}
-
-function addFactSpecificObject(subject){
- const words=(val("title")+" "+val("announce")+" "+val("bodyText")+" "+val("evidence")).toLocaleLowerCase("uz");
- const addLabel=(s)=>{window.qfSceneCue=s;};
- const glow=(color)=>new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:.45,metalness:.3,roughness:.28});
- if(subject==="Astronomiya"){
-  if(/qora tuynuk|black hole/.test(words)){
-   clearRootContents();sphere(0,0,0,.42,0x02040b,48);
-   const disk=mesh(new THREE.TorusGeometry(.92,.16,16,120),glow(0xff9c54));disk.rotation.x=.25;
-   const halo=mesh(new THREE.TorusGeometry(.63,.035,8,100),new THREE.MeshBasicMaterial({color:0x7ddfff,transparent:true,opacity:.85}));halo.rotation.x=.25;addLabel("QORA TUYNUK");
-  }else if(/oy|oyning|luna/.test(words)){
-   clearRootContents();sphere(0,0,0,.78,0xb8c4d2,48);
-   for(let i=0;i<12;i++){const a=i*2.4;const crater=sphere(Math.cos(a)*.53,Math.sin(a)*.48,.53,.09+(i%3)*.025,0x75869b,16);crater.scale.z=.25;}
-   addLabel("OY SATHI");
-  }else if(/quyosh|solar/.test(words)){
-   clearRootContents();sphere(0,0,0,.76,0xffb43d,48);
-   const corona=mesh(new THREE.TorusGeometry(.98,.045,8,100),new THREE.MeshBasicMaterial({color:0xffd47a,transparent:true,opacity:.65}));corona.rotation.x=.8;addLabel("QUYOSH");
-  }else addLabel("SAYYORA VA ORBITA");
- }else if(subject==="Biologiya"){
-  if(/dnk|dna|dezoksiribo/.test(words)){
-   clearRootContents();const bond=material(0xc4d9ef,.5,.2);
-   for(let i=0;i<15;i++){const t=i*.42,y=-1.25+i*.18,x=Math.cos(t)*.48,z=Math.sin(t)*.48; sphere(x,y,z,.075,0x6edcff,14);sphere(-x,y,-z,.075,0xf09bc9,14);lineBetween([x,y,z],[-x,y,-z],.018,bond);}
-   addLabel("DNK QO‘SH SPIRALI");
-  }else addLabel("HUJAYRA TUZILISHI");
- }else if(subject==="Kimyo"){
-  if(/suv|h2o|vodorod|kislorod/.test(words)){
-   clearRootContents();sphere(0,.1,0,.24,0xf2f7ff,24);sphere(-.48,-.28,0,.16,0xff6d77,24);sphere(.48,-.28,0,.16,0xff6d77,24);lineBetween([0,.1,0],[-.48,-.28,0],.045,material(0xb7d9f2));lineBetween([0,.1,0],[.48,-.28,0],.045,material(0xb7d9f2));addLabel("H₂O MOLEKULASI");
-  }else addLabel("MOLEKULA MODELI");
- }else if(subject==="Fizika"){
-  if(/magnit|magnet/.test(words)){
-   clearRootContents();const north=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0xff657a),-.48,0,0);north.rotation.z=Math.PI/2;const south=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0x5e9fff),.48,0,0);south.rotation.z=Math.PI/2;
-   for(let i=0;i<5;i++){const curve=new THREE.EllipseCurve(0,0,.6+i*.13,.25+i*.1,0,Math.PI*2,false,0);const pts=curve.getPoints(80).map(p=>new THREE.Vector3(p.x,p.y,.08));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x7de6ff,transparent:true,opacity:.65}));root.add(line);}
-   addLabel("MAGNIT MAYDONI");
-  }else addLabel("HARAKAT VA KUCH");
- }else if(subject==="Tarix"){
-  if(/piramida|misr|fir'avn/.test(words)){clearRootContents();const stone=material(0xd6b989,.8,0);mesh(new THREE.ConeGeometry(1,.95,4),stone,0,-.05,0).rotation.y=Math.PI/4;mesh(new THREE.BoxGeometry(2.5,.12,1.2),stone,0,-.58,0);addLabel("QADIMGI MISR");}
-  else addLabel("TARIXIY ME’MORCHILIK");
- }else if(subject==="Matematika"){
-  if(/pi soni|π|aylana|doira/.test(words)){clearRootContents();const ring=mesh(new THREE.TorusGeometry(.8,.055,12,120),glow(0xa98bff));ring.rotation.x=.15;lineBetween([-.9,0,0],[.9,0,0],.012,material(0xe6dcff));addLabel("AYLANA GEOMETRIYASI");}
-  else addLabel("GEOMETRIK SHAKL");
- }else if(subject==="Geografiya")addLabel(/vulqon|lava/.test(words)?"VULQON RELYEFI":"YER SHARI");
- else if(subject==="Texnologiya")addLabel(/sun'iy intellekt|ai|neyron/.test(words)?"NEYRON TARMOQ":"MIKROPROTSESSOR");
- else if(subject==="Psixologiya")addLabel(/xotira|memory/.test(words)?"XOTIRA JARAYONI":"IDROK MODELI");
- else addLabel("MAVZUGA MOS UMUMIY MODEL");
-}
-function applyCameraMode(){
- if(!camera)return;
- const mode=$("cameraMode")?.value||"front";
- const positions={front:[0,0,4.4],orbit:[3.4,2.1,4.5],top:[0,4.6,.01]};
- const p=positions[mode]||positions.front;camera.up.set(0,mode==="top"?0:1,mode==="top"?-1:0);camera.position.set(...p);camera.lookAt(0,0,0);
-}
-function applyStage(index){
- activeStage=index;
- const poses=[[0,0,4.4],[1.1,.25,4.1],[2,.9,4.4],[-1.2,.5,4.1],[0,0,5.1]];
- if(camera){const p=poses[index]||poses[0];const mode=$("cameraMode")?.value||"front";if(mode==="front")camera.position.set(...p);camera.lookAt(0,0,0);}
- document.querySelectorAll(".stage-step").forEach(b=>b.classList.toggle("active",Number(b.dataset.stage)===index));
- const names=["HOOK — e’tiborni tortish","FAKT — asosiy obyekt","MAZMUN — yaqinroq ko‘rinish","HOLAT — dalil va tafsilot","YAKUN — umumiy ko‘rinish"];
- $("timelineStatus").textContent=names[index]||"Bosqich";
-}
-
-async function start3D(){
- const status=$("sceneStatus"),subject=$("field").value==="Boshqa"?val("customField"):$("field").value;
- if(!subject){status.textContent="Avval fan yoki mavzu sohasini tanlang.";return;}
- if(!val("title")||!val("bodyText")){status.textContent="Faktga mos sahna yaratish uchun fakt sarlavhasi va mazmunini kiriting.";return;}
- if(subject==="Boshqa"||!colors[subject]){status.textContent="Bu soha uchun hozircha umumiy 3D obyekt ishlatiladi."; }
- else status.textContent="3D sahna yuklanmoqda…";
- try{
-  if(!THREE)THREE=await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
-  if(!renderer){
-   const canvas=$("sceneCanvas");renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
-   scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,0,4.4);
-   scene.add(new THREE.HemisphereLight(0xb9eaff,0x10213a,2));
-   const key=new THREE.DirectionalLight(0xffffff,3);key.position.set(3,4,5);scene.add(key);
-   const fill=new THREE.PointLight(0x39bfff,18,10);fill.position.set(-3,-1,2);scene.add(fill);
-   resizeObserver=new ResizeObserver(resize3D);resizeObserver.observe($("stage"));
-   window.addEventListener("resize",resize3D);
-   const animate=()=>{raf=requestAnimationFrame(animate);if(root&&!paused&&motionSpeed>0){root.rotation.y+=.0035*motionSpeed;root.rotation.x=Math.sin(Date.now()*.00035*motionSpeed)*.0015;}renderer.render(scene,camera);};
-   animate();
-  }
-  if(root){scene.remove(root);root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}});}
-  makeScene(subject);currentSubject=subject;addFactSpecificObject(subject);resize3D();applyCameraMode();applyStage(activeStage);
-  $("sceneLabel").textContent=(subject+" / "+(window.qfSceneCue||"UMUMIY SAHNA")).toLocaleUpperCase("uz");
-  status.textContent="Fakt matniga mos sahna profili yaratildi. Kamera va ssenariy bosqichlarini boshqarishingiz mumkin.";
- }catch(error){
-  console.error("QF 3D renderer:",error);
-  status.textContent="3D dvigatel yuklanmadi. Internet/CDN yoki qurilmadagi WebGL qo‘llab-quvvatlashini tekshiring.";
-  $("sceneLabel").textContent="3D YUKLANMADI";
- }
-}
-function resize3D(){
- if(!renderer||!camera)return;
- const box=$("stage").getBoundingClientRect(),w=Math.max(1,box.width),h=Math.max(1,box.height);
- renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
-}
-
-$("render3d").addEventListener("click",start3D);
-$("cameraMode").addEventListener("change",applyCameraMode);
-$("motionSpeed").addEventListener("input",e=>{motionSpeed=Number(e.target.value);$("speedValue").textContent=motionSpeed.toFixed(1)+"×";});
-$("pause3d").addEventListener("click",()=>{paused=!paused;$("pause3d").textContent=paused?"Animatsiyani davom ettirish":"Animatsiyani to‘xtatish";$("pause3d").setAttribute("aria-pressed",String(paused));});
-document.querySelectorAll(".stage-step").forEach(b=>b.addEventListener("click",()=>applyStage(Number(b.dataset.stage))));
-$("reset3d").addEventListener("click",()=>{if(root)root.rotation.set(0,0,0);start3D();});
-$("field").addEventListener("change",()=>{if(renderer)start3D();});
-$("copyResult").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("result").textContent);$("copyResult").textContent="Nusxalandi";setTimeout(()=>$("copyResult").textContent="Ssenariyni nusxalash",1600);}catch(e){alert("Nusxalash uchun matnni belgilang va qo‘lda nusxalang.");}});
-restoreDraft();showPage(1);
+let THREE=null,renderer=null,recordRenderer=null,scene=null,camera=null,root=null,raf=0,paused=false,motionSpeed=1,playing=false,recording=false,playbackStarted=0,playbackElapsed=0,playbackRaf=0,sceneIndex=0,sceneVisualStarted=0,sceneDurations=[5000,5000,5000,5000,5000],sceneTexts=["","","","",""],sceneEdited=[false,false,false,false,false],variant=0,seed=1,selectedTone="Jiddiy",selectedVisual="cinematic",selectedPalette="silver",selectedMotion="Silliq",subjectNow="",currentPage=1;
+const $=id=>document.getElementById(id),val=id=>$(id)?.value?.trim()||"";
+const kinds={"Ilmiy fakt":"Ilmiy dalil va tekshiriladigan manbaga tayangan da’vo.","Postulat (isbotsiz qabul qilinadigan)":"Nazariya doirasida boshlang‘ich asos sifatida qabul qilinadi; empirik isbotlangan fakt sifatida ko‘rsatilmaydi.","100 foiz ishonchli":"Mutlaq aniqlik kafolati emas; da’vo dalil va manbalar bilan asoslanadi.","Tekshiruvda":"Hali tasdiqlanmagan ma’lumot. Videoda tekshiruv jarayonida ekani ochiq aytiladi."};
+const subjects=["Fizika","Biologiya","Tarix","Matematika","Astronomiya","Kimyo","Geografiya","Texnologiya","Psixologiya"];
+const labels=["HOOK","FAKT E’LONI","MAZMUN","HOLAT","YAKUN"];
+const palettes={silver:{bg:0x080e18,accent:0x8ed8ff},blue:{bg:0x06142c,accent:0x168cff},violet:{bg:0x160e30,accent:0x9876ff},emerald:{bg:0x061e20,accent:0x00d5b2},solar:{bg:0x211706,accent:0xffb52e}};
+function status(id,msg){if($(id))$(id).textContent=msg;}
+function showStep(n){currentPage=Math.max(1,Math.min(7,n));document.querySelectorAll(".wizard-page").forEach(p=>p.classList.toggle("active",p.id==="step-"+currentPage));document.querySelectorAll("[data-progress]").forEach(p=>{const i=Number(p.dataset.progress);p.classList.toggle("current",i===currentPage);p.classList.toggle("done",i<currentPage);});$("progressFill").style.width=((currentPage-1)/6*100)+"%";$("stepLabel").textContent=["01 — FAKT","02 — SSENARIY","03 — BAYON USLUBI","04 — VIZUAL TIL","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — REELS STUDIYASI"][currentPage-1];window.scrollTo({top:0,behavior:"smooth"});if(currentPage===7){updateSummary();resize3D();if(!renderer)build3D();}}
+function choose(group,key){$(group).querySelectorAll("[data-value]").forEach(b=>b.classList.toggle("selected",b.dataset.value===key));}
+function fieldName(){return $("field").value==="Boshqa"?val("customField"):$("field").value;}
+function validate(n){if(n===1&&(!val("kind")||!fieldName()||!val("title"))){status("sourceStatus","Fakt tasnifi, fan sohasi va sarlavhani to‘ldiring.");return false;}if(n===2&&["hook","announce","bodyText","statusText","ending"].some(x=>!val(x))){status("scriptStatus","Barcha besh ssenariy qismini to‘ldiring.");return false;}return true;}
+function showNext(n){if(n>currentPage&&!validate(currentPage))return;showStep(n);}
+$("kind").addEventListener("change",()=>{$("kindHint").textContent=kinds[val("kind")]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";saveDraft();});
+function saveDraft(){try{const d={};["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending"].forEach(id=>d[id]=$(id).value);sessionStorage.setItem("nex-qf-draft-014",JSON.stringify(d));}catch(e){}}
+function restoreDraft(){try{const d=JSON.parse(sessionStorage.getItem("nex-qf-draft-014")||"{}");Object.entries(d).forEach(([id,v])=>{if($(id)&&typeof v==="string")$(id).value=v;});}catch(e){}$("customField").hidden=val("field")!=="Boshqa";$("kindHint").textContent=kinds[val("kind")]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";}
+["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending"].forEach(id=>$(id).addEventListener("input",()=>{saveDraft();if(currentPage===7)updateSummary();}));
+$("field").addEventListener("change",()=>{$("customField").hidden=val("field")!=="Boshqa";if(renderer)build3D();});
+$("nextSource").addEventListener("click",()=>{if(validate(1))showStep(2);});
+$("nextScript").addEventListener("click",()=>{if(validate(2))showStep(3);});
+document.querySelectorAll("[data-prev]").forEach(b=>b.addEventListener("click",()=>showStep(Number(b.dataset.prev))));
+document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click",()=>showStep(Number(b.dataset.next))));
+$("toneOptions").querySelectorAll("[data-value]").forEach(b=>b.addEventListener("click",()=>{selectedTone=b.dataset.value;choose("toneOptions",selectedTone);}));
+$("visualOptions").querySelectorAll("[data-value]").forEach(b=>b.addEventListener("click",()=>{selectedVisual=b.dataset.value;choose("visualOptions",selectedVisual);}));
+$("paletteOptions").querySelectorAll("[data-value]").forEach(b=>b.addEventListener("click",()=>{selectedPalette=b.dataset.value;choose("paletteOptions",selectedPalette);if(scene)scene.background=new THREE.Color(palettes[selectedPalette].bg);}));
+$("motionOptions").querySelectorAll("[data-value]").forEach(b=>b.addEventListener("click",()=>{selectedMotion=b.dataset.value;choose("motionOptions",selectedMotion);}));
+$("openStudio").addEventListener("click",()=>{readSceneTexts();showStep(7);sceneIndex=0;playbackElapsed=0;sceneVisualStarted=performance.now();showScene(0);build3D();});
+function readSceneTexts(){const a=[val("hook"),val("announce"),val("bodyText"),val("statusText"),val("ending")];a.forEach((v,i)=>{if(!sceneEdited[i])sceneTexts[i]=v;});}
+function updateSummary(){const s=fieldName()||"Fan sohasi";$("summary").innerHTML="<b>"+escapeHtml(val("kind"))+"</b><br>"+escapeHtml(s)+"<br>"+escapeHtml(val("title"))+"<br><small>"+escapeHtml(selectedTone)+" · "+escapeHtml(selectedVisual)+" · "+escapeHtml(selectedPalette)+" · "+escapeHtml(selectedMotion)+"</small>";}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function showScene(i){sceneIndex=Math.max(0,Math.min(4,i));sceneVisualStarted=performance.now();$("sceneText").value=sceneTexts[sceneIndex]||"";$("sceneCounter").textContent="SAHNA "+String(sceneIndex+1).padStart(2,"0")+" / 05";$("sceneDuration").value=String(sceneDurations[sceneIndex]/1000);$("sceneDurationValue").textContent=(sceneDurations[sceneIndex]/1000).toFixed(1).replace(".",",")+" soniya";$("reelCategory").textContent=labels[sceneIndex];$("reelHook").textContent=sceneTexts[0];$("reelTitle").textContent=sceneTexts[1];$("reelReason").textContent=sceneTexts[2];$("reelBenefit").textContent=sceneTexts[3];$("reelCta").textContent=sceneTexts[4];document.querySelectorAll(".scene-chip").forEach((b,j)=>b.classList.toggle("active",j===sceneIndex));renderTextLayer();refreshDuration();}
+function renderSceneList(){const box=$("sceneList");box.innerHTML="";labels.forEach((label,i)=>{const b=document.createElement("button");b.type="button";b.className="scene-chip"+(i===sceneIndex?" active":"");b.textContent=String(i+1).padStart(2,"0");b.title=label;b.addEventListener("click",()=>{const was=playing;playbackElapsed=sceneDurations.slice(0,i).reduce((a,v)=>a+v,0);if(was)playbackStarted=performance.now()-playbackElapsed;showScene(i);updateProgress();});box.appendChild(b);});}
+function refreshDuration(){const total=sceneDurations.reduce((a,b)=>a+b,0);$("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";}
+function updateProgress(){const total=sceneDurations.reduce((a,b)=>a+b,0);$("studioProgress").style.width=(playbackElapsed/total*100)+"%";const sec=Math.floor(playbackElapsed/1000);$("sceneTime").textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");}
+function startPlayback(){if(playing){pausePlayback();return;}const total=sceneDurations.reduce((a,b)=>a+b,0);if(playbackElapsed>=total){playbackElapsed=0;showScene(0);}playing=true;playbackStarted=performance.now()-playbackElapsed;$("startPreview").textContent="Ⅱ To‘xtatish";if(!playbackRaf)playbackRaf=requestAnimationFrame(playbackFrame);}
+function pausePlayback(){if(playing)playbackElapsed=Math.min(sceneDurations.reduce((a,b)=>a+b,0),performance.now()-playbackStarted);playing=false;if(playbackRaf)cancelAnimationFrame(playbackRaf);playbackRaf=0;updateProgress();$("startPreview").textContent=playbackElapsed>=sceneDurations.reduce((a,b)=>a+b,0)?"↺ Qayta ko‘rish":"▶ Davom etish";if($("recordPause"))$("recordPause").textContent=playing?"Ⅱ":"▶";}
+function playbackFrame(now){if(!playing){playbackRaf=0;return;}const total=sceneDurations.reduce((a,b)=>a+b,0);playbackElapsed=Math.min(total,now-playbackStarted);if(playbackElapsed>=total){playing=false;playbackRaf=0;showScene(4);updateProgress();$("studioProgress").style.width="100%";$("startPreview").textContent="↺ Qayta ko‘rish";$("recordPause").textContent="↺";return;}let cursor=playbackElapsed,i=0;while(i<4&&cursor>=sceneDurations[i]){cursor-=sceneDurations[i];i++;}if(i!==sceneIndex)showScene(i);updateProgress();renderTextLayer();playbackRaf=requestAnimationFrame(playbackFrame);}
+function wrapLines(ctx,text,maxWidth){const words=String(text||"").split(/\s+/),lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=word;}else line=test;}if(line)lines.push(line);return lines;}
+function paintText(canvas){if(!canvas)return;const ctx=canvas.getContext("2d");if(!ctx)return;ctx.setTransform(canvas.width/1080,0,0,canvas.height/1920,0,0);ctx.clearRect(0,0,1080,1920);const now=performance.now(),duration=({Silliq:900,Dinamik:320,Kinematik:1100,Ijodiy:500,Aralash:650})[selectedMotion]||800;const sceneElapsed=playing?Math.max(0,playbackElapsed-sceneDurations.slice(0,sceneIndex).reduce((a,b)=>a+b,0)):Math.max(0,now-sceneVisualStarted);const accent=({silver:"#8ed8ff",blue:"#168cff",violet:"#9876ff",emerald:"#00d5b2",solar:"#ffb52e"})[selectedPalette]||"#8ed8ff";const text=sceneTexts[sceneIndex]||"";ctx.save();ctx.textAlign=selectedVisual==="kinetic"||selectedVisual==="future"?"left":"center";ctx.textBaseline="middle";const x=ctx.textAlign==="left"?120:540;const font=selectedVisual==="editorial"?"italic 82px Georgia":selectedVisual==="future"?"800 76px monospace":selectedVisual==="kinetic"?"900 92px system-ui":"800 82px system-ui";ctx.font=font;const lines=wrapLines(ctx,text,ctx.textAlign==="left"?840:920).slice(0,7);const lineHeight=selectedVisual==="kinetic"?116:102;const y0=960-(lines.length-1)*lineHeight/2;lines.forEach((line,i)=>{const p=Math.max(0,Math.min(1,(sceneElapsed-duration-i*260)/420));const a=p*p*(3-2*p);ctx.globalAlpha=a;ctx.fillStyle=selectedVisual==="future"?accent:"#fff";ctx.shadowColor=accent;ctx.shadowBlur=selectedVisual==="cinematic"?18:8;ctx.fillText(line,x,y0+i*lineHeight+(1-a)*36,900);});ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.textAlign="center";ctx.font="700 30px system-ui";ctx.fillStyle=accent;ctx.fillText(labels[sceneIndex],540,230);ctx.font="600 25px system-ui";ctx.fillStyle="rgba(255,255,255,.65)";ctx.fillText(String(sceneIndex+1).padStart(2,"0")+" / 05",540,1690);const total=sceneDurations.reduce((a,b)=>a+b,0);if(playbackElapsed>=Math.max(0,total-5200)){ctx.clearRect(0,0,1080,1920);const p=Math.min(1,(playbackElapsed-(total-5200))/5200);ctx.globalAlpha=Math.min(1,p*2);ctx.textAlign="center";ctx.fillStyle="#fff";ctx.font="900 150px system-ui";ctx.fillText("NEX",540,890);ctx.fillStyle=accent;ctx.font="600 42px system-ui";ctx.fillText("Fikr va imkoniyatlar makoni.",540,1000);ctx.globalAlpha=1;}ctx.restore();}
+function renderTextLayer(){paintText($("reelCanvas"));if(recording)paintText($("recordCanvas"));}
+function build3D(){const subject=fieldName();if(!subject||!val("title")){status("studioStatus","Avval fakt ma’lumotlarini to‘ldiring.");return;}if(!subjects.includes(subject)){status("studioStatus","Bu yo‘nalish uchun umumiy 3D obyekt ishlatiladi.");}try{if(!THREE)throw Error("Three.js yuklanmagan");if(!renderer){renderer=new THREE.WebGLRenderer({canvas:$("reel3D"),antialias:true,alpha:false,powerPreference:"high-performance"});renderer.setPixelRatio(1);renderer.setSize(360,640,false);renderer.outputColorSpace=THREE.SRGBColorSpace;scene=new THREE.Scene();scene.background=new THREE.Color(palettes[selectedPalette].bg);camera=new THREE.PerspectiveCamera(38,9/16,.1,100);camera.position.set(0,0,5.2);scene.add(new THREE.HemisphereLight(0xb9eaff,0x10213a,2.1));const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(3,4,5);scene.add(key);const fill=new THREE.PointLight(palettes[selectedPalette].accent,25,12);fill.position.set(-3,-1,2);scene.add(fill);const tick=()=>{raf=requestAnimationFrame(tick);if(root&&!paused){const speed=({Silliq:.5,Dinamik:1.7,Kinematik:.28,Ijodiy:1.25,Aralash:.9})[selectedMotion]||.5;root.rotation.y+=.0025*speed*motionSpeed;root.rotation.x=Math.sin(performance.now()*.0003*speed)*.0015;}if(renderer&&scene&&camera)renderer.render(scene,camera);if(recording&&recordRenderer)recordRenderer.render(scene,camera);};tick();}if(root){scene.remove(root);root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());});}scene.background=new THREE.Color(palettes[selectedPalette].bg);root=null;makeScene(subject);subjectNow=subject;addFactSpecificObject(subject);if(root)root.scale.setScalar(1.18);status("studioStatus","Fakt mazmuniga mos 3D obyekt tayyor.");resize3D();}catch(e){status("studioStatus","3D sahna ishga tushmadi: "+e.message);}}
+function resize3D(){if(!renderer||!camera)return;renderer.setSize(360,640,false);camera.aspect=9/16;camera.updateProjectionMatrix();if(recordRenderer)recordRenderer.setSize(1080,1920,false);}
+function setupRecordRenderer(){if(recordRenderer)return true;if(!THREE||!renderer)return false;try{recordRenderer=new THREE.WebGLRenderer({canvas:$("record3D"),antialias:true,alpha:false,powerPreference:"high-performance"});recordRenderer.setPixelRatio(1);recordRenderer.setSize(1080,1920,false);recordRenderer.outputColorSpace=THREE.SRGBColorSpace;return true;}catch(e){recordRenderer=null;return false;}}
+async function startRecord(){if(!renderer)build3D();if(!renderer)return;const ok=setupRecordRenderer();recording=true;$("recordOverlay").hidden=false;playing=true;playbackStarted=performance.now()-playbackElapsed;$("startPreview").textContent="Ⅱ To‘xtatish";$("recordPause").textContent="Ⅱ";renderTextLayer();if(!playbackRaf)playbackRaf=requestAnimationFrame(playbackFrame);status("studioStatus",ok?"Yozuv oynasi ochildi. Telefon ekran yozuvini ishga tushiring.":"Yuqori aniqlikdagi 3D yozuv qatlami ishga tushmadi.");}
+function exitRecord(){recording=false;$("recordOverlay").hidden=true;pausePlayback();}
+function sceneControls(){renderSceneList();showScene(0);refreshDuration();}
+$("sceneText").addEventListener("input",()=>{sceneTexts[sceneIndex]=$("sceneText").value;sceneEdited[sceneIndex]=true;renderTextLayer();});
+$("sceneDuration").addEventListener("input",()=>{const before=sceneDurations.slice(0,sceneIndex).reduce((a,b)=>a+b,0),offset=Math.max(0,playbackElapsed-before);sceneDurations[sceneIndex]=Number($("sceneDuration").value)*1000;playbackElapsed=before+Math.min(offset,sceneDurations[sceneIndex]);if(playing)playbackStarted=performance.now()-playbackElapsed;$("sceneDurationValue").textContent=Number($("sceneDuration").value).toFixed(1).replace(".",",")+" soniya";refreshDuration();updateProgress();});
+$("startPreview").addEventListener("click",startPlayback);
+$("recordMode").addEventListener("click",startRecord);
+$("recordPause").addEventListener("click",()=>{if(playing){pausePlayback();$("recordPause").textContent="▶";}else{const total=sceneDurations.reduce((a,b)=>a+b,0);if(playbackElapsed>=total){playbackElapsed=0;showScene(0);}playing=true;playbackStarted=performance.now()-playbackElapsed;$("recordPause").textContent="Ⅱ";if(!playbackRaf)playbackRaf=requestAnimationFrame(playbackFrame);}});
+$("recordExit").addEventListener("click",exitRecord);
+$("restartScene").addEventListener("click",()=>{pausePlayback();playbackElapsed=0;showScene(0);updateProgress();startPlayback();});
+$("shuffleBackground").addEventListener("click",()=>{variant++;selectedPalette=["silver","blue","violet","emerald","solar"][variant%5];choose("paletteOptions",selectedPalette);if(scene)scene.background=new THREE.Color(palettes[selectedPalette].bg);build3D();});
+$("backSettings").addEventListener("click",()=>{pausePlayback();exitRecord();showStep(6);});
+$("newProject").addEventListener("click",()=>{exitRecord();pausePlayback();["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending","sceneText"].forEach(id=>$(id).value="");$("customField").hidden=true;sceneTexts=["","","","",""];sceneEdited=[false,false,false,false,false];sceneDurations=[5000,5000,5000,5000,5000];sceneIndex=0;playbackElapsed=0;selectedTone="Jiddiy";selectedVisual="cinematic";selectedPalette="silver";selectedMotion="Silliq";choose("toneOptions",selectedTone);choose("visualOptions",selectedVisual);choose("paletteOptions",selectedPalette);choose("motionOptions",selectedMotion);try{sessionStorage.removeItem("nex-qf-draft-014");}catch(e){}showStep(1);});
+$("field").addEventListener("change",()=>{if(renderer&&currentPage===7)build3D();});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){pausePlayback();if(raf)cancelAnimationFrame(raf);raf=0;}else if(renderer&&!raf)build3D();});
+document.querySelectorAll(".wizard-page").forEach(p=>{p.addEventListener("transitionend",()=>{});});
+restoreDraft();showStep(1);renderSceneList();refreshDuration();
 })();
