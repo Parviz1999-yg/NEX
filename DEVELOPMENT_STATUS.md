@@ -1,3 +1,9 @@
+## QF 0.16.3 — 2026-11-22
+- [x] 3D mavzu yorliqlari va sahna teglari video qatlamidan olib tashlandi.
+- [x] Manba/tekshiruv kartasi va outrodagi brend/slogan yozuvlari olib tashlandi.
+- [x] Video qatlamida faqat ssenariy matni qoldirildi; outro matnsiz vizual yakun.
+- [x] JavaScript sintaksisi tekshirildi; haqiqiy Android/browser vizual testi hali bajarilmadi.
+
 ## QF 0.16.2 — 2026-11-22
 - [x] Yozuv oynasi boshqaruvlari TA bilan bir xil tamoyilga o‘tkazildi: boshlanganda va ekranga tegilganda 1,8 soniya ko‘rinadi, keyin yashirinadi.
 - [x] Mobil layout 700/520/380 px breakpointlarda qayta moslandi: vertikal oqim, ixcham 9:16 preview, to‘liq kenglikdagi sozlamalar, yirik tugmalar va mobil forma shriftlari.
