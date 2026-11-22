@@ -1,5 +1,16 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.4] — 2026-11-22
+
+- Reels sahnalari uchun harakatlanuvchi suyuq metall fon yaratildi: xrom-kumush gradientlar, yorug‘lik oqimlari va chuqur vignette.
+- Fakt e’loni 3D displeyi xrom-metall korpus va sovuq oq emissiv kontur bilan yangilandi.
+- Yakuniy 5,2 soniyalik NEX outro qayta ishlanib, metallik logo, orbital halqalar, slogan va NEX ORIGINAL yozuvi bilan mustaqil yakuniy sahna sifatida ko‘rsatildi.
+- Hook/01/05 texnik overlaylari chiqarilmaydi; sahna nomlari studiya boshqaruvida qoladi.
+- QF asset cache va versiyasi 0.15.4 ga yangilandi. TA/FM fayllari o‘zgartirilmadi.
+- Statik tekshiruv; qurilmadagi vizual/WebGL sinovi hali bajarilmagan.
+
+# QF — Qiziqarli fakt o‘zgarishlar tarixi
+
 ## [0.15.3] — 2026-11-22
 
 - Reels kadrlaridan ortiqcha HOOK/FAKT E’LONI/MAZMUN/HOLAT/YAKUN va 01/05 kabi texnik yozuvlar olib tashlandi; ssenariy matni toza kompozitsiyada qoladi.
