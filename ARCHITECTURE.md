@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.15.4  
+**QF moduli:** 0.15.6  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -122,3 +122,12 @@ MI mustaqil sahifada ibora xarakteri, iboraning o‘zi, muallif/manba, mazmun, k
 - TA va FM himoyalangan; ular bo‘yicha har qanday o‘zgarish uchun alohida ruxsat kerak.
 
 - QF v0.15.5: yakuniy 5,2 soniyalik outro FM bilan bir xil qilindi — suyuq xrom to‘lqini, NEX logotipi, orbital chiziq va slogan. FM manba fayllari o‘zgartirilmagan.
+
+
+## 8. 2026-11-22 — TA/FM/QF audit va xavfsiz tozalash
+
+- Audit zaxirasi: `backup/nex-before-dead-code-cleanup-2026-11-22` (auditdan oldingi `main` holati).
+- TA 0.10.2: faqat chaqirilmaydigan `getToneVisual()` yordamchisi olib tashlandi; render, forma, sahna va dizayn oqimi saqlandi.
+- FM 0.9.7: kodga o‘zgartirish kiritilmadi. Statik tekshiruvda aniq chaqirilmaydigan funksiya topilmadi; FM muhofazasi saqlandi.
+- QF 0.15.6: chaqirilmaydigan `showNext()`/`sceneControls()`, foydalanilmaydigan holat o‘zgaruvchilari va o‘qilmaydigan yashirin DOM maydonlari olib tashlandi. `motionSpeed` doim 1 bo‘lgani sababli ko‘paytuvchini olib tashlash animatsiya tezligini o‘zgartirmaydi.
+- Statik tekshiruvlar real brauzer, WebGL, Android qurilma va ekran yozish sinovining o‘rnini bosmaydi.
