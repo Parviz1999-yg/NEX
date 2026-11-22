@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const state = {
   category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
-  camera:null, group:null, fluid:null, logoGroup:null, logoStrokes:[], recordRenderer:null, raf:0, animationStarted:0,
+  camera:null, group:null, fluid:null, sourceIconGroup:null, logoGroup:null, logoStrokes:[], recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
   playbackStarted:0, playbackElapsed:0, playbackRaf:0, recording:false, recordControlsTimer:0, webglLoading:false, webglFailed:false, sceneTexts:["","","","",""],
   sceneEdited:[false,false,false,false,false], studioOpened:false
@@ -167,7 +167,7 @@ function disposeGroup(){
     if(o.geometry)o.geometry.dispose();
     if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}
   });
-  state.fluid=null;state.logoGroup=null;
+  state.fluid=null;state.sourceIconGroup=null;state.logoGroup=null;
 }
 function createFlowSurface(segments,widthSegments,material,seed){
   const positions=[],indices=[],base=[];
@@ -246,6 +246,45 @@ function updateFlowSurface(time,profile,energy){
   }
   attr.needsUpdate=true;state.fluid.geometry.computeVertexNormals();
 }
+function createSourceIcon(material,glow){
+  const icon=new THREE.Group();
+  const extrude={depth:.16,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.045,bevelThickness:.045};
+  const addShape=(points,mat=material)=>{
+    const shape=new THREE.Shape();shape.moveTo(points[0][0],points[0][1]);
+    points.slice(1).forEach(([x,y])=>shape.lineTo(x,y));shape.closePath();
+    const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,extrude),mat);mesh.position.z=.02;icon.add(mesh);return mesh;
+  };
+  if(state.category==="telegram"){
+    // Telegram qog‘oz samolyoti — hajmli, xrom metall.
+    addShape([[-1.05,.28],[1.05,.78],[.34,-.9],[-.02,-.12],[-.55,-.48],[-.38,.02]]);
+    addShape([[-.02,-.12],[.34,-.9],[.24,.02]],glow);
+  }else if(state.category==="youtube"){
+    const shape=new THREE.Shape();shape.moveTo(-.9,-.55);shape.lineTo(.9,-.55);shape.quadraticCurveTo(1.08,-.55,1.08,-.35);shape.lineTo(1.08,.35);shape.quadraticCurveTo(1.08,.55,.9,.55);shape.lineTo(-.9,.55);shape.quadraticCurveTo(-1.08,.55,-1.08,.35);shape.lineTo(-1.08,-.35);shape.quadraticCurveTo(-1.08,-.55,-.9,-.55);shape.closePath();
+    icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape,extrude),material));
+    addShape([[-.22,-.34],[.42,0],[-.22,.34]],glow);
+  }else if(state.category==="kitob"){
+    const left=new THREE.Shape();left.moveTo(0,.72);left.bezierCurveTo(-.42,.92,-.95,.72,-1,-.55);left.bezierCurveTo(-.58,-.78,-.2,-.62,0,-.38);left.closePath();
+    const right=new THREE.Shape();right.moveTo(0,.72);right.bezierCurveTo(.42,.92,.95,.72,1,-.55);right.bezierCurveTo(.58,-.78,.2,-.62,0,-.38);right.closePath();
+    icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(left,extrude),material));
+    icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(right,extrude),glow));
+    const spine=new THREE.Mesh(new THREE.BoxGeometry(.055,1.12,.2),material);spine.position.set(0,-.02,.12);icon.add(spine);
+  }else{
+    const globe=new THREE.Mesh(new THREE.SphereGeometry(.76,32,24),material);icon.add(globe);
+    for(const rotation of [[0,0,0],[Math.PI/2,0,0],[0,Math.PI/2,0]]){
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(.78,.035,10,80),glow);ring.rotation.set(...rotation);icon.add(ring);
+    }
+    const equator=new THREE.Mesh(new THREE.TorusGeometry(.77,.018,8,80),material);icon.add(equator);
+  }
+  icon.scale.setScalar(.58);
+  icon.position.set(0,0,1.28);
+  return icon;
+}
+function updateSourceIcon(time,profile,energy){
+  const icon=state.sourceIconGroup;if(!icon)return;
+  const phase=time*profile.speed*energy;
+  icon.position.set(Math.sin(phase*.42)*.62,Math.sin(phase*.8)*.72,1.18+Math.cos(phase*.55)*.16);
+  icon.rotation.set(Math.sin(phase*.34)*.16,Math.sin(phase*.28)*.22,-.16+Math.sin(phase*.72)*.12);
+}
 function rebuildScene(){
   if(!state.scene)return;
   disposeGroup();
@@ -261,21 +300,8 @@ function rebuildScene(){
   const rand=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296;};
   const metal=new THREE.MeshPhysicalMaterial({color:0xcbd5df,metalness:.96,roughness:.17,clearcoat:1,clearcoatRoughness:.06});
   const glow=new THREE.MeshStandardMaterial({color:palette.accent,emissive:palette.accent,emissiveIntensity:1.1,metalness:.45,roughness:.3});
-  if(state.category==="kitob"){
-    for(let i=0;i<5;i++){const page=new THREE.Mesh(new THREE.BoxGeometry(2.4,.055,1.55),i===4?glow:metal);page.position.set((i-2)*.045,(i-2)*.075,0);page.rotation.z=-.16;page.rotation.y=-.16;state.group.add(page);}
-    const cover=new THREE.Mesh(new THREE.BoxGeometry(2.5,.12,1.62),metal);cover.position.set(-.08,-.23,.08);cover.rotation.z=-.16;cover.rotation.y=-.16;state.group.add(cover);
-  }else if(state.category==="youtube"){
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(1.22,.16,20,100),metal);state.group.add(ring);
-    const play=new THREE.Mesh(new THREE.ConeGeometry(.72,1.05,3),glow);play.rotation.z=-Math.PI/2;play.position.z=.22;state.group.add(play);
-    const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.75,.018,8,100),glow);orbit.rotation.set(.9,.2,.4);state.group.add(orbit);
-  }else if(state.category==="telegram"){
-    const sphere=new THREE.Mesh(new THREE.IcosahedronGeometry(1.28,2),metal);sphere.scale.set(1.05,.78,.42);sphere.rotation.z=-.24;state.group.add(sphere);
-    const signal=new THREE.Mesh(new THREE.TorusGeometry(1.75,.025,8,120),glow);signal.rotation.set(.45,.2,.3);state.group.add(signal);
-    for(let i=0;i<3;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.07,16,12),glow);dot.position.set((rand()-.5)*3,(rand()-.5)*3,.4);state.group.add(dot);}
-  }else{
-    const globe=new THREE.Mesh(new THREE.TorusKnotGeometry(1.05,.23,160,18,2,5),metal);globe.rotation.set(.4,.2,0);state.group.add(globe);
-    for(let i=0;i<3;i++){const orb=new THREE.Mesh(new THREE.SphereGeometry(.09,18,12),glow);const a=rand()*Math.PI*2;orb.position.set(Math.cos(a)*2,Math.sin(a)*2,(rand()-.5)*1.2);state.group.add(orb);}
-  }
+  state.sourceIconGroup=createSourceIcon(metal,glow);
+  state.group.add(state.sourceIconGroup);
   if(state.visual==="kinetic"){
     for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(.12,1.1+rand()*1.5,.12),glow);bar.position.set(-2+i,((i%2)-.5)*1.2,-.5);bar.rotation.z=(rand()-.5)*.28;state.group.add(bar);}
   }else if(state.visual==="editorial"){
@@ -341,6 +367,7 @@ function animate(){
     const ease=blend*blend*(3-2*blend);
     const mix=(a,b)=>a+(b-a)*ease;
     updateFlowSurface(t,profile,energy);
+    updateSourceIcon(t,profile,energy);
     const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
     const elapsed=state.playbackElapsed;
     // FM logotipi 2D qatlamda yuqori chapda qisqa chaqnaydi.
@@ -629,12 +656,7 @@ function revealRecordControls(){
   state.recordControlsTimer=setTimeout(()=>overlay.classList.remove("controls-visible"),1800);
 }
 async function startRecordMode(){
-  try{
-    if(document.documentElement.requestFullscreen&&!document.fullscreenElement){
-      const fullscreen=document.documentElement.requestFullscreen({navigationUI:"hide"});
-      fullscreen?.catch(()=>{});
-    }
-  }catch{}
+  // TA uslubidagi sahifa ichki overlay'i ishlatiladi; brauzer fullscreen API chaqirilmaydi.
   if(!state.renderer||state.webglFailed){
     const ready=await setupWebGL();
     if(!ready){setStatus("studioStatus","WebGL ishga tushmadi. Internet yoki brauzer grafik imkoniyatini tekshiring.");return;}
@@ -655,7 +677,6 @@ function exitRecordMode(){
   if(overlay){overlay.classList.remove("controls-visible");overlay.hidden=true;}
   state.recording=false;pausePlayback();
   if($("recordPause"))$("recordPause").textContent="Ⅱ";
-  if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
 }
 $("recordMode").addEventListener("click",startRecordMode);
 $("recordPause").addEventListener("click",()=>{
