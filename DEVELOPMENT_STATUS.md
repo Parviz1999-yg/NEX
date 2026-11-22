@@ -1,3 +1,9 @@
+## QF 0.16.4 — 2026-11-22
+- [x] NEX logotipi, orbital halqa va shior 5,2 soniyalik outro yakuniga qaytarildi.
+- [x] Manba/tekshiruv paneli video boshidan barcha asosiy sahnalarda ko‘rsatiladi.
+- [x] Har bir sahna oxirida tasnif/manba/dalil/tekshiruvga tegishli shtamp animatsiyasi qo‘shildi.
+- [x] JavaScript sintaksisi tekshirildi; real Android/WebGL sinovi hali bajarilmagan.
+
 ## QF 0.16.3 — 2026-11-22
 - [x] 3D mavzu yorliqlari va sahna teglari video qatlamidan olib tashlandi.
 - [x] Manba/tekshiruv kartasi va outrodagi brend/slogan yozuvlari olib tashlandi.
