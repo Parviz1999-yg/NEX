@@ -1,3 +1,8 @@
+## QF 0.16.4 — 2026-11-22
+
+- NEX brend outro qaytarildi; manba/tekshiruv paneli video boshidan ko‘rinadi va har sahna oxirida tegishli shtamp chiqadi.
+- QF versiyasi/cache-buster 0.16.4 ga yangilandi; TA/FM fayllari o‘zgartirilmadi.
+
 ## QF 0.16.3 — 2026-11-22
 
 - Ssenariydan tashqari barcha video yozuvlari olib tashlandi: 3D obyekt yorliqlari, sahna teg/raqamlari, manba kartasi va outro matnlari. Faqat ssenariy matni qoladi.
