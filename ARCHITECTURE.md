@@ -18,16 +18,21 @@
     │   ├── index.html
     │   ├── style.css
     │   └── app.js
-    └── maxsus-iboralar/
-        ├── index.html
-        ├── style.css
-        └── app.js
+    ├── maxsus-iboralar/
+    │   ├── index.html
+    │   ├── style.css
+    │   └── app.js
+    └── versions/
+        ├── TA/{VERSION,CHANGELOG.md}
+        ├── FM/{VERSION,CHANGELOG.md}
+        ├── QF/{VERSION,CHANGELOG.md}
+        └── MI/{VERSION,CHANGELOG.md}
 
 ## 2. Arxitektura qoidalari
 
 1. Ildiz sahifa faqat modullar katalogi. Unda modulga xos forma, ssenariy generatori yoki render dvigateli bo‘lmaydi.
 2. Har modul o‘z HTML, CSS va JavaScript fayllariga ega. Bir modulning DOM identifikatorlari, holati yoki CSS qoidalari boshqa modulga bog‘lanmaydi.
-3. Umumiy versiya VERSION faylida yuritiladi. Modul versiyalari ajratilmaydi.
+3. Umumiy NEX versiyasi ildizdagi VERSION/CHANGELOG.md da, har bir studiya versiyasi esa versions/{TA,FM,QF,MI}/VERSION va CHANGELOG.md fayllarida mustaqil yuritiladi.
 4. Modullararo o‘tish URL navigatsiyasi orqali bajariladi.
 5. TA va FM himoyalangan. Ularning ichki funksiyalari, dizayni va ish oqimiga alohida ruxsatsiz tegilmaydi.
 
@@ -95,8 +100,18 @@ MI mustaqil sahifada quyidagilarni yig‘adi:
 - [x] QF tasniflari, fan sohasi va besh ssenariy bosqichi kiritildi.
 - [x] QF 3D qatlamining ssenariydan mustaqil interfeys chegarasi belgilandi.
 - [x] MI alohida modul sifatida yaratildi.
-- [x] README, CHANGELOG va VERSION yagona versiyaga moslandi.
+- [x] Umumiy NEX va to‘rtta studiya uchun mustaqil versiya metama’lumotlari yaratildi.
 - [ ] Android qurilmada to‘liq real brauzer sinovi.
 - [ ] QF uchun haqiqiy Three.js renderer va mazmunga mos 3D sahnalar.
 - [ ] MI uchun to‘liq animatsion Reels generatori.
 - [ ] Har bir modulda 9:16 ekran yozish/eksport jarayonini alohida tekshirish.
+
+## 8. Ikki darajali versiyalash
+
+- Umumiy platforma: ildizdagi VERSION va CHANGELOG.md.
+- Studiyalar: versions/TA/, versions/FM/, versions/QF/, versions/MI/ ichidagi mustaqil VERSION va CHANGELOG.md.
+- Mustaqil studiya o‘zgarishi faqat o‘sha studiya versiyasini oshiradi. Dashboard yoki platforma arxitekturasi o‘zgarsa umumiy NEX versiyasi ham oshiriladi.
+- Har bir daraja SemVer qoidalaridan foydalanadi.
+- Boshlang‘ich versiyalar amaldagi sahifa holatiga mos qayd qilindi: TA 0.10.0, FM 0.9.7, QF 0.10.0, MI 0.10.0.
+- TA va FM ichki fayllari himoyalangan. Versiya tarixlari ularning papkalaridan tashqaridagi versions/ katalogida yuritiladi; sahifadagi mavjud versiya yozuvlari hozircha o‘zgartirilmaydi.
+- Hozirgi commit hujjat/metama’lumot o‘zgarishi: umumiy NEX versiyasi 0.10.0 bo‘lib qoladi.
