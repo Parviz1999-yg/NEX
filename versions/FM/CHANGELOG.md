@@ -1,3 +1,9 @@
+## [0.9.9] — 2026-11-22
+
+- Qidiruv so‘rovi va qidiruv joyi muhim izlanish yo‘riqnomasi sifatida saqlandi; ular studiya xulosasida ko‘rsatiladi. NEX avtomatik internet qidiruvi bajarmasligi forma matnida ochiq aytiladi.
+- Manba tavsifi va foydasi endi ixtiyoriy zaxira qiymatlar: ssenariydagi SABAB/USTUNLIK bo‘sh bo‘lsa, ular avtomatik ishlatiladi.
+- HTML formasi bo‘lmagan `sourceLink` ga oid eskirgan JavaScript murojaatlari olib tashlandi.
+
 ## [0.9.8] — 2026-11-22
 
 - 5,2 soniyalik NEX outro beshta asosiy sahnadan keyin alohida ijro qilinadi; endi oxirgi asosiy sahnaning 5,2 soniyasini egallamaydi.
