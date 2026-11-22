@@ -11,7 +11,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 | Qisqartma | Modul nomi | Holati |
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
-| **FM** | Foydali manba | Faol ishlab chiqish yo‘nalishi |
+| **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
 | **QF** | Qiziqarli fakt | Keyingi modul |
 | **MI** | Maxsus iboralar | Keyingi modul |
 
@@ -45,16 +45,19 @@ TA — NEX uchun etalon modul. Quyidagi uchta yo‘nalishdagi yondashuv uning ta
 - TA dan olingan shablon yoki yondashuv boshqa modulga mustaqil nusxa yoki alohida komponent sifatida tatbiq etiladi.
 - Har bir modul alohida tekshiriladi; FM, QF yoki MI dagi o‘zgarish TA ning avvalgi ishlashini buzmasligi shart.
 
-## 4. FM — Foydali manba: joriy ish
+## 4. FM — Foydali manba: tayyor va muhofazalangan
 
-Hozirgi asosiy ishlab chiqish yo‘nalishi — FM. Manba turlari:
+FM foydalanuvchi tomonidan tayyor deb tasdiqlangan. Shu sababli FM moduli hozir **MUHOFAZALANGAN** holatda.
 
-- Sayt
-- YouTube
-- Telegram
-- Kitob
+- Foydalanuvchi alohida va aniq ruxsat bermaguncha FM’ning birorta fayli, kodi, dizayni, matni, animatsiyasi, funksiyasi yoki sozlamasi o‘zgartirilmaydi.
+- Bu taqiq xatolarni tuzatish, optimallashtirish, refaktor qilish, yangilash, cache-buster almashtirish, fayl ko‘chirish yoki kodni tozalash kabi barcha o‘zgarishlarni ham qamrab oladi.
+- FM bilan bog‘liq taklif yoki aniqlangan muammo bo‘lsa, avval faqat xabar beriladi. Ruxsatsiz amaliy o‘zgarish kiritilmaydi.
+- FM’ga ruxsat faqat foydalanuvchi aniq qaysi ishni bajarishni buyurganidan keyin, faqat kelishilgan doirada amal qiladi. Bitta vazifa uchun berilgan ruxsat boshqa o‘zgarishlarga umumiy ruxsat hisoblanmaydi.
+- FM muhofazasi TA kabi doimiy qoida hisoblanadi. Ushbu README yozuvi ham foydalanuvchining ruxsatisiz qayta o‘zgartirilmaydi.
 
-FM o‘z sahifasi, uslublari va JavaScript kodi bilan mustaqil modul sifatida rivojlantiriladi. Unda TA ning axborot yig‘ish, ma’lumotni qayta ishlash va interfeys tamoyillari qo‘llanadi, lekin TA fayllari o‘zgartirilmaydi.
+FM manba turlari: Sayt, YouTube, Telegram va Kitob.
+
+**Holat:** tayyor, foydalanuvchi yangi topshiriq bermaguncha o‘zgartirishlar muzlatilgan.
 
 ## 5. QF — Qiziqarli fakt
 
