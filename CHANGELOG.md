@@ -6,7 +6,7 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 
 - Ildiz sahifa umumiy ish oqimidan ajratilib, to‘rtta mustaqil studiyaga yo‘naltiruvchi dashboardga aylantirildi.
 - TA mavjud ichki oqimi, shakllari, CSS va render mexanizmlari saqlangan holda alohida `tavsiya-akkaunt/` moduliga ajratildi; faqat kirish va dashboardga qaytish marshruti moslashtirildi.
-- FM modulining fayllari va ichki tuzilmasi o‘zgartirilmadi.
+- FM modulining fayllari va ichki tuzilmasi o‘zgartirilmadi. FM sahifasidagi ko‘rinadigan v0.9.7 belgisi ham himoya talabi sabab o‘z holida qoldi; global VERSION 0.10.0.
 - QF mustaqil modul papkasi yaratildi: to‘rtta fakt tasnifi, fan sohasi, manba/dalil/tekshiruv maydonlari va besh bosqichli hikoya formasi kiritildi.
 - QF 3D vizualizatsiyasi ssenariydan mustaqil qatlam sifatida belgilandi; hozircha konseptual vizual preview, to‘liq WebGL renderer emas.
 - MI mustaqil modul papkasi yaratildi: ibora, muallif/manba, mazmun, kontekst, Hook va yakun maydonlari hamda matn yig‘ish funksiyasi qo‘shildi.
