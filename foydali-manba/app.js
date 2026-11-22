@@ -587,7 +587,7 @@ function drawCornerNexLogo(ctx,elapsed){
   ctx.restore();
 }
 function drawFMOutroBrand(ctx,w,h,progress){
-  const p=Math.max(0,Math.min(1,progress)),fade=Math.min(1,p/.14,Math.max(0,(1-p)/.1));
+  const p=Math.max(0,Math.min(1,progress)),fade=Math.max(0,Math.min(1,(p-.58)/.16));
   if(fade<=0)return;
   const q=Math.max(0,Math.min(1,(p-.3)/.42));
   const paths=[
