@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.10.0 — MUSTAQIL MODUL, 3D DVIGATEL KUTILMOQDA** |
+| **QF** | Qiziqarli fakt | **0.11.0 — 3D DVIGATELI ISHCHI PROTOTIP** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -61,7 +61,7 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 
 ## 5. QF — Qiziqarli fakt
 
-QF alohida modul sifatida ishlab chiqiladi. Unda ham TA dan olingan axborot yig‘ish, qayta ishlash va interfeys tamoyillari qo‘llanadi. QF ning o‘ziga tegishli mavzu mantiqi va kontent jarayoni mustaqil bo‘ladi.
+QF mustaqil modul sifatida rivojlantirilmoqda. 0.11.0 da Three.js asosidagi WebGL renderer va fan yo‘nalishiga mos bazaviy 3D sahnalar qo‘shildi. Fakt tasnifi, manba, dalil, tekshiruv qaydi va besh bosqichli ssenariy generatori saqlangan. Fakt matnidan semantik 3D sahna yaratish, sahnani ssenariy vaqtiga bog‘lash va video eksporti hali bajarilmagan.
 
 ## 6. MI — Maxsus iboralar
 
@@ -749,7 +749,7 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Fan sohasi alohida o‘lcham: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya, Psixologiya va boshqa.
 - Manba, havola, dalil va tekshiruv qaydi alohida maydonlar.
 - Hikoya bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
-- 3D vizualizatsiya ssenariydan mustaqil vizual qatlam sifatida ajratilgan. 0.10.0 da interfeys chegarasi va konseptual preview mavjud; to‘liq WebGL sahna dvigateli keyingi ishlab chiqish bosqichi.
+- 3D vizualizatsiya ssenariydan mustaqil qatlam. 0.11.0 da Three.js 0.180.0 orqali haqiqiy WebGL renderer va to‘qqiz fan yo‘nalishi uchun boshlang‘ich 3D kompozitsiyalar qo‘shildi. Renderer CDN orqali dinamik yuklanadi va konteyner o‘lchamiga moslashadi. Bu hali fakt matnidan semantik sahna yaratmaydi.
 - Postulat isbotlangan empirik fakt sifatida ko‘rsatilmaydi. “Tekshiruvda” holati tomoshabinga ochiq ko‘rsatilishi shart.
 
 ### 13.4. MI — mustaqil modul
@@ -757,7 +757,7 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
 
 ### 13.5. Amalga oshirish chegarasi
-- 0.10.0 arxitektura va modul interfeyslari relizi. QF 3D renderer, to‘liq animatsiya sozlamalari, video eksporti va MI kengaytirilgan Reels renderi hali bajarilgan deb hisoblanmaydi.
+- 0.10.0 umumiy arxitektura relizi bo‘lib qoladi. QF studiyasi 0.11.0 da 3D renderer prototipiga ega bo‘ldi; mobil qurilmadagi WebGL sinovi, fakt mazmuniga mos maxsus animatsiyalar, sahna vaqt chizig‘i va video eksporti hali bajarilmagan. MI kengaytirilgan Reels renderi ham alohida ishlab chiqish bosqichida.
 - TA va FM ichki fayllariga o‘zgartirish kiritish uchun alohida ruxsat talab qilinadi.
 
 
