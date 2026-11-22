@@ -1,3 +1,9 @@
+## QF 0.16.1 — 2026-11-22
+
+- To‘liq ekran yozish oynasida boshqaruvlar, jumladan «Studiyaga qaytish», doim ko‘rinadigan qilindi; `Escape` orqali ham chiqish mumkin.
+- Anketa avtomatik saqlanishi/tiklanishi o‘chirildi; eski sessiya nusxasi tozalanadi. Birinchi bosqichda alohida «Anketani tozalash» va tasdiqlanadigan «Yangi loyiha» amali qo‘shildi.
+- Sahna davomiyligi sozlamasi har bir sahna uchun 2,5–12 soniya; umumiy vaqt outro bilan birga hisoblanadi.
+
 ## QF 0.16.0 — 2026-11-22
 
 - Outro asosiy besh sahnadan keyingi mustaqil 5,2 soniyalik vaqt blokiga ko‘chirildi; timeline va recording duration yangilandi.
