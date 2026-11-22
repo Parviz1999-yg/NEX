@@ -1,6 +1,6 @@
 @import url("../assets/css/style.css?v=0.9.7");
 
-/* FM — TA umumiy qobig‘idan foydalanadi; quyidagilar faqat modulga xos. */
+/* QF — FM bilan umumiy qobiq saqlanadi; quyidagilar QF moduliga xos. */
 [hidden]{display:none!important}
 .topbar-meta{display:flex;align-items:center;gap:10px}
 .app-version{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.06em}
@@ -11,6 +11,10 @@
 .progress-steps{position:absolute;inset:-11px 0 auto;display:flex;justify-content:space-between}
 .progress-steps span{width:26px;height:26px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:#0b111d;color:var(--muted);font-size:9px;font-weight:800;transition:.2s}
 .progress-steps span.current,.progress-steps span.done{background:#d9e8f5;border-color:#d9e8f5;color:#08111d}
+/* QF — birinchi bosqich indikatori: yanada aniq va ko‘zga tashlanadigan faol nuqta. */
+.progress-steps span.current[data-progress="1"]{width:32px;height:32px;margin-top:-3px;font-size:10px;color:#061426;background:linear-gradient(145deg,#ffffff 0%,#a8e4ff 48%,#55baff 100%);border:2px solid #e7f8ff;box-shadow:0 0 0 4px #55baff22,0 0 18px #55baffaa,0 0 34px #168cff66;position:relative;z-index:2}
+.progress-steps span.done[data-progress="1"]{border-color:#a8e4ff;box-shadow:0 0 12px #55baff66}
+@media(max-width:600px){.progress-steps span.current[data-progress="1"]{width:28px;height:28px;margin-top:-2px;font-size:9px}}
 .wizard-page{display:none;animation:appear .35s ease}
 .wizard-page.active{display:block}
 .wizard-page>.panel{max-width:900px}
