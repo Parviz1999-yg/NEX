@@ -711,3 +711,34 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 5. **«Holat»** — 48 ta asosiy trek va yagona brend outro holatini alohida, jami hisob bilan ko‘rsatish.
 
 **Hisoblash qoidasi:** foydalanuvchi tasdiqlamagan, faqat generatsiya qilingan yoki ko‘rib chiqilayotgan musiqa TUGALLANDI hisoblanmaydi. Holat o‘zgarishi README jadvalida ham aks ettiriladi.
+
+
+## 13. Mustaqil studiyalar arxitekturasi — 0.10.0
+
+### 13.1. Bosh sahifa va marshrutlar
+- Ildizdagi `index.html` faqat NEX dashboard vazifasini bajaradi; u mazmun kiritish yoki umumiy ssenariy oqimini boshqarmaydi.
+- Mustaqil modullar: `/tavsiya-akkaunt/`, `/foydali-manba/`, `/qiziqarli-fakt/`, `/maxsus-iboralar/`.
+- Har bir modul o‘z HTML, CSS va JavaScript qatlamiga ega. Modullar bir-birining ichki holati va ish jarayonini boshqarmaydi.
+- FM mavjud papkasi va uning fayllari ushbu arxitektura o‘zgarishida tahrirlanmadi.
+
+### 13.2. TA — ichki tuzilma himoyasi
+- Amaldagi TA oqimi `tavsiya-akkaunt/` manziliga alohida nusxa sifatida joylashtirildi.
+- TA forma maydonlari, sahna tuzilishi, generatsiya qoidalari, Canvas/WebGL chizish algoritmlari va CSS dizayni saqlab qolindi.
+- Faqat modulga kirish nuqtasi TA rejimiga yo‘naltirildi va “Yangi loyiha” bosh dashboardga qaytadi.
+- TA nusxasi o‘z CSS va JS fayllariga ega; FM yoki dashboard kodiga bog‘liq emas.
+
+### 13.3. QF — fakt modeli
+- Fakt tasnifi: Ilmiy fakt; Postulat (isbotsiz qabul qilinadigan); 100 foiz ishonchli; Tekshiruvda.
+- Fan sohasi alohida o‘lcham: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya, Psixologiya va boshqa.
+- Manba, havola, dalil va tekshiruv qaydi alohida maydonlar.
+- Hikoya bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
+- 3D vizualizatsiya ssenariydan mustaqil vizual qatlam sifatida ajratilgan. 0.10.0 da interfeys chegarasi va konseptual preview mavjud; to‘liq WebGL sahna dvigateli keyingi ishlab chiqish bosqichi.
+- Postulat isbotlangan empirik fakt sifatida ko‘rsatilmaydi. “Tekshiruvda” holati tomoshabinga ochiq ko‘rsatilishi shart.
+
+### 13.4. MI — mustaqil modul
+- Iboraning xarakteri, matni, muallif/manbasi, mazmuni, qo‘llanish konteksti, Hook va yakun maydonlari ajratildi.
+- Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
+
+### 13.5. Amalga oshirish chegarasi
+- 0.10.0 arxitektura va modul interfeyslari relizi. QF 3D renderer, to‘liq animatsiya sozlamalari, video eksporti va MI kengaytirilgan Reels renderi hali bajarilgan deb hisoblanmaydi.
+- TA va FM ichki fayllariga o‘zgartirish kiritish uchun alohida ruxsat talab qilinadi.
