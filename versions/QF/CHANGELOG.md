@@ -1,3 +1,8 @@
+## [0.16.7] — 2026-11-22
+
+- Fakt ma’lumotlari kartasida qiymatlar endi muhr bosilishi boshlanmaguncha yashiriladi. Muhrlanish vaqtida qiymat animatsiya bilan ochiladi; yorliq va muhr kutilayotgan holati saqlanadi.
+- O‘zgarish faqat ma’lumot kartasining qiymatlarni ko‘rsatish tartibiga tegishli; fakt, ssenariy, 3D obyekt va animatsiya sozlamalari o‘zgartirilmadi.
+
 ## [0.16.6] — 2026-11-22
 
 - NEX outro logotipi TA etalonidagi geometrik NEX chiziq shakliga moslashtirildi; suyuq metall fon, 5,2 soniyalik alohida outro va boshqa QF funksiyalari saqlandi.
