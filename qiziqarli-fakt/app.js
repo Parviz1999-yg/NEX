@@ -16,7 +16,8 @@ $("build").addEventListener("click",()=>{
  if(required.some(id=>!val(id))||!field){alert("Fakt tasnifi, fan sohasi, sarlavha va besh ssenariy bosqichini to‘ldiring.");return;}
  if(val("sourceUrl")&&!/^https?:\/\//i.test(val("sourceUrl"))){alert("Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}
  const lines=["NEX — QIZIQARLI FAKT","Tasnif: "+val("kind"),"Fan sohasi: "+field,"Fakt: "+val("title"),"Manba: "+(val("source")||"Kiritilmagan"),"Havola: "+(val("sourceUrl")||"Kiritilmagan"),"Dalil: "+(val("evidence")||"Kiritilmagan"),"Tekshiruv qaydi: "+val("review"),"","HOOK: "+val("hook"),"FAKT E’LONI: "+val("announce"),"MAZMUNI: "+val("bodyText"),"HOLATI: "+val("statusText"),"FIKR SO‘RASH / CHORLOV: "+val("ending")];
- $("result").textContent=lines.join("\n");
+ $("result").textContent=lines.join("
+");
 });
 $("clear").addEventListener("click",()=>{
  document.querySelectorAll("input,textarea").forEach(x=>x.value="");
@@ -140,7 +141,8 @@ function applyStage(index){
  const names=["HOOK — e’tiborni tortish","FAKT — asosiy obyekt","MAZMUN — yaqinroq ko‘rinish","HOLAT — dalil va tafsilot","YAKUN — umumiy ko‘rinish"];
  $("timelineStatus").textContent=names[index]||"Bosqich";
 }
-\nasync function start3D(){
+
+async function start3D(){
  const status=$("sceneStatus"),subject=$("field").value==="Boshqa"?val("customField"):$("field").value;
  if(!subject){status.textContent="Avval fan yoki mavzu sohasini tanlang.";return;}
  if(subject==="Boshqa"||!colors[subject]){status.textContent="Bu soha uchun hozircha umumiy 3D obyekt ishlatiladi."; }
@@ -160,9 +162,9 @@ function applyStage(index){
    animate();
   }
   if(root){scene.remove(root);root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}});}
-  makeScene(subject);resize3D();
-  $("sceneLabel").textContent=subject.toLocaleUpperCase("uz")+" / 3D";
-  status.textContent="3D sahna ishga tushdi. Sichqoncha yoki sensorli ekran bilan emas, hozircha avtomatik aylanish orqali ko‘rsatiladi.";
+  makeScene(subject);currentSubject=subject;addFactSpecificObject(subject);resize3D();applyCameraMode();applyStage(activeStage);
+  $("sceneLabel").textContent=(subject+" / "+(window.qfSceneCue||"UMUMIY SAHNA")).toLocaleUpperCase("uz");
+  status.textContent="Fakt matniga mos sahna profili yaratildi. Kamera va ssenariy bosqichlarini boshqarishingiz mumkin.";
  }catch(error){
   console.error("QF 3D renderer:",error);
   status.textContent="3D dvigatel yuklanmadi. Internet/CDN yoki qurilmadagi WebGL qo‘llab-quvvatlashini tekshiring.";
@@ -174,7 +176,11 @@ function resize3D(){
  const box=$("stage").getBoundingClientRect(),w=Math.max(1,box.width),h=Math.max(1,box.height);
  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
 }
-$("render3d").addEventListener("click",start3D);\n$("cameraMode").addEventListener("change",applyCameraMode);\n$("motionSpeed").addEventListener("input",e=>{motionSpeed=Number(e.target.value);$("speedValue").textContent=motionSpeed.toFixed(1)+"×";});\n$("pause3d").addEventListener("click",()=>{paused=!paused;$("pause3d").textContent=paused?"Animatsiyani davom ettirish":"Animatsiyani to‘xtatish";$("pause3d").setAttribute("aria-pressed",String(paused));});\ndocument.querySelectorAll(".stage-step").forEach(b=>b.addEventListener("click",()=>applyStage(Number(b.dataset.stage))));
+$("render3d").addEventListener("click",start3D);
+$("cameraMode").addEventListener("change",applyCameraMode);
+$("motionSpeed").addEventListener("input",e=>{motionSpeed=Number(e.target.value);$("speedValue").textContent=motionSpeed.toFixed(1)+"×";});
+$("pause3d").addEventListener("click",()=>{paused=!paused;$("pause3d").textContent=paused?"Animatsiyani davom ettirish":"Animatsiyani to‘xtatish";$("pause3d").setAttribute("aria-pressed",String(paused));});
+document.querySelectorAll(".stage-step").forEach(b=>b.addEventListener("click",()=>applyStage(Number(b.dataset.stage))));
 $("reset3d").addEventListener("click",()=>{if(root){root.rotation.set(0,0,0);}start3D();});
 $("field").addEventListener("change",()=>{if(renderer)start3D();});
 })();
