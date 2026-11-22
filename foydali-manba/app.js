@@ -2,7 +2,7 @@ let THREE=null;
 
 const $ = id => document.getElementById(id);
 const state = {
-  category:"", name:"", seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
+  category:"", name:"", sourcePhoto:null, sourcePhotoImage:null, seed:1, variantIndex:0, tone:"Jiddiy", visual:"cinematic",
   palette:"silver", motion:"Silliq", renderer:null, scene:null,
   camera:null, group:null, fluid:null, sourceIconGroup:null, logoGroup:null, logoStrokes:[], recordRenderer:null, raf:0, animationStarted:0,
   sceneIndex:0, sceneVisualFrom:0, sceneVisualStarted:0, sceneDurations:[5000,5000,5000,5000,5000], playing:false,
@@ -255,19 +255,17 @@ function createSourceIcon(material,glow){
     const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,extrude),mat);mesh.position.z=.02;icon.add(mesh);return mesh;
   };
   if(state.category==="telegram"){
-    // Telegram qog‘oz samolyoti — hajmli, xrom metall.
-    addShape([[-1.05,.28],[1.05,.78],[.34,-.9],[-.02,-.12],[-.55,-.48],[-.38,.02]]);
-    addShape([[-.02,-.12],[.34,-.9],[.24,.02]],glow);
+    const tri=(pts,mat)=>{const sh=new THREE.Shape();sh.moveTo(...pts[0]);pts.slice(1).forEach(p=>sh.lineTo(...p));sh.closePath();const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),mat);m.material.side=THREE.DoubleSide;icon.add(m);};
+    tri([[-1.12,.42],[1.16,.82],[-.08,-.12]],material);tri([[-.08,-.12],[1.16,.82],[.34,-.92]],glow);tri([[-.08,-.12],[-.58,-.5],[-.42,.04]],material);
   }else if(state.category==="youtube"){
     const shape=new THREE.Shape();shape.moveTo(-.9,-.55);shape.lineTo(.9,-.55);shape.quadraticCurveTo(1.08,-.55,1.08,-.35);shape.lineTo(1.08,.35);shape.quadraticCurveTo(1.08,.55,.9,.55);shape.lineTo(-.9,.55);shape.quadraticCurveTo(-1.08,.55,-1.08,.35);shape.lineTo(-1.08,-.35);shape.quadraticCurveTo(-1.08,-.55,-.9,-.55);shape.closePath();
     icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape,extrude),material));
     addShape([[-.22,-.34],[.42,0],[-.22,.34]],glow);
   }else if(state.category==="kitob"){
-    const left=new THREE.Shape();left.moveTo(0,.72);left.bezierCurveTo(-.42,.92,-.95,.72,-1,-.55);left.bezierCurveTo(-.58,-.78,-.2,-.62,0,-.38);left.closePath();
-    const right=new THREE.Shape();right.moveTo(0,.72);right.bezierCurveTo(.42,.92,.95,.72,1,-.55);right.bezierCurveTo(.58,-.78,.2,-.62,0,-.38);right.closePath();
-    icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(left,extrude),material));
-    icon.add(new THREE.Mesh(new THREE.ExtrudeGeometry(right,extrude),glow));
-    const spine=new THREE.Mesh(new THREE.BoxGeometry(.055,1.12,.2),material);spine.position.set(0,-.02,.12);icon.add(spine);
+    const page=(pts,mat)=>{const sh=new THREE.Shape();sh.moveTo(...pts[0]);pts.slice(1).forEach(p=>sh.lineTo(...p));sh.closePath();const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.12,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.025,bevelThickness:.025}),mat);m.material.side=THREE.DoubleSide;icon.add(m);};
+    page([[-.08,.62],[-.92,.82],[-.92,-.62],[-.08,-.38]],material);page([[.08,.62],[.92,.82],[.92,-.62],[.08,-.38]],glow);
+    const spine=new THREE.Mesh(new THREE.BoxGeometry(.1,1.12,.2),material);spine.position.set(0,.02,.08);icon.add(spine);
+    for(let i=0;i<3;i++){const l=new THREE.Mesh(new THREE.BoxGeometry(.54,.018,.018),glow);l.position.set(-.48,.22-i*.22,.22);icon.add(l);const rr=new THREE.Mesh(new THREE.BoxGeometry(.54,.018,.018),material);rr.position.set(.48,.22-i*.22,.22);icon.add(rr);}
   }else if(state.category==="sayt"){
     const globe=new THREE.Mesh(new THREE.SphereGeometry(.76,32,24),material);icon.add(globe);
     for(const rotation of [[0,0,0],[Math.PI/2,0,0],[0,Math.PI/2,0]]){
@@ -583,6 +581,13 @@ function drawCornerNexLogo(ctx,elapsed){
   ctx.shadowColor="#65f5e2";ctx.shadowBlur=18;ctx.fillText("NEX",38,12);
   ctx.restore();
 }
+function drawFMOutroBrand(ctx,w,h,progress){
+  const q=Math.max(0,Math.min(1,(progress-.34)/.28)),fade=Math.min(1,progress/.16,Math.max(0,(1-progress)/.12));if(fade<=0)return;
+  ctx.save();ctx.globalAlpha=fade;ctx.translate(w*.5,h*.255);ctx.scale(.78+.22*q,.78+.22*q);ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillStyle="#f5fbff";ctx.font="950 "+(w*.19)+"px system-ui";ctx.fillText("NEX",0,0);
+  ctx.strokeStyle="#8ed8ff";ctx.lineWidth=w*.009;ctx.beginPath();ctx.ellipse(0,0,w*.29,h*.055,-.2,Math.PI*.08,Math.PI*(.25+1.55*q));ctx.stroke();
+  ctx.font="600 "+(w*.031)+"px system-ui";ctx.fillStyle="#dce8f4";ctx.fillText("Fikr va imkoniyatlar makoni",0,h*.085);ctx.restore();
+}
 function syncRecordText(recordToo=true){
   const value=id=>$(id)?.textContent?.trim()||"";
   const accentMap={silver:"#8ed8ff",blue:"#168cff",violet:"#9876ff",emerald:"#00d5b2",solar:"#ffb52e"};
@@ -622,9 +627,11 @@ function syncRecordText(recordToo=true){
     if(scene===0){
       wrap(value("reelHook"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,style==="kinetic"||style==="future"?820:900);
     }else if(scene===1){
-      wrap(value("reelHook"),style==="editorial"?"italic 38px Georgia":"650 36px system-ui","#b9c8d8",690,3,52,mainAlign,mainX,820);
-      wrap(value("reelTitle"),mainFont,mainColor,960,5,style==="kinetic"?112:96,mainAlign,mainX,820);
-      wrap(value("reelReason"),"600 34px system-ui",accent,1240,3,48,mainAlign,mainX,820);
+      const img=state.sourcePhotoImage,hasPhoto=!!(img&&img.complete&&img.naturalWidth);
+      if(hasPhoto){const box={x:300,y:260,w:480,h:520},sc=Math.max(box.w/img.naturalWidth,box.h/img.naturalHeight),sw=box.w/sc,sh=box.h/sc,sx=(img.naturalWidth-sw)/2,sy=(img.naturalHeight-sh)/2;ctx.save();ctx.beginPath();ctx.roundRect(box.x,box.y,box.w,box.h,34);ctx.clip();ctx.drawImage(img,sx,sy,sw,sh,box.x,box.y,box.w,box.h);ctx.restore();ctx.save();ctx.strokeStyle=accent;ctx.lineWidth=5;ctx.shadowColor=accent;ctx.shadowBlur=28;ctx.beginPath();ctx.roundRect(box.x,box.y,box.w,box.h,34);ctx.stroke();ctx.restore();}
+      wrap(value("reelHook"),style==="editorial"?"italic 38px Georgia":"650 36px system-ui","#b9c8d8",hasPhoto?875:690,3,52,mainAlign,mainX,820);
+      wrap(value("reelTitle"),mainFont,mainColor,hasPhoto?1135:960,5,style==="kinetic"?112:96,mainAlign,mainX,820);
+      wrap(value("reelReason"),"600 34px system-ui",accent,hasPhoto?1395:1240,3,48,mainAlign,mainX,820);
     }else if(scene===2){
       wrap(value("reelReason"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
     }else if(scene===3){
@@ -639,7 +646,7 @@ function syncRecordText(recordToo=true){
     if(elapsed>=outroStart){
       ctx.restore();
       ctx.clearRect(0,0,1080,1920);
-      drawMercuryOutro(ctx,1080,1920,(elapsed-outroStart)/5200,now);
+      const outP=(elapsed-outroStart)/5200;drawMercuryOutro(ctx,1080,1920,outP,now);drawFMOutroBrand(ctx,1080,1920,outP);
       return;
     }
     drawCornerNexLogo(ctx,elapsed);
@@ -739,10 +746,11 @@ $("shuffleBackground").addEventListener("click",()=>{
   const button=$("shuffleBackground");button.textContent="✓ Variant "+(state.variantIndex+1)+"/6";
   clearTimeout(state.variantTimer);state.variantTimer=setTimeout(()=>button.textContent="✧ Yangi kreativ variant",1800);
 });
+$("sourcePhoto").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.type.startsWith("image/")){setStatus("sourceStatus","Faqat rasm faylini tanlang.");return;}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{state.sourcePhoto=reader.result;state.sourcePhotoImage=img;syncRecordText();setStatus("sourceStatus","Manba rasmi yuklandi. U MANBA sahnasida ko‘rinadi.");};img.onerror=()=>setStatus("sourceStatus","Rasmni ochib bo‘lmadi.");img.src=reader.result;};reader.readAsDataURL(file);});
 $("newProject").addEventListener("click",()=>{
   exitRecordMode();
   ["sourceName","sourceSearchQuery","sourceSearchPlace","sourceLink","sourceDirection","sourceDescription","sourceBenefit","sourceAudience","sourceProof","sourceAuthor","hook","reason","benefit","cta","sceneText"].forEach(id=>{const field=$(id);if(field)field.value="";});
-  state.category="";state.name="";state.seed=1;state.variantIndex=0;state.tone="Jiddiy";state.visual="cinematic";state.palette="silver";state.motion="Silliq";
+  state.category="";state.name="";state.sourcePhoto=null;state.sourcePhotoImage=null;const photoInput=$("sourcePhoto");if(photoInput)photoInput.value="";state.seed=1;state.variantIndex=0;state.tone="Jiddiy";state.visual="cinematic";state.palette="silver";state.motion="Silliq";
   state.sceneIndex=0;state.sceneVisualFrom=0;state.sceneDurations=[5000,5000,5000,5000,5000];state.sceneTexts=["","","","",""];state.sceneEdited=[false,false,false,false,false];
   state.playbackElapsed=0;state.studioOpened=false;
   document.querySelectorAll(".category").forEach(button=>button.classList.remove("selected"));
