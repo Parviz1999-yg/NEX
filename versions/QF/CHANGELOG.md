@@ -1,5 +1,12 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.2] — 2026-11-22
+
+- Ekran yozish oynasidagi tugmalar TA etalonidagi kabi faqat foydalanuvchi tegishi yoki boshqaruv bilan ishlaganda 1,8 soniyaga ko‘rinadi; keyin yashirinadi.
+- Mobil QF studiyasi ixcham vertikal maket, kichikroq 9:16 preview, qulay bosish maydonlari, 16 px forma shriftlari va kichik ekran uchun maxsus zichlik bilan moslashtirildi.
+- README va rivojlantirish hujjatlari yangilandi. TA/FM manba fayllariga tegilmadi.
+
+
 ## [0.16.1] — 2026-11-22
 
 - To‘liq ekran yozish rejimidagi boshqaruv paneli doim ko‘rinadigan qilindi; «Studiyaga qaytish» tugmasi endi yashirin qolmaydi. `Escape` tugmasi ham yozish oynasidan chiqadi.
