@@ -535,27 +535,7 @@ function syncRecordText(recordToo=true){
       shown.forEach((item,index)=>ctx.fillText(item,x,first+index*lineHeight,maxWidth));
     };
     ctx.clearRect(0,0,1080,1920);ctx.save();
-    // Visual-language-specific frame and background graphics.
-    ctx.strokeStyle=accent;ctx.fillStyle=accent;ctx.lineWidth=2;
-    if(style==="editorial"){
-      ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(86,250);ctx.lineTo(994,250);ctx.moveTo(86,1665);ctx.lineTo(994,1665);ctx.stroke();
-      ctx.globalAlpha=.12;for(let x=120;x<1000;x+=220){ctx.beginPath();ctx.moveTo(x,290);ctx.lineTo(x,1620);ctx.stroke();}
-      ctx.globalAlpha=.75;ctx.font="700 22px Georgia";ctx.textAlign="left";ctx.fillText("RESOURCE / FIELD NOTES",88,218);
-    }else if(style==="kinetic"){
-      ctx.globalAlpha=.8;ctx.fillRect(86,330,12,1160);ctx.globalAlpha=.22;
-      for(let y=360;y<1500;y+=150)ctx.fillRect(118,y,850,2);
-      ctx.globalAlpha=.9;ctx.font="900 24px system-ui";ctx.textAlign="left";ctx.fillText("NEX / IMPACT SERIES",132,218);
-    }else if(style==="future"){
-      ctx.globalAlpha=.35;for(let x=90;x<=990;x+=90){ctx.beginPath();ctx.moveTo(x,280);ctx.lineTo(x,1640);ctx.stroke();}
-      for(let y=300;y<=1620;y+=90){ctx.beginPath();ctx.moveTo(90,y);ctx.lineTo(990,y);ctx.stroke();}
-      ctx.globalAlpha=.9;ctx.strokeRect(78,270,924,1370);
-      ctx.font="700 22px monospace";ctx.textAlign="left";ctx.fillText("NEX // RESOURCE_NODE",92,218);
-      ctx.textAlign="right";ctx.fillText("SYS 09:16",988,218);
-    }else{
-      ctx.globalAlpha=.22;ctx.beginPath();ctx.arc(540,960,360,0,Math.PI*2);ctx.arc(540,960,440,0,Math.PI*2);ctx.stroke();
-      ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(540,250);ctx.lineTo(540,1670);ctx.stroke();
-      ctx.font="800 24px system-ui";ctx.textAlign="center";ctx.fillText("NEX / RESOURCE",540,218);
-    }
+    // Ortiqcha markaziy chiziqlar, halqalar va sarlavha yozuvlari olib tashlandi.
     ctx.globalAlpha=style==="future"?.35+.65*ease:ease;
     const scale=style==="kinetic"?.84+.16*ease:style==="editorial"?.97+.03*ease:.92+.08*ease;
     ctx.translate(540,960);ctx.scale(scale,scale);ctx.translate(-540,-960);
@@ -578,8 +558,17 @@ function syncRecordText(recordToo=true){
     }else{
       wrap(value("reelCta"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
     }
-    ctx.globalAlpha=.8;ctx.fillStyle="#d7e5f1";ctx.font=style==="editorial"?"700 22px Georgia":"700 22px system-ui";ctx.textAlign="left";ctx.fillText("NEX / RESOURCE",78,1800);
-    ctx.textAlign="right";ctx.fillText("9:16",1002,1800);
+    // Pastki brend yozuvi va 9:16 belgisi ataylab chiqarilmaydi.
+    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    const elapsed=state.playbackElapsed;
+    const outroStart=Math.max(0,total-5200);
+    if(elapsed>=outroStart){
+      ctx.restore();
+      ctx.clearRect(0,0,1080,1920);
+      drawMercuryOutro(ctx,1080,1920,(elapsed-outroStart)/5200,now);
+      return;
+    }
+    drawCornerNexLogo(ctx,elapsed);
     if(style==="future"){
       const scan=280+((now-state.sceneVisualStarted)%1400)/1400*1360;
       ctx.globalAlpha=.38;ctx.fillStyle=accent;ctx.fillRect(90,scan,900,3);
