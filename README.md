@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.16.3 — FAQAT SSENARIY MATNI** |
+| **QF** | Qiziqarli fakt | **0.16.4 — NEX OUTRO + MANBA/TEKSHIRUV SHTAMPLARI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -70,6 +70,10 @@ QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sah
 ### QF Reels sahnalari va LED fakt displeyi (0.15.3)
 
 Reels tasvir qatlamida HOOK, FAKT E’LONI, MAZMUN, HOLAT, YAKUN kabi texnik sahna nomlari va 01/05 tartib raqamlari chiqarilmaydi; videoda faqat mazmuniy matn va yakuniy NEX brend outro ko‘rinadi. 3D obyektlar sahna davomida ritmik suzish, aylanish va yengil masshtab o‘zgarishi bilan jonlanadi. Ikkinchi — fakt e’loni sahnasida metall romli, emissiv konturli, skan-chiziqli 3D smart LED ekran paydo bo‘ladi; uning matn panelida yorug‘lik gradienti va harakatlanuvchi skan aks etadi.
+
+### QF 0.16.4 — NEX outro va manba/tekshiruv shtamplari
+
+NEX outro 5,2 soniyalik suyuq metall oqimidan keyin NEX yozuvi, orbital halqa va brend shiori bilan yakunlanadi. Manba va tekshiruv paneli video birinchi kadridan boshlab barcha asosiy sahnalarda ixcham yuqori qatlam sifatida yuradi. Har bir sahna yakunida uning mazmuniga mos tasnif, manba, dalil yoki tekshiruv holati shtamp/muhr uslubida animatsiya bilan chiqadi. Matnlar faqat forma maydonlaridan olinadi; avtomatik fan/obyekt yorliqlari qaytarilmadi. O‘zgarish faqat QF moduliga tegishli.
 
 ### QF 0.16.3 — faqat ssenariy matni
 
