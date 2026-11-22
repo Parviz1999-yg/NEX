@@ -1,3 +1,7 @@
+## QF 0.16.3 — 2026-11-22
+
+- Ssenariydan tashqari barcha video yozuvlari olib tashlandi: 3D obyekt yorliqlari, sahna teg/raqamlari, manba kartasi va outro matnlari. Faqat ssenariy matni qoladi.
+
 ## QF 0.16.2 — 2026-11-22
 
 - Yozuv oynasi tugmalari TA dagidek vaqtincha ko‘rinadi: kadrga tegilganda yoki boshqaruv bosilganda 1,8 soniya, so‘ng yashirinadi.
