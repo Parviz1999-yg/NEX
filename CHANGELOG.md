@@ -1,5 +1,11 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.15.0 — 2026-11-22
+
+- “Fakt e’loni” sahnasiga maxsus reveal animatsiyasi qo‘shildi: markazdan ikki tomonga kengayadigan nurli chiziqlar, o‘rtada yorqin ekran ochilishi va fakt matnining undan keyin chiqishi.
+- Effekt faqat QF’ning ikkinchi sahnasiga tegishli. TA va himoyalangan FM fayllari o‘zgartirilmadi.
+- Kod darajasidagi tekshiruv qayd etildi; Android/desktop brauzerda real ko‘rinish hali tekshirilishi kerak.
+
 ## QF 0.14.1 — 2026-11-22
 
 - QF dizayni FM’ning amaldagi CSS etaloniga moslashtirildi. O‘zgarish faqat QF fayllariga tegishli; FM va TA manba fayllari o‘zgartirilmadi.
