@@ -1,5 +1,12 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.2] — 2026-11-22
+
+- 01 — Fakt ma’lumotlari sahifasidagi tasnif, fan sohasi, sarlavha, manba, dalil va tekshiruv maydonlari alohida forma konteyneriga joylashtirildi.
+- QF’ga xos forma CSS’i select maydonlarini ham qamrab oldi; kenglik, ichki bo‘shliq, fokus holati va mobil joylashuv bir xil qilindi.
+- Faqat QF HTML/CSS va QF hujjatlari yangilandi. TA va muhofazalangan FM fayllari o‘zgartirilmadi.
+- Statik HTML/CSS tekshiruvi bajarildi; real qurilmadagi vizual sinov foydalanuvchi brauzerida tasdiqlanishi kerak.
+
 ## [0.15.1] — 2026-11-22
 
 - Yuqori bosqich ko‘rsatkichidagi 01 nuqtasi aniqroq ko‘rinishi uchun faol holatdagi o‘lchami, kontrasti, yorqin gradienti va yumshoq nurli halqasi kuchaytirildi.
