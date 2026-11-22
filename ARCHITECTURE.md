@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.15.2  
+**QF moduli:** 0.15.3  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -89,6 +89,11 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida
 - Renderer canvas o‘lchamini konteynerga moslaydi va sahnani avtomatik aylantiradi.
 - Kalit so‘zga asoslangan ayrim fakt profillari mavjud, lekin bu umumiy semantik tahlil yoki erkin faktlar uchun avtomatik 3D model generatsiyasi emas.
 - Mobil qurilmalarda WebGL, CDN mavjudligi va sahna ishlashi real brauzerda tekshirilishi shart.
+
+### 3D sahna harakati va fakt e’loni displeyi
+- Reels ichki matn qatlamida sahna nomlari va texnik indekslar chizilmaydi; ular faqat studiya boshqaruv interfeysida qoladi.
+- 3D obyektlar tanlangan harakat uslubiga mos ritmik aylanish, suzish va masshtab animatsiyasini bajaradi.
+- Fakt e’loni sahnasida metall romli, yoritilgan chetli, skan-chiziqli 3D smart LED displey ishlatiladi; Canvas qatlamida chuqur rangli panel, grid va yorug‘lik skani kompozitsiyasi chiziladi.
 
 ### Audio chegarasi
 - Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy Reels eksporti QF doirasiga kiritilmaydi; bular tashqi ilovalarda bajariladi.
