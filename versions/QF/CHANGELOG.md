@@ -72,3 +72,9 @@
 ## [0.10.0] — 2026-11-22
 
 - Mustaqil QF modulining boshlang‘ich versiyasi.
+
+
+## 0.15.5 — FM bilan bir xil NEX outro
+- QF’dagi mustaqil orbital/NEX ORIGINAL yakuni olib tashlandi.
+- FM’dagi ayni `drawMercuryOutro` va `drawFMOutroBrand` animatsiyalari QF’ga ko‘chirildi: pastdan suyuq xrom to‘lqini, markaziy NEX logotipi, orbital chiziq va “Fikr va imkoniyatlar makoni”.
+- FM manba fayllari o‘zgartirilmadi; QF outro oxirgi 5,2 soniyada ishlaydi.
