@@ -1,5 +1,13 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.6] — 2026-11-22
+
+- Chaqirilmaydigan `showNext()` va `sceneControls()` yordamchilari olib tashlandi.
+- Ishlatilmaydigan `seed`, `subjectNow` va doimiy `1` qiymatli `motionSpeed` omillari tozalandi; animatsiya tezligi avvalgi holicha saqlandi.
+- Hech qayerda o‘qilmaydigan eski yashirin Reel DOM maydonlari va ularga qiymat yozishlar olib tashlandi.
+- Faol sahna matni, 3D obyektlar, LED e’lon displeyi, rang/harakat tanlovlari, yozuv va outro oqimiga funksional o‘zgarish kiritilmadi.
+- Statik tekshiruv: JavaScript sintaksisi va DOM ID bog‘lanishlari tekshirildi. Real qurilma/WebGL sinovi hali talab etiladi.
+
 ## [0.15.4] — 2026-11-22
 
 - Reels sahnalari uchun harakatlanuvchi suyuq metall fon yaratildi: xrom-kumush gradientlar, yorug‘lik oqimlari va chuqur vignette.
