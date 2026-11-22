@@ -122,8 +122,11 @@ NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, 
 
 ### 12.1. Qat’iy ish qoidalari
 
-- Kutubxonada jami **48 ta prompt**: 4 bo‘lim × 4 uslub × 3 variant.
+- Asosiy kutubxona: **48 ta musiqa prompti** (4 bo‘lim × 4 uslub × 3 variant) va barcha bo‘limlarda ishlatiladigan **1 ta yagona NEX brend outro prompti**. Jami: **49 ta prompt**.
 - Har bir generatsiya alohida prompt bilan bajariladi. Promptdagi janr, BPM, kayfiyat, cholg‘ular va kompozitsiya talablari o‘zboshimchalik bilan almashtirilmaydi.
+- NEX brend outro musiqasi 48 ta asosiy trekdan alohida yaratiladi va TA, FM, QF hamda MI videolarining barchasida aynan bir xil audio sifatida ishlatiladi. Har bir video uchun boshqa outro musiqasi yaratilmaydi.
+- Outro davomiyligi **aniq 5,2 soniya**. Musiqiy fraza logo va shior ko‘rinishiga vaqt jihatdan mos kelishi, oxirgi 0,3–0,8 soniyada NEX’ning qisqa original elektron ovozli imzosi bilan tugashi kerak.
+- Brend shiori o‘zgarmas: **“NEX — Fikr va imkoniyatlar makoni.”** Shior videoda yozuv ko‘rinishida chiqadi; outro musiqasi uning ohangdor, esda qoladigan brend kayfiyatini yaratadi. Outroda ham vokal yoki gap ishlatilmaydi.
 - Har bir natija 8 soniyalik MP4 bo‘lishi so‘raladi. Gemini davomiylik yoki boshqa talabni bajarmasa, natija avtomatik qabul qilinmaydi.
 - Audio: faqat instrumental musiqa. Ovoz, qo‘shiq, gap, lyrics, effekt, atrof-muhit shovqini va tasodifiy tovushlar taqiqlanadi.
 - Video: harakatsiz, oddiy to‘q kulrang fon. Matn, logo, odam, obyekt, animatsiya va kamera harakati bo‘lmaydi.
@@ -145,15 +148,18 @@ NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, 
 
 ### 12.3. Umumiy holat
 
-- Jami prompt: **48**
+- Asosiy musiqa promptlari: **48**
+- Yagona brend outro prompti: **1**
+- Jami prompt: **49**
 - Tugallangan: **0**
 - Jarayonda: **0**
 - Qayta ishlash: **0**
 - Navbatdagi prompt: **TA-01-A**
+- Brend outro: **alohida, umumiy va barcha bo‘limlarda bir xil**
 
 ### 12.4. Promptlar va holat nazorati
 
-Quyidagi promptlar to‘liq va qat’iy spetsifikatsiya hisoblanadi. Har bir prompt ichida audio hamda video cheklovlari qayta yozilgan; promptni Gemini’ga alohida yuborish mumkin.
+Quyidagi 48 ta asosiy musiqa prompti to‘liq va qat’iy spetsifikatsiya hisoblanadi. Har bir prompt ichida audio hamda video cheklovlari qayta yozilgan; promptni Gemini’ga alohida yuborish mumkin. Ulardan keyin bitta umumiy NEX brend outro prompti berilgan.
 
 | № | ID | Bo‘lim | Uslub | BPM | Holat |
 |---:|---|---|---|---:|---|
@@ -639,14 +645,49 @@ Create an exactly 8-second professional instrumental music clip for a serious In
 Create an exactly 8-second professional instrumental music clip for a serious Instagram Reels video in the Maxsus iboralar category.\n\nMusical style: Motivatsion qat’iyat. Tempo: 108 BPM. Mood: Determined, disciplined, confident, inspiring and dignified.\nInstrumentation: steady orchestral strings, controlled deep percussion, warm piano, gradual harmonic lift.\nComposition: Communicate inner strength and purposeful action, not sports advertising or exaggerated heroic triumph. Keep the same defined genre and mood. Use a different short melodic phrase and a distinct but compatible rhythmic pattern; do not copy the previous variation and do not change the genre. Start with music immediately, maintain a coherent musical phrase, and end with a musically resolved, clean ending within the 8-second duration.\n\nSTRICT AUDIO RULES: instrumental music only. Absolutely no singing, vocals, spoken words, lyrics, humming, choir, sound effects, impacts, transitions, environmental sounds or background noise. Do not add any unrelated instruments or change the specified genre, tempo, mood or arrangement. No sudden loudness spikes, clipping or distorted audio. Music must remain the only meaningful audio.\n\nVIDEO RULES: generate an MP4 with a completely static, plain matte dark charcoal background. No text, subtitles, logos, people, objects, visualizers, animation, camera movement or scene changes. The video is only a carrier for the music; audio is the priority.
 ```
 
-### 12.5. Foydalanuvchi bilan navbatni boshqarish
+### 12.5. Yagona NEX brend outro — barcha bo‘limlar uchun
+
+**Asset ID:** `NEX-OUTRO-01`  
+**Holat:** TAYYOR  
+**Davomiylik:** aniq 5,2 soniya  
+**Shior:** “NEX — Fikr va imkoniyatlar makoni.”  
+**Qo‘llanishi:** TA, FM, QF va MI videolarining barchasida aynan shu bitta audio ishlatiladi.
+
+Quyidagi promptni Gemini’ga alohida yuboring. Natija qabul qilinmaguncha outro TUGALLANDI hisoblanmaydi.
+
+```text
+Create one original, premium and instantly recognizable NEX brand outro music sting for a professional Instagram Reels studio. The final usable music must be EXACTLY 5.2 seconds long and must feel deliberately composed for a 5.2-second visual outro — not a shortened piece of a longer song.
+
+Brand name: NEX.
+Exact on-screen slogan: “NEX — Fikr va imkoniyatlar makoni.”
+
+Musical identity: serious, premium, modern, intelligent and confident. Create one distinctive original melodic motif that gives the NEX brand a recognizable sonic identity. Use refined electronic tones, a warm deep note, a precise soft pulse and a clean harmonic resolution. The slogan should feel naturally supported by the musical phrase, with its main melodic emphasis aligned to the visual appearance of the brand name and slogan. Do not sing or speak the slogan; it appears visually on screen.
+
+Exact timing:
+0.0–0.6 seconds: a restrained, recognizable opening tone as the NEX logo begins to appear.
+0.6–3.8 seconds: the main original NEX melodic motif develops as the brand name and slogan are revealed.
+3.8–4.4 seconds: a short, memorable harmonic resolution that gives the slogan a clear finishing emphasis.
+4.4–5.2 seconds: a unique, clean electronic sonic signature and a controlled final decay. The sonic signature itself should last approximately 0.3–0.8 seconds and must not sound like a generic notification beep.
+
+The complete musical outro must fit exactly 5.2 seconds. No extra intro, no silence at the beginning, no long reverb tail beyond the duration, no abrupt cut, and no additional musical section. The ending must resolve naturally at 5.2 seconds.
+
+STRICT AUDIO RULES: original instrumental brand music only. No vocals, no spoken words, no sung slogan, no lyrics, no choir, no sound effects, no impacts, no environmental sounds and no background noise. Do not imitate any existing brand jingle, song, artist or copyrighted melody. Do not add unrelated instruments or change the specified mood.
+
+VIDEO RULES: generate an MP4 only as an audio carrier. Use a completely static matte dark charcoal background. No text, no logo, no people, no objects, no visualizer, no animation, no camera movement and no scene changes. The audio is the priority.
+
+This is the single permanent NEX brand outro. It must be reusable without changes across TA, FM, QF and MI. Do not create alternative versions or different outro melodies.
+```
+
+**Qabul qilish mezoni:** aniq 5,2 soniya; jiddiy va premium tovush; o‘ziga xos esda qoladigan NEX melodik imzosi; oxirida 0,3–0,8 soniyalik ovozli belgi; tabiiy yakun; shior bilan vaqt jihatdan moslik. Foydalanuvchi «Qabul qilindi» demaguncha holat TAYYOR/JARAYONDA bo‘lib qoladi.
+
+### 12.6. Foydalanuvchi bilan navbatni boshqarish
 
 Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 
-1. **«Keyingi»** — birinchi TAYYOR promptni chiqarish va uni JARAYONDA deb belgilash.
+1. **«Keyingi»** — birinchi TAYYOR asosiy musiqa promptini chiqarish va uni JARAYONDA deb belgilash. 48 ta asosiy trek yakunlangach, alohida `NEX-OUTRO-01` prompti navbatga qo‘yiladi.
 2. **«Qabul qilindi»** — faqat faol promptni TUGALLANDI deb belgilash; so‘ng navbat keyingi TAYYOR promptga tayyor bo‘ladi.
 3. **«Mos kelmadi»** yoki **«Qayta ishlaymiz»** — faol promptni QAYTA ISHLASH holatiga o‘tkazish va shu prompt ustida qolish.
 4. **«Qayta urinish»** — shu promptning ayni spetsifikatsiyasi bilan yangi MP4 generatsiya qilish uchun promptni qayta berish.
-5. **«Holat»** — tugallangan, jarayondagi, qayta ishlanayotgan va navbatdagi promptlar sonini ko‘rsatish.
+5. **«Holat»** — 48 ta asosiy trek va yagona brend outro holatini alohida, jami hisob bilan ko‘rsatish.
 
 **Hisoblash qoidasi:** foydalanuvchi tasdiqlamagan, faqat generatsiya qilingan yoki ko‘rib chiqilayotgan musiqa TUGALLANDI hisoblanmaydi. Holat o‘zgarishi README jadvalida ham aks ettiriladi.
