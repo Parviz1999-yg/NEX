@@ -1,5 +1,10 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.14.1 — 2026-11-22
+
+- QF dizayni FM’ning amaldagi CSS etaloniga moslashtirildi. O‘zgarish faqat QF fayllariga tegishli; FM va TA manba fayllari o‘zgartirilmadi.
+- QF sahifa mazmuni, besh sahnali matn oqimi va fanlarga mos 3D sahnalar saqlandi.
+
 NEX umumiy platforma versiyasi va TA, FM, QF, MI studiyalarining mustaqil versiyalarini alohida yuritadi. Har bir darajaning o‘z VERSION va CHANGELOG fayli mavjud.
 
 ## Hujjat yangilanishi — 2026-11-22 (versiya oshirilmagan)
