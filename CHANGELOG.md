@@ -1,3 +1,11 @@
+## QF 0.16.0 — 2026-11-22
+
+- Outro asosiy besh sahnadan keyingi mustaqil 5,2 soniyalik vaqt blokiga ko‘chirildi; timeline va recording duration yangilandi.
+- Har bir sahnaga mustaqil 3D guruh/kompozitsiya qo‘shildi; to‘rtta vizual til, sakkizta bayon profili, 3D palitra va kamera parallax ishlaydi.
+- Fakt yorlig‘i ko‘rsatiladi; HOLAT sahnasida manba, dalil, tasnif va tekshiruv qaydi chiqadi.
+- Kalit ibora normalizatsiyasi va sinonimlar bilan qoidaviy mavzu moslashtirish kengaytirildi.
+- Faqat QF fayllari o‘zgartirildi; TA va FM fayllari saqlandi.
+
 ## Audit va xavfsiz kod tozalash — 2026-11-22
 
 - TA 0.10.2: foydalanilmaydigan `getToneVisual()` funksiyasi olib tashlandi; boshqa TA ishlash oqimi o‘zgartirilmadi.
