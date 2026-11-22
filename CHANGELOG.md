@@ -1,3 +1,9 @@
+## TA 0.10.4 va FM 0.9.9 — anketa maydonlarini tartibga solish (2026-11-22)
+
+- TA: ishlatilmayotgan akkaunt havolasi maydoni olib tashlandi; SABAB/FARQI majburiyligi boshqa yo‘nalishlardan ajratib aniq ko‘rsatildi.
+- FM: qidiruv so‘rovi va joyi saqlandi; tavsif/foyda maydonlari ssenariy uchun zaxira qiymat sifatida ishlaydi; mavjud bo‘lmagan `sourceLink` kod qoldiqlari tozalandi.
+- QF anketa maydonlariga tegilmadi: auditda ularning qiymatlari karta, ssenariy yoki 3D moslashtirishda ishlatilishi tasdiqlangan.
+
 ## QF 0.16.7 — muhrlanmaguncha qiymatlarni yashirish (2026-11-22)
 
 - Ma’lumot kartasidagi TASNIF, MANBA, DALIL va TEKSHIRUV qiymatlari o‘z qatori muhrlanishidan oldin chizilmaydi.
