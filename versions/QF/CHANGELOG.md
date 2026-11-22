@@ -1,5 +1,18 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.0] — 2026-11-22
+
+- Outro endi beshta asosiy sahna davomiyligiga qo‘shilmaydi: asosiy sahnalar tugagach, qo‘shimcha 5,2 soniyalik mustaqil NEX outro ishlaydi. Timeline, umumiy davomiylik, pauza/davom ettirish va telefon ekran yozish hisoblari shu vaqtga moslashtirildi.
+- Har bir asosiy sahna uchun alohida 3D kompozitsiya yaratildi: kirish/Hook, LED fakt e’loni, mazmuniy model, manba-tekshiruv vizuali va yakuniy kompozitsiya.
+- To‘rtta vizual til 2D kompozitsiya va 3D dekor/joylashuvda farqlanadi: Cinematic 3D, Kinetic Typography, Editorial/Magazine, Futuristic Motion.
+- Bayon uslubining sakkiz varianti shrift, satr oralig‘i, matn chiqish ritmi, siljish va urg‘u animatsiyasiga ulandi.
+- Rang palitrasi 2D fon bilan birga 3D materiallar, emissiv ranglar va sahna yoritishiga tatbiq etildi.
+- Kamera boshqaruvi sahna bo‘yicha alohida masofa/pozitsiya, silliq o‘tish va pointer parallax bilan boyitildi.
+- `qfSceneCue` endi faktga mos vizual yorliq sifatida e’lon/mazmun sahnalarida ko‘rsatiladi. Fan sohasi va kalit iboralar uchun normalizatsiya qilingan sinonim/ibora mosligi qo‘llanadi; bu qoidaviy moslashtirish, AI fakt tekshiruvi emas.
+- HOLAT sahnasida fakt tasnifi, manba nomi, dalil izohi va tekshiruv qaydi ko‘rsatiladi. Kiritilmagan manba yoki dalil yashirilmaydi, ochiq ko‘rsatiladi.
+- Yangi kreativ variant endi palitra bilan birga vizual til va harakat profilini ham o‘zgartiradi.
+- Statik JavaScript sintaksisi va DOM bog‘lanishlari tekshirildi. Android/desktop WebGL, haqiqiy ekran yozish va mobil FPS sinovi foydalanuvchi qurilmasida hali tasdiqlanishi kerak.
+
 ## [0.15.6] — 2026-11-22
 
 - Chaqirilmaydigan `showNext()` va `sceneControls()` yordamchilari olib tashlandi.
