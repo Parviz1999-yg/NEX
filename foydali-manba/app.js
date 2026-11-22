@@ -371,7 +371,7 @@ function animate(){
     const total=mainDuration();
     const elapsed=state.playbackElapsed;
     const outroProgress=Math.max(0,Math.min(1,(elapsed-total)/OUTRO_DURATION));
-    updateNexLogo(outroProgress,elapsed>=total,t);
+    updateNexLogo(0,false,t);
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
     state.group.rotation.z=mix(from.tilt,to.tilt)+Math.sin(t*profile.speed*1.3)*.035;
