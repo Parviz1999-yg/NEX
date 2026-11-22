@@ -1,5 +1,16 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.12.0] — 2026-11-22
+
+- Fakt sarlavhasi, e’lon matni, mazmuni va dalilidagi kalit iboralarga asoslangan deterministik 3D sahna profillari qo‘shildi (masalan, qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi va aylana).
+- Kamera ko‘rinishlari, animatsiya tezligi va pauza/davom ettirish boshqaruvlari qo‘shildi.
+- HOOK, FAKT, MAZMUN, HOLAT va YAKUN bosqichlari uchun kamera urg‘usi bilan ishlaydigan ssenariy vaqt chizig‘i qo‘shildi.
+- Faktga mos sahna tanlash qoidaviy kalit so‘zlarga asoslanadi; bu AI semantik tushunishi yoki barcha faktlar uchun avtomatik 3D model yaratishi emas.
+- Ovoz va musiqa NEX/QF ichida ishlab chiqilmaydi yoki birlashtirilmaydi; hozircha tashqi ilovalarda tayyorlanadi.
+- Kodning strukturaviy tekshiruvlari bajarildi; real mobil/desktop WebGL brauzer sinovi foydalanuvchi qurilmalarida bajarilishi kerak.
+
+
+
 ## [0.11.0] — 2026-11-22
 
 - Three.js asosidagi haqiqiy WebGL 3D sahna dvigateli ulandi.
