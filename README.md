@@ -744,13 +744,13 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Faqat modulga kirish nuqtasi TA rejimiga yo‘naltirildi va “Yangi loyiha” bosh dashboardga qaytadi.
 - TA nusxasi o‘z CSS va JS fayllariga ega; FM yoki dashboard kodiga bog‘liq emas.
 
-### 13.3. QF — fakt modeli va sahifalararo studiya
-- Fakt tasnifi va fan sohasi alohida boshqariladi.
-- Manba nomi, dalil va tekshiruv qaydi mavjud; HTTPS/URL maydoni yo‘q.
-- To‘rtta sahifa: fakt ma’lumotlari, video ssenariysi, 3D sahna va tayyor natija. Bir vaqtda faqat joriy bosqich ko‘rinadi.
-- Ssenariy bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
-- QF 0.11.0 da Three.js WebGL renderer, 0.12.0 da faktga mos sahna profillari, 0.13.0 da sahifalararo ish oqimi qo‘shildi.
-- Ovoz, musiqa, audio montaj va yakuniy Reels eksporti tashqi ilovalarda bajariladi.
+### 13.3. QF — faktga asoslangan Reels studiyasi
+- Fakt tasnifi va fan sohasi alohida boshqariladi; manba nomi, dalil va tekshiruv qaydi mavjud. HTTPS/URL maydoni yo‘q.
+- FM arxitekturasiga mos yetti bosqich: fakt ma’lumotlari, ssenariy, bayon uslubi, vizual til, rang palitrasi, animatsiya, NEX Reels Studio.
+- 9:16 jonli WebGL preview, besh sahnali ketma-ket matn, alohida sahna davomiyligi, timeline, pauza/davom ettirish va qayta boshlash mavjud.
+- 1080×1920 yozuv rejimi telefonning native ekran yozuvi bilan ishlaydi; bu ichki MP4 eksport emas.
+- QF’ning fan sohasi va fakt matniga mos 3D obyektlari saqlanadi.
+- Ovoz, musiqa, audio montaj va yakuniy birlashtirish tashqi ilovalarda bajariladi.
 ### 13.4. MI — mustaqil modul
 - Iboraning xarakteri, matni, muallif/manbasi, mazmuni, qo‘llanish konteksti, Hook va yakun maydonlari ajratildi.
 - Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
