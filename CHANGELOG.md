@@ -1,6 +1,13 @@
 # NEX — O‘zgarishlar tarixi
 
-NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI modullarida alohida versiyalar yuritilmaydi.
+NEX umumiy platforma versiyasi va TA, FM, QF, MI studiyalarining mustaqil versiyalarini alohida yuritadi. Har bir darajaning o‘z VERSION va CHANGELOG fayli mavjud.
+
+## Hujjat yangilanishi — 2026-11-22 (versiya oshirilmagan)
+
+- Versiyalash modeli umumiy NEX + to‘rtta mustaqil studiya darajasiga ajratildi.
+- Har bir studiya uchun `versions/{TA,FM,QF,MI}/VERSION` va `CHANGELOG.md` yaratildi.
+- TA va FM’ning himoyalangan sahifa/kod fayllari hamda interfeys versiya belgilari o‘zgartirilmadi.
+- Bu faqat boshqaruv hujjatlari va versiya metama’lumotlari o‘zgarishi bo‘lgani uchun global NEX versiyasi 0.10.0 bo‘lib qoldi.
 
 ## [0.10.0] — 2026-11-22
 
@@ -52,5 +59,5 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 - Faqat hujjat matni o‘zgarsa va mahsulot funksiyasi o‘zgarmasa, versiya oshirilmaydi.
 - Versiya oshirilganda `VERSION`, CHANGELOG, interfeys versiyasi va tegishli cache-busterlar bir xil raqamga moslanadi.
 - Har bir yozuvda sana, versiya, o‘zgarish mazmuni va tekshiruv holati ko‘rsatiladi.
-- TA, FM, QF va MI alohida versiyalanmaydi; barcha o‘zgarishlar NEX umumiy versiyasiga tegishli.
+- NEX umumiy versiyasi va TA, FM, QF, MI studiya versiyalari mustaqil yuritiladi; o‘zgarish ta’sir qilgan darajalarigina oshiriladi.
 - Format: `MAJOR.MINOR.PATCH`.
