@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.15.1 — QF 01 INDIKATORI ANIQLASHTIRILDI** |
+| **QF** | Qiziqarli fakt | **0.15.2 — 01 FAKT FORMASI TUZATILDI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -62,6 +62,10 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 ## 5. QF — Qiziqarli fakt
 
 QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sahnasiga markazdan kengayadigan ikki nurli chiziq, ular orasida ochiladigan yorqin ekran va keyin namoyon bo‘ladigan fakt matni animatsiyasi qo‘shildi. Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i saqlangan. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz yozish va musiqa yaratish/tanlash hozircha tashqi ilovalarda bajariladi; yakuniy audio-video yig‘ish ham tashqi montaj ilovasida amalga oshiriladi. QF ichida audio yozish, musiqa yaratish yoki audio montaj funksiyasi yo‘q.
+
+### QF 01 sahifasi — forma tuzilmasi (0.15.2)
+
+01 — Fakt ma’lumotlari sahifasida barcha kiritish maydonlari yagona `source-fields` forma konteyneriga yig‘ilgan. Fakt tasnifi va fan sohasi tanlovlari, sarlavha, manba nomi, dalil/tekshiruv izohi va tekshiruv holati bir xil vizual tizimda ko‘rsatiladi. Select, input va textarea elementlari uchun umumiy o‘lcham, fokus holati va vertikal oraliqlar belgilangan. O‘zgarish faqat QF moduliga tegishli; TA va FM himoyalangan fayllari o‘zgartirilmagan.
 
 ## 6. MI — Maxsus iboralar
 
