@@ -120,3 +120,5 @@ MI mustaqil sahifada ibora xarakteri, iboraning o‘zi, muallif/manba, mazmun, k
 - Mustaqil studiya o‘zgarishi faqat o‘sha studiya versiyasini oshiradi.
 - SemVer: PATCH — tuzatish; MINOR — mos yangi funksiya; MAJOR — mos kelmaydigan arxitektura o‘zgarishi.
 - TA va FM himoyalangan; ular bo‘yicha har qanday o‘zgarish uchun alohida ruxsat kerak.
+
+- QF v0.15.5: yakuniy 5,2 soniyalik outro FM bilan bir xil qilindi — suyuq xrom to‘lqini, NEX logotipi, orbital chiziq va slogan. FM manba fayllari o‘zgartirilmagan.
