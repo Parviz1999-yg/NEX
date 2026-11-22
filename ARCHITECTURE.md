@@ -64,7 +64,7 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, ixtiyoriy havola, dalil/izoh va teksh
 - QF 0.12.0 da fakt sarlavhasi, e’lon, mazmun va dalildagi kalit iboralarga tayangan deterministik sahna profillari qo‘shildi. Masalan, qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi va aylana uchun maxsus kompozitsiyalar mavjud.
 - Kamera ko‘rinishi, animatsiya tezligi, pauza/davom ettirish va besh ssenariy bosqichiga bog‘langan kamera urg‘usi boshqariladi.
 - Ushbu kalit so‘z qoidalari AI semantik tahlili emas; noma’lum yoki aniqlanmagan faktlar fan sohasi bo‘yicha bazaviy sahnadan foydalanadi.
-- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi; QF ichida audio yaratish yoki montaj qilish rejalashtirilmagan.
+- Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy Reels eksporti QF ichida bajarilmaydi; ovoz, musiqa va yakuniy video tashqi ilovalarda tayyorlanadi.
 - Mobil/desktop jonli WebGL sinovi hali real qurilmalarda tasdiqlanishi kerak.
 - Fan sohasi bo‘yicha boshlang‘ich sahna kompozitsiyalari: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya va Psixologiya.
 - Renderer canvas o‘lchamini konteynerga moslaydi va sahnani avtomatik aylantiradi.
@@ -72,7 +72,7 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, ixtiyoriy havola, dalil/izoh va teksh
 - Mobil qurilmalarda WebGL, CDN mavjudligi va sahna ishlashi real brauzerda tekshirilishi shart.
 
 ### Audio chegarasi
-- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi. QF ichida audio generatsiyasi, ovoz yozish yoki musiqa montaji amalga oshirilmaydi.
+- Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy Reels eksporti QF doirasiga kiritilmaydi; bular tashqi ilovalarda bajariladi.
 
 ### Epistemik talablar
 - Postulat empirik isbotlangan fakt sifatida ko‘rsatilmaydi.
