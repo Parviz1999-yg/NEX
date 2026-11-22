@@ -145,6 +145,7 @@ function applyStage(index){
 async function start3D(){
  const status=$("sceneStatus"),subject=$("field").value==="Boshqa"?val("customField"):$("field").value;
  if(!subject){status.textContent="Avval fan yoki mavzu sohasini tanlang.";return;}
+ if(!val("title")||!val("bodyText")){status.textContent="Faktga mos sahna yaratish uchun fakt sarlavhasi va mazmunini kiriting.";return;}
  if(subject==="Boshqa"||!colors[subject]){status.textContent="Bu soha uchun hozircha umumiy 3D obyekt ishlatiladi."; }
  else status.textContent="3D sahna yuklanmoqda…";
  try{
