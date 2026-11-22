@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.12.0  
+**QF moduli:** 0.13.0  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -50,7 +50,13 @@ Fakt tasnifi:
 - 100 foiz ishonchli
 - Tekshiruvda
 
-Fan sohasi tasnifdan mustaqil. Manba nomi, ixtiyoriy havola, dalil/izoh va tekshiruv qaydi alohida maydonlarda saqlanadi.
+Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida maydonlarda saqlanadi. Manba URL/HTTPS maydoni va havola validatsiyasi mavjud emas.
+
+### Sahifalararo ish oqimi
+- QF mustaqil studiya sifatida to‘rtta alohida bosqichga bo‘lingan: fakt ma’lumotlari, video ssenariysi, 3D sahna va tayyor natija.
+- Bir vaqtda faqat joriy bosqich ko‘rinadi; Oldingi/Keyingi navigatsiyasi orqali o‘tiladi.
+- Oraliq ma’lumotlar brauzer sessionStorage xotirasida saqlanadi.
+- HTTPS/manba URL maydoni va URL validatsiyasi butunlay olib tashlangan; manba nomi va dalil matni saqlanadi.
 
 ### Ssenariy
 1. HOOK
