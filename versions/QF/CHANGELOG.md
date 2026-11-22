@@ -1,5 +1,12 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.16.3] — 2026-11-22
+
+- Video qatlamidan ssenariydan tashqari barcha yozuvlar olib tashlandi: 3D obyekt yorliqlari, sahna teglari, sahna raqamlari, manba/tekshiruv kartasi va outro brend/slogan matnlari.
+- Astronomiya mavzusida fakt matniga bog‘liq bo‘lmagan «YER» kabi statik yorliq endi chiqmaydi; boshqa mavzularda ham avtomatik obyekt nomi yozilmaydi.
+- Videoda faqat foydalanuvchi ssenariysi matni qoladi; outro vizual, matnsiz yakun sifatida saqlanadi.
+
+
 ## [0.16.2] — 2026-11-22
 
 - Ekran yozish oynasidagi tugmalar TA etalonidagi kabi faqat foydalanuvchi tegishi yoki boshqaruv bilan ishlaganda 1,8 soniyaga ko‘rinadi; keyin yashirinadi.
