@@ -35,8 +35,11 @@ NEX butun loyiha uchun yagona versiya raqamidan foydalanadi. TA, FM, QF va MI mo
 
 ## Versiyalash qoidalari
 
-- Joriy versiya: `VERSION` faylida — `0.9.7`.
-- Barcha modullar uchun bitta umumiy versiya ishlatiladi.
-- Modul nomi o‘zgarishlar izohida ko‘rsatilishi mumkin, ammo alohida modul versiyasi berilmaydi.
-- Versiya faqat umumiy loyiha relizi chiqarilganda oshiriladi.
+- Joriy versiyaning yagona manbasi — loyiha ildizidagi `VERSION` fayli.
+- Har bir tasdiqlangan funksional o‘zgarish ko‘lamiga qarab umumiy versiya yangilanadi; faqat katta relizda emas.
+- PATCH — xato tuzatish va kichik mos o‘zgarish; MINOR — moslikni saqlovchi yangi imkoniyat; MAJOR — moslikni buzuvchi katta o‘zgarish.
+- Faqat hujjat matni o‘zgarsa va mahsulot funksiyasi o‘zgarmasa, versiya oshirilmaydi.
+- Versiya oshirilganda `VERSION`, CHANGELOG, interfeys versiyasi va tegishli cache-busterlar bir xil raqamga moslanadi.
+- Har bir yozuvda sana, versiya, o‘zgarish mazmuni va tekshiruv holati ko‘rsatiladi.
+- TA, FM, QF va MI alohida versiyalanmaydi; barcha o‘zgarishlar NEX umumiy versiyasiga tegishli.
 - Format: `MAJOR.MINOR.PATCH`.
