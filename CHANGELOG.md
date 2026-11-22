@@ -1,3 +1,8 @@
+## QF 0.16.7 — muhrlanmaguncha qiymatlarni yashirish (2026-11-22)
+
+- Ma’lumot kartasidagi TASNIF, MANBA, DALIL va TEKSHIRUV qiymatlari o‘z qatori muhrlanishidan oldin chizilmaydi.
+- Muhrlanish boshlangach qiymat animatsiya bilan paydo bo‘ladi; qolgan QF oqimiga tegilmadi.
+
 ## NEX outro birxillashtirish — TA 0.10.3, FM 0.9.8, QF 0.16.6 (2026-11-22)
 
 - TA: NEX outro asosiy besh sahnadan keyin alohida 5,2 soniyalik segmentga ajratildi.

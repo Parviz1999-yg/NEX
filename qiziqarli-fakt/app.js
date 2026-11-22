@@ -114,11 +114,16 @@ function drawParameterCard(ctx,accent,elapsed){
   ctx.strokeStyle="rgba(220,235,248,.18)";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x+24,rowY+rowH);ctx.lineTo(x+w-24,rowY+rowH);ctx.stroke();
   ctx.fillStyle="#b9c9d8";ctx.font="850 23px system-ui";ctx.fillText(label,x+28,rowY+43);
   const sx=x+222,sy=rowY+13,sw=w-252,sh=72;
-  ctx.save();ctx.translate(sx+sw/2,sy+sh/2);ctx.rotate((i%2?-.012:.012)*(progress||.35));ctx.globalAlpha=unlocked?progress:0.58;
+  ctx.save();ctx.translate(sx+sw/2,sy+sh/2);ctx.rotate((i%2?-.012:.012)*(progress||.35));ctx.globalAlpha=unlocked?Math.max(.2,progress):.42;
   ctx.fillStyle=unlocked?"rgba(12,32,43,.78)":"rgba(255,255,255,.025)";ctx.strokeStyle=unlocked?accent:"rgba(205,220,235,.2)";ctx.lineWidth=unlocked?3:1.5;ctx.beginPath();ctx.roundRect(-sw/2,-sh/2,sw,sh,10);ctx.fill();ctx.stroke();
-  ctx.fillStyle=unlocked?"#f6fbff":"#718196";ctx.font="750 24px system-ui";ctx.textAlign="left";ctx.textBaseline="middle";
-  const stampText=value||"KIRITILMAGAN",lines=wrapLines(ctx,stampText,sw-34).slice(0,2);lines.forEach((line,j)=>ctx.fillText(line,-sw/2+18,-(lines.length-1)*14+j*28,sw-36));
-  if(unlocked&&progress<1){ctx.globalAlpha=1-progress;ctx.strokeStyle="#ffffff";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-sw/2+12,sh/2-7);ctx.lineTo(-sw/2+12+progress*(sw-24),sh/2-7);ctx.stroke();}
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  if(unlocked){
+   ctx.globalAlpha=progress;ctx.fillStyle="#f6fbff";ctx.font="750 24px system-ui";
+   const stampText=value||"KIRITILMAGAN",lines=wrapLines(ctx,stampText,sw-34).slice(0,2);lines.forEach((line,j)=>ctx.fillText(line,-sw/2+18,-(lines.length-1)*14+j*28,sw-36));
+   if(progress<1){ctx.globalAlpha=1-progress;ctx.strokeStyle="#ffffff";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-sw/2+12,sh/2-7);ctx.lineTo(-sw/2+12+progress*(sw-24),sh/2-7);ctx.stroke();}
+  }else{
+   ctx.globalAlpha=.48;ctx.fillStyle="#718196";ctx.font="650 16px system-ui";ctx.textAlign="center";ctx.fillText("MUHR KUTILMOQDA",0,0);
+  }
   ctx.restore();
  });ctx.restore();
 }
