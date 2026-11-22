@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.16.3  
+**QF moduli:** 0.16.4  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -98,7 +98,8 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida
 ### Liquid Metal fon va NEX outro
 - Har bir QF Reels sahnasida animatsiyalanuvchi xrom-kumush gradient, suyuq metall yorug‘lik oqimlari va vignette fon sifatida ishlatiladi.
 - Fakt e’loni displeyining korpusi xrom-metal materialda; ekran qora-ko‘k, konturi sovuq oq emissiv.
-- Umumiy video yakunida 5,2 soniya ajratilgan NEX outro: orbital halqalar, metallik NEX logotipi, slogan va NEX ORIGINAL yozuvi.
+- Umumiy video yakunida 5,2 soniya ajratilgan NEX outro: suyuq metall wipe, metallik NEX yozuvi, orbital halqa va brend shiori. QF 0.16.4 da brend yakuni qaytarildi.
+- Manba/tekshiruv paneli asosiy video boshidan barcha sahnalarda ixcham ko‘rinadi; har sahna oxirida tasnif, manba, dalil yoki tekshiruv holati muhr uslubidagi animatsion shtamp bilan beriladi.
 - Hook va 01/05 texnik indekslari faqat studiya interfeysida; Reels kadrlarida ko‘rsatilmaydi.
 
 ### Audio chegarasi
