@@ -1,5 +1,11 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.0] — 2026-11-22
+
+- “Fakt e’loni” sahnasiga maxsus reveal animatsiyasi qo‘shildi: markazdan ikki tomonga kengayadigan parallel nurli chiziqlar, ularning orasida paydo bo‘ladigan yorqin shaffof ekran va undan keyin namoyon bo‘ladigan fakt matni.
+- Effekt faqat ikkinchi sahnada ishlaydi; qolgan to‘rt sahna, QF 3D obyektlari va FM/TA fayllari o‘zgartirilmadi.
+- Statik kod tekshiruvi bajarildi; real qurilmadagi vizual sinov hali talab etiladi.
+
 ## [0.14.1] — 2026-11-22
 
 - QF vizual interfeysi FM etalon CSS fayliga tenglashtirildi: umumiy panel, sarlavha, forma, tugma, progress, timeline, preview ramkasi, yozuv oynasi va mobil breakpointlar bir xil.
