@@ -30,6 +30,7 @@ let THREE=null,renderer=null,scene=null,camera=null,root=null,raf=0,resizeObserv
 const colors={Fizika:0x62d8ff,Biologiya:0x70e0b2,Tarix:0xd9b27a,Matematika:0xb9a1ff,Astronomiya:0x7c9cff,Kimyo:0x74e5ef,Geografiya:0x78c6a3,Texnologiya:0x5edbff,Psixologiya:0xe39bc8,Boshqa:0x78cfff};
 function material(color,roughness=.48,metalness=.12){return new THREE.MeshStandardMaterial({color,roughness,metalness});}
 function mesh(geometry,mat,x=0,y=0,z=0){const m=new THREE.Mesh(geometry,mat);m.position.set(x,y,z);root.add(m);return m;}
+function clearRootContents(){if(!root)return;root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}});clearRootContents();}
 function lineBetween(a,b,radius,mat){const start=new THREE.Vector3(...a),end=new THREE.Vector3(...b),d=new THREE.Vector3().subVectors(end,start);const obj=mesh(new THREE.CylinderGeometry(radius,radius,d.length(),10),mat);obj.position.copy(start).add(end).multiplyScalar(.5);obj.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return obj;}
 function sphere(x,y,z,r,color,detail=32){return mesh(new THREE.SphereGeometry(r,detail,detail),material(color),x,y,z);}
 function makeOrbit(radius,tilt,color){const o=mesh(new THREE.TorusGeometry(radius,.012,8,100),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.7}));o.rotation.x=tilt;return o;}
@@ -89,38 +90,38 @@ function addFactSpecificObject(subject){
  const glow=(color)=>new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:.45,metalness:.3,roughness:.28});
  if(subject==="Astronomiya"){
   if(/qora tuynuk|black hole/.test(words)){
-   root.clear();sphere(0,0,0,.42,0x02040b,48);
+   clearRootContents();sphere(0,0,0,.42,0x02040b,48);
    const disk=mesh(new THREE.TorusGeometry(.92,.16,16,120),glow(0xff9c54));disk.rotation.x=.25;
    const halo=mesh(new THREE.TorusGeometry(.63,.035,8,100),new THREE.MeshBasicMaterial({color:0x7ddfff,transparent:true,opacity:.85}));halo.rotation.x=.25;addLabel("QORA TUYNUK");
   }else if(/oy|oyning|luna/.test(words)){
-   root.clear();sphere(0,0,0,.78,0xb8c4d2,48);
+   clearRootContents();sphere(0,0,0,.78,0xb8c4d2,48);
    for(let i=0;i<12;i++){const a=i*2.4;const crater=sphere(Math.cos(a)*.53,Math.sin(a)*.48,.53,.09+(i%3)*.025,0x75869b,16);crater.scale.z=.25;}
    addLabel("OY SATHI");
   }else if(/quyosh|solar/.test(words)){
-   root.clear();sphere(0,0,0,.76,0xffb43d,48);
+   clearRootContents();sphere(0,0,0,.76,0xffb43d,48);
    const corona=mesh(new THREE.TorusGeometry(.98,.045,8,100),new THREE.MeshBasicMaterial({color:0xffd47a,transparent:true,opacity:.65}));corona.rotation.x=.8;addLabel("QUYOSH");
   }else addLabel("SAYYORA VA ORBITA");
  }else if(subject==="Biologiya"){
   if(/dnk|dna|dezoksiribo/.test(words)){
-   root.clear();const beadA=glow(0x6edcff),beadB=glow(0xf09bc9),bond=material(0xc4d9ef,.5,.2);
+   clearRootContents();const bond=material(0xc4d9ef,.5,.2);
    for(let i=0;i<15;i++){const t=i*.42,y=-1.25+i*.18,x=Math.cos(t)*.48,z=Math.sin(t)*.48; sphere(x,y,z,.075,0x6edcff,14);sphere(-x,y,-z,.075,0xf09bc9,14);lineBetween([x,y,z],[-x,y,-z],.018,bond);}
    addLabel("DNK QO‘SH SPIRALI");
   }else addLabel("HUJAYRA TUZILISHI");
  }else if(subject==="Kimyo"){
   if(/suv|h2o|vodorod|kislorod/.test(words)){
-   root.clear();sphere(0,.1,0,.24,0xf2f7ff,24);sphere(-.48,-.28,0,.16,0xff6d77,24);sphere(.48,-.28,0,.16,0xff6d77,24);lineBetween([0,.1,0],[-.48,-.28,0],.045,material(0xb7d9f2));lineBetween([0,.1,0],[.48,-.28,0],.045,material(0xb7d9f2));addLabel("H₂O MOLEKULASI");
+   clearRootContents();sphere(0,.1,0,.24,0xf2f7ff,24);sphere(-.48,-.28,0,.16,0xff6d77,24);sphere(.48,-.28,0,.16,0xff6d77,24);lineBetween([0,.1,0],[-.48,-.28,0],.045,material(0xb7d9f2));lineBetween([0,.1,0],[.48,-.28,0],.045,material(0xb7d9f2));addLabel("H₂O MOLEKULASI");
   }else addLabel("MOLEKULA MODELI");
  }else if(subject==="Fizika"){
   if(/magnit|magnet/.test(words)){
-   root.clear();const north=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0xff657a),-.48,0,0);north.rotation.z=Math.PI/2;const south=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0x5e9fff),.48,0,0);south.rotation.z=Math.PI/2;
+   clearRootContents();const north=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0xff657a),-.48,0,0);north.rotation.z=Math.PI/2;const south=mesh(new THREE.CylinderGeometry(.22,.22,.8,32),glow(0x5e9fff),.48,0,0);south.rotation.z=Math.PI/2;
    for(let i=0;i<5;i++){const curve=new THREE.EllipseCurve(0,0,.6+i*.13,.25+i*.1,0,Math.PI*2,false,0);const pts=curve.getPoints(80).map(p=>new THREE.Vector3(p.x,p.y,.08));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x7de6ff,transparent:true,opacity:.65}));root.add(line);}
    addLabel("MAGNIT MAYDONI");
   }else addLabel("HARAKAT VA KUCH");
  }else if(subject==="Tarix"){
-  if(/piramida|misr|fir'avn/.test(words)){root.clear();const stone=material(0xd6b989,.8,0);mesh(new THREE.ConeGeometry(1,.95,4),stone,0,-.05,0).rotation.y=Math.PI/4;mesh(new THREE.BoxGeometry(2.5,.12,1.2),stone,0,-.58,0);addLabel("QADIMGI MISR");}
+  if(/piramida|misr|fir'avn/.test(words)){clearRootContents();const stone=material(0xd6b989,.8,0);mesh(new THREE.ConeGeometry(1,.95,4),stone,0,-.05,0).rotation.y=Math.PI/4;mesh(new THREE.BoxGeometry(2.5,.12,1.2),stone,0,-.58,0);addLabel("QADIMGI MISR");}
   else addLabel("TARIXIY ME’MORCHILIK");
  }else if(subject==="Matematika"){
-  if(/pi soni|π|aylana|doira/.test(words)){root.clear();const ring=mesh(new THREE.TorusGeometry(.8,.055,12,120),glow(0xa98bff));ring.rotation.x=.15;lineBetween([-.9,0,0],[.9,0,0],.012,material(0xe6dcff));addLabel("AYLANA GEOMETRIYASI");}
+  if(/pi soni|π|aylana|doira/.test(words)){clearRootContents();const ring=mesh(new THREE.TorusGeometry(.8,.055,12,120),glow(0xa98bff));ring.rotation.x=.15;lineBetween([-.9,0,0],[.9,0,0],.012,material(0xe6dcff));addLabel("AYLANA GEOMETRIYASI");}
   else addLabel("GEOMETRIK SHAKL");
  }else if(subject==="Geografiya")addLabel(/vulqon|lava/.test(words)?"VULQON RELYEFI":"YER SHARI");
  else if(subject==="Texnologiya")addLabel(/sun'iy intellekt|ai|neyron/.test(words)?"NEYRON TARMOQ":"MIKROPROTSESSOR");
