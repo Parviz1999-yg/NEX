@@ -368,9 +368,6 @@ function animate(){
     const mix=(a,b)=>a+(b-a)*ease;
     updateFlowSurface(t,profile,energy);
     updateSourceIcon(t,profile,energy);
-    const total=mainDuration();
-    const elapsed=state.playbackElapsed;
-    const outroProgress=Math.max(0,Math.min(1,(elapsed-total)/OUTRO_DURATION));
     updateNexLogo(0,false,t);
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
