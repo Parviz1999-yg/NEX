@@ -74,8 +74,11 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida
 - QF 0.11.0 da Three.js 0.180.0 dinamik CDN importi asosida haqiqiy WebGL renderer qo‘shildi.
 - QF 0.12.0 da fakt sarlavhasi, e’lon, mazmun va dalildagi kalit iboralarga tayangan deterministik sahna profillari qo‘shildi. Masalan, qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi va aylana uchun maxsus kompozitsiyalar mavjud.
 - Kamera ko‘rinishi, animatsiya tezligi, pauza/davom ettirish va besh ssenariy bosqichiga bog‘langan kamera urg‘usi boshqariladi.
+- QF 0.14.0 da FM uslubidagi 9:16 jonli preview, besh sahnali Reels timeline, sahna matnini tahrirlash va har bir sahna davomiyligini alohida sozlash qo‘shildi.
+- Har bir sahnadagi matn satrlari animatsiya bilan birma-bir paydo bo‘ladi; sahnalar HOOK’dan YAKUN’gacha avtomatik ketma-ket almashadi.
+- 1080×1920 yozuv overlay’i telefon ekran yozuvi bilan olinadi. Bu ichki MP4 eksport emas; audio va yakuniy audio-video montaj tashqi ilovada bajariladi.
 - Ushbu kalit so‘z qoidalari AI semantik tahlili emas; noma’lum yoki aniqlanmagan faktlar fan sohasi bo‘yicha bazaviy sahnadan foydalanadi.
-- Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy Reels eksporti QF ichida bajarilmaydi; ovoz, musiqa va yakuniy video tashqi ilovalarda tayyorlanadi.
+- Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy audio-video birlashtirish QF ichida bajarilmaydi; ovoz, musiqa va yakuniy montaj tashqi ilovalarda tayyorlanadi. Vizual rolik 1080×1920 ekran yozish oynasi orqali yozib olinadi.
 - Mobil/desktop jonli WebGL sinovi hali real qurilmalarda tasdiqlanishi kerak.
 - Fan sohasi bo‘yicha boshlang‘ich sahna kompozitsiyalari: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya va Psixologiya.
 - Renderer canvas o‘lchamini konteynerga moslaydi va sahnani avtomatik aylantiradi.
