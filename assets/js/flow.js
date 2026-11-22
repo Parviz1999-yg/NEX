@@ -505,7 +505,7 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
   else{pill(["THE DISCOVERY","THE PROFILE","THE VALUE","THE DIFFERENCE","THE NEXT MOVE"][idx],w*.12,h*.2);text(title,x,y,w*.75,w*(idx===0?.095:.078),fg,"900",ta,5);text(detail,x,h*.76,w*.72,w*.031,sub,"650",ta,3)}
   c.save();c.globalAlpha=.45;c.strokeStyle=ac;c.lineWidth=w*.003;c.beginPath();c.arc(w*.5,h*.52,w*(.34+.012*Math.sin(t)),t*.25,t*.25+Math.PI*1.55);c.stroke();c.restore();
  }else if(style==="Kinetic Typography"){
-  c.save();c.globalAlpha=.08;c.fillStyle=ac;c.font="950 "+(w*.72)+"px system-ui";c.textAlign=align==="right"?"right":"left";c.fillText(String(idx+1).padStart(2,"0"),align==="right"?w*.94:w*.06,h*.3);c.restore();
+
   for(let i=0;i<7;i++){const yy=h*(.16+i*.105),shift=((t*90+i*117+state.backgroundSeed%500)%(w*1.4))-w*.2;c.save();c.globalAlpha=.12+(i%3)*.04;c.fillStyle=i%2?ac:sub;c.fillRect(shift,yy,w*(.16+(i%3)*.06),h*.009);c.restore()}
   const markerY=h*(idx===0?.22:idx===1?.16:idx===2?.24:idx===3?.24:.22);pill(["STOP & LOOK","ACCOUNT / 01","YOUR BENEFIT","WHY THIS ONE","FOLLOW / SAVE"][idx],w*.1,markerY);
   if(idx===1){profile(w*.5,h*.43,w*.105);text(title,w*.5,h*.61,w*.82,w*.068,fg,"950","center",2);text(detail,w*.5,h*.77,w*.78,w*.027,ac,"700","center",3)}
@@ -676,7 +676,7 @@ function drawRecommendationScene(c,w,h,now,pal){
  const glow=c.createRadialGradient(w*(.5+Math.sin(t*.22)*.12),h*.39,0,w*.5,h*.48,h*.76);glow.addColorStop(0,accent+"38");glow.addColorStop(.52,sub+"18");glow.addColorStop(1,bg+"00");c.fillStyle=glow;c.fillRect(0,0,w,h);
  drawTopicMotif(c,w,h,now,accent,sub,topic);
  if(style==="Kinetic Typography"){
-  c.save();c.globalAlpha=.11;c.fillStyle=accent;c.font="950 "+(w*.78)+"px system-ui";c.textAlign="center";c.textBaseline="middle";c.fillText(String(idx+1).padStart(2,"0"),w*.5,h*.47);c.restore();
+
   for(let n=0;n<6;n++){const yy=h*(.12+n*.13),shift=((t*90+n*137)%(w*1.5))-w*.25;c.fillStyle=accent;c.globalAlpha=.13;c.fillRect(shift,yy,w*.22,h*.006)}
  }
  if(style==="Futuristic Motion"){
