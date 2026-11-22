@@ -1,5 +1,11 @@
 # TA — Tavsiya akkaunt o‘zgarishlar tarixi
 
+## [0.10.2] — 2026-11-22
+
+- Auditda hech qayerda chaqirilmayotgani tasdiqlangan `getToneVisual()` yordamchi funksiyasi olib tashlandi.
+- Render, forma, sahna oqimi, dizayn va foydalanuvchi tajribasi o‘zgartirilmadi.
+- Faqat foydalanuvchining ushbu audit doirasidagi aniq topshirig‘i bilan bajarilgan xavfsiz kod tozalash.
+
 ## [0.10.1] — 2026-11-22
 
 - Obunachilar soni Instagram uslubidagi ixcham formatda ko‘rsatiladi: 1K, 1,2K, 10K, 1,2M va 1B.
