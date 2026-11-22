@@ -1,3 +1,11 @@
+# NEX — audit va rivojlantirish holati (2026-11-22)
+
+- Auditdan oldingi zaxira: `backup/nex-before-dead-code-cleanup-2026-11-22`.
+- TA: v0.10.2 — chaqirilmaydigan bitta yordamchi funksiya olib tashlandi; qolgan funksiyalar o‘zgarmadi.
+- FM: v0.9.7 — muhofazalangan, manba kodi o‘zgartirilmadi.
+- QF: v0.15.6 — foydalanilmaydigan yordamchilar, holat o‘zgaruvchilari va yashirin DOM qoldiqlari tozalandi.
+- Statik JS sintaksis va DOM ID bog‘lanish tekshiruvlari o‘tdi. Android/desktop real brauzer, WebGL va ekran yozish sinovi hali bajarilishi kerak.
+
 # NEX — ishlar holati
 
 Amaldagi versiya: **v0.9.7**  
