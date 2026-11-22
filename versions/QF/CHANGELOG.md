@@ -1,5 +1,13 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.3] — 2026-11-22
+
+- Reels kadrlaridan ortiqcha HOOK/FAKT E’LONI/MAZMUN/HOLAT/YAKUN va 01/05 kabi texnik yozuvlar olib tashlandi; ssenariy matni toza kompozitsiyada qoladi.
+- 3D obyektlarga jonli suzish, burilish, ritmik masshtab va individual harakat qo‘shildi; sahna harakati tanlangan animatsiya uslubiga bog‘landi.
+- Fakt e’loni uchun 3D metall romli, emissiv chetli, skan-chiziqli innovatsion LED displey yaratildi; matn paneli chuqur ko‘k shisha, yorug‘lik gradienti va harakatlanuvchi skan bilan qayta ishlanadi.
+- QF versiyasi va asset cache qiymatlari 0.15.3 ga yangilandi. TA va muhofazalangan FM fayllari o‘zgartirilmadi.
+- Statik kod tekshiruvi talab etiladi; real qurilmadagi vizual va WebGL ishlash sinovi hali foydalanuvchi qurilmasida tasdiqlanishi kerak.
+
 ## [0.15.2] — 2026-11-22
 
 - 01 — Fakt ma’lumotlari sahifasidagi tasnif, fan sohasi, sarlavha, manba, dalil va tekshiruv maydonlari alohida forma konteyneriga joylashtirildi.
