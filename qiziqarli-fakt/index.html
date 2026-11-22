@@ -1,86 +1,13 @@
-<!doctype html>
-<html lang="uz">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#081426">
-<title>NEX — Qiziqarli fakt</title>
-<link rel="stylesheet" href="style.css?v=0.12.0">
-</head>
-<body>
-<header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.12.0</span></header>
-<main>
-<a class="back" href="../">← Bosh sahifa</a>
-<section class="intro">
-<p class="tag">03 — MUSTAQIL STUDIYA</p>
-<h1>Faktni aniqlang.<br><i>Hikoyaga aylantiring.</i></h1>
-<p>Fakt tasnifi, fan sohasi va tekshiruv holati alohida boshqariladi. Ssenariy va 3D sahna bir-biridan mustaqil ishlaydi.</p>
-</section>
-<div class="layout">
-<section class="panel">
-<h2>01 / Fakt ma’lumotlari</h2>
-<label for="kind">Fakt tasnifi</label>
-<select id="kind"><option value="">Tasnifni tanlang</option><option>Ilmiy fakt</option><option>Postulat (isbotsiz qabul qilinadigan)</option><option>100 foiz ishonchli</option><option>Tekshiruvda</option></select>
-<p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p>
-<label for="field">Fan yoki mavzu sohasi</label>
-<select id="field"><option value="">Sohani tanlang</option><option>Fizika</option><option>Biologiya</option><option>Tarix</option><option>Matematika</option><option>Astronomiya</option><option>Kimyo</option><option>Geografiya</option><option>Texnologiya</option><option>Psixologiya</option><option>Boshqa</option></select>
-<input id="customField" placeholder="Boshqa soha nomi" hidden>
-<label for="title">Fakt sarlavhasi</label>
-<input id="title" maxlength="120" placeholder="Faktni qisqa va aniq ifodalang">
-<label for="source">Manba nomi</label>
-<input id="source" maxlength="160" placeholder="Kitob, maqola, ilmiy tashkilot yoki hujjat">
-<label for="sourceUrl">Manba havolasi (ixtiyoriy)</label>
-<input id="sourceUrl" type="url" placeholder="https://...">
-<label for="evidence">Dalil yoki tekshiruv izohi</label>
-<textarea id="evidence" rows="3" placeholder="Fakt nimaga asoslangan? Qanday dalil mavjud?"></textarea>
-<label for="review">Tekshiruv qaydi</label>
-<select id="review"><option>Tekshiruv talab qilinadi</option><option>Manba tekshirildi</option><option>Bir nechta manba bilan solishtirildi</option><option>Qarama-qarshi dalil topildi</option></select>
-</section>
-<section class="panel">
-<h2>02 / Hikoya ssenariysi</h2>
-<label for="hook">HOOK — e’tiborni tortish</label>
-<textarea id="hook" rows="2" placeholder="Tomoshabinni to‘xtatadigan savol yoki jumla"></textarea>
-<label for="announce">FAKT E’LONI</label>
-<textarea id="announce" rows="2" placeholder="Faktni qisqa va aniq e’lon qiling"></textarea>
-<label for="bodyText">MAZMUNI</label>
-<textarea id="bodyText" rows="4" placeholder="Faktning mohiyati, sabab va tushuntirish"></textarea>
-<label for="statusText">HOLATI — isbot, tasnif va tafsilot</label>
-<textarea id="statusText" rows="3" placeholder="Dalil, manba, ishonchlilik yoki tekshiruv holatini oching"></textarea>
-<label for="ending">FIKR SO‘RASH yoki CHORLOV</label>
-<textarea id="ending" rows="2" placeholder="Tomoshabinga savol yoki harakatga chaqiriq"></textarea>
-<div class="actions"><button id="build" class="primary">Ssenariyni yig‘ish</button><button id="clear" class="secondary">Tozalash</button></div>
-<pre id="result" aria-live="polite">Tayyorlangan ssenariy shu yerda ko‘rinadi.</pre>
-</section>
-</div>
-<section class="panel visual">
-<div class="visual-copy">
-<p class="tag">03 / 3D VIZUAL STUDIYA</p>
-<h2>Fakt mazmuniga mos 3D sahna</h2>
-<p>Fakt sarlavhasi va mazmunidagi kalit tushunchalar aniqlanadi. Mos sahna profili tanlanadi; kamera, harakat tezligi va ssenariy bosqichlari mustaqil boshqariladi.</p>
-<div class="visual-actions"><button id="render3d" class="primary">Faktga mos sahna yaratish</button><button id="reset3d" class="secondary">Sahnani qayta tiklash</button><button id="pause3d" class="secondary" aria-pressed="false">Animatsiyani to‘xtatish</button></div>
-<label class="control-label" for="cameraMode">Kamera ko‘rinishi</label>
-<select id="cameraMode" class="scene-control"><option value="front">Old ko‘rinish</option><option value="orbit">Diagonal ko‘rinish</option><option value="top">Yuqoridan ko‘rinish</option></select>
-<label class="control-label" for="motionSpeed">Animatsiya tezligi <output id="speedValue">1.0×</output></label>
-<input id="motionSpeed" class="scene-control" type="range" min="0" max="2" step="0.1" value="1">
-<p id="sceneStatus" class="scene-status" role="status">Sahna tayyor. Fan sohasi va fakt matnini kiriting.</p>
-</div>
-<div class="stage" id="stage">
-<canvas id="sceneCanvas" aria-label="Qiziqarli fakt uchun interaktiv 3D sahna"></canvas>
-<div class="stage-overlay"><span>QF / 3D ENGINE</span><small id="sceneLabel">SAHNA KUTILMOQDA</small></div>
-</div>
-<div class="timeline">
-<div class="timeline-head"><strong>SSENARIY VAQT CHIZIG‘I</strong><span id="timelineStatus">Bosqich tanlanmagan</span></div>
-<div class="timeline-buttons">
-<button type="button" class="stage-step active" data-stage="0">01 · HOOK</button>
-<button type="button" class="stage-step" data-stage="1">02 · FAKT</button>
-<button type="button" class="stage-step" data-stage="2">03 · MAZMUN</button>
-<button type="button" class="stage-step" data-stage="3">04 · HOLAT</button>
-<button type="button" class="stage-step" data-stage="4">05 · YAKUN</button>
-</div>
-<p class="timeline-note">Bosqich tanlanganda kamera va sahna urg‘usi o‘zgaradi. Bu boshqaruv hozircha montaj vaqt chizig‘i emas, sahna ko‘rinishini tayyorlash vositasidir.</p>
-</div>
-</section>
-</main>
-<script src="app.js?v=0.12.0"></script>
-</body>
-</html>
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081426"><title>NEX — Qiziqarli fakt</title><link rel="stylesheet" href="style.css?v=0.13.0"></head><body>
+<header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.13.0</span></header><main><a class="back" href="../">← Bosh sahifa</a>
+<section class="intro"><p class="tag">03 — MUSTAQIL VIDEO STUDIYA</p><h1>Faktni aniqlang.<br><i>Hikoyaga aylantiring.</i></h1><p>Fakt asosini tayyorlang, ssenariy yozing va mazmunga mos 3D sahnani boshqaring. Har bir ish bosqichi alohida sahifada ochiladi.</p></section>
+<section class="studio-shell"><div class="studio-top"><div class="progress"><span class="progress-step active">01 · FAKT</span><span class="progress-step">02 · SSENARIY</span><span class="progress-step">03 · 3D SAHNA</span><span class="progress-step">04 · NATIJA</span></div><strong id="pageCounter">01 / 04</strong></div>
+<section class="wizard-page panel" data-page="1"><p class="tag">BOSQICH 01</p><h2>Fakt ma’lumotlari</h2><p class="step-desc">Faktning turi, sohasi va asosini kiriting.</p>
+<label for="kind">Fakt tasnifi</label><select id="kind"><option value="">Tasnifni tanlang</option><option>Ilmiy fakt</option><option>Postulat (isbotsiz qabul qilinadigan)</option><option>100 foiz ishonchli</option><option>Tekshiruvda</option></select><p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p>
+<label for="field">Fan yoki mavzu sohasi</label><select id="field"><option value="">Sohani tanlang</option><option>Fizika</option><option>Biologiya</option><option>Tarix</option><option>Matematika</option><option>Astronomiya</option><option>Kimyo</option><option>Geografiya</option><option>Texnologiya</option><option>Psixologiya</option><option>Boshqa</option></select><input id="customField" placeholder="Boshqa soha nomi" hidden>
+<label for="title">Fakt sarlavhasi</label><input id="title" maxlength="120" placeholder="Faktni qisqa va aniq ifodalang"><label for="source">Manba nomi</label><input id="source" maxlength="160" placeholder="Kitob, maqola, ilmiy tashkilot yoki hujjat"><label for="evidence">Dalil yoki tekshiruv izohi</label><textarea id="evidence" rows="4" placeholder="Fakt nimaga asoslangan? Qanday dalil mavjud?"></textarea><label for="review">Tekshiruv qaydi</label><select id="review"><option>Tekshiruv talab qilinadi</option><option>Manba tekshirildi</option><option>Bir nechta manba bilan solishtirildi</option><option>Qarama-qarshi dalil topildi</option></select></section>
+<section class="wizard-page panel" data-page="2" hidden><p class="tag">BOSQICH 02</p><h2>Video ssenariysi</h2><p class="step-desc">Tomoshabinni ushlab qoladigan izchil hikoya yarating.</p>
+<label for="hook">HOOK — e’tiborni tortish</label><textarea id="hook" rows="3" placeholder="Tomoshabinni to‘xtatadigan savol yoki jumla"></textarea><label for="announce">FAKT E’LONI</label><textarea id="announce" rows="3" placeholder="Faktni qisqa va aniq e’lon qiling"></textarea><label for="bodyText">MAZMUNI</label><textarea id="bodyText" rows="5" placeholder="Faktning mohiyati, sabab va tushuntirish"></textarea><label for="statusText">HOLATI — isbot, tasnif va tafsilot</label><textarea id="statusText" rows="4" placeholder="Dalil, manba, ishonchlilik yoki tekshiruv holatini oching"></textarea><label for="ending">FIKR SO‘RASH yoki CHORLOV</label><textarea id="ending" rows="3" placeholder="Tomoshabinga savol yoki harakatga chaqiriq"></textarea></section>
+<section class="wizard-page panel visual" data-page="3" hidden><div class="visual-copy"><p class="tag">BOSQICH 03</p><h2>3D sahna studiyasi</h2><p>Fakt mazmuniga mos vizual profil yarating. Kamera, animatsiya va ssenariy bosqichlari alohida boshqariladi.</p><div class="visual-actions"><button id="render3d" class="primary">Faktga mos sahna yaratish</button><button id="reset3d" class="secondary">Sahnani qayta tiklash</button><button id="pause3d" class="secondary" aria-pressed="false">Animatsiyani to‘xtatish</button></div><label class="control-label" for="cameraMode">Kamera ko‘rinishi</label><select id="cameraMode" class="scene-control"><option value="front">Old ko‘rinish</option><option value="orbit">Diagonal ko‘rinish</option><option value="top">Yuqoridan ko‘rinish</option></select><label class="control-label" for="motionSpeed">Animatsiya tezligi <output id="speedValue">1.0×</output></label><input id="motionSpeed" class="scene-control" type="range" min="0" max="2" step="0.1" value="1"><p id="sceneStatus" class="scene-status" role="status">Sahna tayyor. Fakt va ssenariy ma’lumotlarini kiriting.</p></div><div class="stage" id="stage"><canvas id="sceneCanvas" aria-label="Qiziqarli fakt uchun interaktiv 3D sahna"></canvas><div class="stage-overlay"><span>QF / 3D ENGINE</span><small id="sceneLabel">SAHNA KUTILMOQDA</small></div></div><div class="timeline"><div class="timeline-head"><strong>SSENARIY BOSQICHLARI</strong><span id="timelineStatus">Bosqich tanlanmagan</span></div><div class="timeline-buttons"><button type="button" class="stage-step active" data-stage="0">01 · HOOK</button><button type="button" class="stage-step" data-stage="1">02 · FAKT</button><button type="button" class="stage-step" data-stage="2">03 · MAZMUN</button><button type="button" class="stage-step" data-stage="3">04 · HOLAT</button><button type="button" class="stage-step" data-stage="4">05 · YAKUN</button></div><p class="timeline-note">Bosqich tanlanganda kamera va sahna urg‘usi o‘zgaradi. Bu montaj vaqt chizig‘i emas, 3D sahnani boshqarish vositasi.</p></div></section>
+<section class="wizard-page panel" data-page="4" hidden><p class="tag">BOSQICH 04</p><h2>Tayyor ssenariy</h2><p class="step-desc">Ssenariyni tekshiring va nusxalab tashqi video montaj jarayoniga olib o‘ting.</p><pre id="result">Ssenariy hali tayyorlanmagan.</pre><div class="actions"><button id="copyResult" class="primary">Ssenariyni nusxalash</button><button id="clear" class="secondary">Yangi loyiha</button></div><p class="hint">Ovoz, musiqa va yakuniy video montaj NEX’dan tashqarida bajariladi.</p></section>
+<nav class="page-nav"><button id="prevPage" class="secondary" hidden>← Oldingi sahifa</button><span></span><button id="generateScript" class="primary" hidden>Ssenariyni yig‘ish →</button><button id="nextPage" class="primary">Keyingi sahifa →</button><button id="finishPage" class="primary" hidden>Natijani ko‘rish →</button></nav></section></main><script src="app.js?v=0.13.0"></script></body></html>
