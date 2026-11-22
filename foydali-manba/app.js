@@ -368,10 +368,10 @@ function animate(){
     const mix=(a,b)=>a+(b-a)*ease;
     updateFlowSurface(t,profile,energy);
     updateSourceIcon(t,profile,energy);
-    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    const total=mainDuration();
     const elapsed=state.playbackElapsed;
-    // FM logotipi 2D qatlamda yuqori chapda qisqa chaqnaydi.
-    updateNexLogo(0,false,t);
+    const outroProgress=Math.max(0,Math.min(1,(elapsed-total)/OUTRO_DURATION));
+    updateNexLogo(outroProgress,elapsed>=total,t);
     state.group.rotation.y=Math.sin(t*profile.speed*energy)*profile.turn;
     state.group.rotation.x=Math.cos(t*profile.speed*.8*energy)*profile.turn*.45;
     state.group.rotation.z=mix(from.tilt,to.tilt)+Math.sin(t*profile.speed*1.3)*.035;
@@ -412,7 +412,7 @@ function renderSceneList(){
        state.playbackElapsed=state.sceneDurations.slice(0,index).reduce((sum,value)=>sum+value,0);
        if(wasPlaying)state.playbackStarted=performance.now()-state.playbackElapsed;
        showScene(index);
-       $("studioProgress").style.width=(state.playbackElapsed/state.sceneDurations.reduce((sum,value)=>sum+value,0)*100)+"%";
+       $("studioProgress").style.width=(state.playbackElapsed/fullDuration()*100)+"%";
        updateSceneTime();
      });
     list.appendChild(button);
@@ -436,9 +436,12 @@ function showScene(index){
   $("sceneDurationValue").textContent=(state.sceneDurations[state.sceneIndex]/1000).toFixed(1).replace(".",",")+" soniya";
   renderSceneList();refreshDurationSummary();
 }
+const OUTRO_DURATION=5200;
+function mainDuration(){return state.sceneDurations.reduce((sum,value)=>sum+value,0);}
+function fullDuration(){return mainDuration()+OUTRO_DURATION;}
 function refreshDurationSummary(){
-  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
-  $("durationSummary").textContent="Jami rolik: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
+  const main=mainDuration(),total=fullDuration();
+  $("durationSummary").textContent="Asosiy: "+(main/1000).toFixed(1).replace(".",",")+" soniya · NEX outro: 5,2 soniya · Jami: "+(total/1000).toFixed(1).replace(".",",")+" soniya · 5 sahna";
   if($("recordDuration"))$("recordDuration").textContent=(total/1000).toFixed(1).replace(".",",")+" soniya";
 }
 function updateSceneTime(){
@@ -446,36 +449,38 @@ function updateSceneTime(){
   $("sceneTime").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");
 }
 function pausePlayback(){
-  if(state.playing)state.playbackElapsed=Math.min(state.sceneDurations.reduce((sum,value)=>sum+value,0),performance.now()-state.playbackStarted);
+  if(state.playing)state.playbackElapsed=Math.min(fullDuration(),performance.now()-state.playbackStarted);
   state.playing=false;
   updateSceneTime();
   if(state.playbackRaf)cancelAnimationFrame(state.playbackRaf);
   state.playbackRaf=0;
-  if($("startPreview"))$("startPreview").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺ Qayta ko‘rish":"▶ Davom etish";
-  if(state.recording&&$("recordPause"))$("recordPause").textContent=state.playbackElapsed>=state.sceneDurations.reduce((sum,value)=>sum+value,0)?"↺":"▶";
+  if($("startPreview"))$("startPreview").textContent=state.playbackElapsed>=fullDuration()?"↺ Qayta ko‘rish":"▶ Davom etish";
+  if(state.recording&&$("recordPause"))$("recordPause").textContent=state.playbackElapsed>=fullDuration()?"↺":"▶";
 }
 function playbackFrame(now){
   if(!state.playing)return;
-  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+  const main=mainDuration(),total=fullDuration();
   state.playbackElapsed=Math.min(total,now-state.playbackStarted);
   if(state.playbackElapsed>=total){
-    state.playing=false;state.playbackRaf=0;showScene(4);
-    $("studioProgress").style.width="100%";
-    updateSceneTime();
+    state.playing=false;state.playbackRaf=0;
+    $("studioProgress").style.width="100%";updateSceneTime();
+    $("sceneCounter").textContent="NEX OUTRO · YAKUN";
     $("startPreview").textContent="↺ Qayta ko‘rish";
     if(state.recording)$("recordPause").textContent="↺";
-    return;
+    syncRecordText();return;
   }
-  let cursor=state.playbackElapsed,scene=0;
-  while(scene<4&&cursor>=state.sceneDurations[scene]){cursor-=state.sceneDurations[scene];scene++;}
-  if(scene!==state.sceneIndex)showScene(scene);
+  if(state.playbackElapsed<main){
+    let cursor=state.playbackElapsed,scene=0;
+    while(scene<4&&cursor>=state.sceneDurations[scene]){cursor-=state.sceneDurations[scene];scene++;}
+    if(scene!==state.sceneIndex)showScene(scene);
+  }else $("sceneCounter").textContent="NEX OUTRO · 5,2 SONIYA";
   $("studioProgress").style.width=(state.playbackElapsed/total*100)+"%";
-  updateSceneTime();
+  updateSceneTime();syncRecordText();
   state.playbackRaf=requestAnimationFrame(playbackFrame);
 }
 function startPlayback(){
   if(state.playing){pausePlayback();return;}
-  const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+  const total=fullDuration();
   if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);$("studioProgress").style.width="0%";updateSceneTime();}
   state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
   $("startPreview").textContent="Ⅱ To‘xtatish";
@@ -582,11 +587,27 @@ function drawCornerNexLogo(ctx,elapsed){
   ctx.restore();
 }
 function drawFMOutroBrand(ctx,w,h,progress){
-  const q=Math.max(0,Math.min(1,(progress-.34)/.28)),fade=Math.min(1,progress/.16,Math.max(0,(1-progress)/.12));if(fade<=0)return;
-  ctx.save();ctx.globalAlpha=fade;ctx.translate(w*.5,h*.255);ctx.scale(.78+.22*q,.78+.22*q);ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillStyle="#f5fbff";ctx.font="950 "+(w*.19)+"px system-ui";ctx.fillText("NEX",0,0);
-  ctx.strokeStyle="#8ed8ff";ctx.lineWidth=w*.009;ctx.beginPath();ctx.ellipse(0,0,w*.29,h*.055,-.2,Math.PI*.08,Math.PI*(.25+1.55*q));ctx.stroke();
-  ctx.font="600 "+(w*.031)+"px system-ui";ctx.fillStyle="#dce8f4";ctx.fillText("Fikr va imkoniyatlar makoni",0,h*.085);ctx.restore();
+  const p=Math.max(0,Math.min(1,progress)),fade=Math.min(1,p/.14,Math.max(0,(1-p)/.1));
+  if(fade<=0)return;
+  const q=Math.max(0,Math.min(1,(p-.3)/.42));
+  const paths=[
+    [[-1.72,-.62],[-1.72,.68]],[[-1.72,.68],[-.72,-.62]],[[-.72,-.62],[-.72,.68]],
+    [[-.42,-.62],[-.42,.68]],[[-.42,.68],[.38,.68]],[[-.42,.03],[.28,.03]],[[-.42,-.62],[.38,-.62]],
+    [[.62,.68],[1.62,-.62]],[[.62,-.62],[1.62,.68]]
+  ];
+  ctx.save();ctx.globalAlpha=fade;ctx.translate(w*.5,h*.255);
+  const scale=w*.15;ctx.scale(scale,-scale);
+  const chrome=ctx.createLinearGradient(-1.8,-.7,1.8,.7);
+  chrome.addColorStop(0,"#788794");chrome.addColorStop(.22,"#f8fcff");chrome.addColorStop(.48,"#aebbc6");chrome.addColorStop(.7,"#ffffff");chrome.addColorStop(1,"#65727e");
+  ctx.strokeStyle=chrome;ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=.082;ctx.shadowColor="#dceaf5";ctx.shadowBlur=.075;
+  paths.forEach((path,index)=>{
+    const reveal=Math.max(0,Math.min(1,(p*1.22-index*.045)/.48));if(reveal<=0)return;
+    const a=path[0],b=path[1];ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(a[0]+(b[0]-a[0])*reveal,a[1]+(b[1]-a[1])*reveal);ctx.stroke();
+  });
+  ctx.restore();
+  ctx.save();ctx.globalAlpha=fade*.82;ctx.strokeStyle="#d9e5ee";ctx.lineWidth=w*.006;ctx.shadowColor="#dceaf5";ctx.shadowBlur=w*.018;
+  ctx.beginPath();ctx.ellipse(w*.5,h*.255,w*.29,h*.052,-.2,Math.PI*.08,Math.PI*(.25+1.55*q));ctx.stroke();
+  ctx.shadowBlur=0;ctx.fillStyle="#dce8f4";ctx.font="600 "+(w*.031)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Fikr va imkoniyatlar makoni",w*.5,h*.35);ctx.restore();
 }
 function syncRecordText(recordToo=true){
   const value=id=>$(id)?.textContent?.trim()||"";
@@ -640,9 +661,9 @@ function syncRecordText(recordToo=true){
       wrap(value("reelCta"),mainFont,mainColor,960,6,style==="kinetic"?112:96,mainAlign,mainX,820);
     }
     // Pastki brend yozuvi va 9:16 belgisi ataylab chiqarilmaydi.
-    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    const total=mainDuration();
     const elapsed=state.playbackElapsed;
-    const outroStart=Math.max(0,total-5200);
+    const outroStart=total;
     if(elapsed>=outroStart){
       ctx.restore();
       ctx.clearRect(0,0,1080,1920);
@@ -691,7 +712,7 @@ $("recordMode").addEventListener("click",startRecordMode);
 $("recordPause").addEventListener("click",()=>{
   if(state.playing){pausePlayback();$("recordPause").textContent="▶";}
   else{
-    const total=state.sceneDurations.reduce((sum,value)=>sum+value,0);
+    const total=fullDuration();
     if(state.playbackElapsed>=total){state.playbackElapsed=0;showScene(0);updateSceneTime();}
     state.playing=true;state.playbackStarted=performance.now()-state.playbackElapsed;
     $("recordPause").textContent="Ⅱ";
