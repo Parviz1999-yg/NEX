@@ -1,30 +1,22 @@
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
-const notes={
-"Ilmiy fakt":"Ilmiy dalil va tekshiriladigan manbaga tayangan da’vo. Manbani ko‘rsatish zarur.",
-"Postulat (isbotsiz qabul qilinadigan)":"Muayyan nazariya yoki tizim doirasida boshlang‘ich asos sifatida qabul qilinadi; uni empirik isbotlangan fakt sifatida ko‘rsatmaslik kerak.",
-"100 foiz ishonchli":"Bu belgi mutlaq aniqlik kafolati emas. Da’vo dalil va manbalar bilan ehtiyotkorlik bilan asoslanishi kerak.",
-"Tekshiruvda":"Hali tasdiqlanmagan ma’lumot. Videoda tekshiruv jarayonida ekani ochiq aytilishi shart."
-};
-$("kind").addEventListener("change",()=>{$("kindHint").textContent=notes[$("kind").value]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi."});
-$("field").addEventListener("change",()=>{$("customField").hidden=$("field").value!=="Boshqa";});
-const val=id=>$(id).value.trim();
-$("build").addEventListener("click",()=>{
- const field=$("field").value==="Boshqa"?val("customField"):$("field").value;
- const required=["kind","field","title","hook","announce","bodyText","statusText","ending"];
- if(required.some(id=>!val(id))||!field){alert("Fakt tasnifi, fan sohasi, sarlavha va besh ssenariy bosqichini to‘ldiring.");return;}
- if(val("sourceUrl")&&!/^https?:\/\//i.test(val("sourceUrl"))){alert("Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}
- const lines=["NEX — QIZIQARLI FAKT","Tasnif: "+val("kind"),"Fan sohasi: "+field,"Fakt: "+val("title"),"Manba: "+(val("source")||"Kiritilmagan"),"Havola: "+(val("sourceUrl")||"Kiritilmagan"),"Dalil: "+(val("evidence")||"Kiritilmagan"),"Tekshiruv qaydi: "+val("review"),"","HOOK: "+val("hook"),"FAKT E’LONI: "+val("announce"),"MAZMUNI: "+val("bodyText"),"HOLATI: "+val("statusText"),"FIKR SO‘RASH / CHORLOV: "+val("ending")];
- $("result").textContent=lines.join("\n");
-});
-$("clear").addEventListener("click",()=>{
- document.querySelectorAll("input,textarea").forEach(x=>x.value="");
- document.querySelectorAll("select").forEach(x=>x.selectedIndex=0);
- $("customField").hidden=true;
- $("kindHint").textContent="Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";
- $("result").textContent="Tayyorlangan ssenariy shu yerda ko‘rinadi.";window.qfSceneCue="UMUMIY SAHNA";
-});
+const notes={"Ilmiy fakt":"Ilmiy dalil va tekshiriladigan manbaga tayangan da’vo. Manbani ko‘rsatish zarur.","Postulat (isbotsiz qabul qilinadigan)":"Muayyan nazariya yoki tizim doirasida boshlang‘ich asos sifatida qabul qilinadi; uni empirik isbotlangan fakt sifatida ko‘rsatmaslik kerak.","100 foiz ishonchli":"Bu belgi mutlaq aniqlik kafolati emas. Da’vo dalil va manbalar bilan ehtiyotkorlik bilan asoslanishi kerak.","Tekshiruvda":"Hali tasdiqlanmagan ma’lumot. Videoda tekshiruv jarayonida ekani ochiq aytilishi shart."};
+const fields=["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending"];
+const val=id=>$(id).value.trim();let currentPage=1;
+function showPage(n){currentPage=Math.max(1,Math.min(4,n));document.querySelectorAll(".wizard-page").forEach(p=>p.hidden=Number(p.dataset.page)!==currentPage);document.querySelectorAll(".progress-step").forEach((p,i)=>{p.classList.toggle("active",i+1===currentPage);p.classList.toggle("done",i+1<currentPage);});$("pageCounter").textContent="0"+currentPage+" / 04";$("prevPage").hidden=currentPage===1;$("nextPage").hidden=currentPage===4;$("generateScript").hidden=currentPage!==2;$("finishPage").hidden=currentPage!==3;window.scrollTo({top:0,behavior:"smooth"});}
+function saveDraft(){const d={};fields.forEach(id=>{if($(id))d[id]=$(id).value;});try{sessionStorage.setItem("nex-qf-draft",JSON.stringify(d));}catch(e){}}
+function restoreDraft(){try{const d=JSON.parse(sessionStorage.getItem("nex-qf-draft")||"{}");fields.forEach(id=>{if($(id)&&typeof d[id]==="string")$(id).value=d[id];});}catch(e){}$("customField").hidden=$("field").value!=="Boshqa";$("kindHint").textContent=notes[$("kind").value]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";}
+fields.forEach(id=>$(id)?.addEventListener("input",saveDraft));
+$("kind").addEventListener("change",()=>{$("kindHint").textContent=notes[$("kind").value]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";saveDraft();});
+$("field").addEventListener("change",()=>{$("customField").hidden=$("field").value!=="Boshqa";saveDraft();});
+function validatePage(p){if(p===1){const f=$("field").value==="Boshqa"?val("customField"):val("field");if(!val("kind")||!f||!val("title")){alert("Fakt tasnifi, fan sohasi va fakt sarlavhasini to‘ldiring.");return false;}}if(p===2&&["hook","announce","bodyText","statusText","ending"].some(id=>!val(id))){alert("Ssenariyning besh bosqichini ham to‘ldiring.");return false;}return true;}
+function buildScript(){const f=$("field").value==="Boshqa"?val("customField"):$("field").value;const lines=["NEX — QIZIQARLI FAKT","Tasnif: "+val("kind"),"Fan sohasi: "+f,"Fakt: "+val("title"),"Manba: "+(val("source")||"Kiritilmagan"),"Dalil: "+(val("evidence")||"Kiritilmagan"),"Tekshiruv qaydi: "+val("review"),"","HOOK: "+val("hook"),"FAKT E’LONI: "+val("announce"),"MAZMUNI: "+val("bodyText"),"HOLATI: "+val("statusText"),"FIKR SO‘RASH / CHORLOV: "+val("ending")];$("result").textContent=lines.join("\n");}
+$("prevPage").addEventListener("click",()=>showPage(currentPage-1));
+$("nextPage").addEventListener("click",()=>{if(validatePage(currentPage))showPage(currentPage+1);});
+$("generateScript").addEventListener("click",()=>{if(validatePage(2)){buildScript();showPage(3);}});
+$("finishPage").addEventListener("click",()=>{buildScript();showPage(4);});
+$("clear").addEventListener("click",()=>{if(!confirm("Barcha kiritilgan ma’lumotlarni tozalaysizmi?"))return;fields.forEach(id=>{if($(id))$(id).value="";});$("customField").hidden=true;$("kindHint").textContent="Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";$("result").textContent="Ssenariy hali tayyorlanmagan.";try{sessionStorage.removeItem("nex-qf-draft");}catch(e){}window.qfSceneCue="UMUMIY SAHNA";showPage(1);});
 let THREE=null,renderer=null,scene=null,camera=null,root=null,raf=0,resizeObserver=null,paused=false,motionSpeed=1,activeStage=0,currentSubject="";
 const colors={Fizika:0x62d8ff,Biologiya:0x70e0b2,Tarix:0xd9b27a,Matematika:0xb9a1ff,Astronomiya:0x7c9cff,Kimyo:0x74e5ef,Geografiya:0x78c6a3,Texnologiya:0x5edbff,Psixologiya:0xe39bc8,Boshqa:0x78cfff};
 function material(color,roughness=.48,metalness=.12){return new THREE.MeshStandardMaterial({color,roughness,metalness});}
@@ -177,11 +169,14 @@ function resize3D(){
  const box=$("stage").getBoundingClientRect(),w=Math.max(1,box.width),h=Math.max(1,box.height);
  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
 }
+
 $("render3d").addEventListener("click",start3D);
 $("cameraMode").addEventListener("change",applyCameraMode);
 $("motionSpeed").addEventListener("input",e=>{motionSpeed=Number(e.target.value);$("speedValue").textContent=motionSpeed.toFixed(1)+"×";});
 $("pause3d").addEventListener("click",()=>{paused=!paused;$("pause3d").textContent=paused?"Animatsiyani davom ettirish":"Animatsiyani to‘xtatish";$("pause3d").setAttribute("aria-pressed",String(paused));});
 document.querySelectorAll(".stage-step").forEach(b=>b.addEventListener("click",()=>applyStage(Number(b.dataset.stage))));
-$("reset3d").addEventListener("click",()=>{if(root){root.rotation.set(0,0,0);}start3D();});
+$("reset3d").addEventListener("click",()=>{if(root)root.rotation.set(0,0,0);start3D();});
 $("field").addEventListener("change",()=>{if(renderer)start3D();});
+$("copyResult").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("result").textContent);$("copyResult").textContent="Nusxalandi";setTimeout(()=>$("copyResult").textContent="Ssenariyni nusxalash",1600);}catch(e){alert("Nusxalash uchun matnni belgilang va qo‘lda nusxalang.");}});
+restoreDraft();showPage(1);
 })();
