@@ -12,8 +12,8 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | Keyingi modul |
-| **MI** | Maxsus iboralar | Keyingi modul |
+| **QF** | Qiziqarli fakt | **0.10.0 — MUSTAQIL MODUL, 3D DVIGATEL KUTILMOQDA** |
+| **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
 
@@ -742,3 +742,9 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 ### 13.5. Amalga oshirish chegarasi
 - 0.10.0 arxitektura va modul interfeyslari relizi. QF 3D renderer, to‘liq animatsiya sozlamalari, video eksporti va MI kengaytirilgan Reels renderi hali bajarilgan deb hisoblanmaydi.
 - TA va FM ichki fayllariga o‘zgartirish kiritish uchun alohida ruxsat talab qilinadi.
+
+
+### 13.6. Arxitektura hujjati va FM versiya istisnosi
+
+- Batafsil papka tuzilmasi, modul chegaralari, QF epistemik qoidalari va reliz tekshiruvlari `ARCHITECTURE.md` faylida yuritiladi.
+- Global versiya `0.10.0`. FM foydalanuvchi tomonidan himoyalangan va uning birorta fayli, jumladan versiya belgisi/cache-busteri ham ruxsatsiz o‘zgartirilmaydi. Shu sabab FM sahifasidagi ko‘rinadigan eski `v0.9.7` belgisi hozircha saqlanadi; bu global versiyadan ataylab qilingan, himoya talabiga mos istisno. FM uchun alohida ruxsat berilgandagina moslashtiriladi.
