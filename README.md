@@ -61,7 +61,7 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 
 ## 5. QF — Qiziqarli fakt
 
-QF mustaqil modul sifatida rivojlantirilmoqda. 0.11.0 da Three.js asosidagi WebGL renderer va fan yo‘nalishiga mos bazaviy 3D sahnalar qo‘shildi. Fakt tasnifi, manba, dalil, tekshiruv qaydi va besh bosqichli ssenariy generatori saqlangan. Fakt matnidan semantik 3D sahna yaratish, sahnani ssenariy vaqtiga bog‘lash va video eksporti hali bajarilmagan.
+QF mustaqil modul sifatida rivojlantirilmoqda. 0.12.0 da Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i mavjud. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi.
 
 ## 6. MI — Maxsus iboralar
 
@@ -749,7 +749,10 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Fan sohasi alohida o‘lcham: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya, Psixologiya va boshqa.
 - Manba, havola, dalil va tekshiruv qaydi alohida maydonlar.
 - Hikoya bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
-- 3D vizualizatsiya ssenariydan mustaqil qatlam. 0.11.0 da Three.js 0.180.0 orqali haqiqiy WebGL renderer va to‘qqiz fan yo‘nalishi uchun boshlang‘ich 3D kompozitsiyalar qo‘shildi. Renderer CDN orqali dinamik yuklanadi va konteyner o‘lchamiga moslashadi. Bu hali fakt matnidan semantik sahna yaratmaydi.
+- 3D vizualizatsiya ssenariydan mustaqil qatlam. 0.11.0 da Three.js 0.180.0 WebGL renderer va to‘qqiz fan yo‘nalishi uchun boshlang‘ich kompozitsiyalar qo‘shildi.
+- 0.12.0 da ayrim kalit iboralarga mos maxsus sahnalar (qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi, aylana) qo‘shildi. Kamera, tezlik, pauza va besh ssenariy bosqichi boshqariladi.
+- Kalit so‘z mosligi qoidaviy; bu hali AI semantik tahlili yoki istalgan fakt uchun avtomatik 3D model yaratish emas.
+- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi. QF ichida audio yaratish yoki montaj qilish ko‘zda tutilmagan.
 - Postulat isbotlangan empirik fakt sifatida ko‘rsatilmaydi. “Tekshiruvda” holati tomoshabinga ochiq ko‘rsatilishi shart.
 
 ### 13.4. MI — mustaqil modul
@@ -757,7 +760,7 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
 
 ### 13.5. Amalga oshirish chegarasi
-- 0.10.0 umumiy arxitektura relizi bo‘lib qoladi. QF studiyasi 0.11.0 da 3D renderer prototipiga ega bo‘ldi; mobil qurilmadagi WebGL sinovi, fakt mazmuniga mos maxsus animatsiyalar, sahna vaqt chizig‘i va video eksporti hali bajarilmagan. MI kengaytirilgan Reels renderi ham alohida ishlab chiqish bosqichida.
+- 0.10.0 umumiy arxitektura relizi bo‘lib qoladi. QF studiyasi 0.12.0 da 3D renderer, ayrim faktga mos sahna profillari, kamera/animatsiya boshqaruvi va ssenariy vaqt chizig‘iga ega. Real mobil/desktop WebGL sinovi hali qurilmalarda tasdiqlanishi kerak. Video eksporti keyingi bosqich; audio va musiqa esa hozircha tashqi ilovalarda tayyorlanadi. MI kengaytirilgan Reels renderi alohida ishlab chiqiladi.
 - TA va FM ichki fayllariga o‘zgartirish kiritish uchun alohida ruxsat talab qilinadi.
 
 
