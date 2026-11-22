@@ -1,5 +1,10 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.15.2 — 2026-11-22
+
+- QF 01 — Fakt ma’lumotlari sahifasidagi forma maydonlari tartibli konteynerga yig‘ildi; select/input/textarea uslublari birxillashtirildi.
+- Cache-buster va QF versiya belgisi 0.15.2 ga yangilandi. TA/FM fayllari o‘zgartirilmadi.
+
 ## QF 0.15.1 — 2026-11-22
 
 - QF sahifalararo progress ko‘rsatkichidagi faol 01 nuqtasi kattaroq, yorqinroq va yumshoq nurli halqa bilan ajratildi; kichik ekranlarda o‘lchami moslashtirildi.
