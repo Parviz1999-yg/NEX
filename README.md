@@ -744,17 +744,13 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Faqat modulga kirish nuqtasi TA rejimiga yo‘naltirildi va “Yangi loyiha” bosh dashboardga qaytadi.
 - TA nusxasi o‘z CSS va JS fayllariga ega; FM yoki dashboard kodiga bog‘liq emas.
 
-### 13.3. QF — fakt modeli
-- Fakt tasnifi: Ilmiy fakt; Postulat (isbotsiz qabul qilinadigan); 100 foiz ishonchli; Tekshiruvda.
-- Fan sohasi alohida o‘lcham: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya, Psixologiya va boshqa.
-- Manba, havola, dalil va tekshiruv qaydi alohida maydonlar.
-- Hikoya bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
-- 3D vizualizatsiya ssenariydan mustaqil qatlam. 0.11.0 da Three.js 0.180.0 WebGL renderer va to‘qqiz fan yo‘nalishi uchun boshlang‘ich kompozitsiyalar qo‘shildi.
-- 0.12.0 da ayrim kalit iboralarga mos maxsus sahnalar (qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi, aylana) qo‘shildi. Kamera, tezlik, pauza va besh ssenariy bosqichi boshqariladi.
-- Kalit so‘z mosligi qoidaviy; bu hali AI semantik tahlili yoki istalgan fakt uchun avtomatik 3D model yaratish emas.
-- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi. QF ichida audio yaratish yoki montaj qilish ko‘zda tutilmagan.
-- Postulat isbotlangan empirik fakt sifatida ko‘rsatilmaydi. “Tekshiruvda” holati tomoshabinga ochiq ko‘rsatilishi shart.
-
+### 13.3. QF — fakt modeli va sahifalararo studiya
+- Fakt tasnifi va fan sohasi alohida boshqariladi.
+- Manba nomi, dalil va tekshiruv qaydi mavjud; HTTPS/URL maydoni yo‘q.
+- To‘rtta sahifa: fakt ma’lumotlari, video ssenariysi, 3D sahna va tayyor natija. Bir vaqtda faqat joriy bosqich ko‘rinadi.
+- Ssenariy bosqichlari: HOOK → FAKT E’LONI → MAZMUNI → HOLATI → FIKR SO‘RASH yoki CHORLOV.
+- QF 0.11.0 da Three.js WebGL renderer, 0.12.0 da faktga mos sahna profillari, 0.13.0 da sahifalararo ish oqimi qo‘shildi.
+- Ovoz, musiqa, audio montaj va yakuniy Reels eksporti tashqi ilovalarda bajariladi.
 ### 13.4. MI — mustaqil modul
 - Iboraning xarakteri, matni, muallif/manbasi, mazmuni, qo‘llanish konteksti, Hook va yakun maydonlari ajratildi.
 - Matn yig‘ish va tipografik vizual konsepsiya TA/FM/QF oqimlaridan mustaqil.
