@@ -1,17 +1,19 @@
 <!doctype html>
-<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b13"><title>NEX — Qiziqarli fakt</title><link rel="stylesheet" href="style.css?v=0.15.1"></head>
+<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b13"><title>NEX — Qiziqarli fakt</title><link rel="stylesheet" href="style.css?v=0.15.2"></head>
 <body>
-<header class="topbar"><a class="brand" href="../">NEX<span> / QIZIQARLI FAKT</span></a><span class="topbar-meta"><span id="stepLabel">01 — FAKT</span><span class="app-version">v0.15.1</span></span></header>
+<header class="topbar"><a class="brand" href="../">NEX<span> / QIZIQARLI FAKT</span></a><span class="topbar-meta"><span id="stepLabel">01 — FAKT</span><span class="app-version">v0.15.2</span></span></header>
 <main>
 <div class="progress-track" aria-label="Bosqichlar"><span class="progress-fill" id="progressFill"></span><div class="progress-steps"><span class="current" data-progress="1">01</span><span data-progress="2">02</span><span data-progress="3">03</span><span data-progress="4">04</span><span data-progress="5">05</span><span data-progress="6">06</span><span data-progress="7">07</span></div></div>
 <section class="wizard-page active" id="step-1"><section class="intro"><p class="eyebrow">SHAXSIY ANIMATSION REELS STUDIYASI</p><h1>Qiziqarli fakt<span>.</span></h1><p>Faktni tekshiring, ssenariyga aylantiring va uni bosqichma-bosqich jonli Reels ko‘rinishida yarating.</p></section>
 <div class="panel"><p class="eyebrow">01 — FAKT MA’LUMOTLARI</p><h2>Qaysi faktni videoga aylantiramiz?</h2>
+<div class="source-fields" id="factFields">
 <label for="kind">Fakt tasnifi *</label><select id="kind"><option value="">Tasnifni tanlang</option><option>Ilmiy fakt</option><option>Postulat (isbotsiz qabul qilinadigan)</option><option>100 foiz ishonchli</option><option>Tekshiruvda</option></select><p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p>
 <label for="field">Fan yoki mavzu sohasi *</label><select id="field"><option value="">Sohani tanlang</option><option>Fizika</option><option>Biologiya</option><option>Tarix</option><option>Matematika</option><option>Astronomiya</option><option>Kimyo</option><option>Geografiya</option><option>Texnologiya</option><option>Psixologiya</option><option>Boshqa</option></select><input id="customField" maxlength="100" placeholder="Boshqa soha nomi" hidden>
 <label for="title">Fakt sarlavhasi *</label><input id="title" maxlength="140" placeholder="Faktni qisqa va aniq ifodalang">
 <label for="source">Manba nomi</label><input id="source" maxlength="160" placeholder="Kitob, ilmiy maqola, tashkilot yoki hujjat">
 <label for="evidence">Dalil yoki tekshiruv izohi</label><textarea id="evidence" rows="3" maxlength="700" placeholder="Fakt nimaga asoslangan? Qanday dalil mavjud?"></textarea>
 <label for="review">Tekshiruv qaydi</label><select id="review"><option>Tekshiruv talab qilinadi</option><option>Manba tekshirildi</option><option>Bir nechta manba bilan solishtirildi</option><option>Qarama-qarshi dalil topildi</option></select>
+</div>
 <p class="form-status" id="sourceStatus" role="status"></p><div class="wizard-actions"><a class="text-link" href="../">← Bosh sahifa</a><button class="primary-btn" id="nextSource">Keyingi bosqich →</button></div></div></section>
 <section class="wizard-page" id="step-2"><div class="panel script-panel"><p class="eyebrow">02 — SSENARIY</p><h2>Fikrni besh sahnaga ajrating.</h2><p class="section-copy">Har bir qism Reels’da alohida sahna bo‘lib chiqadi. Matnlar navbatma-navbat ko‘rsatiladi.</p>
 <div class="script-field"><div class="field-head"><label for="hook">01 · HOOK — e’tiborni tortish</label><span>Majburiy</span></div><textarea id="hook" rows="3" maxlength="220" placeholder="Tomoshabinni to‘xtatadigan savol yoki jumla"></textarea></div>
@@ -39,4 +41,4 @@
 <div hidden aria-hidden="true"><span id="reelCategory"></span><span id="reelHook"></span><span id="reelTitle"></span><span id="reelReason"></span><span id="reelBenefit"></span><span id="reelCta"></span></div></section>
 </main>
 <div class="record-overlay" id="recordOverlay" hidden><div class="record-frame"><canvas id="record3D" width="1080" height="1920" aria-label="Yuqori aniqlikdagi 3D yozuv qatlami"></canvas><canvas id="recordCanvas" width="1080" height="1920" aria-label="Yuqori aniqlikdagi matn yozuv qatlami"></canvas></div><div class="record-controls"><span id="recordDuration">25,0 soniya</span><button id="recordPause" type="button" aria-label="Pauza yoki davom ettirish">Ⅱ</button><button id="recordExit" type="button">← Studiyaga qaytish</button></div></div>
-<script type="module" src="app.js?v=0.15.1"></script></body></html>
+<script type="module" src="app.js?v=0.15.2"></script></body></html>
