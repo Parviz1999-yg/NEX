@@ -1,13 +1,20 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.14.0] — 2026-11-22
+
+- FM Reels Studio arxitekturasidagi yetti bosqich QF’ga moslashtirildi: fakt, ssenariy, bayon uslubi, vizual til, rang palitrasi, animatsiya va NEX Reels Studio.
+- 9:16 jonli WebGL preview, besh sahnali timeline, har bir sahna uchun matn tahriri va alohida davomiylik qo‘shildi.
+- HOOK → FAKT E’LONI → MAZMUN → HOLAT → YAKUN matnlari sahnalar bo‘yicha ketma-ket namoyish qilinadi; satrlar animatsiya bilan bosqichma-bosqich chiqadi.
+- 1080×1920 yozuv oynasi, pauza/davom ettirish va qayta boshlash boshqaruvlari qo‘shildi.
+- QF fan sohasi va fakt kalit so‘zlariga asoslangan 3D obyektlar saqlandi.
+- Ovoz, musiqa va yakuniy audio montaj tashqi ilovalarda qoladi; ekran yozish telefonning native recorder’i orqali bajariladi.
+
 ## [0.13.0] — 2026-11-22
 
 - QF interfeysi TA/FM uslubidagi mustaqil sahifalararo studiya oqimiga qayta tuzildi.
 - To‘rtta alohida bosqich: fakt ma’lumotlari, video ssenariysi, 3D sahna va tayyor natija.
-- Oldingi/Keyingi navigatsiyasi, bosqich indikatori va sessionStorage orqali qoralamani saqlash qo‘shildi.
+- Oldingi/Keyingi navigatsiyasi va qoralama saqlash qo‘shildi.
 - HTTPS/URL maydoni, URL validatsiyasi va ssenariydagi havola qatori olib tashlandi.
-- Mavjud 3D dvigatel, maxsus sahna profillari, kamera va animatsiya boshqaruvlari saqlandi.
-- Ovoz, musiqa va yakuniy montaj tashqi ilovalarda qoladi.
 
 ## [0.12.0] — 2026-11-22
 
