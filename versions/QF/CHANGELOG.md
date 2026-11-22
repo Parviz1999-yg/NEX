@@ -1,5 +1,10 @@
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
+## [0.15.1] — 2026-11-22
+
+- Yuqori bosqich ko‘rsatkichidagi 01 nuqtasi aniqroq ko‘rinishi uchun faol holatdagi o‘lchami, kontrasti, yorqin gradienti va yumshoq nurli halqasi kuchaytirildi.
+- Mobil ekranlar uchun alohida o‘lcham moslamasi qo‘shildi; FM va TA fayllariga tegilmadi.
+
 ## [0.15.0] — 2026-11-22
 
 - “Fakt e’loni” sahnasiga maxsus reveal animatsiyasi qo‘shildi: markazdan ikki tomonga kengayadigan parallel nurli chiziqlar, ularning orasida paydo bo‘ladigan yorqin shaffof ekran va undan keyin namoyon bo‘ladigan fakt matni.
