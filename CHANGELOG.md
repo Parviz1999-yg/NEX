@@ -93,3 +93,8 @@ NEX umumiy platforma versiyasi va TA, FM, QF, MI studiyalarining mustaqil versiy
 - Har bir yozuvda sana, versiya, o‘zgarish mazmuni va tekshiruv holati ko‘rsatiladi.
 - NEX umumiy versiyasi va TA, FM, QF, MI studiya versiyalari mustaqil yuritiladi; o‘zgarish ta’sir qilgan darajalarigina oshiriladi.
 - Format: `MAJOR.MINOR.PATCH`.
+
+
+## 2026-11-22 — QF 0.15.5
+- QF yakuniy outro FM’dagi suyuq metall o‘tish va NEX brend animatsiyasi bilan bir xil qilindi.
+- FM protected source fayllari o‘zgartirilmadi.
