@@ -1,3 +1,9 @@
+## QF 0.16.2 — 2026-11-22
+
+- Yozuv oynasi tugmalari TA dagidek vaqtincha ko‘rinadi: kadrga tegilganda yoki boshqaruv bosilganda 1,8 soniya, so‘ng yashirinadi.
+- Mobil QF studiyasi ixcham 9:16 preview, to‘liq kenglikdagi boshqaruvlar, yirik bosish maydonlari va kichik ekran tipografik moslashuvlarini oldi.
+- README, QF changelog va rivojlantirish holati yangilandi; TA/FM fayllari o‘zgartirilmadi.
+
 ## QF 0.16.1 — 2026-11-22
 
 - To‘liq ekran yozish oynasida boshqaruvlar, jumladan «Studiyaga qaytish», doim ko‘rinadigan qilindi; `Escape` orqali ham chiqish mumkin.
