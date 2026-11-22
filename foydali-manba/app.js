@@ -66,7 +66,6 @@ $("nextSource").addEventListener("click",()=>{
   const required=[["sourceName","manba nomi"],["sourceSearchQuery","qidiruv so‘rovi"],["sourceSearchPlace","qidiruv manzili"],["sourceDirection","manba yo‘nalishi"],["sourceDescription","manba tavsifi"],["sourceBenefit","asosiy foyda"]];
   const missing=required.filter(([id])=>!read(id)).map(([,label])=>label);
   if(!state.category)missing.unshift("manba turi");
-  if(read("sourceLink")){try{const url=new URL(read("sourceLink"));if(!["http:","https:"].includes(url.protocol))throw new Error("protocol");}catch{setStatus("sourceStatus","Manba havolasi http:// yoki https:// bilan boshlanishi kerak.");return;}}
   if(missing.length){setStatus("sourceStatus","Iltimos, quyidagilarni to‘ldiring: "+missing.join(", ")+".");return;}
   setStatus("sourceStatus","Ma’lumotlar qabul qilindi.");
   showStep(2);
