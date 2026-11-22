@@ -565,19 +565,6 @@ function drawCreativeDirectionScene(c,w,h,now,pal){
  c.restore();return true;
 }
 
-function getToneVisual(){
- const tones={
-  "Jiddiy":{weight:35,size:1.0},
-  "Ilmiy":{weight:-45,size:.94},
-  "Sodda va tushunarli":{weight:-10,size:1.04},
-  "Yumor":{weight:75,size:1.08},
-  "Tahliliy":{weight:5,size:.96},
-  "Motivatsion":{weight:85,size:1.10},
-  "Sirli va qiziqarli":{weight:45,size:1.02},
-  "Falsafiy":{weight:-65,size:.98}
- };
- return tones[state.tone]||tones["Jiddiy"];
-}
 function drawTopicMotif(c,w,h,accent,topic,time,index,style){
  c.save();c.strokeStyle=accent;c.fillStyle=accent;c.lineWidth=Math.max(1,w*.0025);c.globalAlpha=.48;
  const x=w*(style==="Editorial / Magazine"?.84:.86);
