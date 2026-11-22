@@ -1,6 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
-**Versiya:** 0.10.0  
+**Versiya:** 0.10.0
+**QF moduli:** 0.12.0  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -60,10 +61,18 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, ixtiyoriy havola, dalil/izoh va teksh
 
 ### 3D vizualizatsiya
 - QF 0.11.0 da Three.js 0.180.0 dinamik CDN importi asosida haqiqiy WebGL renderer qo‘shildi.
+- QF 0.12.0 da fakt sarlavhasi, e’lon, mazmun va dalildagi kalit iboralarga tayangan deterministik sahna profillari qo‘shildi. Masalan, qora tuynuk, Oy, Quyosh, DNK, H₂O, magnit, Misr piramidasi va aylana uchun maxsus kompozitsiyalar mavjud.
+- Kamera ko‘rinishi, animatsiya tezligi, pauza/davom ettirish va besh ssenariy bosqichiga bog‘langan kamera urg‘usi boshqariladi.
+- Ushbu kalit so‘z qoidalari AI semantik tahlili emas; noma’lum yoki aniqlanmagan faktlar fan sohasi bo‘yicha bazaviy sahnadan foydalanadi.
+- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi; QF ichida audio yaratish yoki montaj qilish rejalashtirilmagan.
+- Mobil/desktop jonli WebGL sinovi hali real qurilmalarda tasdiqlanishi kerak.
 - Fan sohasi bo‘yicha boshlang‘ich sahna kompozitsiyalari: Fizika, Biologiya, Tarix, Matematika, Astronomiya, Kimyo, Geografiya, Texnologiya va Psixologiya.
 - Renderer canvas o‘lchamini konteynerga moslaydi va sahnani avtomatik aylantiradi.
-- Bu hali ssenariy matnidan semantik sahna yaratish emas. Har bir fakt mazmuniga mos maxsus obyekt, animatsiya va kamera ssenariysi keyingi bosqichda ishlab chiqiladi.
+- Kalit so‘zga asoslangan ayrim fakt profillari mavjud, lekin bu umumiy semantik tahlil yoki erkin faktlar uchun avtomatik 3D model generatsiyasi emas.
 - Mobil qurilmalarda WebGL, CDN mavjudligi va sahna ishlashi real brauzerda tekshirilishi shart.
+
+### Audio chegarasi
+- Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi. QF ichida audio generatsiyasi, ovoz yozish yoki musiqa montaji amalga oshirilmaydi.
 
 ### Epistemik talablar
 - Postulat empirik isbotlangan fakt sifatida ko‘rsatilmaydi.
