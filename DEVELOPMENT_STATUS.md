@@ -1,3 +1,11 @@
+## QF 0.16.5 — 2026-11-22
+- [x] 2D fon, shaffof WebGL va matn qatlamlari uch qatlamli kompozitsiyaga ajratildi.
+- [x] 3D obyekt masshtabi, kamera yaqinligi va sahna harakatlari kuchaytirildi.
+- [x] Ikki katta izoh kartasi bitta ma’lumot kartasiga birlashtirildi.
+- [x] Tasnif, Manba, Dalil va Tekshiruv qiymatlari tegishli sahnada shtamp animatsiyasi bilan ochiladi.
+- [x] NEX outro va 5,2 soniyalik alohida yakun saqlandi.
+- [x] JavaScript sintaksisi va HTML canvas ID statik tekshirildi; real Android/WebGL sinovi bajarilmadi.
+
 ## QF 0.16.4 — 2026-11-22
 - [x] NEX logotipi, orbital halqa va shior 5,2 soniyalik outro yakuniga qaytarildi.
 - [x] Manba/tekshiruv paneli video boshidan barcha asosiy sahnalarda ko‘rsatiladi.
