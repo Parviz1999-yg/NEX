@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#081426">
 <title>NEX — Qiziqarli fakt</title>
-<link rel="stylesheet" href="style.css?v=0.11.0">
+<link rel="stylesheet" href="style.css?v=0.12.0">
 </head>
 <body>
-<header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.11.0</span></header>
+<header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.12.0</span></header>
 <main>
 <a class="back" href="../">← Bosh sahifa</a>
 <section class="intro">
@@ -55,17 +55,32 @@
 <section class="panel visual">
 <div class="visual-copy">
 <p class="tag">03 / 3D VIZUAL STUDIYA</p>
-<h2>Faktni uch o‘lchamda ko‘rsating</h2>
-<p>Fan sohasini tanlang va sahnani ishga tushiring. Hozircha mavzuga mos bazaviy 3D obyektlar yaratiladi; keyingi bosqichda ular fakt mazmuni va ssenariy vaqtiga bog‘lanadi.</p>
-<div class="visual-actions"><button id="render3d" class="primary">3D sahnani ishga tushirish</button><button id="reset3d" class="secondary">Sahnani qayta tiklash</button></div>
-<p id="sceneStatus" class="scene-status" role="status">Sahna tayyor. Fan sohasini tanlang.</p>
+<h2>Fakt mazmuniga mos 3D sahna</h2>
+<p>Fakt sarlavhasi va mazmunidagi kalit tushunchalar aniqlanadi. Mos sahna profili tanlanadi; kamera, harakat tezligi va ssenariy bosqichlari mustaqil boshqariladi.</p>
+<div class="visual-actions"><button id="render3d" class="primary">Faktga mos sahna yaratish</button><button id="reset3d" class="secondary">Sahnani qayta tiklash</button><button id="pause3d" class="secondary" aria-pressed="false">Animatsiyani to‘xtatish</button></div>
+<label class="control-label" for="cameraMode">Kamera ko‘rinishi</label>
+<select id="cameraMode" class="scene-control"><option value="front">Old ko‘rinish</option><option value="orbit">Diagonal ko‘rinish</option><option value="top">Yuqoridan ko‘rinish</option></select>
+<label class="control-label" for="motionSpeed">Animatsiya tezligi <output id="speedValue">1.0×</output></label>
+<input id="motionSpeed" class="scene-control" type="range" min="0" max="2" step="0.1" value="1">
+<p id="sceneStatus" class="scene-status" role="status">Sahna tayyor. Fan sohasi va fakt matnini kiriting.</p>
 </div>
 <div class="stage" id="stage">
 <canvas id="sceneCanvas" aria-label="Qiziqarli fakt uchun interaktiv 3D sahna"></canvas>
 <div class="stage-overlay"><span>QF / 3D ENGINE</span><small id="sceneLabel">SAHNA KUTILMOQDA</small></div>
 </div>
+<div class="timeline">
+<div class="timeline-head"><strong>SSENARIY VAQT CHIZIG‘I</strong><span id="timelineStatus">Bosqich tanlanmagan</span></div>
+<div class="timeline-buttons">
+<button type="button" class="stage-step active" data-stage="0">01 · HOOK</button>
+<button type="button" class="stage-step" data-stage="1">02 · FAKT</button>
+<button type="button" class="stage-step" data-stage="2">03 · MAZMUN</button>
+<button type="button" class="stage-step" data-stage="3">04 · HOLAT</button>
+<button type="button" class="stage-step" data-stage="4">05 · YAKUN</button>
+</div>
+<p class="timeline-note">Bosqich tanlanganda kamera va sahna urg‘usi o‘zgaradi. Bu boshqaruv hozircha montaj vaqt chizig‘i emas, sahna ko‘rinishini tayyorlash vositasidir.</p>
+</div>
 </section>
 </main>
-<script src="app.js?v=0.11.0"></script>
+<script src="app.js?v=0.12.0"></script>
 </body>
 </html>
