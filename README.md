@@ -776,3 +776,5 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 
 - Batafsil papka tuzilmasi, modul chegaralari, QF epistemik qoidalari va reliz tekshiruvlari `ARCHITECTURE.md` faylida yuritiladi.
 - Global versiya `0.10.0`. FM foydalanuvchi tomonidan himoyalangan va uning birorta fayli, jumladan versiya belgisi/cache-busteri ham ruxsatsiz o‘zgartirilmaydi. Shu sabab FM sahifasidagi ko‘rinadigan eski `v0.9.7` belgisi hozircha saqlanadi; bu global versiyadan ataylab qilingan, himoya talabiga mos istisno. FM uchun alohida ruxsat berilgandagina moslashtiriladi.
+
+- QF v0.15.5: yakuniy 5,2 soniyalik outro FM bilan bir xil qilindi — suyuq xrom to‘lqini, NEX logotipi, orbital chiziq va slogan. FM manba fayllari o‘zgartirilmagan.
