@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.15.4 — LIQUID METAL VA NEX OUTRO** |
+| **QF** | Qiziqarli fakt | **0.15.6 — AUDIT VA XAVFSIZ KOD TOZALASH** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -778,3 +778,5 @@ Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 - Global versiya `0.10.0`. FM foydalanuvchi tomonidan himoyalangan va uning birorta fayli, jumladan versiya belgisi/cache-busteri ham ruxsatsiz o‘zgartirilmaydi. Shu sabab FM sahifasidagi ko‘rinadigan eski `v0.9.7` belgisi hozircha saqlanadi; bu global versiyadan ataylab qilingan, himoya talabiga mos istisno. FM uchun alohida ruxsat berilgandagina moslashtiriladi.
 
 - QF v0.15.5: yakuniy 5,2 soniyalik outro FM bilan bir xil qilindi — suyuq xrom to‘lqini, NEX logotipi, orbital chiziq va slogan. FM manba fayllari o‘zgartirilmagan.
+- QF v0.15.6: ishlatilmaydigan yordamchi funksiyalar, o‘lik holat o‘zgaruvchilari va eski yashirin DOM maydonlari olib tashlandi; faol vizual va Reels oqimi o‘zgartirilmadi.
+- TA v0.10.2: chaqirilmaydigan `getToneVisual()` yordamchi funksiyasi olib tashlandi; qolgan TA interfeysi va funksional oqimi o‘zgartirilmadi. Bu faqat 2026-11-22 dagi aniq audit topshirig‘i doirasidagi istisno; keyingi o‘zgarishlar uchun alohida ruxsat talabi saqlanadi.
