@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.14.0  
+**QF moduli:** 0.15.2  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -62,6 +62,11 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida
 - Fakt fan sohasi va matn kalit so‘zlariga mos 3D obyektlar saqlanadi.
 - HTTPS/manba URL maydoni va URL validatsiyasi mavjud emas; manba nomi, dalil va tekshiruv qaydi saqlanadi.
 - Ovoz va musiqa tashqi ilovalarda qo‘shiladi; audio montaj va yakuniy birlashtirish ham tashqi ilovada bajariladi.
+
+### 01 — Fakt ma’lumotlari formasi
+- Fakt tasnifi, fan sohasi, sarlavha, manba nomi, dalil/tekshiruv izohi va tekshiruv holati bitta `source-fields` konteynerida turadi.
+- `source-fields` CSS’i select, input va textarea elementlarini bir xil o‘lcham, padding, chegara va fokus holati bilan boshqaradi.
+- Bu QF ichidagi forma tuzilmasi; TA va FM kodlari bilan umumiy bog‘liqlik qo‘shilmaydi.
 
 ### Ssenariy
 1. HOOK
