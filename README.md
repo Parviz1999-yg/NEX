@@ -61,7 +61,7 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 
 ## 5. QF — Qiziqarli fakt
 
-QF mustaqil modul sifatida rivojlantirilmoqda. 0.12.0 da Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i mavjud. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz va musiqa hozircha tashqi ilovalarda tayyorlanadi.
+QF mustaqil modul sifatida rivojlantirilmoqda. 0.12.0 da Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i mavjud. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz yozish va musiqa yaratish/tanlash hozircha tashqi ilovalarda bajariladi; yakuniy audio-video yig‘ish ham tashqi montaj ilovasida amalga oshiriladi. QF ichida audio yozish, musiqa yaratish yoki audio montaj funksiyasi yo‘q.
 
 ## 6. MI — Maxsus iboralar
 
