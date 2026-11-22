@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.16.4  
+**QF moduli:** 0.16.5  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -89,6 +89,13 @@ Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida
 - Renderer canvas o‘lchamini konteynerga moslaydi va sahnani avtomatik aylantiradi.
 - Kalit so‘zga asoslangan ayrim fakt profillari mavjud, lekin bu umumiy semantik tahlil yoki erkin faktlar uchun avtomatik 3D model generatsiyasi emas.
 - Mobil qurilmalarda WebGL, CDN mavjudligi va sahna ishlashi real brauzerda tekshirilishi shart.
+
+### QF 0.16.5: WebGL va video kompozitsiyasi
+
+- Video qatlamlari qat’iy tartibda: 2D fon canvas → alpha shaffof WebGL canvas → 2D matn/ma’lumot canvas.
+- WebGL sahnasi fonni o‘zi bo‘yamaydi; shaffof render orqali 2D fon ustida ko‘rinadi.
+- Ma’lumot kartasi bitta: Tasnif, Manba, Dalil va Tekshiruv qiymatlari tegishli sahna boshida shtamp ko‘rinishida ochiladi.
+- NEX outro paytida 3D sahna yashiriladi, metallik yakun va NEX brend qatlamlari ko‘rsatiladi.
 
 ### 3D sahna harakati va fakt e’loni displeyi
 - Reels ichki matn qatlamida sahna nomlari va texnik indekslar chizilmaydi; ular faqat studiya boshqaruv interfeysida qoladi.
