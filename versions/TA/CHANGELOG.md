@@ -1,3 +1,9 @@
+## [0.10.4] — 2026-11-22
+
+- Foydalanilmayotgan akkaunt havolasi maydoni anketa va holat obyektidan olib tashlandi.
+- SABAB va FARQI maydonlari Tavsiya akkaunt rejimida majburiy, boshqa yo‘nalishlarda ixtiyoriy ekanligi forma matnida aniq ko‘rsatildi.
+- Akkaunt kartochkasi, 3D sahna va Reels renderi o‘zgartirilmadi.
+
 ## [0.10.3] — 2026-11-22
 
 - 5,2 soniyalik NEX outro beshta asosiy sahnadan keyin alohida segment sifatida ijro etiladi; asosiy sahna davomiyligiga qo‘shilmaydi.
