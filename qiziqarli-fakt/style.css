@@ -102,32 +102,59 @@
 .record-overlay[hidden]{display:none!important}
 .record-frame{position:relative;width:min(100vw,56.25dvh);height:min(100dvh,177.78vw);aspect-ratio:9/16;overflow:hidden;background:#080e18;isolation:isolate}
 #record3D,#recordCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.record-controls{position:fixed;z-index:2;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #ffffff30;border-radius:12px;background:#080b13e8;white-space:nowrap;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .2s ease,visibility .2s ease}
+.record-controls{position:fixed;z-index:2;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #ffffff30;border-radius:12px;background:#080b13e8;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
 .record-overlay.controls-visible .record-controls{opacity:1;visibility:visible;pointer-events:auto}
 .record-controls span{font-size:10px;letter-spacing:.12em;color:#c5cedd}
 .record-controls button{min-width:42px;height:36px;padding:0 14px;border:1px solid #ffffff24;border-radius:9px;background:#263047;color:white;font-weight:700;font-size:12px;cursor:pointer}
 .record-controls button:active{transform:scale(.97)}
 @media(max-width:700px){
-  main{padding-top:34px}
-  .studio-layout{display:flex;flex-direction:column;gap:18px}
-  .preview-column{order:-1;width:min(100%,310px);margin:0 auto}
-  .studio-controls{order:1;width:100%}
-  .reel-frame{max-width:310px}
+  main{width:calc(100% - 24px);padding-top:24px;padding-bottom:38px}
+  .studio-layout{display:flex;flex-direction:column;gap:14px}
+  .preview-column{order:-1;width:min(100%,260px);margin:0 auto}
+  .studio-controls{order:1;width:100%;padding:14px;gap:10px}
+  .reel-frame{max-width:260px}
+  .studio-heading{margin-bottom:14px}
+  .studio-heading h2{font-size:30px}
+  .studio-heading>p:last-child{font-size:13px;line-height:1.55}
   .wizard-actions{flex-wrap:wrap}
+  .wizard-actions>*{min-width:0}
+  .record-controls{bottom:max(12px,env(safe-area-inset-bottom));max-width:calc(100vw - 20px);gap:8px;padding:9px 10px}
+  .record-controls button{min-height:42px;padding:0 12px}
 }
 @media(max-width:520px){
-  main{padding-top:28px}
-  .panel{padding:17px}
+  main{padding-top:18px}
+  .topbar{padding-inline:12px}
+  .brand{font-size:16px;letter-spacing:.1em}
+  .brand span{font-size:9px}
+  .app-version{font-size:9px;padding:3px 7px}
+  .panel{padding:14px}
+  .intro{margin-bottom:18px}
+  .intro h1{font-size:clamp(30px,9vw,40px)}
   .category{min-height:94px}
   .choice-grid{grid-template-columns:1fr}
   .palette-options{grid-template-columns:repeat(2,minmax(0,1fr))}
   .wizard-actions{gap:8px}
-  .wizard-actions button{font-size:12px;padding:11px 8px}
-  .progress-steps span{width:23px;height:23px;font-size:8px}
+  .wizard-actions button,.wizard-actions a{font-size:12px;padding:11px 8px}
+  .progress-track{margin-bottom:25px}
+  .progress-steps span{width:22px;height:22px;font-size:8px}
+  .source-fields input,.source-fields select,.source-fields textarea,.script-field textarea,.studio-controls textarea{font-size:16px;min-height:46px}
+  .source-fields textarea,.script-field textarea,.studio-controls textarea{min-height:88px}
+  .scene-list{gap:5px}
+  .scene-chip{min-height:44px;padding:9px 2px;font-size:10px}
+  .studio-playback button,.studio-controls>.full-btn,.bottom-actions button{min-height:48px}
+  .bottom-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .bottom-actions>*{flex:1;min-width:135px}
+  .record-controls span{font-size:9px;letter-spacing:.04em}
+  .record-controls button{font-size:11px;padding:0 10px}
 }
-@media(max-width:420px){
-  .record-controls{gap:6px;padding:8px}
-  .record-controls button{padding:0 9px;font-size:11px}
+@media(max-width:380px){
+  .topbar{gap:6px}
+  .brand span{display:none}
+  .preview-column{width:min(100%,230px)}
+  .reel-frame{max-width:230px}
+  .record-controls{gap:5px;padding:8px}
+  .record-controls button{padding:0 8px;font-size:10px}
+  .record-controls span{font-size:8px}
 }
 
 .preview-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
