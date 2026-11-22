@@ -9,7 +9,7 @@
 - Rang palitrasi 2D fon bilan birga 3D materiallar, emissiv ranglar va sahna yoritishiga tatbiq etildi.
 - Kamera boshqaruvi sahna bo‘yicha alohida masofa/pozitsiya, silliq o‘tish va pointer parallax bilan boyitildi.
 - `qfSceneCue` endi faktga mos vizual yorliq sifatida e’lon/mazmun sahnalarida ko‘rsatiladi. Fan sohasi va kalit iboralar uchun normalizatsiya qilingan sinonim/ibora mosligi qo‘llanadi; bu qoidaviy moslashtirish, AI fakt tekshiruvi emas.
-- HOLAT sahnasida fakt tasnifi, manba nomi, dalil izohi va tekshiruv qaydi ko‘rsatiladi. Kiritilmagan manba yoki dalil yashirilmaydi, ochiq ko‘rsatiladi.
+- YAKUN asosiy sahnasida fakt tasnifi, manba nomi, dalil izohi va tekshiruv qaydi ko‘rsatiladi. Kiritilmagan manba yoki dalil yashirilmaydi, ochiq ko‘rsatiladi.
 - Yangi kreativ variant endi palitra bilan birga vizual til va harakat profilini ham o‘zgartiradi.
 - Statik JavaScript sintaksisi va DOM bog‘lanishlari tekshirildi. Android/desktop WebGL, haqiqiy ekran yozish va mobil FPS sinovi foydalanuvchi qurilmasida hali tasdiqlanishi kerak.
 
