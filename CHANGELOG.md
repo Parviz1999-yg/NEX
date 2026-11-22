@@ -1,5 +1,10 @@
 # NEX — O‘zgarishlar tarixi
 
+## QF 0.15.4 — 2026-11-22
+
+- Suyuq metall xrom fon, metallik smart LED displey va alohida 5,2 soniyalik NEX outro qo‘shildi.
+- Hook va 01/05 texnik overlaylari videodan chiqarildi. QF versiya/cache 0.15.4; TA/FM fayllari o‘zgarmadi.
+
 ## QF 0.15.3 — 2026-11-22
 
 - Reels kadrlaridan sahna nomlari va 01/05 texnik indekslari olib tashlandi; 3D obyektlar jonli harakatga keltirildi.
