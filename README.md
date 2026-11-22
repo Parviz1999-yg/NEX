@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.15.3 — JONLI 3D VA SMART LED FAKT EKRANI** |
+| **QF** | Qiziqarli fakt | **0.15.4 — LIQUID METAL VA NEX OUTRO** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -70,6 +70,10 @@ QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sah
 ### QF Reels sahnalari va LED fakt displeyi (0.15.3)
 
 Reels tasvir qatlamida HOOK, FAKT E’LONI, MAZMUN, HOLAT, YAKUN kabi texnik sahna nomlari va 01/05 tartib raqamlari chiqarilmaydi; videoda faqat mazmuniy matn va yakuniy NEX brend outro ko‘rinadi. 3D obyektlar sahna davomida ritmik suzish, aylanish va yengil masshtab o‘zgarishi bilan jonlanadi. Ikkinchi — fakt e’loni sahnasida metall romli, emissiv konturli, skan-chiziqli 3D smart LED ekran paydo bo‘ladi; uning matn panelida yorug‘lik gradienti va harakatlanuvchi skan aks etadi.
+
+### QF Liquid Metal va NEX outro (0.15.4)
+
+QF Reels sahnalari suyuq metallik fon bilan kompozitsiyalanadi: xrom-kumush yorug‘lik oqimlari, harakatlanuvchi reflekslar va chuqur qoramtir kontrast. Fakt e’loni displeyi xrom-metall korpusga ega. Video yakunida 5,2 soniyalik alohida NEX outro — metallik logo, orbital halqalar, “Fikr va imkoniyatlar makoni.” slogani va “NEX ORIGINAL” yozuvi — ko‘rsatiladi. Hook va sahna indekslari video qatlamiga chiqarilmaydi.
 
 ## 6. MI — Maxsus iboralar
 
