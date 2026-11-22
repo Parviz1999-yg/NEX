@@ -12,7 +12,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
 | **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.15.2 — 01 FAKT FORMASI TUZATILDI** |
+| **QF** | Qiziqarli fakt | **0.15.3 — JONLI 3D VA SMART LED FAKT EKRANI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -66,6 +66,10 @@ QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sah
 ### QF 01 sahifasi — forma tuzilmasi (0.15.2)
 
 01 — Fakt ma’lumotlari sahifasida barcha kiritish maydonlari yagona `source-fields` forma konteyneriga yig‘ilgan. Fakt tasnifi va fan sohasi tanlovlari, sarlavha, manba nomi, dalil/tekshiruv izohi va tekshiruv holati bir xil vizual tizimda ko‘rsatiladi. Select, input va textarea elementlari uchun umumiy o‘lcham, fokus holati va vertikal oraliqlar belgilangan. O‘zgarish faqat QF moduliga tegishli; TA va FM himoyalangan fayllari o‘zgartirilmagan.
+
+### QF Reels sahnalari va LED fakt displeyi (0.15.3)
+
+Reels tasvir qatlamida HOOK, FAKT E’LONI, MAZMUN, HOLAT, YAKUN kabi texnik sahna nomlari va 01/05 tartib raqamlari chiqarilmaydi; videoda faqat mazmuniy matn va yakuniy NEX brend outro ko‘rinadi. 3D obyektlar sahna davomida ritmik suzish, aylanish va yengil masshtab o‘zgarishi bilan jonlanadi. Ikkinchi — fakt e’loni sahnasida metall romli, emissiv konturli, skan-chiziqli 3D smart LED ekran paydo bo‘ladi; uning matn panelida yorug‘lik gradienti va harakatlanuvchi skan aks etadi.
 
 ## 6. MI — Maxsus iboralar
 
