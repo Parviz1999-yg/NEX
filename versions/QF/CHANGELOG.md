@@ -1,3 +1,7 @@
+## [0.16.6] — 2026-11-22
+
+- NEX outro logotipi TA etalonidagi geometrik NEX chiziq shakliga moslashtirildi; suyuq metall fon, 5,2 soniyalik alohida outro va boshqa QF funksiyalari saqlandi.
+
 # QF — Qiziqarli fakt o‘zgarishlar tarixi
 
 ## [0.16.5] — 2026-11-22
