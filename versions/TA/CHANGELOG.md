@@ -1,5 +1,11 @@
 # TA — Tavsiya akkaunt o‘zgarishlar tarixi
 
+## [0.10.1] — 2026-11-22
+
+- Obunachilar soni Instagram uslubidagi ixcham formatda ko‘rsatiladi: 1K, 1,2K, 10K, 1,2M va 1B.
+- Kiritish maydoni xom sonni qabul qiladi; format faqat Reels namoyishi va akkaunt ma’lumotlarida qo‘llanadi.
+- TA ning boshqa ichki tuzilmasi, dizayni va funksional oqimi o‘zgartirilmadi.
+
 ## [0.10.0] — 2026-11-22 (boshlang‘ich qayd)
 
 - Amaldagi mustaqil TA nusxasining boshlang‘ich versiyasi. Ichki kod va interfeys o‘zgartirilmagan.
