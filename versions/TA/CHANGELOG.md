@@ -1,3 +1,9 @@
+## [0.10.3] — 2026-11-22
+
+- 5,2 soniyalik NEX outro beshta asosiy sahnadan keyin alohida segment sifatida ijro etiladi; asosiy sahna davomiyligiga qo‘shilmaydi.
+- Umumiy davomiylik va 60 soniyalik cheklov asosiy sahnalar + outro yig‘indisi bo‘yicha hisoblanadi.
+- TA ning mavjud 3D NEX logotipi va suyuq metall outro animatsiyasi vizual etalon sifatida saqlandi; asosiy sahna va kontent yaratish oqimi o‘zgartirilmadi.
+
 # TA — Tavsiya akkaunt o‘zgarishlar tarixi
 
 ## [0.10.2] — 2026-11-22

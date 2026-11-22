@@ -4,15 +4,19 @@
 **Asosiy platforma:** GitHub Pages  
 **Maqsad:** Instagram Reels uchun turli kontent yo‘nalishlariga mos, mustaqil ishlaydigan studiyalar yaratish.
 
+### 2026-11-22 — Outro bo‘yicha cheklangan ruxsat
+
+Foydalanuvchi TA, FM va QF modullarida faqat NEX outro vaqtini asosiy sahnalardan ajratish hamda FM/QF outro logotipini TA etaloniga moslashtirishga aniq ruxsat berdi. Bu istisno asosiy modul funksiyalarini o‘zgartirishga umumiy ruxsat bermaydi. TA va FM asosiy kontent oqimi, shakllari, sahna matnlari va asosiy vizual mexanizmlari keyingi alohida ruxsatsiz o‘zgartirilmaydi. Joriy ish zaxira tarmog‘ida bajarildi: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
+
 ## Loyiha modullari
 
 NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, ish jarayoni va JavaScript/CSS javobgarlik chegarasiga ega bo‘ladi.
 
 | Qisqartma | Modul nomi | Holati |
 |---|---|---|
-| **TA** | Tavsiya akkaunt | **TAYYOR — MUHOFAZALANGAN** |
-| **FM** | Foydali manba | **TAYYOR — MUHOFAZALANGAN** |
-| **QF** | Qiziqarli fakt | **0.16.5 — KUCHAYTIRILGAN WEBGL + YAGONA MA’LUMOT KARTASI** |
+| **TA** | Tavsiya akkaunt | **0.10.3 — OUTRO ALOHIDA VAQTLANGAN** |
+| **FM** | Foydali manba | **0.9.8 — OUTRO ALOHIDA VAQTLANGAN** |
+| **QF** | Qiziqarli fakt | **0.16.6 — TA USLUBIDAGI OUTRO LOGOTIPI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
