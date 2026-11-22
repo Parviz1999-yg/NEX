@@ -1,7 +1,7 @@
 # NEX — Arxitektura va modul chegaralari
 
 **Versiya:** 0.10.0
-**QF moduli:** 0.13.0  
+**QF moduli:** 0.14.0  
 **Holat:** mustaqil studiyalarga ajratishning birinchi arxitektura relizi.
 
 ## 1. Umumiy tuzilma
@@ -52,11 +52,16 @@ Fakt tasnifi:
 
 Fan sohasi tasnifdan mustaqil. Manba nomi, dalil/izoh va tekshiruv qaydi alohida maydonlarda saqlanadi. Manba URL/HTTPS maydoni va havola validatsiyasi mavjud emas.
 
-### Sahifalararo ish oqimi
-- QF mustaqil studiya sifatida to‘rtta alohida bosqichga bo‘lingan: fakt ma’lumotlari, video ssenariysi, 3D sahna va tayyor natija.
-- Bir vaqtda faqat joriy bosqich ko‘rinadi; Oldingi/Keyingi navigatsiyasi orqali o‘tiladi.
-- Oraliq ma’lumotlar brauzer sessionStorage xotirasida saqlanadi.
-- HTTPS/manba URL maydoni va URL validatsiyasi butunlay olib tashlangan; manba nomi va dalil matni saqlanadi.
+### Reels ishlab chiqarish arxitekturasi — FM modelining QF’ga moslashtirilgan nusxasi
+- QF yetti bosqichli sahifalararo oqimdan foydalanadi: 1) fakt ma’lumotlari, 2) besh qismli ssenariy, 3) bayon uslubi, 4) vizual til, 5) rang palitrasi, 6) animatsiya, 7) NEX Reels Studio.
+- Har bir bosqich alohida sahifa; foydalanuvchi oldingi/keyingi tugmalari bilan o‘tadi.
+- Reels Studio’da chap boshqaruv paneli, o‘ng tomonda 9:16 jonli preview, pastda vaqt chizig‘i va besh sahna tanlagichi mavjud.
+- Ssenariy matnlari HOOK → FAKT E’LONI → MAZMUN → HOLAT → YAKUN tartibida alohida sahnalarda ketma-ket ko‘rsatiladi. Matn satrlari sahna davomida bosqichma-bosqich animatsiya bilan paydo bo‘ladi.
+- Har bir sahna davomiyligi alohida sozlanadi; rolikni ko‘rish, pauza/davom ettirish va boshidan qayta boshlash mumkin.
+- Ekran yozish rejimi 1080×1920 WebGL va matn qatlamlarini ko‘rsatadi; foydalanuvchi telefonning o‘z ekran yozish funksiyasi bilan yozib oladi. Bu browser ichidagi MP4 eksport emas.
+- Fakt fan sohasi va matn kalit so‘zlariga mos 3D obyektlar saqlanadi.
+- HTTPS/manba URL maydoni va URL validatsiyasi mavjud emas; manba nomi, dalil va tekshiruv qaydi saqlanadi.
+- Ovoz va musiqa tashqi ilovalarda qo‘shiladi; audio montaj va yakuniy birlashtirish ham tashqi ilovada bajariladi.
 
 ### Ssenariy
 1. HOOK
