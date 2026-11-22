@@ -2,6 +2,7 @@
 
 - TA v0.10.2 — foydalanuvchi tasdiqlagan, o‘zgartirishlar to‘xtatilgan.
 - FM v0.9.7 — foydalanuvchi tasdiqlagan, o‘zgartirishlar to‘xtatilgan. Outro asosiy davomiylikning oxirgi 5,2 soniyasini egallashi aniqlandi; FM fayllariga tegilmadi.
+- TA v0.10.2 — outro ham besh sahna davomiyligi ichidagi oxirgi 5,2 soniyada ko‘rsatiladi; alohida qo‘shimcha vaqt emas. TA fayllariga ushbu tekshiruvda tegilmadi.
 - QF v0.16.0 — besh asosiy sahna + mustaqil 5,2 soniyalik outro; to‘rtta vizual til, sakkiz bayon profili, ranglarning 3D material/yoritishga ta’siri, sahna bo‘yicha kamera va parallax, manba/dalil kartasi, vizual fakt yorlig‘i va qoidaviy semantik moslashtirish qo‘shildi.
 - QF oldingi holat zaxirasi: `backup/qf-0.15.6-before-full-enhancement-2026-11-22`.
 - Statik JS sintaksisi va DOM ID tekshiruvlari o‘tkazildi. Android/desktop WebGL, ekran yozuvi va mobil FPS sinovi hali bajarilishi kerak.
