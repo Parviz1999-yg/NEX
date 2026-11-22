@@ -41,7 +41,7 @@ function configureScript(){
 }
 
 function formatFollowerCount(value){
- const digits=String(value||"").replace(/\\D/g,"");
+ const digits=String(value||"").replace(/\D/g,"");
  if(!digits)return "";
  const count=Number(digits);
  if(!Number.isFinite(count))return "";
