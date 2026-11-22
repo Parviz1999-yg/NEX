@@ -16,7 +16,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **0.10.3 — OUTRO ALOHIDA VAQTLANGAN** |
 | **FM** | Foydali manba | **0.9.8 — OUTRO ALOHIDA VAQTLANGAN** |
-| **QF** | Qiziqarli fakt | **0.16.6 — TA USLUBIDAGI OUTRO LOGOTIPI** |
+| **QF** | Qiziqarli fakt | **0.16.7 — MUHRLANMAGUNCHA QIYMAT YASHIRILADI** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
