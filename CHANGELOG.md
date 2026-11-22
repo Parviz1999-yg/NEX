@@ -1,3 +1,11 @@
+## NEX outro birxillashtirish — TA 0.10.3, FM 0.9.8, QF 0.16.6 (2026-11-22)
+
+- TA: NEX outro asosiy besh sahnadan keyin alohida 5,2 soniyalik segmentga ajratildi.
+- FM: outro asosiy besh sahnadan keyin alohida 5,2 soniya ijro qilinadi; vaqt, progress va yozuv davomiyligi moslashtirildi.
+- FM va QF: outro logotipi TA dagi geometrik NEX belgisi chiziq tuzilishiga moslashtirildi.
+- Kontent generatsiyasi, sahna matnlari, manba/fakt ma’lumotlari, asosiy vizual sahnalar va audio mexanizmlari o‘zgartirilmadi.
+- Zaxira tarmog‘i: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
+
 ## QF 0.16.5 — 2026-11-22
 
 - WebGL qatlamlari qayta tartiblandi: fon → shaffof 3D → matn; 3D sahna endi 2D fon ostida qolmaydi.
