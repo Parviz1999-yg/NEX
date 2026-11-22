@@ -648,37 +648,55 @@ Create an exactly 8-second professional instrumental music clip for a serious In
 ### 12.5. Yagona NEX brend outro — barcha bo‘limlar uchun
 
 **Asset ID:** `NEX-OUTRO-01`  
-**Holat:** JARAYONDA  
+**Holat:** QAYTA ISHLASH  
 **Davomiylik:** aniq 5,2 soniya  
 **Shior:** “NEX — Fikr va imkoniyatlar makoni.”  
 **Qo‘llanishi:** TA, FM, QF va MI videolarining barchasida aynan shu bitta audio ishlatiladi.
 
-Quyidagi promptni Gemini’ga alohida yuboring. Natija qabul qilinmaguncha outro TUGALLANDI hisoblanmaydi.
+**Oldingi urinish natijasi:** Gemini 59 soniyalik musiqa yaratdi; bu 5,2 soniyalik sonic logo talabiga mos emas. Shu sababli eski prompt almashtirildi. Yangi promptda inson ovozida NEX nomi aytilishi va oxirgi X tovushining shishasimon jarangga sirg‘alib o‘tishi asosiy talab hisoblanadi.
+
+Quyidagi yangi promptni Gemini’ga alohida yuboring. Natija qabul qilinmaguncha outro TUGALLANDI hisoblanmaydi.
 
 ```text
-Create one original, premium and instantly recognizable NEX brand outro music sting for a professional Instagram Reels studio. The final usable music must be EXACTLY 5.2 seconds long and must feel deliberately composed for a 5.2-second visual outro — not a shortened piece of a longer song.
+Create a SINGLE 5.2-SECOND NEX sonic brand logo — NOT a song, NOT background music, and absolutely NOT a 59-second or long music track.
 
-Brand name: NEX.
-Exact on-screen slogan: “NEX — Fikr va imkoniyatlar makoni.”
+The entire audio must be exactly 5.2 seconds. Treat this as a tightly timed premium audio logo for the brand NEX.
 
-Musical identity: serious, premium, modern, intelligent and confident. Create one distinctive original melodic motif that gives the NEX brand a recognizable sonic identity. Use refined electronic tones, a warm deep note, a precise soft pulse and a clean harmonic resolution. The slogan should feel naturally supported by the musical phrase, with its main melodic emphasis aligned to the visual appearance of the brand name and slogan. Do not sing or speak the slogan; it appears visually on screen.
+CORE IDEA:
+A powerful human voice announces the brand name “NEX” in one dramatic, confident, masculine-sounding studio voice. The delivery must begin with a punchy, explosive attack on “NE”, then stretch the final “X” into a smooth, rising/falling sliding sound: “NEXxxxxx”. The word must remain clearly recognizable as “NEX”; do not pronounce the letters separately as N-E-X. Do not add any other words.
 
-Exact timing:
-0.0–0.6 seconds: a restrained, recognizable opening tone as the NEX logo begins to appear.
-0.6–3.8 seconds: the main original NEX melodic motif develops as the brand name and slogan are revealed.
-3.8–4.4 seconds: a short, memorable harmonic resolution that gives the slogan a clear finishing emphasis.
-4.4–5.2 seconds: a unique, clean electronic sonic signature and a controlled final decay. The sonic signature itself should last approximately 0.3–0.8 seconds and must not sound like a generic notification beep.
+VOICE CHARACTER:
+One deep, resonant, mature, confident human voice. Close-miked, polished, cinematic advertising quality. Strong and impactful, but not shouting, aggressive, comic, robotic or distorted. The pronunciation of NEX must be crisp and intelligible. The final X should transition seamlessly into a bright, glass-like shimmer.
 
-The complete musical outro must fit exactly 5.2 seconds. No extra intro, no silence at the beginning, no long reverb tail beyond the duration, no abrupt cut, and no additional musical section. The ending must resolve naturally at 5.2 seconds.
+SIGNATURE SOUND:
+Immediately after and partially overlapping the extended final X, create a distinctive crystal-glass resonance — like a finely tuned glass instrument being struck, but more refined, modern and premium. It should shimmer, glide in pitch, and decay elegantly. The glass-like sound is a designed musical tone, not breaking glass, not a crash, and not a random sound effect. Add only a subtle low-frequency impact beneath the voice to give the brand announcement weight. The result must feel like one unified NEX sound, not separate unrelated effects.
 
-STRICT AUDIO RULES: original instrumental brand music only. No vocals, no spoken words, no sung slogan, no lyrics, no choir, no sound effects, no impacts, no environmental sounds and no background noise. Do not imitate any existing brand jingle, song, artist or copyrighted melody. Do not add unrelated instruments or change the specified mood.
+EXACT TIMELINE — TOTAL 5.2 SECONDS:
+0.00–0.35 s: a short, powerful, controlled low-frequency brand impact; immediate start, no silence.
+0.35–1.65 s: the human voice says “NEX” once. “NE” has a punchy, explosive onset; stretch the final “X” into “xxxxx” with a smooth, stylish glide.
+1.30–3.70 s: the extended X blends into a clear, bright, crystal-glass resonance that slides smoothly and shimmers. This glass tone is the signature of the brand.
+3.70–4.65 s: the glass resonance resolves into one warm, premium harmonic tone.
+4.65–5.20 s: a short, recognizable final sonic tail fades naturally and completely by exactly 5.20 seconds.
 
-VIDEO RULES: generate an MP4 only as an audio carrier. Use a completely static matte dark charcoal background. No text, no logo, no people, no objects, no visualizer, no animation, no camera movement and no scene changes. The audio is the priority.
+BRAND FEEL:
+Premium, bold, intelligent, modern, memorable, confident and distinctive. The sound must be recognizable after repeated use. Avoid generic corporate stock music, generic notification sounds, trailer booms, EDM drops, orchestral fanfares or a full musical composition.
 
-This is the single permanent NEX brand outro. It must be reusable without changes across TA, FM, QF and MI. Do not create alternative versions or different outro melodies.
+STRICT CONTENT RULES:
+- The ONLY spoken word is “NEX”, spoken once by one human voice.
+- No slogan spoken or sung. The slogan “NEX — Fikr va imkoniyatlar makoni.” is visual text in the video, not audio.
+- No additional words, letters, whispers, humming, singing, choir or backing vocals.
+- No long melody, no beat, no song structure and no background music.
+- No glass breaking, shattering, crashes, environmental noise or unrelated sound effects.
+- Do not imitate any existing brand sound, artist, song or copyrighted melody.
+- Do not extend the audio beyond 5.2 seconds. Do not generate a longer composition and do not append silence.
+
+VIDEO OUTPUT:
+Generate an MP4 with a completely static matte dark-charcoal background, solely as a carrier for this audio. No text, no subtitles, no logo, no people, no objects, no visualizer, no animation, no camera movement and no scene changes. Audio is the only priority.
+
+This is the ONE permanent NEX sonic brand signature, used identically for TA, FM, QF and MI. Create only this single version. Do not improvise, add sections, or change the spoken brand name.
 ```
 
-**Qabul qilish mezoni:** aniq 5,2 soniya; jiddiy va premium tovush; o‘ziga xos esda qoladigan NEX melodik imzosi; oxirida 0,3–0,8 soniyalik ovozli belgi; tabiiy yakun; shior bilan vaqt jihatdan moslik. Foydalanuvchi «Qabul qilindi» demaguncha holat TAYYOR/JARAYONDA bo‘lib qoladi.
+**Qabul qilish mezoni:** audio 5,2 soniyadan oshmasligi; inson ovozi “NEX”ni bir marta aniq aytishi; “NE” kuchli va portlovchi boshlanishi; yakuniy “X” shishasimon, sirg‘aluvchi jarangga aylanishi; jarang 5,2 soniyada tabiiy tugashi; qo‘shimcha so‘z yoki fon musiqasi bo‘lmasligi. Foydalanuvchi «Qabul qilindi» demaguncha holat QAYTA ISHLASH/JARAYONDA bo‘lib qoladi.
 
 ### 12.6. Foydalanuvchi bilan navbatni boshqarish
 
