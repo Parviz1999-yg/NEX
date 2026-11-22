@@ -1,1 +1,71 @@
-<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081426"><title>NEX — Qiziqarli fakt</title><link rel="stylesheet" href="style.css?v=0.10.0"></head><body><header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.10.0</span></header><main><a class="back" href="../">← Bosh sahifa</a><section class="intro"><p class="tag">03 — MUSTAQIL STUDIYA</p><h1>Faktni aniqlang.<br><i>Hikoyaga aylantiring.</i></h1><p>Fakt tasnifi, fan sohasi va tekshiruv holati bir-biridan ajratiladi. 3D vizualizatsiya esa ssenariydan mustaqil qatlam hisoblanadi.</p></section><div class="layout"><section class="panel"><h2>01 / Fakt ma’lumotlari</h2><label for="kind">Fakt tasnifi</label><select id="kind"><option value="">Tasnifni tanlang</option><option>Ilmiy fakt</option><option>Postulat (isbotsiz qabul qilinadigan)</option><option>100 foiz ishonchli</option><option>Tekshiruvda</option></select><p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p><label for="field">Fan yoki mavzu sohasi</label><select id="field"><option value="">Sohani tanlang</option><option>Fizika</option><option>Biologiya</option><option>Tarix</option><option>Matematika</option><option>Astronomiya</option><option>Kimyo</option><option>Geografiya</option><option>Texnologiya</option><option>Psixologiya</option><option>Boshqa</option></select><input id="customField" placeholder="Boshqa soha (ixtiyoriy)" hidden><label for="title">Fakt sarlavhasi</label><input id="title" maxlength="120" placeholder="Faktni qisqa va aniq ifodalang"><label for="source">Manba nomi</label><input id="source" maxlength="160" placeholder="Kitob, maqola, ilmiy tashkilot yoki hujjat"><label for="sourceUrl">Manba havolasi (ixtiyoriy)</label><input id="sourceUrl" type="url" placeholder="https://..."><label for="evidence">Dalil yoki tekshiruv izohi</label><textarea id="evidence" rows="3" placeholder="Fakt nimaga asoslangan? Qanday dalil mavjud?"></textarea><label for="review">Tekshiruv qaydi</label><select id="review"><option>Tekshiruv talab qilinadi</option><option>Manba tekshirildi</option><option>Bir nechta manba bilan solishtirildi</option><option>Qarama-qarshi dalil topildi</option></select></section><section class="panel"><h2>02 / Hikoya ssenariysi</h2><label for="hook">HOOK — e’tiborni tortish</label><textarea id="hook" rows="2" placeholder="Tomoshabinni to‘xtatadigan savol yoki jumla"></textarea><label for="announce">FAKT E’LONI</label><textarea id="announce" rows="2" placeholder="Faktni qisqa va aniq e’lon qiling"></textarea><label for="bodyText">MAZMUNI</label><textarea id="bodyText" rows="4" placeholder="Faktning mohiyati, sabab va tushuntirish"></textarea><label for="statusText">HOLATI — isbot, tasnif va tafsilot</label><textarea id="statusText" rows="3" placeholder="Dalil, manba, ishonchlilik yoki tekshiruv holatini oching"></textarea><label for="ending">FIKR SO‘RASH yoki CHORLOV</label><textarea id="ending" rows="2" placeholder="Tomoshabinga savol yoki harakatga chaqiriq"></textarea><div class="actions"><button id="build" class="primary">Ssenariyni yig‘ish</button><button id="clear" class="secondary">Tozalash</button></div><pre id="result" aria-live="polite">Tayyorlangan ssenariy shu yerda ko‘rinadi.</pre></section></div><section class="panel visual"><div><p class="tag">03 / MUSTAQIL VIZUAL QATLAM</p><h2>3D sahna — mazmunning vizual ifodasi</h2><p>Bu qatlam fakt ssenariysidan alohida boshqariladi. Tanlangan fan sohasi va fakt mazmuniga mos 3D obyekt, kamera va harakat keyingi render bosqichida ulanadi.</p></div><div class="stage"><div class="orb"></div><span>3D VISUAL LAYER</span><small>Render dvigateli uchun alohida modul chegarasi</small></div></section></main><script src="app.js?v=0.10.0"></script></body></html>
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081426">
+<title>NEX — Qiziqarli fakt</title>
+<link rel="stylesheet" href="style.css?v=0.11.0">
+</head>
+<body>
+<header><a href="../" class="brand">NEX <span>/ QIZIQARLI FAKT</span></a><span class="ver">v0.11.0</span></header>
+<main>
+<a class="back" href="../">← Bosh sahifa</a>
+<section class="intro">
+<p class="tag">03 — MUSTAQIL STUDIYA</p>
+<h1>Faktni aniqlang.<br><i>Hikoyaga aylantiring.</i></h1>
+<p>Fakt tasnifi, fan sohasi va tekshiruv holati alohida boshqariladi. Ssenariy va 3D sahna bir-biridan mustaqil ishlaydi.</p>
+</section>
+<div class="layout">
+<section class="panel">
+<h2>01 / Fakt ma’lumotlari</h2>
+<label for="kind">Fakt tasnifi</label>
+<select id="kind"><option value="">Tasnifni tanlang</option><option>Ilmiy fakt</option><option>Postulat (isbotsiz qabul qilinadigan)</option><option>100 foiz ishonchli</option><option>Tekshiruvda</option></select>
+<p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p>
+<label for="field">Fan yoki mavzu sohasi</label>
+<select id="field"><option value="">Sohani tanlang</option><option>Fizika</option><option>Biologiya</option><option>Tarix</option><option>Matematika</option><option>Astronomiya</option><option>Kimyo</option><option>Geografiya</option><option>Texnologiya</option><option>Psixologiya</option><option>Boshqa</option></select>
+<input id="customField" placeholder="Boshqa soha nomi" hidden>
+<label for="title">Fakt sarlavhasi</label>
+<input id="title" maxlength="120" placeholder="Faktni qisqa va aniq ifodalang">
+<label for="source">Manba nomi</label>
+<input id="source" maxlength="160" placeholder="Kitob, maqola, ilmiy tashkilot yoki hujjat">
+<label for="sourceUrl">Manba havolasi (ixtiyoriy)</label>
+<input id="sourceUrl" type="url" placeholder="https://...">
+<label for="evidence">Dalil yoki tekshiruv izohi</label>
+<textarea id="evidence" rows="3" placeholder="Fakt nimaga asoslangan? Qanday dalil mavjud?"></textarea>
+<label for="review">Tekshiruv qaydi</label>
+<select id="review"><option>Tekshiruv talab qilinadi</option><option>Manba tekshirildi</option><option>Bir nechta manba bilan solishtirildi</option><option>Qarama-qarshi dalil topildi</option></select>
+</section>
+<section class="panel">
+<h2>02 / Hikoya ssenariysi</h2>
+<label for="hook">HOOK — e’tiborni tortish</label>
+<textarea id="hook" rows="2" placeholder="Tomoshabinni to‘xtatadigan savol yoki jumla"></textarea>
+<label for="announce">FAKT E’LONI</label>
+<textarea id="announce" rows="2" placeholder="Faktni qisqa va aniq e’lon qiling"></textarea>
+<label for="bodyText">MAZMUNI</label>
+<textarea id="bodyText" rows="4" placeholder="Faktning mohiyati, sabab va tushuntirish"></textarea>
+<label for="statusText">HOLATI — isbot, tasnif va tafsilot</label>
+<textarea id="statusText" rows="3" placeholder="Dalil, manba, ishonchlilik yoki tekshiruv holatini oching"></textarea>
+<label for="ending">FIKR SO‘RASH yoki CHORLOV</label>
+<textarea id="ending" rows="2" placeholder="Tomoshabinga savol yoki harakatga chaqiriq"></textarea>
+<div class="actions"><button id="build" class="primary">Ssenariyni yig‘ish</button><button id="clear" class="secondary">Tozalash</button></div>
+<pre id="result" aria-live="polite">Tayyorlangan ssenariy shu yerda ko‘rinadi.</pre>
+</section>
+</div>
+<section class="panel visual">
+<div class="visual-copy">
+<p class="tag">03 / 3D VIZUAL STUDIYA</p>
+<h2>Faktni uch o‘lchamda ko‘rsating</h2>
+<p>Fan sohasini tanlang va sahnani ishga tushiring. Hozircha mavzuga mos bazaviy 3D obyektlar yaratiladi; keyingi bosqichda ular fakt mazmuni va ssenariy vaqtiga bog‘lanadi.</p>
+<div class="visual-actions"><button id="render3d" class="primary">3D sahnani ishga tushirish</button><button id="reset3d" class="secondary">Sahnani qayta tiklash</button></div>
+<p id="sceneStatus" class="scene-status" role="status">Sahna tayyor. Fan sohasini tanlang.</p>
+</div>
+<div class="stage" id="stage">
+<canvas id="sceneCanvas" aria-label="Qiziqarli fakt uchun interaktiv 3D sahna"></canvas>
+<div class="stage-overlay"><span>QF / 3D ENGINE</span><small id="sceneLabel">SAHNA KUTILMOQDA</small></div>
+</div>
+</section>
+</main>
+<script src="app.js?v=0.11.0"></script>
+</body>
+</html>
