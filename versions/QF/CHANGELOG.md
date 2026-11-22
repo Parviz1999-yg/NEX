@@ -6,7 +6,7 @@
 - Kamera ko‘rinishlari, animatsiya tezligi va pauza/davom ettirish boshqaruvlari qo‘shildi.
 - HOOK, FAKT, MAZMUN, HOLAT va YAKUN bosqichlari uchun kamera urg‘usi bilan ishlaydigan ssenariy vaqt chizig‘i qo‘shildi.
 - Faktga mos sahna tanlash qoidaviy kalit so‘zlarga asoslanadi; bu AI semantik tushunishi yoki barcha faktlar uchun avtomatik 3D model yaratishi emas.
-- Ovoz va musiqa NEX/QF ichida ishlab chiqilmaydi yoki birlashtirilmaydi; hozircha tashqi ilovalarda tayyorlanadi.
+- Ovoz yozish, musiqa yaratish/tanlash, audio montaj va yakuniy Reels eksporti QF doirasiga kiritilmaydi; bular tashqi ilovalarda bajariladi.
 - Kodning strukturaviy tekshiruvlari bajarildi; real mobil/desktop WebGL brauzer sinovi foydalanuvchi qurilmalarida bajarilishi kerak.
 
 
