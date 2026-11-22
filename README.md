@@ -151,10 +151,10 @@ NEX butun loyiha sifatida **bitta umumiy versiya raqami** bilan yuritiladi. TA, 
 - Asosiy musiqa promptlari: **48**
 - Yagona brend outro prompti: **1**
 - Jami prompt: **49**
-- Tugallangan: **0**
+- Tugallangan: **1** (NEX-OUTRO-01)
 - Jarayonda: **0**
 - Qayta ishlash: **0**
-- Navbatdagi prompt: **NEX-OUTRO-01** (birinchi bo‘lib yaratiladi)
+- Navbatdagi prompt: **TA-01-A**
 - Brend outro: **alohida, umumiy va barcha bo‘limlarda bir xil**
 
 ### 12.4. Promptlar va holat nazorati
@@ -648,14 +648,15 @@ Create an exactly 8-second professional instrumental music clip for a serious In
 ### 12.5. Yagona NEX brend outro — barcha bo‘limlar uchun
 
 **Asset ID:** `NEX-OUTRO-01`  
-**Holat:** QAYTA ISHLASH  
+**Holat:** TUGALLANDI  
 **Davomiylik:** aniq 5,2 soniya  
 **Shior:** “NEX — Fikr va imkoniyatlar makoni.”  
 **Qo‘llanishi:** TA, FM, QF va MI videolarining barchasida aynan shu bitta audio ishlatiladi.
+**Qabul holati:** Foydalanuvchi 2026-11-22 kuni «Qabul qilindi» deb tasdiqladi. Outro yakuniy variant sifatida qabul qilindi.
 
 **Oldingi urinish natijasi:** Gemini 59 soniyalik musiqa yaratdi; bu 5,2 soniyalik sonic logo talabiga mos emas. Shu sababli eski prompt almashtirildi. Yangi promptda inson ovozida NEX nomi aytilishi va oxirgi X tovushining shishasimon jarangga sirg‘alib o‘tishi asosiy talab hisoblanadi.
 
-Quyidagi yangi promptni Gemini’ga alohida yuboring. Natija qabul qilinmaguncha outro TUGALLANDI hisoblanmaydi.
+Quyidagi matn NEX sonic-logo uchun dastlabki batafsil spetsifikatsiya sifatida saqlanadi. Amaldagi outro foydalanuvchi tomonidan tayyorlanib, yakuniy variant sifatida qabul qilingan.
 
 ```text
 Create a SINGLE 5.2-SECOND NEX sonic brand logo — NOT a song, NOT background music, and absolutely NOT a 59-second or long music track.
@@ -702,7 +703,7 @@ This is the ONE permanent NEX sonic brand signature, used identically for TA, FM
 
 Suhbatdagi buyruqlar quyidagicha talqin qilinadi:
 
-1. **«Keyingi»** — avval `NEX-OUTRO-01` yagona brend outro promptini chiqarish. U foydalanuvchi tomonidan qabul qilingach, 48 ta asosiy musiqa prompti navbatma-navbat boshlanadi.
+1. **«Keyingi»** — navbatdagi TAYYOR asosiy musiqa prompti `TA-01-A` ni chiqarish; undan keyin 48 ta asosiy musiqa prompti belgilangan tartibda davom etadi.
 2. **«Qabul qilindi»** — faqat faol promptni TUGALLANDI deb belgilash; so‘ng navbat keyingi TAYYOR promptga tayyor bo‘ladi.
 3. **«Mos kelmadi»** yoki **«Qayta ishlaymiz»** — faol promptni QAYTA ISHLASH holatiga o‘tkazish va shu prompt ustida qolish.
 4. **«Qayta urinish»** — shu promptning ayni spetsifikatsiyasi bilan yangi MP4 generatsiya qilish uchun promptni qayta berish.
