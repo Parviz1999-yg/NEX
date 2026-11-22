@@ -131,7 +131,7 @@ function applyCameraMode(){
  if(!camera)return;
  const mode=$("cameraMode")?.value||"front";
  const positions={front:[0,0,4.4],orbit:[3.4,2.1,4.5],top:[0,4.6,.01]};
- const p=positions[mode]||positions.front;camera.position.set(...p);camera.lookAt(0,0,0);
+ const p=positions[mode]||positions.front;camera.up.set(0,mode==="top"?0:1,mode==="top"?-1:0);camera.position.set(...p);camera.lookAt(0,0,0);
 }
 function applyStage(index){
  activeStage=index;
