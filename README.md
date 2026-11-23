@@ -207,10 +207,10 @@ Asosiy qoida: bitta NEX umumiy versiyasi + to‘rtta mustaqil studiya versiyasi.
 - Asosiy musiqa promptlari: **48**
 - Yagona brend outro prompti: **1**
 - Jami prompt: **49**
-- Tugallangan: **1** (NEX-OUTRO-01)
+- Tugallangan: **2** (NEX-OUTRO-01, TA-01-A)
 - Jarayonda: **0**
 - Qayta ishlash: **0**
-- Navbatdagi prompt: **TA-01-A**
+- Navbatdagi prompt: **TA-01-B**
 - Brend outro: **alohida, umumiy va barcha bo‘limlarda bir xil**
 
 | Oy | TA — Tavsiya akkaunt | FM — Foydali manba | QF — Qiziqarli fakt | MI — Maxsus iboralar | Jami |
@@ -231,7 +231,7 @@ Quyidagi 48 ta asosiy musiqa prompti to‘liq va qat’iy spetsifikatsiya hisobl
 
 | № | ID | Bo‘lim | Uslub | BPM | Holat |
 |---:|---|---|---|---:|---|
-| 1 | `TA-01-A` | Tavsiya akkaunt | Premium zamonaviy elektron | 112 | TAYYOR |
+| 1 | `TA-01-A` | Tavsiya akkaunt | Premium zamonaviy elektron | 112 | TUGALLANDI |
 | 2 | `TA-01-B` | Tavsiya akkaunt | Premium zamonaviy elektron | 112 | TAYYOR |
 | 3 | `TA-01-C` | Tavsiya akkaunt | Premium zamonaviy elektron | 112 | TAYYOR |
 | 4 | `FM-01-A` | Foydali manba | Premium ambient | 78 | TAYYOR |
@@ -283,7 +283,7 @@ Quyidagi 48 ta asosiy musiqa prompti to‘liq va qat’iy spetsifikatsiya hisobl
 
 #### 01. TA-01-A — Tavsiya akkaunt: Premium zamonaviy elektron
 
-**Holat:** TAYYOR  
+**Holat:** TUGALLANDI  
 **BPM:** 112
 
 ```text
