@@ -1,3 +1,8 @@
+## [0.10.1] — 2026-11-26
+
+- Dashboarddagi uchinchi modul QF o‘rniga PA — Postulat va aksioma studiyasiga yo‘naltirildi.
+- PA mustaqil modul sifatida qo‘shildi; umumiy NEX navigatsiyasi va brend identifikatsiyasi saqlandi.
+
 ## TA 0.10.4 va FM 0.9.9 — anketa maydonlarini tartibga solish (2026-11-22)
 
 - TA: ishlatilmayotgan akkaunt havolasi maydoni olib tashlandi; SABAB/FARQI majburiyligi boshqa yo‘nalishlardan ajratib aniq ko‘rsatildi.
