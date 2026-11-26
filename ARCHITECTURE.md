@@ -153,3 +153,8 @@ MI mustaqil sahifada ibora xarakteri, iboraning o‘zi, muallif/manba, mazmun, k
 - Fakt yorlig‘i `window.qfSceneCue` dan olinadi; Beshinchi asosiy YAKUN sahnasida manba, dalil, tasnif va tekshiruv holati ko‘rsatiladi; undan keyin NEX outro boshlanadi.
 - Semantik moslashtirish so‘z/ibora normalizatsiyasi va oldindan belgilangan sinonimlar bilan ishlaydi; bu deterministik qoidaviy tizim, AI yoki mustaqil ilmiy tekshiruv emas.
 - Audio va musiqa tashqi ilovada; telefon native screen recorder ishlatiladi, ichki MP4 eksporti yo‘q.
+
+
+## PA — Postulat va aksioma (0.1.0)
+
+PA mustaqil modul bo‘lib, QF’ning yetti bosqichli Reels Studio mexanizmi va NEX outro qatlamini qayta ishlatadi. Mazmun modeli fakt tekshiruvidan tamoyil/aksioma turi, bilim sohasi, nazariy asos, qo‘llanish doirasi va cheklovga o‘zgartirilgan. Besh sahna: HOOK, TAMOYIL, MA’NO, QO‘LLANISH, CHEGARA VA XULOSA. 3D sahnalar abstrakt geometrik va mantiqiy kompozitsiyalardan foydalanadi; QF’ning faktga xos obyektlari PA ichida chaqirilmaydi.
