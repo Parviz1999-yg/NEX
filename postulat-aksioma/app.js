@@ -7,13 +7,13 @@ const subjects=["Falsafa","Formal mantiq","Matematika","Geometriya","Fizika","Eh
 const labels=["HOOK","TAMOYIL","MA’NO","QO‘LLANISH","CHEGARA"];
 const palettes={silver:{bg:0x080e18,accent:0x8ed8ff},blue:{bg:0x06142c,accent:0x168cff},violet:{bg:0x160e30,accent:0x9876ff},emerald:{bg:0x061e20,accent:0x00d5b2},solar:{bg:0x211706,accent:0xffb52e}};
 function status(id,msg){if($(id))$(id).textContent=msg;}
-function showStep(n){currentPage=Math.max(1,Math.min(7,n));document.querySelectorAll(".wizard-page").forEach(p=>p.classList.toggle("active",p.id==="step-"+currentPage));document.querySelectorAll("[data-progress]").forEach(p=>{const i=Number(p.dataset.progress);p.classList.toggle("current",i===currentPage);p.classList.toggle("done",i<currentPage);});$("progressFill").style.width=((currentPage-1)/6*100)+"%";$("stepLabel").textContent=["01 — FAKT","02 — SSENARIY","03 — BAYON USLUBI","04 — VIZUAL TIL","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — REELS STUDIYASI"][currentPage-1];window.scrollTo({top:0,behavior:"smooth"});if(currentPage===7){updateSummary();resize3D();}}
+function showStep(n){currentPage=Math.max(1,Math.min(7,n));document.querySelectorAll(".wizard-page").forEach(p=>p.classList.toggle("active",p.id==="step-"+currentPage));document.querySelectorAll("[data-progress]").forEach(p=>{const i=Number(p.dataset.progress);p.classList.toggle("current",i===currentPage);p.classList.toggle("done",i<currentPage);});$("progressFill").style.width=((currentPage-1)/6*100)+"%";$("stepLabel").textContent=["01 — TAMOYIL","02 — SSENARIY","03 — BAYON USLUBI","04 — VIZUAL TIL","05 — RANG PALETRASI","06 — ANIMATSIYA","07 — REELS STUDIYASI"][currentPage-1];window.scrollTo({top:0,behavior:"smooth"});if(currentPage===7){updateSummary();resize3D();}}
 function choose(group,key){$(group).querySelectorAll("[data-value]").forEach(b=>b.classList.toggle("selected",b.dataset.value===key));}
 function fieldName(){return $("field").value==="Boshqa"?val("customField"):$("field").value;}
 function validate(n){if(n===1&&(!val("kind")||!fieldName()||!val("title"))){status("sourceStatus","Tushuncha turi, bilim sohasi va nomini to‘ldiring.");return false;}if(n===2&&["hook","announce","bodyText","statusText","ending"].some(x=>!val(x))){status("scriptStatus","Barcha besh ssenariy qismini to‘ldiring.");return false;}return true;}
-$("kind").addEventListener("change",()=>{$("kindHint").textContent=kinds[val("kind")]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";saveDraft();});
+$("kind").addEventListener("change",()=>{$("kindHint").textContent=kinds[val("kind")]||"Tanlangan tushuncha turining ilmiy yoki falsafiy maqomini aniqlang.";saveDraft();});
 function saveDraft(){}
-function restoreDraft(){try{sessionStorage.removeItem("nex-pa-draft-010");}catch(e){}$("customField").hidden=val("field")!=="Boshqa";$("kindHint").textContent=kinds[val("kind")]||"Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.";}
+function restoreDraft(){try{sessionStorage.removeItem("nex-pa-draft-010");}catch(e){}$("customField").hidden=val("field")!=="Boshqa";$("kindHint").textContent=kinds[val("kind")]||"Tanlangan tushuncha turining ilmiy yoki falsafiy maqomini aniqlang.";}
 ["kind","field","customField","title","source","evidence","review","hook","announce","bodyText","statusText","ending"].forEach(id=>$(id).addEventListener("input",()=>{saveDraft();if(currentPage===7)updateSummary();}));
 $("field").addEventListener("change",()=>{$("customField").hidden=val("field")!=="Boshqa";if(renderer)build3D();});
 $("nextSource").addEventListener("click",()=>{if(validate(1))showStep(2);});
@@ -105,7 +105,7 @@ function drawNEXOutroBrand(ctx,w,h,progress){
   ctx.shadowBlur=0;ctx.fillStyle="#dce8f4";ctx.font="600 "+(w*.031)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Fikr va imkoniyatlar makoni",w*.5,h*.35);ctx.restore();
 }
 function drawParameterCard(ctx,accent,elapsed){
- const rows=[["TASNIF",val("kind")],["MANBA",val("source")],["DALIL",val("evidence")],["TEKSHIRUV",val("review")]];
+ const rows=[["TUR",val("kind")],["MANBA",val("source")],["MAZMUN",val("evidence")],["QO‘LLANISH DOIRASI",val("review")]];
  const x=58,y=105,w=964,rowH=100,h=72+rows.length*rowH;
  ctx.save();ctx.fillStyle="rgba(3,9,17,.88)";ctx.strokeStyle=accent;ctx.lineWidth=3;ctx.shadowColor=accent;ctx.shadowBlur=26;ctx.beginPath();ctx.roundRect(x,y,w,h,24);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
  ctx.fillStyle=accent;ctx.font="900 25px system-ui";ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText("TAMOYIL MA’LUMOTLARI",x+28,y+36);
@@ -171,9 +171,7 @@ function makeScene(subject){
  else if(subject==="Psixologiya"){const left=sphere(-.28,0,0,.58,0xd77db8,32);left.scale.set(.72,1,.72);const right=sphere(.28,0,0,.58,0x8c8ce5,32);right.scale.set(.72,1,.72);for(let i=0;i<7;i++){const ridge=mesh(new THREE.TorusGeometry(.28,.018,6,40),new THREE.MeshBasicMaterial({color:0xffd4ed}));ridge.position.set(-.3,-.42+i*.14,.25);ridge.scale.set(.75,.55,1);}}
  else{sphere(0,0,0,.72,accent,40);makeOrbit(1.08,.7,0x9bdfff);for(let i=0;i<6;i++){const a=i*Math.PI/3;sphere(Math.cos(a)*1.05,Math.sin(a)*.72,.1,.09,0xd9f4ff,16);}}
 }
-const semanticConcepts={blackHole:["qora tuynuk","black hole","hodisalar gorizonti","event horizon","gravitatsion kollaps","singulyarlik"],moon:["oy","oyning","luna","tabiiy yoldosh","oy krateri"],sun:["quyosh","solar","quyosh shamoli","termoyadro sintezi","yulduz energiyasi"],dna:["dnk","dna","dezoksiribonuklein","genetik kod","irsiy axborot","gen zanjiri"],water:["suv","h2o","vodorod","kislorod","suv molekulasi"],magnet:["magnit","magnet","magnit maydoni","qutblar","elektromagnit"],pyramid:["piramida","misr","firavn","qadimgi misr","ehrom"],pi:["pi soni","pi","aylana","doira","radius","diametr"],volcano:["vulqon","lava","magma","otilish","vulkan"],ai:["suniy intellekt","ai","neyron","mashinali organish","suniy neyron tarmoq"],memory:["xotira","memory","eslab qolish","eslash","mnemonik"]};
 function normalizePAText(value){return String(value||"").toLocaleLowerCase("uz").replace(/₂/g,"2").replace(/π/g," pi ").replace(/sun[’']iy/g,"suniy").replace(/fir[’']avn/g,"firavn").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();}
-function conceptMatch(words,key){const source=" "+words+" ";return (semanticConcepts[key]||[]).some(term=>source.includes(" "+normalizePAText(term)+" "));}
 function addPrincipleVisual(subject){
  const accent=palettes[selectedPalette].accent;
  const glow=new THREE.MeshStandardMaterial({color:accent,emissive:accent,emissiveIntensity:.42,metalness:.72,roughness:.22});
