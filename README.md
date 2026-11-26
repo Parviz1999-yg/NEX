@@ -21,7 +21,7 @@ NEX to‘rtta asosiy moduldan tashkil topadi. Har bir modul o‘z interfeysi, is
 |---|---|---|
 | **TA** | Tavsiya akkaunt | **0.10.4 — ANKETA MAYDONLARI TOZALANGAN** |
 | **FM** | Foydali manba | **0.9.9 — QIDIRUV YO‘RIQNOMASI SAQLANGAN** |
-| **QF** | Qiziqarli fakt | **0.16.7 — MUHRLANMAGUNCHA QIYMAT YASHIRILADI** |
+| **PA** | Postulat va aksioma | **0.1.0 — BIRINCHI MUSTAQIL VERSIYA** |
 | **MI** | Maxsus iboralar | **0.10.0 — MUSTAQIL MODUL, REELS RENDERI KUTILMOQDA** |
 
 ## 1. TA — Tavsiya akkaunt: himoyalangan etalon
@@ -99,6 +99,21 @@ QF ekran yozish oynasidagi boshqaruvlar TA etalonidagi xatti-harakatga mos: yozu
 ### QF Liquid Metal va NEX outro (0.15.4)
 
 QF Reels sahnalari suyuq metallik fon, xrom-kumush yorug‘lik oqimlari va mavzuga mos 3D obyektlar bilan kompozitsiyalanadi. Video yakuni matnsiz metallik vizual outro bilan beriladi; ssenariydan tashqari yozuvlar chiqarilmaydi.
+
+## 5. PA — Postulat va aksioma
+
+PA — falsafiy tamoyillar, ilmiy aksiomalar, postulatlar va ularning amaliy qo‘llanishini yorituvchi mustaqil Reels studiyasi. U QF modulining yetti bosqichli ish oqimi, 9:16 WebGL preview, 1080×1920 ekran yozish qatlami, besh sahnali timeline, rang/vizual/animatsiya tanlovlari va yagona 5,2 soniyalik NEX outro mexanizmini asos qilib oladi. QF’ga xos fakt tasnifi, tekshiruv holati va fan-mavzu obyektlari PA mazmuniga moslashtirildi.
+
+### PA ma’lumot modeli
+- Tushuncha turi: Falsafiy tamoyil, Ilmiy aksioma, Ilmiy postulat, Mantiqiy qonun yoki Nazariy tamoyil.
+- Bilim sohasi: Falsafa, Formal mantiq, Matematika, Geometriya, Fizika, Ehtimollar nazariyasi, Informatika, Iqtisodiyot, Tabiiy fanlar yoki boshqa.
+- Tamoyil/aksioma nomi, manba, mazmun va nazariy asos, qo‘llanish doirasi alohida kiritiladi.
+- Reels ssenariysi: HOOK → TAMOYIL → MA’NO → QO‘LLANISH → CHEGARA VA XULOSA.
+- 3D obyektlar mavzuga aloqasiz fakt modellari o‘rniga abstrakt geometriya, mantiqiy bog‘lanish, markaziy g‘oya va sabab-oqibat kompozitsiyalaridan foydalanadi.
+- Aksioma va postulatlar muayyan formal tizim yoki nazariya doirasida tushuntiriladi; falsafiy tamoyillar empirik qonun sifatida ko‘rsatilmaydi.
+- Audio, musiqa va yakuniy montaj tashqi ilovada; NEX outro o‘zgarmaydi.
+
+**PA versiyasi:** 0.1.0. QF manba papkasi arxiv/oldingi modul sifatida saqlanadi; dashboarddagi faol modul PA manziliga yo‘naltiriladi.
 
 ## 6. MI — Maxsus iboralar
 
