@@ -6,12 +6,12 @@
 
 ### 2026-11-22 — Outro bo‘yicha cheklangan ruxsat
 
-Foydalanuvchi TA, FM va QF modullarida faqat NEX outro vaqtini asosiy sahnalardan ajratish hamda FM/QF outro logotipini TA etaloniga moslashtirishga dastlabki cheklangan ruxsat berdi. Keyinchalik anketa maydonlarini tartibga solish uchun alohida ruxsat berildi; bu faqat README’da qayd etilgan TA/FM anketa o‘zgarishlari bilan cheklanadi. Boshqa asosiy kontent oqimi, dizayn, sahna matnlari va vizual mexanizmlar muhofazada qoladi. Joriy ish zaxira tarmog‘ida bajarildi: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
+Foydalanuvchi TA, FM va o‘sha paytdagi QF modulida faqat NEX outro vaqtini asosiy sahnalardan ajratish hamda FM/QF outro logotipini TA etaloniga moslashtirishga dastlabki cheklangan ruxsat berdi. Keyinchalik anketa maydonlarini tartibga solish uchun alohida ruxsat berildi; bu faqat README’da qayd etilgan TA/FM anketa o‘zgarishlari bilan cheklanadi. Boshqa asosiy kontent oqimi, dizayn, sahna matnlari va vizual mexanizmlar muhofazada qoladi. Joriy ish zaxira tarmog‘ida bajarildi: `backup/ta-fm-qf-before-outro-unification-2026-11-22`.
 
 
 ### 2026-11-22 — Anketa maydonlarini tartibga solish bo‘yicha alohida ruxsat
 
-Foydalanuvchi TA va FM anketalarida amalda ishlatilmayotgan maydonlarni olib tashlash, majburiylik matnlarini haqiqiy tekshiruvga moslashtirish va kerakli qiymatlarni mavjud Reels oqimida ishlatishga aniq ruxsat berdi. FM’dagi “Nima deb qidirish kerak?” va “Qayerdan qidirish kerak?” maydonlari muhim deb tasdiqlandi va saqlandi. Bu maydonlar studiya xulosasida izlanish yo‘riqnomasi sifatida ko‘rsatiladi; avtomatik internet qidiruvi mavjud deb da’vo qilinmaydi. QF formasi o‘zgartirilmadi, chunki undagi qiymatlar amalda ishlatiladi.
+Foydalanuvchi TA va FM anketalarida amalda ishlatilmayotgan maydonlarni olib tashlash, majburiylik matnlarini haqiqiy tekshiruvga moslashtirish va kerakli qiymatlarni mavjud Reels oqimida ishlatishga aniq ruxsat berdi. FM’dagi “Nima deb qidirish kerak?” va “Qayerdan qidirish kerak?” maydonlari muhim deb tasdiqlandi va saqlandi. Bu maydonlar studiya xulosasida izlanish yo‘riqnomasi sifatida ko‘rsatiladi; avtomatik internet qidiruvi mavjud deb da’vo qilinmaydi. O‘sha paytdagi QF formasi o‘zgartirilmadi, chunki undagi qiymatlar amalda ishlatilardi.
 
 ## Loyiha modullari
 
@@ -38,13 +38,13 @@ TA hozirgi tasdiqlangan holatida tayyor deb hisoblanadi. Uning dizayni, animatsi
 
 ## 2. TA tajribasini qolgan modullarga tatbiq etish
 
-TA — NEX uchun etalon modul. Quyidagi uchta yo‘nalishdagi yondashuv uning tasdiqlangan ishlash tamoyillaridan olinib, FM, QF va MI modullarida qo‘llanadi:
+TA — NEX uchun etalon modul. Quyidagi uchta yo‘nalishdagi yondashuv uning tasdiqlangan ishlash tamoyillaridan olinib, FM, PA va MI modullarida qo‘llanadi:
 
 1. **Axborot yig‘ish:** foydalanuvchi tanlagan manba yoki mavzuga mos ma’lumotlarni yig‘ish, manba turini hisobga olish va kiruvchi ma’lumotlarni tartibga solish.
 2. **Ma’lumotni qayta ishlash:** yig‘ilgan ma’lumotni tahlil qilish, saralash, kerakli mazmunni ajratish va Reels tayyorlashga mos izchil natijaga aylantirish.
 3. **Interfeys uslubi:** TA dagi tasdiqlangan vizual til, ish bosqichlari, boshqaruv mantiqi, animatsiya va foydalanuvchi tajribasini qolgan modullar uchun namuna sifatida qo‘llash.
 
-**Muhim texnik qoida:** bu yondashuvlarni boshqa modullarga tatbiq etish TA kodini o‘zgartirish degani emas. Zarur funksiyalar FM, QF va MI ichida mustaqil ravishda yoki TA ga ta’sir qilmaydigan alohida komponentlar orqali amalga oshiriladi. TA ning amaldagi kodi o‘zgarmas etalon bo‘lib qoladi.
+**Muhim texnik qoida:** bu yondashuvlarni boshqa modullarga tatbiq etish TA kodini o‘zgartirish degani emas. Zarur funksiyalar FM, PA va MI ichida mustaqil ravishda yoki TA ga ta’sir qilmaydigan alohida komponentlar orqali amalga oshiriladi. TA ning amaldagi kodi o‘zgarmas etalon bo‘lib qoladi.
 
 ## 3. Modullar izolyatsiyasi
 
@@ -52,7 +52,7 @@ TA — NEX uchun etalon modul. Quyidagi uchta yo‘nalishdagi yondashuv uning ta
 - Boshqa modulning uslubi yoki JavaScript kodi TA interfeysiga sizib o‘tmasligi kerak.
 - Umumiy komponent zarur bo‘lsa, avval uning TA ga ta’siri tahlil qilinadi. Xavfsizligi isbotlanmagan umumiy kod TA bilan bog‘lanmaydi.
 - TA dan olingan shablon yoki yondashuv boshqa modulga mustaqil nusxa yoki alohida komponent sifatida tatbiq etiladi.
-- Har bir modul alohida tekshiriladi; FM, QF yoki MI dagi o‘zgarish TA ning avvalgi ishlashini buzmasligi shart.
+- Har bir modul alohida tekshiriladi; FM, PA yoki MI dagi o‘zgarish TA ning avvalgi ishlashini buzmasligi shart.
 
 ## 4. FM — Foydali manba: tayyor va muhofazalangan
 
@@ -68,7 +68,11 @@ FM manba turlari: Sayt, YouTube, Telegram va Kitob.
 
 **Holat:** tayyor, foydalanuvchi yangi topshiriq bermaguncha o‘zgartirishlar muzlatilgan.
 
-## 5. QF — Qiziqarli fakt
+## QF — oldingi modul (arxiv)
+
+**Holat:** faol dashboarddan chiqarilgan. Uning kodlari `qiziqarli-fakt/` papkasida tarixiy nusxa sifatida saqlanadi; yangi faol yo‘nalish PA hisoblanadi.
+
+### Oldingi QF texnik qaydlari
 
 QF mustaqil modul sifatida rivojlantirilmoqda. 0.15.0 da “Fakt e’loni” sahnasiga markazdan kengayadigan ikki nurli chiziq, ular orasida ochiladigan yorqin ekran va keyin namoyon bo‘ladigan fakt matni animatsiyasi qo‘shildi. Three.js WebGL renderer, fakt matnidagi kalit iboralarga mos ayrim 3D sahna profillari, kamera va animatsiya boshqaruvlari hamda besh bosqichli ssenariy vaqt chizig‘i saqlangan. Kalit ibora mosligi qoidaviy ishlaydi; bu hali AI semantik tahlili yoki barcha faktlar uchun avtomatik 3D model yaratish emas. Ovoz yozish va musiqa yaratish/tanlash hozircha tashqi ilovalarda bajariladi; yakuniy audio-video yig‘ish ham tashqi montaj ilovasida amalga oshiriladi. QF ichida audio yozish, musiqa yaratish yoki audio montaj funksiyasi yo‘q.
 
