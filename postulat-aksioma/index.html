@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b13"><title>NEX — Postulat va aksioma</title><link rel="stylesheet" href="style.css?v=0.2.2"></head>
+<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b13"><title>NEX — Postulat va aksioma</title><link rel="stylesheet" href="style.css?v=0.2.3"></head>
 <body>
-<header class="topbar"><a class="brand" href="../">NEX<span> / POSTULAT VA AKSIOMA</span></a><span class="topbar-meta"><span id="stepLabel">01 — FAKT</span><span class="app-version">v0.2.2</span></span></header>
+<header class="topbar"><a class="brand" href="../">NEX<span> / POSTULAT VA AKSIOMA</span></a><span class="topbar-meta"><span id="stepLabel">01 — FAKT</span><span class="app-version">v0.2.3</span></span></header>
 <main>
 <div class="progress-track" aria-label="Bosqichlar"><span class="progress-fill" id="progressFill"></span><div class="progress-steps"><span class="current" data-progress="1">01</span><span data-progress="2">02</span><span data-progress="3">03</span><span data-progress="4">04</span><span data-progress="5">05</span><span data-progress="6">06</span><span data-progress="7">07</span></div></div>
 <section class="wizard-page active" id="step-1"><section class="intro"><p class="eyebrow">SHAXSIY ANIMATSION REELS STUDIYASI</p><h1>Postulat va aksioma<span>.</span></h1><p>Falsafiy tamoyil yoki ilmiy aksiomani tushuntiring, uning qo‘llanishini oching va bosqichma-bosqich Reels yarating.</p></section>
 <div class="panel"><p class="eyebrow">01 — TAMOYIL MA’LUMOTLARI</p><h2>Qaysi tamoyil yoki aksiomani yoritamiz?</h2>
 <div class="source-fields" id="factFields">
 <label for="kind">Tushuncha turi *</label><select id="kind"><option value="">Turni tanlang</option><option>Falsafiy tamoyil</option><option>Ilmiy aksioma</option><option>Ilmiy postulat</option><option>Mantiqiy qonun</option><option>Nazariy tamoyil</option></select><p class="hint" id="kindHint">Tasnif tanlanganda uning mazmuniy izohi ko‘rsatiladi.</p>
-<label for="field">Fan yoki bilim sohasi <span class="optional">(ixtiyoriy)</span></label><select id="field"><option value="">Sohani tanlang</option><option>Falsafa</option><option>Formal mantiq</option><option>Matematika</option><option>Geometriya</option><option>Fizika</option><option>Ehtimollar nazariyasi</option><option>Informatika</option><option>Iqtisodiyot</option><option>Tabiiy fanlar</option><option>Boshqa</option></select><p class="hint">Bu tanlov 3D sahnaga qo‘shimcha yo‘nalish beradi. Tanlamasangiz, sahna tamoyil turiga qarab quriladi.</p><input id="customField" maxlength="100" placeholder="Boshqa soha nomi" hidden>
+
 <label for="title">Tamoyil yoki aksioma nomi *</label><input id="title" maxlength="140" placeholder="Tamoyil yoki aksioma nomini aniq yozing">
 <label for="source">Manba nomi</label><input id="source" maxlength="160" placeholder="Kitob, ilmiy maqola, tashkilot yoki hujjat">
 <label for="evidence">Mazmuni va nazariy asosi</label><textarea id="evidence" rows="3" maxlength="700" placeholder="U nimani anglatadi? Qaysi ta’rif, qoida yoki nazariyaga tayanadi?"></textarea>
@@ -41,4 +41,4 @@
 </section>
 </main>
 <div class="record-overlay" id="recordOverlay" hidden><div class="record-frame"><canvas id="recordBgCanvas" width="1080" height="1920" aria-hidden="true"></canvas><canvas id="record3D" width="1080" height="1920" aria-label="Yuqori aniqlikdagi 3D yozuv qatlami"></canvas><canvas id="recordCanvas" width="1080" height="1920" aria-label="Yuqori aniqlikdagi matn yozuv qatlami"></canvas></div><div class="record-controls"><span id="recordDuration">30,2 soniya</span><button id="recordPause" type="button" aria-label="Pauza yoki davom ettirish">Ⅱ</button><button id="recordExit" type="button">← Studiyaga qaytish</button></div></div>
-<script type="module" src="app.js?v=0.2.2"></script></body></html>
+<script type="module" src="app.js?v=0.2.3"></script></body></html>
