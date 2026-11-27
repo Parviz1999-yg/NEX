@@ -1,3 +1,7 @@
+## [0.2.1] — 2026-11-27
+
+- Suyuq xrom yuzalar uchun studiya ichida yaratiladigan CubeTexture reflection muhiti qo‘shildi; metall yuzalarda realistik yorug‘lik akslari kuchaytirildi.
+
 ## [0.2.0] — 2026-11-27
 
 - PA 3D sahnalari g‘oya va bilim sohasiga mos abstrakt kompozitsiyalarga qayta qurildi.
