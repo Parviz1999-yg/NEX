@@ -1,3 +1,10 @@
+## PA 0.2.6 — Liquid Chrome material ranglari va soddalashtirilgan oqim (2026-11-27)
+
+- Rang tanlash bosqichi olib tashlandi; foydalanuvchi endi palitra tanlamaydi.
+- Bosqichlar 7 tadan 6 taga qisqartirildi; animatsiya va Reels Studio navigatsiyasi qayta raqamlandi.
+- 3D materiallarda xrom-kumush, titan, grafit va nozik muzrang reflekslar ichki yoritish orqali uyg‘unlashtirildi.
+- Metall refleks muhiti va sahna materiallari rang chuqurligi uchun boyitildi; yorqin neon palitralar qo‘shilmadi.
+
 ## [0.10.1] — 2026-11-26
 
 - Dashboarddagi uchinchi modul QF o‘rniga PA — Postulat va aksioma studiyasiga yo‘naltirildi.
