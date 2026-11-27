@@ -1,3 +1,9 @@
+## [0.2.4] — 2026-11-27
+
+- Boshlang‘ich indikator va rang tavsifidagi QF’dan qolgan “fakt” yozuvlari PA terminlariga moslandi.
+- PA vizual identifikatsiyasi uchun rang palitrasi xrom-kumush bilan cheklab qo‘yildi; tasodifiy variant almashtirish endi yorqin ranglarni yoqmaydi.
+- Versiya va asset cache 0.2.4 ga yangilandi.
+
 ## [0.2.3] — 2026-11-27
 
 - Fanlar tanlovi butunlay olib tashlandi: u mazmuniy aniqlikni yetarli oshirmasdan ortiqcha bosqich va noto‘g‘ri vizual ustuvorlik keltirayotgan edi.
