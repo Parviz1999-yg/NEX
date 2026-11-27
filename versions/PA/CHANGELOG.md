@@ -1,3 +1,10 @@
+## [0.2.3] — 2026-11-27
+
+- Fanlar tanlovi butunlay olib tashlandi: u mazmuniy aniqlikni yetarli oshirmasdan ortiqcha bosqich va noto‘g‘ri vizual ustuvorlik keltirayotgan edi.
+- 3D kompozitsiya endi bevosita tushuncha turiga bog‘langan; aksioma, postulat, falsafiy tamoyil, mantiqiy qonun va nazariy tamoyil alohida vizual mantiqqa ega.
+- Interfeysdan fan sohasi maydoni va unga bog‘liq kod olib tashlandi.
+- Cache va ko‘rinadigan versiya 0.2.3 ga yangilandi.
+
 ## [0.2.2] — 2026-11-27
 
 - Fan sohasi ixtiyoriy qilindi; tanlanmasa 3D kompozitsiya tamoyil turiga qarab tanlanadi.
