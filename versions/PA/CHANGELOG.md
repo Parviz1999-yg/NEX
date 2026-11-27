@@ -1,3 +1,12 @@
+## [0.2.2] — 2026-11-27
+
+- Fan sohasi ixtiyoriy qilindi; tanlanmasa 3D kompozitsiya tamoyil turiga qarab tanlanadi.
+- 3D sahna mantiqi fan nomidan oldin tushuncha turiga (aksioma, postulat, falsafiy tamoyil, mantiqiy qonun, nazariy tamoyil) tayanadi.
+- QF’dan qolgan LED-displey dekor elementi olib tashlandi; PA’ning suyuq xrom vizual tili saqlandi.
+- Manba va qo‘llanish doirasi yakuniy sahnada ko‘rsatiladi; manba hamda nazariy asos majburiy maydonlarga aylandi.
+- Sessiya ichida avtomatik qoralama saqlash va tiklash qo‘shildi.
+- Interfeys versiyasi hamda CSS/JS cache versiyalari 0.2.2 ga moslandi.
+
 ## [0.2.1] — 2026-11-27
 
 - Suyuq xrom yuzalar uchun studiya ichida yaratiladigan CubeTexture reflection muhiti qo‘shildi; metall yuzalarda realistik yorug‘lik akslari kuchaytirildi.
