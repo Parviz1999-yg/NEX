@@ -1,3 +1,9 @@
+## [0.2.5] — 2026-11-27
+
+- Fan sohasi olib tashlanganidan keyin qolgan iqtisodiyotga xos eski shartli tarmoq tozalandi; 3D generator endi aniqlanmagan fan o‘zgaruvchisiga murojaat qilmaydi.
+- 3D sahna aksent funksiyasi ham fan parametridan ajratildi.
+- Asset cache va interfeys versiyasi 0.2.5 ga yangilandi.
+
 ## [0.2.4] — 2026-11-27
 
 - Boshlang‘ich indikator va rang tavsifidagi QF’dan qolgan “fakt” yozuvlari PA terminlariga moslandi.
