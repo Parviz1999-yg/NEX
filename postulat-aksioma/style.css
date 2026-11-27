@@ -75,11 +75,11 @@
 .studio-controls textarea{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:#090e18;color:var(--text);line-height:1.5;resize:vertical}
 .studio-controls textarea:focus{border-color:var(--accent)}
 .preview-column{width:100%;position:static}
-.reel-frame{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;margin-inline:auto;isolation:isolate;overflow:hidden;border:1px solid #168cff;border-radius:12px;background:#020b1d;box-shadow:inset 0 0 0 1px #8bd8ff55,0 0 22px #168cff22}
+.reel-frame{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;margin-inline:auto;isolation:isolate;overflow:hidden;border:1px solid #168cff;border-radius:12px;background:radial-gradient(ellipse at 50% 42%,#171d24 0%,#080b10 54%,#030507 100%);box-shadow:inset 0 0 0 1px #8bd8ff55,0 0 22px #168cff22}
 .reel-frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #reelBgCanvas,#recordBgCanvas{z-index:0}
-#reel3D,#record3D{z-index:1;background:transparent}
-#reelCanvas,#recordCanvas{z-index:2;pointer-events:none;background:transparent}
+#reel3D,#record3D{z-index:1;background:transparent;filter:contrast(1.08) saturate(.68)}
+#reelCanvas,#recordCanvas{z-index:2;pointer-events:none;background:transparent;opacity:.96}
 .scene-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:4px}
 .scene-chip{min-height:40px;padding:10px 3px;border:1px solid var(--line);border-radius:8px;background:#0b111d;color:var(--muted);font-size:11px;font-weight:750;cursor:pointer}
 .scene-chip.active{border-color:var(--accent);color:var(--text);background:#1b1b32}
@@ -163,6 +163,6 @@
 .bottom-actions .primary-btn,.bottom-actions .secondary-btn{width:auto;flex:1}
 
 /* PA 0.16.5 — fon, shaffof WebGL va matnning alohida qatlamlari */
-#reelBgCanvas,#recordBgCanvas{z-index:0;pointer-events:none}
+#reelBgCanvas,#recordBgCanvas{z-index:0;pointer-events:none;opacity:.55}
 #reel3D,#record3D{z-index:1;background:transparent}
 #reelCanvas,#recordCanvas{z-index:2;pointer-events:none;background:transparent}
