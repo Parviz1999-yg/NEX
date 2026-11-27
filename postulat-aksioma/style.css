@@ -60,13 +60,6 @@
 .choice b,.choice small{display:block}
 .choice b{font-size:14px;margin-bottom:6px}
 .choice small{font-size:11px;line-height:1.5;color:var(--muted)}
-.palette-options{grid-template-columns:repeat(3,minmax(0,1fr))}
-.swatch{display:block;width:30px;height:8px;margin:0 0 12px;border-radius:20px;background:#8ed8ff}
-.swatch.silver{background:linear-gradient(90deg,#0b1a2b,#f8fcff,#73c8ff)}
-.swatch.blue{background:linear-gradient(90deg,#06142c,#f4faff,#168cff)}
-.swatch.violet{background:linear-gradient(90deg,#160e30,#faf7ff,#9876ff)}
-.swatch.emerald{background:linear-gradient(90deg,#061e20,#f2fffc,#00d5b2)}
-.swatch.solar{background:linear-gradient(90deg,#211706,#fffcf2,#ffb52e)}
 .studio-heading{margin-bottom:20px}
 .studio-heading h2{font-size:clamp(28px,5vw,42px);letter-spacing:-.045em;margin:0 0 8px}
 .studio-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
@@ -78,7 +71,7 @@
 .reel-frame{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;margin-inline:auto;isolation:isolate;overflow:hidden;border:1px solid #168cff;border-radius:12px;background:radial-gradient(ellipse at 50% 42%,#171d24 0%,#080b10 54%,#030507 100%);box-shadow:inset 0 0 0 1px #8bd8ff55,0 0 22px #168cff22}
 .reel-frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #reelBgCanvas,#recordBgCanvas{z-index:0}
-#reel3D,#record3D{z-index:1;background:transparent;filter:contrast(1.08) saturate(.68)}
+#reel3D,#record3D{z-index:1;background:transparent;filter:contrast(1.05) saturate(.92)}
 #reelCanvas,#recordCanvas{z-index:2;pointer-events:none;background:transparent;opacity:.96}
 .scene-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:4px}
 .scene-chip{min-height:40px;padding:10px 3px;border:1px solid var(--line);border-radius:8px;background:#0b111d;color:var(--muted);font-size:11px;font-weight:750;cursor:pointer}
@@ -162,7 +155,7 @@
 .live-dot{font-size:9px;color:#9be8c3;letter-spacing:.1em}
 .bottom-actions .primary-btn,.bottom-actions .secondary-btn{width:auto;flex:1}
 
-/* PA 0.16.5 — fon, shaffof WebGL va matnning alohida qatlamlari */
+/* PA 0.2.6 — fon, shaffof WebGL va xrom material tuslari */
 #reelBgCanvas,#recordBgCanvas{z-index:0;pointer-events:none;opacity:.55}
 #reel3D,#record3D{z-index:1;background:transparent}
 #reelCanvas,#recordCanvas{z-index:2;pointer-events:none;background:transparent}
